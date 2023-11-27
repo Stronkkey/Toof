@@ -1,4 +1,5 @@
 #include <SDL.h>
+
 #include "vector2.hpp"
 
 namespace sdl {
