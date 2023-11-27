@@ -1,4 +1,4 @@
-#include "../math/math_defs.hpp"
+#include "math_defs.hpp"
 
 namespace sdl {
 
