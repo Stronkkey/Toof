@@ -25,12 +25,14 @@ Window::Window(const Rect2i &rect, const std::string &title) {
     fail("Couldn't create window: %s", SDL_LOG_CATEGORY_APPLICATION);
   
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+  rendering_server = new RenderingServer;
 }
 
 Window::~Window() {
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   SDL_Quit();
+  delete rendering_server;
 }
 
 void Window::fail(const std::string &error_message, const SDL_LogCategory log_category) {
@@ -39,17 +41,10 @@ void Window::fail(const std::string &error_message, const SDL_LogCategory log_ca
   success = false;
 }
 
-void Window::poll_event() {
-  if (!success)
-    return;
+bool Window::intialized_successfully() const {
+  return success;
+}
 
-  while (true) {
-    SDL_PollEvent(&event);
-    if (event.type == SDL_QUIT)
-      break;
-
-    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
-    SDL_RenderClear(renderer);
-    SDL_RenderPresent(renderer);
-  }
+RenderingServer *Window::get_rendering_server() const {
+  return rendering_server;
 }

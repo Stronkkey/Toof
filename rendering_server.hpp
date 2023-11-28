@@ -10,7 +10,5 @@ public:
   RenderingServer();
   ~RenderingServer();
 
-  static RenderingServer *get_singleton();
-
 };
 }
