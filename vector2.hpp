@@ -1,3 +1,6 @@
+#ifndef VECTOR2
+#define VECTOR2
+
 #include "math_defs.hpp"
 
 namespace sdl {
@@ -36,3 +39,5 @@ struct Vector2i {
   static const Vector2i ZERO;
 };
 }
+
+#endif // !VECTOR2

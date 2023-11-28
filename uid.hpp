@@ -1,3 +1,6 @@
+#ifndef UID
+#define UID
+
 #include "math_defs.hpp"
 
 #include <unordered_map>
@@ -30,3 +33,5 @@ struct hash<sdl::uid> {
   }
 };
 }
+
+#endif // !UID

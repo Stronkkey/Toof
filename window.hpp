@@ -1,3 +1,6 @@
+#ifndef WINDOW
+#define WINDOW
+
 #include <SDL.h>
 #include <string>
 
@@ -26,3 +29,5 @@ public:
   bool intialized_successfully() const;
 };
 };
+
+#endif // !WINDOW

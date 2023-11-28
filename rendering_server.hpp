@@ -1,3 +1,6 @@
+#ifndef RENDERING_SERVER
+#define RENDERING_SERVER
+
 #include "uid.hpp"
 
 #include <SDL.h>
@@ -26,3 +29,5 @@ public:
   uid load_texture_from_path(const std::string &path);
 };
 }
+
+#endif // !RENDERING_SERVER

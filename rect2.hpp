@@ -1,3 +1,6 @@
+#ifndef RECT2_LIB
+#define RECT2_LIB
+
 #include "vector2.hpp"
 
 namespace sdl {
@@ -43,3 +46,5 @@ struct Rect2i {
 };
 
 }
+
+#endif // !RECT2_LIB
