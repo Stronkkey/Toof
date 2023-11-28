@@ -28,6 +28,9 @@ Window::Window(const Rect2i &rect, const std::string &title) {
 }
 
 Window::~Window() {
+  SDL_DestroyRenderer(renderer);
+  SDL_DestroyWindow(window);
+  SDL_Quit();
 }
 
 void Window::fail(const std::string &error_message, const SDL_LogCategory log_category) {
@@ -49,8 +52,4 @@ void Window::poll_event() {
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
   }
-  
-  SDL_DestroyRenderer(renderer);
-  SDL_DestroyWindow(window);
-  SDL_Quit();
 }
