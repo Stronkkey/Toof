@@ -9,6 +9,7 @@ namespace sdl {
 
 enum UidType {
   UID_RENDERING,
+  UID_RENDERING_TEXTURE,
   UID_AUTO
 };
 
@@ -19,7 +20,6 @@ struct uid {
   bool operator==(const uid &right_uid) const;
 
 };
-
 }
 
 namespace std {

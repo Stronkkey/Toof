@@ -52,7 +52,8 @@ void RenderingServer::render_canvas_item(const CanvasItem *canvas_item) {
     if (texture_iterator != textures.end()) {
       Texture *texture = texture_iterator->second;
       SDL_Rect src_region = texture->src_region.to_sdl_rect();
-      SDL_Rect destination = canvas_item->destination.to_sdl_rect();
+      SDL_Rect destination = (canvas_item->destination + src_region).to_sdl_rect();
+
       SDL_RenderCopy(renderer, texture->texture_reference, &src_region, &destination);
     }
 
