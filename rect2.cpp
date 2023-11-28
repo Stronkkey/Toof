@@ -26,6 +26,13 @@ Rect2::Rect2(const real_t position_x, const real_t position_y, const real_t size
   h = size_y;
 }
 
+Rect2::Rect2(const SDL_Rect &rect) {
+  x = rect.x;
+  y = rect.y;
+  w = rect.w;
+  h = rect.h;
+}
+
 bool Rect2::operator==(const Rect2 &right) const {
   return get_position() == right.get_position() && get_size() == right.get_size();
 }
@@ -40,6 +47,24 @@ Vector2 Rect2::get_position() const {
 
 Vector2 Rect2::get_size() const {
   return Vector2(w, h);
+}
+
+SDL_Rect Rect2::to_sdl_rect() const {
+  SDL_Rect rect;
+  rect.x = x;
+  rect.y = y;
+  rect.w = w;
+  rect.h = h;
+  return rect;
+}
+
+SDL_Rect Rect2::to_sdl_rect(const Rect2 &rect2) {
+  SDL_Rect rect;
+  rect.x = rect2.x;
+  rect.y = rect2.y;
+  rect.w = rect2.w;
+  rect.h = rect2.h;
+  return rect;
 }
 
 
@@ -64,6 +89,13 @@ Rect2i::Rect2i(const int_t position_x, const int_t position_y, const int_t size_
   h = size_y;
 }
 
+Rect2i::Rect2i(const SDL_Rect &rect) {
+  x = rect.x;
+  y = rect.y;
+  w = rect.w;
+  h = rect.h;
+}
+
 bool Rect2i::operator==(const Rect2 &right) const {
   return get_position() == right.get_position() && get_size() == right.get_size();
 }
@@ -80,3 +112,20 @@ Vector2i Rect2i::get_size() const {
   return Vector2i(w, h);
 }
 
+SDL_Rect Rect2i::to_sdl_rect() const {
+  SDL_Rect rect;
+  rect.x = x;
+  rect.y = y;
+  rect.w = w;
+  rect.h = h;
+  return rect;
+}
+
+SDL_Rect Rect2i::to_sdl_rect(const Rect2i &rect2i) {
+  SDL_Rect rect;
+  rect.x = rect2i.x;
+  rect.y = rect2i.y;
+  rect.w = rect2i.w;
+  rect.h = rect2i.h;
+  return rect;
+}
