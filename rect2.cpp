@@ -26,6 +26,20 @@ Rect2::Rect2(const real_t position_x, const real_t position_y, const real_t size
   h = size_y;
 }
 
+Rect2::Rect2(const Rect2 &rect) {
+  x = rect.x;
+  y = rect.y;
+  w = rect.w;
+  h = rect.h;
+}
+
+Rect2::Rect2(const Rect2i &rect) {
+  x = rect.x;
+  y = rect.y;
+  w = rect.w;
+  h = rect.h;
+}
+
 Rect2::Rect2(const SDL_Rect &rect) {
   x = rect.x;
   y = rect.y;
@@ -105,6 +119,20 @@ Rect2i::Rect2i(const int_t position_x, const int_t position_y, const int_t size_
   y = position_y;
   w = size_x;
   h = size_y;
+}
+
+Rect2i::Rect2i(const Rect2 &rect) {
+  x = rect.x;
+  y = rect.y;
+  w = rect.w;
+  h = rect.h;
+}
+
+Rect2i::Rect2i(const Rect2i &rect) {
+  x = rect.x;
+  y = rect.y;
+  w = rect.w;
+  h = rect.h;
 }
 
 Rect2i::Rect2i(const SDL_Rect &rect) {
