@@ -25,7 +25,7 @@ Window::Window(const Rect2i &rect, const std::string &title) {
     fail("Couldn't create window: %s", SDL_LOG_CATEGORY_APPLICATION);
   
   renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-  rendering_server = new RenderingServer;
+  rendering_server = new RenderingServer(renderer);
 }
 
 Window::~Window() {
@@ -45,6 +45,3 @@ bool Window::intialized_successfully() const {
   return success;
 }
 
-RenderingServer *Window::get_rendering_server() const {
-  return rendering_server;
-}
