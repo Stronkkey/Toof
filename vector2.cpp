@@ -31,8 +31,18 @@ bool Vector2::operator==(const Vector2 &right) const {
   return x == right.x && y == right.y;
 }
 
-bool Vector2::operator==(const Vector2i &right) const {
-  return x == right.x && y == right.y;
+Vector2 Vector2::operator+(const Vector2 &right) const {
+  return Vector2(x + right.x, y + right.y);
+}
+ 
+void Vector2::operator+=(const Vector2 &right) {
+  x += right.x;
+  y += right.y;
+}
+
+void Vector2::operator-=(const Vector2 &right) {
+ x -= right.x;
+ y -= right.y;
 }
 
 Vector2i::Vector2i(const int_t new_x, const int_t new_y) {
@@ -55,10 +65,20 @@ Vector2i::Vector2i(const Vector2i &vector2i) {
   y = vector2i.y;
 }
 
-bool Vector2i::operator==(const Vector2 &right) const {
+bool Vector2i::operator==(const Vector2i &right) const {
   return x == right.x && y == right.y;
 }
 
-bool Vector2i::operator==(const Vector2i &right) const {
-  return x == right.x && y == right.y;
+Vector2i Vector2i::operator+(const Vector2i &right) const {
+  return Vector2i(x + right.x, y + right.y);
+}
+ 
+void Vector2i::operator+=(const Vector2i &right) {
+  x += right.x;
+  y += right.y;
+}
+
+void Vector2i::operator-=(const Vector2i &right) {
+ x -= right.x;
+ y -= right.y;
 }

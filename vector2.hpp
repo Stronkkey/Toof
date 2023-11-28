@@ -17,7 +17,10 @@ struct Vector2 {
   Vector2(const Vector2i &vector2i);
 
   bool operator==(const Vector2 &right) const;
-  bool operator==(const Vector2i &right) const;
+  Vector2 operator+(const Vector2 &right) const;
+  Vector2 operator-(const Vector2 &right) const;
+  void operator+=(const Vector2 &right);
+  void operator-=(const Vector2 &right);
 
   static const Vector2 ONE;
   static const Vector2 ZERO;
@@ -33,7 +36,10 @@ struct Vector2i {
   Vector2i(const Vector2i &vector2i);
 
   bool operator==(const Vector2i &right) const;
-  bool operator==(const Vector2 &right) const;
+  Vector2i operator+(const Vector2i &right) const;
+  Vector2i operator-(const Vector2i &right) const;
+  void operator+=(const Vector2i &right);
+  void operator-=(const Vector2i &right);
 
   static const Vector2i ONE;
   static const Vector2i ZERO;
