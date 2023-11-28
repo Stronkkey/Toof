@@ -47,6 +47,13 @@ Rect2::Rect2(const SDL_Rect &rect) {
   h = rect.h;
 }
 
+void Rect2::operator=(const Rect2 &right) {
+  x = right.x;
+  y = right.y;
+  w = right.w;
+  h = right.h;
+}
+
 bool Rect2::operator==(const Rect2 &right) const {
   return get_position() == right.get_position() && get_size() == right.get_size();
 }
@@ -140,6 +147,13 @@ Rect2i::Rect2i(const SDL_Rect &rect) {
   y = rect.y;
   w = rect.w;
   h = rect.h;
+}
+
+void Rect2i::operator=(const Rect2i &right) {
+  x = right.x;
+  y = right.y;
+  w = right.w;
+  h = right.h;
 }
 
 bool Rect2i::operator==(const Rect2i &right) const {

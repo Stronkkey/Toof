@@ -34,6 +34,10 @@ bool Vector2::operator==(const Vector2 &right) const {
 Vector2 Vector2::operator+(const Vector2 &right) const {
   return Vector2(x + right.x, y + right.y);
 }
+
+Vector2 Vector2::operator-(const Vector2 &right) const {
+  return Vector2(x - right.x, y - right.y);
+}
  
 void Vector2::operator+=(const Vector2 &right) {
   x += right.x;
@@ -72,7 +76,11 @@ bool Vector2i::operator==(const Vector2i &right) const {
 Vector2i Vector2i::operator+(const Vector2i &right) const {
   return Vector2i(x + right.x, y + right.y);
 }
- 
+
+Vector2i Vector2i::operator-(const Vector2i &right) const {
+  return Vector2(x - right.x, y - right.y);
+}
+
 void Vector2i::operator+=(const Vector2i &right) {
   x += right.x;
   y += right.y;

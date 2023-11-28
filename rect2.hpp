@@ -22,6 +22,7 @@ struct Rect2 {
   Rect2(const Rect2i &rect);
   Rect2(const SDL_Rect &rect);
 
+  void operator=(const Rect2 &right);
   bool operator==(const Rect2 &right) const;
   Rect2 operator+(const Rect2 &right) const;
   Rect2 operator-(const Rect2 &right) const;
@@ -50,6 +51,7 @@ struct Rect2i {
   Rect2i(const Rect2i &rect);
   Rect2i(const SDL_Rect &rect);
 
+  void operator=(const Rect2i &right);
   bool operator==(const Rect2i &right) const;
   Rect2i operator+(const Rect2i &right) const;
   Rect2i operator-(const Rect2i &right) const;
