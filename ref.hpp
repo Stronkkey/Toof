@@ -1,34 +1,55 @@
-#include <cstdint>
+#include <cstdlib>
 
 namespace sdl {
 
 template<class T>
-struct Ref {
-
+struct MemoryPointer {
   T *reference;
 
-  Ref() {
+  MemoryPointer() {
     reference = nullptr;
   }
 
-  Ref(T *type) {
+  MemoryPointer(T *type) {
     reference = type;
+  }
+};
+
+template<class T>
+struct Ref {
+
+  MemoryPointer<T> mem_pointer;
+
+  Ref() {
+    mem_pointer = MemoryPointer<T>();
+  }
+
+  Ref(T *type) {
+    mem_pointer = MemoryPointer<T>(type);
   }
 
   T *operator->() const {
-    return reference;
+    return mem_pointer.reference;
   }
 
   operator T() {
-    return reference;
+    return mem_pointer.reference;
+  }
+
+  void operator delete(void* ptr) {
+    std::free(ptr);
   }
 
   bool is_valid() const {
-    return reference != nullptr;
+    return mem_pointer.reference != nullptr;
   }
 
   bool is_null() const {
-    return reference == nullptr;
+    return mem_pointer.reference == nullptr;
+  }
+
+  T *get_reference() const {
+    return mem_pointer.reference;
   }
 
 };
