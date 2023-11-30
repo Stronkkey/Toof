@@ -50,6 +50,8 @@ Tree *Item::get_tree() const {
 
 void Item::set_tree(Tree *new_tree) {
   tree = new_tree;
+  if (tree)
+    on_added_to_tree();
 }
 
 void Item::set_name(const std::string &new_name) {
@@ -71,4 +73,13 @@ void Item::add_item(Item *new_item) {
 
 std::vector<Item*> Item::get_children() const {
   return children;
+}
+
+void Item::set_parent(Item *new_parent) {
+  parent = new_parent;
+  on_parent_changed(new_parent);
+}
+
+Item *Item::get_parent() const {
+  return parent;
 }

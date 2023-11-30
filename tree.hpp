@@ -24,18 +24,18 @@ protected:
   virtual void render();
   virtual void ended();
 
-  virtual void intialized() {}
-  virtual void handle_events() { if (event->type == SDL_QUIT) stop(); }
-  virtual void handle_loop() {}
-  virtual void handle_render() {}
-  virtual void on_ended() {}
+  virtual Rect2i get_window_rect() const {
+    return Rect2i(0, 0, 340, 240);
+  }
 
-  virtual Rect2i get_window_rect() const { return Rect2i(0, 0, 340, 240); }
-  virtual std::string get_window_title() const { return "SDL example"; }
+  virtual std::string get_window_title() const {
+    return "SDL example";
+  }
 
 public:
+
   Tree();
-  ~Tree();
+  virtual ~Tree();
 
   Window *get_window() const;
 

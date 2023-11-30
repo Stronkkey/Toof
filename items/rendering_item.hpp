@@ -14,9 +14,9 @@ protected:
 
   RenderingServer *get_rendering_server() const;
   void update();
+  void on_added_to_tree() override;
 
 public:
-  RenderingItem();
   ~RenderingItem();
   uid get_canvas_item() const;
 

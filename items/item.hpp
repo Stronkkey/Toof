@@ -22,6 +22,8 @@ protected:
   virtual void event(const SDL_Event*) {}
   virtual void render() {}
   virtual void loop() {}
+  virtual void on_parent_changed(Item*) {}
+  virtual void on_added_to_tree() {}
 
 public:
   Item();
@@ -40,6 +42,9 @@ public:
 
   void add_item(Item *new_item);
   std::vector<Item*> get_children() const;
+
+  void set_parent(Item *new_parent);
+  Item *get_parent() const;
 };
 
 }

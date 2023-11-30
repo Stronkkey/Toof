@@ -3,7 +3,7 @@
 
 using namespace sdl;
 
-RenderingItem::RenderingItem() {
+void RenderingItem::on_added_to_tree() {
   RenderingServer *rendering_server = get_rendering_server();
   if (!rendering_server)
     return;

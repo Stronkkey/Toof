@@ -3,6 +3,7 @@
 
 #include "rect2.hpp"
 #include "uid.hpp"
+#include "ref.hpp"
 
 #include <SDL_image.h>
 

@@ -16,18 +16,18 @@ Tree::~Tree() {
 
 void Tree::events() {
   SDL_PollEvent(event);
-  handle_events();
+  if (event->type == SDL_QUIT)
+    stop();
+
   root->propagate_event(event);
 }
 
 void Tree::render() {
-  handle_render();
   root->propagate_render();
   rendering_server->render();
 }
 
 void Tree::loop() {
-  handle_loop();
   root->propagate_loop();
 }
 
@@ -35,7 +35,6 @@ void Tree::initialize() {
 }
 
 void Tree::ended() {
-  on_ended();
 }
 
 void Tree::start() {
