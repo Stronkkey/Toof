@@ -45,3 +45,8 @@ bool Window::intialized_successfully() const {
   return success;
 }
 
+void Window::render() {
+  SDL_RenderClear(renderer);
+  rendering_server->render();
+  SDL_RenderPresent(renderer);
+}

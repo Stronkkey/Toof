@@ -26,6 +26,8 @@ public:
   SDL_Event event;
   RenderingServer *rendering_server;
 
+  void render();
+
   bool intialized_successfully() const;
 };
 };
