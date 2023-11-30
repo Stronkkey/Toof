@@ -19,7 +19,7 @@ Rect2::Rect2(const Vector2 &position, const Vector2 &size) {
   h = size.y;
 }
 
-Rect2::Rect2(const real_t position_x, const real_t position_y, const real_t size_x, const real_t size_y) {
+Rect2::Rect2(const double position_x, const double position_y, const double size_x, const double size_y) {
   x = position_x;
   y = position_y;
   w = size_x;
@@ -58,6 +58,26 @@ bool Rect2::operator==(const Rect2 &right) const {
   return get_position() == right.get_position() && get_size() == right.get_size();
 }
 
+bool Rect2::operator!=(const Rect2 &right) const {
+  return get_position() != right.get_position() && get_size() != right.get_size();
+}
+
+bool Rect2::operator<(const Rect2 &right) const {
+  return get_position() < right.get_position() && get_size() < right.get_size();
+}
+
+bool Rect2::operator<=(const Rect2 &right) const {
+  return get_position() <= right.get_position() && get_size() <= right.get_size();
+}
+
+bool Rect2::operator>(const Rect2 &right) const {
+  return get_position() > right.get_position() && get_size() > right.get_size();
+}
+
+bool Rect2::operator>=(const Rect2 &right) const {
+  return get_position() >= right.get_position() && get_size() >= right.get_size();
+}
+
 Rect2 Rect2::operator+(const Rect2 &right) const {
   return Rect2(get_position() + right.get_position(), get_size() + right.get_size());
 }
@@ -66,6 +86,30 @@ Rect2 Rect2::operator-(const Rect2 &right) const {
   return Rect2(get_position() - right.get_position(), get_size() - right.get_size());
 }
 
+Rect2 Rect2::operator*(const Rect2 &right) const {
+  return Rect2(get_position() * right.get_position(), get_size() - right.get_size());
+}
+
+Rect2 Rect2::operator*(const double right) const {
+  return Rect2(get_position() * right, get_size() * right);
+}
+
+Rect2 Rect2::operator*(const int64_t right) const {
+  return Rect2(get_position() * right, get_size() * right);
+}
+
+Rect2 Rect2::operator/(const Rect2 &right) const {
+  return Rect2(get_position() / right.get_position(), get_size() / right.get_size());
+}
+
+Rect2 Rect2::operator/(const double right) const {
+  return Rect2(get_position() / right, get_size() / right);
+}
+
+Rect2 Rect2::operator/(const int64_t right) const {
+  return Rect2(get_position() / right, get_size() / right);
+}
+ 
 void Rect2::operator+=(const Rect2 &right) {
   x += right.x;
   y += right.y;
@@ -80,12 +124,86 @@ void Rect2::operator-=(const Rect2 &right) {
   h -= right.h;
 }
 
+void Rect2::operator*=(const Rect2 &right) {
+  x *= right.x;
+  y *= right.y;
+  w *= right.w;
+  h *= right.h;
+}
+
+void Rect2::operator*=(const double right) {
+  x *= right;
+  y *= right;
+  w *= right;
+  h *= right;
+}
+
+void Rect2::operator*=(const int64_t right) {
+  x *= right;
+  y *= right;
+  w *= right;
+  h *= right;
+}
+
+void Rect2::operator/=(const Rect2 &right) {
+  x /= right.x;
+  y /= right.y;
+  w /= right.w;
+  h /= right.h;
+}
+
+void Rect2::operator/=(const double right) {
+  x /= right;
+  y /= right;
+  w /= right;
+  h /= right;
+}
+
+void Rect2::operator/=(const int64_t right) {
+  x /= right;
+  y /= right;
+  w /= right;
+  h /= right;
+}
+
+double Rect2::operator[](const int64_t index) const {
+  switch (index) {
+    case 0:
+      return x;
+    case 1:
+      return y;
+    case 2:
+      return w;
+    case 3:
+      return h;
+  }
+  return 0.0;
+}
+
+Rect2 Rect2::operator+() const {
+  return Rect2(+x, +y, +w, +h);
+}
+
+Rect2 Rect2::operator-() const {
+  return Rect2(-x, -y, -w, -h);
+}
+
 Vector2 Rect2::get_position() const {
   return Vector2(x, y);
 }
 
 Vector2 Rect2::get_size() const {
   return Vector2(w, h);
+}
+
+void Rect2::set_position(const Vector2 &new_position) {
+  x = new_position.x;
+  y = new_position.y;
+}
+
+void Rect2::set_size(const Vector2 &new_size) {
+  x = new_size.x;
+  y = new_size.y;
 }
 
 SDL_Rect Rect2::to_sdl_rect() const {
@@ -106,6 +224,7 @@ SDL_Rect Rect2::to_sdl_rect(const Rect2 &rect2) {
   return rect;
 }
 
+// RECT2i //
 
 Rect2i::Rect2i() {
   x = 0;
@@ -121,7 +240,7 @@ Rect2i::Rect2i(const Vector2i &position, const Vector2i &size) {
   h = size.y;
 }
 
-Rect2i::Rect2i(const int_t position_x, const int_t position_y, const int_t size_x, const int_t size_y) {
+Rect2i::Rect2i(const int64_t position_x, const int64_t position_y, const int64_t size_x, const int64_t size_y) {
   x = position_x;
   y = position_y;
   w = size_x;
@@ -160,6 +279,26 @@ bool Rect2i::operator==(const Rect2i &right) const {
   return get_position() == right.get_position() && get_size() == right.get_size();
 }
 
+bool Rect2i::operator!=(const Rect2i &right) const {
+  return get_position() != right.get_position() && get_size() != right.get_size();
+}
+
+bool Rect2i::operator<(const Rect2i &right) const {
+  return get_position() < right.get_position() && get_size() < right.get_size();
+}
+
+bool Rect2i::operator<=(const Rect2i &right) const {
+  return get_position() <= right.get_position() && get_size() <= right.get_size();
+}
+
+bool Rect2i::operator>(const Rect2i &right) const {
+  return get_position() > right.get_position() && get_size() > right.get_size();
+}
+
+bool Rect2i::operator>=(const Rect2i &right) const {
+  return get_position() >= right.get_position() && get_size() >= right.get_size();
+}
+
 Rect2i Rect2i::operator+(const Rect2i &right) const {
   return Rect2i(get_position() + right.get_position(), get_size() + right.get_size());
 }
@@ -168,6 +307,30 @@ Rect2i Rect2i::operator-(const Rect2i &right) const {
   return Rect2i(get_position() - right.get_position(), get_size() - right.get_size());
 }
 
+Rect2i Rect2i::operator*(const Rect2i &right) const {
+  return Rect2i(get_position() * right.get_position(), get_size() - right.get_size());
+}
+
+Rect2i Rect2i::operator*(const double right) const {
+  return Rect2i(get_position() * right, get_size() * right);
+}
+
+Rect2i Rect2i::operator*(const int64_t right) const {
+  return Rect2i(get_position() * right, get_size() * right);
+}
+
+Rect2i Rect2i::operator/(const Rect2i &right) const {
+  return Rect2i(get_position() / right.get_position(), get_size() / right.get_size());
+}
+
+Rect2i Rect2i::operator/(const double right) const {
+  return Rect2i(get_position() / right, get_size() / right);
+}
+
+Rect2i Rect2i::operator/(const int64_t right) const {
+  return Rect2i(get_position() / right, get_size() / right);
+}
+ 
 void Rect2i::operator+=(const Rect2i &right) {
   x += right.x;
   y += right.y;
@@ -182,6 +345,61 @@ void Rect2i::operator-=(const Rect2i &right) {
   h -= right.h;
 }
 
+void Rect2i::operator*=(const Rect2i &right) {
+  x *= right.x;
+  y *= right.y;
+  w *= right.w;
+  h *= right.h;
+}
+
+void Rect2i::operator*=(const double right) {
+  x *= right;
+  y *= right;
+  w *= right;
+  h *= right;
+}
+
+void Rect2i::operator*=(const int64_t right) {
+  x *= right;
+  y *= right;
+  w *= right;
+  h *= right;
+}
+
+void Rect2i::operator/=(const Rect2i &right) {
+  x /= right.x;
+  y /= right.y;
+  w /= right.w;
+  h /= right.h;
+}
+
+void Rect2i::operator/=(const double right) {
+  x /= right;
+  y /= right;
+  w /= right;
+  h /= right;
+}
+
+void Rect2i::operator/=(const int64_t right) {
+  x /= right;
+  y /= right;
+  w /= right;
+  h /= right;
+}
+
+int64_t Rect2i::operator[](const int64_t index) const {
+  switch (index) {
+    case 0:
+      return x;
+    case 1:
+      return y;
+    case 2:
+      return w;
+    case 3:
+      return h;
+  }
+  return 0;
+}
 
 Vector2i Rect2i::get_position() const {
   return Vector2i(x, y);
@@ -189,6 +407,16 @@ Vector2i Rect2i::get_position() const {
 
 Vector2i Rect2i::get_size() const {
   return Vector2i(w, h);
+}
+
+void Rect2i::set_position(const Vector2i &new_position) {
+  x = new_position.x;
+  y = new_position.y;
+}
+
+void Rect2i::set_size(const Vector2i &new_size) {
+  w = new_size.x;
+  h = new_size.y;
 }
 
 SDL_Rect Rect2i::to_sdl_rect() const {
