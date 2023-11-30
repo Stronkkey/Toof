@@ -14,9 +14,21 @@ void RenderingServer::render() {
   if (!renderer)
     return;
 
+  SDL_RenderClear(renderer);
   for (auto iterator: canvas_items) {
     render_canvas_item(iterator.second);
   }
+  SDL_RenderPresent(renderer);
+}
+
+Texture *RenderingServer::get_texture_from_uid(const uid &grab_uid) const {
+  auto iterator = textures.find(grab_uid);
+  return iterator != textures.end() ? iterator->second : nullptr;
+}
+
+CanvasItem *RenderingServer::get_canvas_item_from_uid(const uid &grab_uid) const {
+  auto iterator = canvas_items.find(grab_uid);
+  return iterator != canvas_items.end() ? iterator->second : nullptr;
 }
 
 void RenderingServer::remove_uid(uid &destroying_uid) {
@@ -46,16 +58,13 @@ void RenderingServer::destroy_uid(uid &destroying_uid) {
 }
 
 void RenderingServer::render_canvas_item(const CanvasItem *canvas_item) {
-  for (std::pair<uid, Texture*> iterator: canvas_item->textures) {
-    auto texture_iterator = textures.find(iterator.first);
+  for (Texture *texture: canvas_item->textures) {
+    if (texture == nullptr)
+      continue;
 
-    if (texture_iterator != textures.end()) {
-      Texture *texture = texture_iterator->second;
-      SDL_Rect src_region = texture->src_region.to_sdl_rect();
-      SDL_Rect destination = (canvas_item->destination + src_region).to_sdl_rect();
-
-      SDL_RenderCopy(renderer, texture->texture_reference, &src_region, &destination);
-    }
+    SDL_Rect src_region = texture->src_region.to_sdl_rect();
+    SDL_Rect destination = (canvas_item->destination + src_region).to_sdl_rect();
+    SDL_RenderCopy(renderer, texture->texture_reference, &src_region, &destination);
 
   }
 }
@@ -85,36 +94,40 @@ uid RenderingServer::create_canvas_item() {
   return new_uid;
 }
 
-void RenderingServer::canvas_item_add_texture(const uid &texture_uid, const uid &canvas_item_uid) {
-  auto texture_iterator = textures.find(texture_uid);
-  auto canvas_item_iterator = canvas_items.find(canvas_item_uid);
+void RenderingServer::texture_set_source_region(const uid &texture_uid, const Rect2i &src_region) {
+  Texture *texture = get_texture_from_uid(texture_uid);
+  if (texture)
+    texture->src_region = src_region;
+}
 
-  if (texture_iterator == textures.end() || canvas_item_iterator == canvas_items.end())
-    return;
+void RenderingServer::canvas_item_add_texture(Texture *texture, const uid &canvas_item_uid) {
+  CanvasItem *canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
-  canvas_item_iterator->second->textures.insert({texture_uid, texture_iterator->second});
+  if (canvas_item && texture)
+    canvas_item->textures.push_back(texture);
 }
 
 void RenderingServer::canvas_item_add_texture_region(const uid &texture_uid, const uid &canvas_item_uid, const Rect2i &src_region) {
-  auto texture_iterator = textures.find(texture_uid);
-  auto canvas_item_iterator = canvas_items.find(canvas_item_uid);
+  Texture *texture = get_texture_from_uid(texture_uid);
+  CanvasItem *canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
-  if (texture_iterator == textures.end() || canvas_item_iterator == canvas_items.end())
-    return;
-
-  texture_iterator->second->src_region = src_region;
-  canvas_item_iterator->second->textures.insert({texture_uid, texture_iterator->second});
+  if (canvas_item && texture) {
+    texture->src_region = src_region;
+    canvas_item->textures.push_back(texture);
+  }
 }
 
-void RenderingServer::canvas_item_remove_texture(const uid &texture_uid, const uid &canvas_item_uid) {
-  auto texture_iterator = textures.find(texture_uid);
+void RenderingServer::canvas_item_set_destination(const uid &canvas_item_uid, const Rect2 &new_destination) {
+  CanvasItem *canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+  if (canvas_item)
+    canvas_item->destination = new_destination;
+}
+
+void RenderingServer::canvas_item_clear(const uid &canvas_item_uid) {
   auto canvas_item_iterator = canvas_items.find(canvas_item_uid);
 
-  if (texture_iterator == textures.end() || canvas_item_iterator == canvas_items.end())
+  if (canvas_item_iterator == canvas_items.end())
     return;
 
-  CanvasItem *canvas_item = canvas_item_iterator->second;
-  auto canvas_item_texture_iterator = canvas_item->textures.find(texture_uid);
-  if (canvas_item_texture_iterator != canvas_item->textures.end())
-    canvas_item_iterator->second->textures.erase(canvas_item_texture_iterator);
+  canvas_item_iterator->second->textures.clear();
 }

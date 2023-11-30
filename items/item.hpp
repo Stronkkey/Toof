@@ -1,0 +1,47 @@
+#ifndef ITEM
+#define ITEM
+
+#include <SDL_events.h>
+
+#include <string>
+#include <vector>
+
+namespace sdl {
+
+class Tree;
+
+class Item {
+
+private:
+  std::vector<Item*> children;
+  Tree *tree = nullptr;
+  Item *parent = nullptr;
+  std::string name;
+
+protected:
+  virtual void event(const SDL_Event*) {}
+  virtual void render() {}
+  virtual void loop() {}
+
+public:
+  Item();
+  virtual ~Item() {}
+
+  void propagate_event(const SDL_Event *event);
+  void propagate_render();
+  void propagate_loop();
+  void free();
+
+  Tree *get_tree() const;
+  void set_tree(Tree *new_tree);
+
+  void set_name(const std::string &new_name);
+  std::string get_name() const;
+
+  void add_item(Item *new_item);
+  std::vector<Item*> get_children() const;
+};
+
+}
+
+#endif // !ITEM

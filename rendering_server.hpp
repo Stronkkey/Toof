@@ -18,10 +18,11 @@ struct Texture {
 
 struct CanvasItem {
   Rect2 destination;
-  std::unordered_map<uid, Texture*> textures;
+  std::vector<Texture*> textures;
 };
 
 class RenderingServer {
+
 private:
   SDL_Renderer *renderer;
   std::unordered_map<uid, Texture*> textures;
@@ -33,6 +34,8 @@ private:
 
   void render_canvas_item(const CanvasItem *canvas_item);
 
+  CanvasItem *get_canvas_item_from_uid(const uid &grab_uid) const;
+
 public:
   RenderingServer(SDL_Renderer *new_renderer);
   ~RenderingServer();
@@ -43,9 +46,13 @@ public:
   uid load_texture_from_path(const std::string &path);
   uid create_canvas_item();
 
-  void canvas_item_add_texture(const uid &texture_uid, const uid &canvas_item_uid);
+  void texture_set_source_region(const uid &texture_uid, const Rect2i &src_region);
+  Texture *get_texture_from_uid(const uid &grab_uid) const;
+
+  void canvas_item_add_texture(Texture *texture, const uid &canvas_item_uid);
   void canvas_item_add_texture_region(const uid &texture_uid, const uid &canvas_item_uid, const Rect2i &src_region);
-  void canvas_item_remove_texture(const uid &texture_uid, const uid &canvas_item_uid);
+  void canvas_item_set_destination(const uid &canvas_item_uid, const Rect2 &new_destination);
+  void canvas_item_clear(const uid &canvas_item_uid);
 };
 }
 
