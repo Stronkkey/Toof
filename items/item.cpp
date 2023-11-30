@@ -69,6 +69,7 @@ void Item::add_item(Item *new_item) {
       return;
 
   children.push_back(new_item);
+  new_item->set_parent(this);
 }
 
 std::vector<Item*> Item::get_children() const {
@@ -77,6 +78,7 @@ std::vector<Item*> Item::get_children() const {
 
 void Item::set_parent(Item *new_parent) {
   parent = new_parent;
+  parent->add_item(this);
   on_parent_changed(new_parent);
 }
 

@@ -7,11 +7,11 @@ namespace sdl {
 
 class SpriteItem : public RenderingItem {
 private:
-  Texture *texture;
+  uid texture;
 
 public:
-  void set_texture(Texture *new_texture);
-  Texture *get_texture();
+  void set_texture(const uid &new_texture);
+  uid get_texture() const;
 
 };
 
