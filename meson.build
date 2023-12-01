@@ -35,6 +35,11 @@ project_source_files = [
 project_test_files = [
 ]
 
+project_dependencies = [
+  dependency('sdl2'),
+  dependency('sdl2_image')
+]
+
 build_args = [
 ]
 
@@ -49,8 +54,9 @@ project_target = shared_library(
   meson.project_name(),
   project_source_files,
   install : true,
-  c_args : build_args,
-  gnu_symbol_visibility : 'hidden',
+  cpp_args : build_args,
+  gnu_symbol_visibility : 'default',
+  dependencies: project_dependencies,
   include_directories : public_headers,
 )
 
