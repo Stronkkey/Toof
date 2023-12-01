@@ -1,7 +1,7 @@
 #ifndef ITEM
 #define ITEM
 
-#include <SDL_events.h>
+#include <SDL2/SDL_events.h>
 
 #include <string>
 #include <vector>
@@ -23,7 +23,7 @@ protected:
   virtual void render() {}
   virtual void loop() {}
   virtual void on_parent_changed(Item*) {}
-  virtual void on_added_to_tree() {}
+  virtual void ready() {}
 
 public:
   Item();

@@ -1,7 +1,9 @@
 #ifndef RENDERING_ITEM
 #define RENDERING_ITEM
 
-#include "../tree.hpp"
+#include <tree.hpp>
+#include <types/uid.hpp>
+#include <items/item.hpp>
 
 namespace sdl {
 
@@ -14,7 +16,8 @@ protected:
 
   RenderingServer *get_rendering_server() const;
   void update();
-  void on_added_to_tree() override;
+  void ready() override;
+  void on_parent_changed(Item*) override;
 
 public:
   ~RenderingItem();

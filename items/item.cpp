@@ -1,5 +1,4 @@
-#include "item.hpp"
-#include "../tree.hpp"
+#include <items/item.hpp>
 
 using namespace sdl;
 
@@ -51,7 +50,7 @@ Tree *Item::get_tree() const {
 void Item::set_tree(Tree *new_tree) {
   tree = new_tree;
   if (tree)
-    on_added_to_tree();
+    ready();
 }
 
 void Item::set_name(const std::string &new_name) {

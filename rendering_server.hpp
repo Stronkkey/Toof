@@ -1,16 +1,18 @@
 #ifndef RENDERING_SERVER
 #define RENDERING_SERVER
 
-#include "rect2.hpp"
-#include "uid.hpp"
-#include "ref.hpp"
+#include "types/rect2.hpp"
+#include "types/ref.hpp"
 
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
 
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace sdl {
+
+struct uid;
 
 struct Texture {
   SDL_Texture *texture_reference;
@@ -18,8 +20,11 @@ struct Texture {
 };
 
 struct CanvasItem {
-  Rect2 destination;
+  Ref<CanvasItem> parent;
+  Rect2 destination = Rect2(0, 0, 1, 1);
   std::vector<Ref<Texture>> textures;
+
+  Rect2 get_global_destination() const;
 };
 
 class RenderingServer {
@@ -27,7 +32,7 @@ class RenderingServer {
 private:
   SDL_Renderer *renderer;
   std::unordered_map<uid, Ref<Texture>> textures;
-  std::unordered_map<uid, CanvasItem*> canvas_items;
+  std::unordered_map<uid, Ref<CanvasItem>> canvas_items;
 
   uid create_new_uid();
   void destroy_uid(uid &destroying_uid);
@@ -35,7 +40,7 @@ private:
 
   void render_canvas_item(const CanvasItem *canvas_item);
 
-  CanvasItem *get_canvas_item_from_uid(const uid &grab_uid) const;
+  Ref<CanvasItem> get_canvas_item_from_uid(const uid &grab_uid) const;
   Ref<Texture> get_texture_from_uid(const uid &uid) const;
 
 public:
@@ -53,6 +58,7 @@ public:
   void canvas_item_add_texture(const uid &texture_uid, const uid &canvas_item_uid);
   void canvas_item_add_texture_region(const uid &texture_uid, const uid &canvas_item_uid, const Rect2i &src_region);
   void canvas_item_set_destination(const uid &canvas_item_uid, const Rect2 &new_destination);
+  void canvas_item_set_parent(const uid &canvas_item_uid, const uid &parent_item_uid);
   void canvas_item_clear(const uid &canvas_item_uid);
 };
 }

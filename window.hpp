@@ -1,13 +1,17 @@
 #ifndef WINDOW
 #define WINDOW
 
-#include <SDL.h>
+#include <types/rect2.hpp>
+
+#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_log.h>
+
 #include <string>
 
-#include "rendering_server.hpp"
-#include "rect2.hpp"
-
 namespace sdl {
+
+class RenderingServer;
 
 class Window {
   

@@ -1,12 +1,17 @@
 #ifndef TREE
 #define TREE
 
-#include "items/item.hpp"
-#include "window.hpp"
+#include <types/rect2.hpp>
 
-#include <SDL_events.h>
+#include <SDL2/SDL_events.h>
+
+#include <string>
 
 namespace sdl {
+
+class Window;
+class RenderingServer;
+class Item;
 
 class Tree {
 

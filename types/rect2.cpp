@@ -1,4 +1,4 @@
-#include "rect2.hpp"
+#include "types/rect2.hpp"
 
 using namespace sdl;
 

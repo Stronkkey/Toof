@@ -1,7 +1,7 @@
 #ifndef SPRITE_ITEM
 #define SPRITE_ITEM
 
-#include "rendering_item.hpp"
+#include <items/rendering_item.hpp>
 
 namespace sdl {
 

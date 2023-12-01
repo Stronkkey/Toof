@@ -1,4 +1,4 @@
-#include "vector2.hpp"
+#include "types/vector2.hpp"
 
 using namespace sdl;
 

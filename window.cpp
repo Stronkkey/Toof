@@ -1,10 +1,9 @@
-#include "window.hpp"
+#include <window.hpp>
+#include <rendering_server.hpp>
 
-#include <iostream>
-
-#include <SDL_image.h>
-#include <SDL_render.h>
-#include <SDL_video.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_video.h>
 
 using namespace sdl;
 
@@ -36,7 +35,6 @@ Window::~Window() {
 }
 
 void Window::fail(const std::string &error_message, const SDL_LogCategory log_category) {
-  std::cout << error_message << SDL_GetError() << std::endl;
   SDL_LogError(log_category, error_message.c_str(), SDL_GetError());
   success = false;
 }

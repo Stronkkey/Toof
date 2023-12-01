@@ -1,9 +1,10 @@
 #ifndef RECT2_LIB
 #define RECT2_LIB
 
-#include "vector2.hpp"
+#include <cstdint>
 
-#include <SDL_rect.h>
+#include <types/vector2.hpp>
+#include <SDL2/SDL_rect.h>
 
 namespace sdl {
 
