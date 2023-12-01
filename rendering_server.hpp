@@ -1,18 +1,15 @@
 #ifndef RENDERING_SERVER
 #define RENDERING_SERVER
 
-#include "types/rect2.hpp"
-#include "types/ref.hpp"
+#include <types/rect2.hpp>
+#include <types/ref.hpp>
+#include <types/uid.hpp>
 
 #include <SDL2/SDL_image.h>
 
 #include <string>
-#include <unordered_map>
-#include <vector>
 
 namespace sdl {
-
-struct uid;
 
 struct Texture {
   SDL_Texture *texture_reference;

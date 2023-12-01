@@ -1,6 +1,4 @@
 #include <tree.hpp>
-#include <window.hpp>
-#include <rendering_server.hpp>
 #include <items/item.hpp>
 
 using namespace sdl;

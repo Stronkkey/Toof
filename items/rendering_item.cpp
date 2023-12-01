@@ -1,8 +1,4 @@
 #include <items/rendering_item.hpp>
-#include <rendering_server.hpp>
-#include <tree.hpp>
-#include <window.hpp>
-#include <types/vector2.hpp>
 
 #include <typeinfo>
 

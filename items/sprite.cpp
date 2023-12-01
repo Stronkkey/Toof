@@ -1,4 +1,4 @@
-#include "items/sprite.hpp"
+#include <items/sprite.hpp>
 
 using namespace sdl;
 

@@ -1,14 +1,9 @@
 #ifndef ITEM
 #define ITEM
 
-#include <SDL2/SDL_events.h>
-
-#include <string>
-#include <vector>
+#include <tree.hpp>
 
 namespace sdl {
-
-class Tree;
 
 class Item {
 

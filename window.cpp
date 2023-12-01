@@ -1,9 +1,4 @@
 #include <window.hpp>
-#include <rendering_server.hpp>
-
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_video.h>
 
 using namespace sdl;
 

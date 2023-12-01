@@ -2,7 +2,7 @@
 #define UID
 
 #include <cstdint>
-#include <unordered_map>
+#include <functional>
 
 namespace sdl {
 

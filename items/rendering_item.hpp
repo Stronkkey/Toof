@@ -2,7 +2,6 @@
 #define RENDERING_ITEM
 
 #include <tree.hpp>
-#include <types/uid.hpp>
 #include <items/item.hpp>
 
 namespace sdl {
