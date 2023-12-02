@@ -8,9 +8,6 @@ void RenderingItem::ready() {
   RenderingServer *rendering_server = get_rendering_server();
   canvas_item = rendering_server->create_canvas_item();
   rendering_server->canvas_item_set_destination(canvas_item, Rect2(0, 0, 1, 1));
-
-  if (typeid(get_parent()) == typeid(RenderingItem))
-    rendering_server->canvas_item_set_parent(canvas_item, static_cast<RenderingItem*>(get_parent())->get_canvas_item());
 }
 
 RenderingItem::~RenderingItem() {
