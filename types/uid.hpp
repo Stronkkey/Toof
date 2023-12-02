@@ -3,6 +3,9 @@
 
 #include <cstdint>
 #include <string>
+
+#include "macros.hpp"
+
 #include <functional>
 
 namespace sdl {
@@ -18,7 +21,7 @@ struct uid {
   UidType type;
 
   bool operator==(const uid &right_uid) const;
-  std::string to_string() const;
+  String to_string() const;
 
 };
 }

@@ -8,10 +8,10 @@ namespace sdl {
 class Item {
 
 private:
-  std::unordered_map<std::string, Item*> children;
+  UnorderedMap<std::string, Item*> children;
   Tree *tree = nullptr;
   Item *parent = nullptr;
-  std::string name;
+  String name;
 
 protected:
   virtual void event(const SDL_Event*) {}
@@ -32,11 +32,11 @@ public:
   Tree *get_tree() const;
   void set_tree(Tree *new_tree);
 
-  void set_name(const std::string &new_name);
-  std::string get_name() const;
+  void set_name(const String &new_name);
+  String get_name() const;
 
   void add_item(Item *new_item);
-  std::vector<Item*> get_children() const;
+  Vector<Item*> get_children() const;
 
   void set_parent(Item *new_parent);
   Item *get_parent() const;

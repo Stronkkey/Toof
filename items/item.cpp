@@ -1,4 +1,3 @@
-#include <iostream>
 #include <items/item.hpp>
 
 using namespace sdl;
@@ -54,11 +53,11 @@ void Item::set_tree(Tree *new_tree) {
     ready();
 }
 
-void Item::set_name(const std::string &new_name) {
+void Item::set_name(const String &new_name) {
   name = new_name;
 }
 
-std::string Item::get_name() const {
+String Item::get_name() const {
   return name;
 }
 
@@ -73,10 +72,10 @@ void Item::add_item(Item *new_item) {
     new_item->set_tree(get_tree());
 }
 
-std::vector<Item*> Item::get_children() const {
-  std::vector<Item*> item_children;
+Vector<Item*> Item::get_children() const {
+  Vector<Item*> item_children;
   
-  for (std::pair<std::string, Item*> iterator: children)
+  for (Pair<String, Item*> iterator: children)
     item_children.push_back(iterator.second);
 
   return item_children;
