@@ -7,6 +7,7 @@ Tree::Tree() {
   root = new Item;
   window = new sdl::Window(get_window_rect(), get_window_title());
   rendering_server = window->rendering_server;
+  root->set_tree(this);
   running = false;
 }
 
