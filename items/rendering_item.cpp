@@ -5,7 +5,10 @@
 using namespace sdl;
 
 void RenderingItem::ready() {
+  scale = Vector2::ONE;
+  position = Vector2::ZERO;
   RenderingServer *rendering_server = get_rendering_server();
+  
   canvas_item = rendering_server->create_canvas_item();
   rendering_server->canvas_item_set_destination(canvas_item, Rect2(0, 0, 1, 1));
 }
@@ -33,9 +36,10 @@ void RenderingItem::on_parent_changed(Item *new_parent) {
     return;
 
   RenderingItem *rendering_item = static_cast<RenderingItem*>(new_parent);
-  if (new_parent == nullptr || typeid(new_parent) != typeid(RenderingItem))
+
+  if (!new_parent || typeid(new_parent) != typeid(RenderingItem))
     rendering_server->canvas_item_set_parent(canvas_item, uid());
-  else if (new_parent != nullptr)
+  else if (new_parent)
     rendering_server->canvas_item_set_parent(canvas_item, rendering_item->canvas_item);
 }
 

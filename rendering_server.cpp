@@ -11,7 +11,10 @@ Rect2 CanvasItem::get_global_destination() const {
     return destination;
 
   while (parent_canvas_item.is_valid()) {
-    absolute_destination += parent_canvas_item->destination;
+    Vector2 new_position = absolute_destination.get_position() + parent_canvas_item->destination.get_position();
+    Vector2 new_scale = absolute_destination.get_size() * parent_canvas_item->destination.get_size();
+
+    absolute_destination = Rect2(new_position, new_scale);
     parent_canvas_item = parent_canvas_item->parent;
   }
 
@@ -83,8 +86,8 @@ void RenderingServer::render_canvas_item(const CanvasItem *canvas_item) {
       continue;
 
     Rect2 src_region = texture.src_region.to_sdl_rect();
-    Rect2 global_destination = canvas_item->get_global_destination().to_sdl_rect();
-    Rect2 destination = Rect2(global_destination.get_position() + src_region.get_position(), global_destination.get_size() * src_region.get_size());
+    Rect2 global_destination = canvas_item->get_global_destination();
+    Rect2 destination = Rect2(global_destination.get_position(), global_destination.get_size() * src_region.get_size());
 
     SDL_Rect final_src_region = src_region.to_sdl_rect();
     SDL_Rect final_destination = destination.to_sdl_rect();
@@ -120,6 +123,11 @@ uid RenderingServer::create_canvas_item() {
 void RenderingServer::texture_set_source_region(const uid &texture_uid, const Rect2i &src_region) {
   Texture texture = get_texture_from_uid(texture_uid);
   texture.src_region = src_region;
+}
+
+Rect2i RenderingServer::texture_get_source_region(const uid &texture_uid) const {
+  Texture texture = get_texture_from_uid(texture_uid);
+  return texture.src_region;
 }
 
 void RenderingServer::canvas_item_add_texture(const uid &texture_uid, const uid &canvas_item_uid) {

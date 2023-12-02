@@ -50,6 +50,8 @@ public:
 
   void texture_set_source_region(const uid &texture_uid, const Rect2i &src_region);
 
+  Rect2i texture_get_source_region(const uid &texture_uid) const;
+
   void canvas_item_add_texture(const uid &texture_uid, const uid &canvas_item_uid);
   void canvas_item_add_texture_region(const uid &texture_uid, const uid &canvas_item_uid, const Rect2i &src_region);
   void canvas_item_set_destination(const uid &canvas_item_uid, const Rect2 &new_destination);
