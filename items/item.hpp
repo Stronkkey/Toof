@@ -8,7 +8,7 @@ namespace sdl {
 class Item {
 
 private:
-  std::vector<Item*> children;
+  std::unordered_map<std::string, Item*> children;
   Tree *tree = nullptr;
   Item *parent = nullptr;
   std::string name;
