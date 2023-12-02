@@ -36,10 +36,6 @@ struct Ref {
     return mem_pointer.reference;
   }
 
-  void operator delete(void* ptr) {
-    std::free(ptr);
-  }
-
   bool is_valid() const {
     return mem_pointer.reference != nullptr;
   }
@@ -50,6 +46,10 @@ struct Ref {
 
   T *get_reference() const {
     return mem_pointer.reference;
+  }
+
+  void remove_reference() {
+    mem_pointer.reference = nullptr;
   }
 
 };

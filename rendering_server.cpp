@@ -1,3 +1,4 @@
+#include <iostream>
 #include <rendering_server.hpp>
 
 using namespace sdl;
@@ -22,6 +23,8 @@ RenderingServer::RenderingServer(SDL_Renderer *new_renderer) {
 }
 
 RenderingServer::~RenderingServer() {
+  for (std::pair<uid, Ref<CanvasItem>> iterator: canvas_items)
+    destroy_uid(iterator.first);
 }
 
 void RenderingServer::render() {
@@ -35,9 +38,9 @@ void RenderingServer::render() {
   SDL_RenderPresent(renderer);
 }
 
-Ref<Texture> RenderingServer::get_texture_from_uid(const uid &grab_uid) const {
+Texture RenderingServer::get_texture_from_uid(const uid &grab_uid) const {
   auto iterator = textures.find(grab_uid);
-  return iterator != textures.end() ? iterator->second : Ref<Texture>();
+  return iterator != textures.end() ? iterator->second : Texture();
 }
 
 Ref<CanvasItem> RenderingServer::get_canvas_item_from_uid(const uid &grab_uid) const {
@@ -61,29 +64,31 @@ void RenderingServer::destroy_uid(uid &destroying_uid) {
   auto texture_iterator = textures.find(destroying_uid);
   
   if (canvas_item_iterator != canvas_items.end()) {
+    delete canvas_item_iterator->second.get_reference();
+    canvas_item_iterator->second.remove_reference();
     canvas_items.erase(canvas_item_iterator);
   }
 
   if (texture_iterator != textures.end()) {
-    SDL_DestroyTexture(texture_iterator->second->texture_reference);
+    SDL_DestroyTexture(texture_iterator->second.texture_reference);
+    texture_iterator->second.texture_reference = nullptr;
     textures.erase(texture_iterator);
-    delete texture_iterator->second.get_reference();
   }
 
 }
 
 void RenderingServer::render_canvas_item(const CanvasItem *canvas_item) {
-  for (Ref<Texture> texture: canvas_item->textures) {
-    if (texture.is_null())
+  for (Texture texture: canvas_item->textures) {
+    if (texture.texture_reference == nullptr)
       continue;
 
-    Rect2 src_region = texture->src_region.to_sdl_rect();
+    Rect2 src_region = texture.src_region.to_sdl_rect();
     Rect2 global_destination = canvas_item->get_global_destination().to_sdl_rect();
     Rect2 destination = Rect2(global_destination.get_position() + src_region.get_position(), global_destination.get_size() * src_region.get_size());
 
     SDL_Rect final_src_region = src_region.to_sdl_rect();
     SDL_Rect final_destination = destination.to_sdl_rect();
-    SDL_RenderCopy(renderer, texture->texture_reference, &final_src_region, &final_destination);
+    SDL_RenderCopy(renderer, texture.texture_reference, &final_src_region, &final_destination);
   }
 }
 
@@ -94,10 +99,10 @@ uid RenderingServer::load_texture_from_path(const std::string &path) {
     return uid();
   
   uid new_uid = create_new_uid();
-  Texture *new_texture = new Texture;
+  Texture new_texture;
 
-  new_texture->texture_reference = texture;
-  new_texture->src_region = Rect2i::EMPTY;
+  new_texture.texture_reference = texture;
+  new_texture.src_region = Rect2i::EMPTY;
   new_uid.type = UID_RENDERING_TEXTURE;
   
   textures.insert({new_uid, new_texture});
@@ -113,25 +118,24 @@ uid RenderingServer::create_canvas_item() {
 }
 
 void RenderingServer::texture_set_source_region(const uid &texture_uid, const Rect2i &src_region) {
-  Ref<Texture> texture = get_texture_from_uid(texture_uid);
-  if (texture.is_valid())
-    texture->src_region = src_region;
+  Texture texture = get_texture_from_uid(texture_uid);
+  texture.src_region = src_region;
 }
 
 void RenderingServer::canvas_item_add_texture(const uid &texture_uid, const uid &canvas_item_uid) {
   Ref<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-  Ref<Texture> texture = get_texture_from_uid(texture_uid);
+  Texture texture = get_texture_from_uid(texture_uid);
 
-  if (canvas_item.is_valid() && texture.is_valid())
+  if (canvas_item.is_valid() && texture.texture_reference)
     canvas_item->textures.push_back(texture);
 }
 
 void RenderingServer::canvas_item_add_texture_region(const uid &texture_uid, const uid &canvas_item_uid, const Rect2i &src_region) {
-  Ref<Texture> texture = get_texture_from_uid(texture_uid);
+  Texture texture = get_texture_from_uid(texture_uid);
   Ref<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
-  if (canvas_item.is_valid() && texture.is_valid()) {
-    texture->src_region = src_region;
+  if (canvas_item.is_valid() && texture.texture_reference) {
+    texture.src_region = src_region;
     canvas_item->textures.push_back(texture);
   }
 }
