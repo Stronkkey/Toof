@@ -2,10 +2,11 @@
 #define RENDERING_SERVER
 
 #include <types/rect2.hpp>
-#include <types/ref.hpp>
 #include <types/uid.hpp>
 
 #include <SDL2/SDL_image.h>
+
+#include <memory>
 
 namespace sdl {
 
@@ -15,7 +16,7 @@ struct Texture {
 };
 
 struct CanvasItem {
-  Ref<CanvasItem> parent;
+  std::shared_ptr<CanvasItem> parent;
   Rect2 destination = Rect2(0, 0, 1, 1);
   std::vector<Texture> textures;
 
@@ -27,15 +28,15 @@ class RenderingServer {
 private:
   SDL_Renderer *renderer;
   std::unordered_map<uid, Texture> textures;
-  std::unordered_map<uid, Ref<CanvasItem>> canvas_items;
+  std::unordered_map<uid, std::shared_ptr<CanvasItem>> canvas_items;
 
   uid create_new_uid();
   void destroy_uid(uid &destroying_uid);
   uint64_t index = 1;
 
-  void render_canvas_item(const CanvasItem *canvas_item);
+  void render_canvas_item(const std::shared_ptr<CanvasItem> canvas_item);
 
-  Ref<CanvasItem> get_canvas_item_from_uid(const uid &grab_uid) const;
+  std::shared_ptr<CanvasItem> get_canvas_item_from_uid(const uid &grab_uid) const;
   Texture get_texture_from_uid(const uid &uid) const;
 
 public:

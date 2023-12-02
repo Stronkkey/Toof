@@ -5,12 +5,12 @@ using namespace sdl;
 
 Rect2 CanvasItem::get_global_destination() const {
   Rect2 absolute_destination = destination;
-  Ref<CanvasItem> parent_canvas_item = parent;
+  std::shared_ptr<CanvasItem> parent_canvas_item = parent;
 
-  if (parent_canvas_item.is_null())
+  if (parent_canvas_item)
     return destination;
 
-  while (parent_canvas_item.is_valid()) {
+  while (parent_canvas_item) {
     Vector2 new_position = absolute_destination.get_position() + parent_canvas_item->destination.get_position();
     Vector2 new_scale = absolute_destination.get_size() * parent_canvas_item->destination.get_size();
 
@@ -26,7 +26,7 @@ RenderingServer::RenderingServer(SDL_Renderer *new_renderer) {
 }
 
 RenderingServer::~RenderingServer() {
-  for (std::pair<uid, Ref<CanvasItem>> iterator: canvas_items)
+  for (std::pair<uid, std::shared_ptr<CanvasItem>> iterator: canvas_items)
     destroy_uid(iterator.first);
 }
 
@@ -36,7 +36,7 @@ void RenderingServer::render() {
 
   SDL_RenderClear(renderer);
   for (auto iterator: canvas_items) {
-    render_canvas_item(iterator.second.get_reference());
+    render_canvas_item(iterator.second);
   }
   SDL_RenderPresent(renderer);
 }
@@ -46,9 +46,9 @@ Texture RenderingServer::get_texture_from_uid(const uid &grab_uid) const {
   return iterator != textures.end() ? iterator->second : Texture();
 }
 
-Ref<CanvasItem> RenderingServer::get_canvas_item_from_uid(const uid &grab_uid) const {
+std::shared_ptr<CanvasItem> RenderingServer::get_canvas_item_from_uid(const uid &grab_uid) const {
   auto iterator = canvas_items.find(grab_uid);
-  return iterator != canvas_items.end() ? iterator->second : Ref<CanvasItem>();
+  return iterator != canvas_items.end() ? iterator->second : std::shared_ptr<CanvasItem>(nullptr);
 }
 
 void RenderingServer::remove_uid(uid &destroying_uid) {
@@ -67,22 +67,21 @@ void RenderingServer::destroy_uid(uid &destroying_uid) {
   auto texture_iterator = textures.find(destroying_uid);
   
   if (canvas_item_iterator != canvas_items.end()) {
-    delete canvas_item_iterator->second.get_reference();
-    canvas_item_iterator->second.remove_reference();
     canvas_items.erase(canvas_item_iterator);
+    canvas_item_iterator->second.reset();
   }
 
   if (texture_iterator != textures.end()) {
+    textures.erase(texture_iterator);
     SDL_DestroyTexture(texture_iterator->second.texture_reference);
     texture_iterator->second.texture_reference = nullptr;
-    textures.erase(texture_iterator);
   }
 
 }
 
-void RenderingServer::render_canvas_item(const CanvasItem *canvas_item) {
+void RenderingServer::render_canvas_item(const std::shared_ptr<CanvasItem> canvas_item) {
   for (Texture texture: canvas_item->textures) {
-    if (texture.texture_reference == nullptr)
+    if (!texture.texture_reference)
       continue;
 
     Rect2 src_region = texture.src_region.to_sdl_rect();
@@ -114,7 +113,7 @@ uid RenderingServer::load_texture_from_path(const std::string &path) {
 
 uid RenderingServer::create_canvas_item() {
   uid new_uid = create_new_uid();
-  CanvasItem *canvas_item = new CanvasItem;
+  std::shared_ptr<CanvasItem> canvas_item = std::shared_ptr<CanvasItem>(new CanvasItem);
   new_uid.type = UID_RENDERING;
   canvas_items.insert({new_uid, canvas_item});
   return new_uid;
@@ -131,37 +130,37 @@ Rect2i RenderingServer::texture_get_source_region(const uid &texture_uid) const 
 }
 
 void RenderingServer::canvas_item_add_texture(const uid &texture_uid, const uid &canvas_item_uid) {
-  Ref<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
   Texture texture = get_texture_from_uid(texture_uid);
 
-  if (canvas_item.is_valid() && texture.texture_reference)
+  if (canvas_item && texture.texture_reference)
     canvas_item->textures.push_back(texture);
 }
 
 void RenderingServer::canvas_item_add_texture_region(const uid &texture_uid, const uid &canvas_item_uid, const Rect2i &src_region) {
   Texture texture = get_texture_from_uid(texture_uid);
-  Ref<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
-  if (canvas_item.is_valid() && texture.texture_reference) {
+  if (canvas_item && texture.texture_reference) {
     texture.src_region = src_region;
     canvas_item->textures.push_back(texture);
   }
 }
 
 void RenderingServer::canvas_item_set_destination(const uid &canvas_item_uid, const Rect2 &new_destination) {
-  Ref<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-  if (canvas_item.is_valid())
+  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+  if (canvas_item)
     canvas_item->destination = new_destination;
 }
 
 void RenderingServer::canvas_item_set_parent(const uid &canvas_item_uid, const uid &parent_item_uid) {
-  Ref<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-  Ref<CanvasItem> parent_canvas_item = get_canvas_item_from_uid(parent_item_uid);
+  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+  std::shared_ptr<CanvasItem> parent_canvas_item = get_canvas_item_from_uid(parent_item_uid);
 
-  if (canvas_item.is_valid())
+  if (canvas_item)
     canvas_item->parent = parent_canvas_item;
   else
-    canvas_item->parent = Ref<CanvasItem>();
+    canvas_item->parent = std::shared_ptr<CanvasItem>(nullptr);
 }
 
 void RenderingServer::canvas_item_clear(const uid &canvas_item_uid) {
@@ -174,11 +173,11 @@ void RenderingServer::canvas_item_clear(const uid &canvas_item_uid) {
 }
 
 Rect2 RenderingServer::canvas_item_get_destination(const uid &canvas_item_uid) const {
-  Ref<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-  return canvas_item.is_valid() ? canvas_item->destination : Rect2::EMPTY;
+  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+  return canvas_item ? canvas_item->destination : Rect2::EMPTY;
 }
 
 Rect2 RenderingServer::canvas_item_get_global_destination(const uid &canvas_item_uid) const {
-  Ref<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-  return canvas_item.is_valid() ? canvas_item->get_global_destination() : Rect2::EMPTY;
+  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+  return canvas_item ? canvas_item->get_global_destination() : Rect2::EMPTY;
 }
