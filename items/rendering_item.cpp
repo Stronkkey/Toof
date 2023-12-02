@@ -1,3 +1,4 @@
+#include <iostream>
 #include <items/rendering_item.hpp>
 
 #include <typeinfo>
@@ -35,12 +36,12 @@ void RenderingItem::on_parent_changed(Item *new_parent) {
   if (!rendering_server)
     return;
 
-  RenderingItem *rendering_item = static_cast<RenderingItem*>(new_parent);
+  RenderingItem *rendering_item = dynamic_cast<RenderingItem*>(new_parent);
 
-  if (!new_parent || typeid(new_parent) != typeid(RenderingItem))
-    rendering_server->canvas_item_set_parent(canvas_item, uid());
-  else if (new_parent)
+  if (rendering_item)
     rendering_server->canvas_item_set_parent(canvas_item, rendering_item->canvas_item);
+  else
+    rendering_server->canvas_item_set_parent(canvas_item, uid());
 }
 
 uid RenderingItem::get_canvas_item() const {
