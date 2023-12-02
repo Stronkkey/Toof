@@ -2,6 +2,7 @@
 #define UID
 
 #include <cstdint>
+#include <string>
 #include <functional>
 
 namespace sdl {
@@ -17,6 +18,7 @@ struct uid {
   UidType type;
 
   bool operator==(const uid &right_uid) const;
+  std::string to_string() const;
 
 };
 }

@@ -1,8 +1,6 @@
 #ifndef RECT2_LIB
 #define RECT2_LIB
 
-#include <cstdint>
-
 #include <types/vector2.hpp>
 #include <SDL2/SDL_rect.h>
 
@@ -58,6 +56,7 @@ struct Rect2 {
   Rect2 operator-() const;
   Rect2 operator+() const;
 
+  std::string to_string() const;
   Vector2 get_position() const;
   Vector2 get_size() const;
 
@@ -121,6 +120,7 @@ struct Rect2i {
   Vector2i get_position() const;
   Vector2i get_size() const;
 
+  std::string to_string() const;
   void set_position(const Vector2i &new_position);
   void set_size(const Vector2i &new_size);
 

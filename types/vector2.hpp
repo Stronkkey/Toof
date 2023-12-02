@@ -2,6 +2,7 @@
 #define VECTOR2
 
 #include <cstdint>
+#include <string>
 
 namespace sdl {
 
@@ -51,6 +52,8 @@ struct Vector2 {
   Vector2 operator-() const;
   Vector2 operator+() const;
 
+  std::string to_string() const;
+
   static const Vector2 ONE;
   static const Vector2 ZERO;
 };
@@ -98,6 +101,8 @@ struct Vector2i {
   int64_t operator[](const int64_t index) const;
   Vector2i operator-() const;
   Vector2i operator+() const;
+  
+  std::string to_string() const;
 
   static const Vector2i ONE;
   static const Vector2i ZERO;

@@ -144,6 +144,12 @@ Vector2 Vector2::operator-() const {
   return Vector2(-x, -y);
 }
 
+std::string Vector2::to_string() const {
+  return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
+}
+
+// Vector2i //
+
 
 Vector2i::Vector2i(const int64_t new_x, const int64_t new_y) {
   x = new_x;
@@ -280,4 +286,8 @@ Vector2i Vector2i::operator+() const {
 
 Vector2i Vector2i::operator-() const {
   return Vector2i(-x, -y);
+}
+
+std::string Vector2i::to_string() const {
+  return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
 }

@@ -188,6 +188,10 @@ Rect2 Rect2::operator-() const {
   return Rect2(-x, -y, -w, -h);
 }
 
+std::string Rect2::to_string() const {
+  return "(" + get_position().to_string() + ", " + get_size().to_string() + ")";
+}
+
 Vector2 Rect2::get_position() const {
   return Vector2(x, y);
 }
@@ -399,6 +403,10 @@ int64_t Rect2i::operator[](const int64_t index) const {
       return h;
   }
   return 0;
+}
+
+std::string Rect2i::to_string() const {
+  return "(" + get_position().to_string() + ", " + get_size().to_string() + ")";
 }
 
 Vector2i Rect2i::get_position() const {
