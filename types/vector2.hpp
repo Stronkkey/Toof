@@ -4,8 +4,6 @@
 #include <cstdint>
 #include <string>
 
-#include "macros.hpp"
-
 namespace sdl {
 
 struct Vector2i;
@@ -54,7 +52,7 @@ struct Vector2 {
   Vector2 operator-() const;
   Vector2 operator+() const;
 
-  String to_string() const;
+  std::string to_string() const;
 
   static const Vector2 ONE;
   static const Vector2 ZERO;
@@ -104,7 +102,7 @@ struct Vector2i {
   Vector2i operator-() const;
   Vector2i operator+() const;
   
-  String to_string() const;
+  std::string to_string() const;
 
   static const Vector2i ONE;
   static const Vector2i ZERO;

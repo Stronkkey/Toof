@@ -16,9 +16,9 @@ struct Texture {
 };
 
 struct CanvasItem {
-  SharedPtr<CanvasItem> parent;
+  std::shared_ptr<CanvasItem> parent;
   Rect2 destination = Rect2(0, 0, 1, 1);
-  Vector<Texture> textures;
+  std::vector<Texture> textures;
 
   Rect2 get_global_destination() const;
 };
@@ -28,15 +28,15 @@ class RenderingServer {
 private:
   SDL_Renderer *renderer;
   std::unordered_map<uid, Texture> textures;
-  std::unordered_map<uid, SharedPtr<CanvasItem>> canvas_items;
+  std::unordered_map<uid, std::shared_ptr<CanvasItem>> canvas_items;
 
   uid create_new_uid();
   void destroy_uid(uid &destroying_uid);
   uint64_t index = 1;
 
-  void render_canvas_item(const SharedPtr<CanvasItem> canvas_item);
+  void render_canvas_item(const std::shared_ptr<CanvasItem> canvas_item);
 
-  SharedPtr<CanvasItem> get_canvas_item_from_uid(const uid &grab_uid) const;
+  std::shared_ptr<CanvasItem> get_canvas_item_from_uid(const uid &grab_uid) const;
   Texture get_texture_from_uid(const uid &uid) const;
 
 public:

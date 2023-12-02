@@ -56,7 +56,7 @@ struct Rect2 {
   Rect2 operator-() const;
   Rect2 operator+() const;
 
-  String to_string() const;
+  std::string to_string() const;
   Vector2 get_position() const;
   Vector2 get_size() const;
 
@@ -120,7 +120,7 @@ struct Rect2i {
   Vector2i get_position() const;
   Vector2i get_size() const;
 
-  String to_string() const;
+  std::string to_string() const;
   void set_position(const Vector2i &new_position);
   void set_size(const Vector2i &new_size);
 

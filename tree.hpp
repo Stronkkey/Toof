@@ -27,7 +27,7 @@ protected:
     return Rect2i(0, 0, 340, 240);
   }
 
-  virtual String get_window_title() const {
+  virtual std::string get_window_title() const {
     return "SDL example";
   }
 
