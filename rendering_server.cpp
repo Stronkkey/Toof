@@ -172,3 +172,13 @@ void RenderingServer::canvas_item_clear(const uid &canvas_item_uid) {
 
   canvas_item_iterator->second->textures.clear();
 }
+
+Rect2 RenderingServer::canvas_item_get_destination(const uid &canvas_item_uid) const {
+  Ref<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+  return canvas_item.is_valid() ? canvas_item->destination : Rect2::EMPTY;
+}
+
+Rect2 RenderingServer::canvas_item_get_global_destination(const uid &canvas_item_uid) const {
+  Ref<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+  return canvas_item.is_valid() ? canvas_item->get_global_destination() : Rect2::EMPTY;
+}

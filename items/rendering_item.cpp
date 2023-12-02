@@ -8,10 +8,9 @@ using namespace sdl;
 void RenderingItem::ready() {
   scale = Vector2::ONE;
   position = Vector2::ZERO;
-  RenderingServer *rendering_server = get_rendering_server();
-  
-  canvas_item = rendering_server->create_canvas_item();
-  rendering_server->canvas_item_set_destination(canvas_item, Rect2(0, 0, 1, 1));
+
+  canvas_item = get_rendering_server()->create_canvas_item();
+  update();
 }
 
 RenderingItem::~RenderingItem() {
@@ -64,4 +63,35 @@ void RenderingItem::set_scale(const Vector2 &new_scale) {
 
 Vector2 RenderingItem::get_scale() const {
   return scale;
+}
+
+void RenderingItem::set_global_position(const Vector2 &new_global_position) {
+  RenderingServer *rendering_server = get_rendering_server();
+  Vector2 global_position = rendering_server ? rendering_server->canvas_item_get_global_destination(canvas_item).get_position() : position;
+  set_position(-Vector2(global_position - new_global_position));
+}
+
+Vector2 RenderingItem::get_global_position() const {
+  RenderingServer *rendering_server = get_rendering_server();
+  return rendering_server ? rendering_server->canvas_item_get_global_destination(canvas_item).get_position() : position;
+}
+
+void RenderingItem::set_global_scale(const Vector2 &new_global_scale) {
+  RenderingServer *rendering_server = get_rendering_server();
+  Vector2 global_scale = rendering_server ? rendering_server->canvas_item_get_global_destination(canvas_item).get_size() : scale;
+  set_scale(-Vector2(global_scale - new_global_scale));
+}
+
+Vector2 RenderingItem::get_global_scale() const {
+  RenderingServer *rendering_server = get_rendering_server();
+  return rendering_server ? rendering_server->canvas_item_get_global_destination(canvas_item).get_size() : scale;
+}
+
+void RenderingItem::set_global_destination(const Rect2 &new_global_destination) {
+  set_global_position(new_global_destination.get_position());
+  set_global_scale(new_global_destination.get_size());
+}
+
+Rect2 RenderingItem::get_global_destination() const {
+  return Rect2(get_global_position(), get_global_scale());
 }

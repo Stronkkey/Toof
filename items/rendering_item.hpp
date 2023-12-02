@@ -28,6 +28,14 @@ public:
   void set_scale(const Vector2 &new_scale);
   Vector2 get_scale() const;
 
+  void set_global_position(const Vector2 &new_global_position);
+  Vector2 get_global_position() const;
+
+  void set_global_scale(const Vector2 &new_global_scale);
+  Vector2 get_global_scale() const;
+
+  void set_global_destination(const Rect2 &new_global_destination);
+  Rect2 get_global_destination() const;
 };
 
 }

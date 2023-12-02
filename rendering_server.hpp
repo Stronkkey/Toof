@@ -57,6 +57,9 @@ public:
   void canvas_item_set_destination(const uid &canvas_item_uid, const Rect2 &new_destination);
   void canvas_item_set_parent(const uid &canvas_item_uid, const uid &parent_item_uid);
   void canvas_item_clear(const uid &canvas_item_uid);
+
+  Rect2 canvas_item_get_destination(const uid &canvas_item_uid) const;
+  Rect2 canvas_item_get_global_destination(const uid &canvas_item_uid) const;
 };
 }
 
