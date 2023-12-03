@@ -2,6 +2,7 @@
 #define RECT2_LIB
 
 #include <types/vector2.hpp>
+
 #include <SDL2/SDL_rect.h>
 
 namespace sdl {
@@ -16,7 +17,7 @@ struct Rect2 {
 
   Rect2();
   Rect2(const Vector2 &position, const Vector2 &size);
-  Rect2(real_t position_x, real_t position_y, real_t size_x, real_t size_y);
+  Rect2(const real_t position_x, const real_t position_y, const real_t size_x, const real_t size_y);
   Rect2(const Rect2 &rect);
   Rect2(const Rect2i &rect);
   Rect2(const SDL_Rect &rect);
@@ -77,7 +78,7 @@ struct Rect2i {
 
   Rect2i();
   Rect2i(const Vector2i &position, const Vector2i &size);
-  Rect2i(int_t x, int_t y, int_t w, int_t h);
+  Rect2i(const int64_t x, const int64_t y, const int64_t w, const int64_t h);
   Rect2i(const Rect2 &rect);
   Rect2i(const Rect2i &rect);
   Rect2i(const SDL_Rect &rect);

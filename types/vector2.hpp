@@ -1,7 +1,8 @@
 #ifndef VECTOR2
 #define VECTOR2
 
-#include "math_defs.hpp"
+#include <types/math_defs.hpp>
+
 #include <string>
 
 namespace sdl {
@@ -13,7 +14,7 @@ struct Vector2 {
   real_t y;
 
   Vector2();
-  Vector2(real_t new_x, real_t new_y);
+  Vector2(const real_t new_x, const real_t new_y);
   Vector2(const Vector2 &vector2);
   Vector2(const Vector2i &vector2i);
 

@@ -1,51 +1,46 @@
 #include "types/rect2.hpp"
+#include <cstdlib>
 
 using namespace sdl;
 
 const Rect2 Rect2::EMPTY = Rect2();
 const Rect2i Rect2i::EMPTY = Rect2i();
 
-Rect2::Rect2() {
-  x = 0.0;
-  y = 0.0;
-  w = 0.0;
-  h = 0.0;
-}
+Rect2::Rect2(): x(0),
+  y(0),
+  w(0),
+  h(0)
+{}
 
-Rect2::Rect2(const Vector2 &position, const Vector2 &size) {
-  x = position.x;
-  y = position.y;
-  w = size.x;
-  h = size.y;
-}
+Rect2::Rect2(const Vector2 &position, const Vector2 &size): x(position.x),
+  y(position.y),
+  w(size.x),
+  h(size.y)
+{}
 
-Rect2::Rect2(const real_t position_x, const real_t position_y, const real_t size_x, const real_t size_y) {
-  x = position_x;
-  y = position_y;
-  w = size_x;
-  h = size_y;
-}
+Rect2::Rect2(const real_t position_x, const real_t position_y, const real_t size_x, const real_t size_y): x(position_x),
+  y(position_y),
+  w(size_x),
+  h(size_y)
+{}
 
-Rect2::Rect2(const Rect2 &rect) {
-  x = rect.x;
-  y = rect.y;
-  w = rect.w;
-  h = rect.h;
-}
+Rect2::Rect2(const Rect2 &rect): x(rect.x),
+  y(rect.y),
+  w(rect.w),
+  h(rect.h)
+{}
 
-Rect2::Rect2(const Rect2i &rect) {
-  x = rect.x;
-  y = rect.y;
-  w = rect.w;
-  h = rect.h;
-}
+Rect2::Rect2(const Rect2i &rect): x(rect.x),
+  y(rect.y),
+  w(rect.w),
+  h(rect.h)
+{}
 
-Rect2::Rect2(const SDL_Rect &rect) {
-  x = rect.x;
-  y = rect.y;
-  w = rect.w;
-  h = rect.h;
-}
+Rect2::Rect2(const SDL_Rect &rect): x(rect.x),
+  y(rect.y),
+  w(rect.w),
+  h(rect.h)
+{}
 
 void Rect2::operator=(const Rect2 &right) {
   x = right.x;
@@ -230,47 +225,41 @@ SDL_Rect Rect2::to_sdl_rect(const Rect2 &rect2) {
 
 // RECT2i //
 
-Rect2i::Rect2i() {
-  x = 0;
-  y = 0;
-  w = 0;
-  h = 0;
-}
+Rect2i::Rect2i(): x(0),
+  y(0),
+  w(0),
+  h(0)
+{}
 
-Rect2i::Rect2i(const Vector2i &position, const Vector2i &size) {
-  x = position.x;
-  y = position.y;
-  w = size.x;
-  h = size.y;
-}
+Rect2i::Rect2i(const Vector2i &position, const Vector2i &size): x(position.x),
+  y(position.y),
+  w(size.x),
+  h(size.y)
+{}
 
-Rect2i::Rect2i(const int_t position_x, const int_t position_y, const int_t size_x, const int_t size_y) {
-  x = position_x;
-  y = position_y;
-  w = size_x;
-  h = size_y;
-}
+Rect2i::Rect2i(const int64_t position_x, const int64_t position_y, const int64_t size_x, const int64_t size_y): x(position_x),
+  y(position_y),
+  w(size_x),
+  h(size_y)
+{}
 
-Rect2i::Rect2i(const Rect2 &rect) {
-  x = rect.x;
-  y = rect.y;
-  w = rect.w;
-  h = rect.h;
-}
+Rect2i::Rect2i(const Rect2 &rect): x(rect.x),
+  y(rect.y),
+  w(rect.w),
+  h(rect.h)
+{}
 
-Rect2i::Rect2i(const Rect2i &rect) {
-  x = rect.x;
-  y = rect.y;
-  w = rect.w;
-  h = rect.h;
-}
+Rect2i::Rect2i(const Rect2i &rect): x(rect.x),
+  y(rect.y),
+  w(rect.w),
+  h(rect.h)
+{}
 
-Rect2i::Rect2i(const SDL_Rect &rect) {
-  x = rect.x;
-  y = rect.y;
-  w = rect.w;
-  h = rect.h;
-}
+Rect2i::Rect2i(const SDL_Rect &rect): x(rect.x),
+  y(rect.y),
+  w(rect.w),
+  h(rect.h)
+{}
 
 void Rect2i::operator=(const Rect2i &right) {
   x = right.x;
