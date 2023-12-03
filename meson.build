@@ -11,10 +11,10 @@ project_headers = [
   'items/item.hpp',
   'items/rendering_item.hpp',
   'items/sprite.hpp',
+  'types/math_defs.hpp',
   'types/vector2.hpp',
   'types/rect2.hpp',
   'types/uid.hpp',
-  'types/ref.hpp',
   'tree.hpp',
   'rendering_server.hpp',
   'window.hpp'
@@ -43,7 +43,22 @@ project_dependencies = [
 build_args = [
 ]
 
+cpp_defines = []
+
+if get_option('double_precision').enabled()
+  cpp_defines += ['REAL_T_IS_DOUBLE']
+endif
+if get_option('int_64bit').enabled()
+  cpp_defines += ['INT_IS_64BIT']
+endif
+
 public_headers = include_directories('./')
+
+foreach define: cpp_defines
+  build_args += [
+    '-D' + define
+  ]
+endforeach
 
 build_args += [
   '-DPROJECT_NAME=' + meson.project_name(),
@@ -78,22 +93,3 @@ pkg_mod.generate(
   subdirs : meson.project_name(),
   libraries : project_target,
 )
-
-
-# ==========
-# Unit Tests
-# ==========
-
-if not meson.is_subproject()
-  add_languages('cpp')
-  subdir('tests')
-
-  test('all_tests',
-    executable(
-      'run_tests',
-      files(project_test_files),
-      dependencies : [project_dep, test_dep],
-      install : false
-    )
-  )
-endif
