@@ -1,3 +1,6 @@
+#ifndef MATH_DEFS
+#define MATH_DEFS
+
 #include <cstdint>
 
 namespace sdl {
@@ -17,3 +20,5 @@ typedef uint32_t uint_t;
 #endif
 
 }
+
+#endif // !MATH_DEFS
