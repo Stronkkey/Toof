@@ -45,6 +45,20 @@ build_args = [
 
 public_headers = include_directories('./')
 
+defines = []
+
+if get_option('double_precision').enabled()
+  defines += 'REAL_T_IS_DOUBLE'
+endif
+
+if get_option('int_64bit').enabled()
+  defines += 'INT_IS_64BIT'
+endif
+
+foreach define: defines
+  build_args += ['-D' + define]
+endforeach
+
 build_args += [
   '-DPROJECT_NAME=' + meson.project_name(),
   '-DPROJECT_VERSION=' + meson.project_version(),
