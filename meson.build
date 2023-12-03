@@ -8,28 +8,28 @@ project(
 project_description = 'Simple wrapper for sdl2'
 
 project_headers = [
+  'rendering/rendering_server.hpp',
+  'rendering/window.hpp',
+  'items/tree.cpp',
   'items/item.hpp',
   'items/rendering_item.hpp',
   'items/sprite.hpp',
   'types/math_defs.hpp',
   'types/vector2.hpp',
   'types/rect2.hpp',
-  'types/uid.hpp',
-  'tree.hpp',
-  'rendering_server.hpp',
-  'window.hpp'
+  'types/uid.hpp'
 ]
 
 project_source_files = [
+  'rendering/rendering_server.cpp',
+  'rendering/window.cpp',
+  'items/tree.cpp',
   'items/item.cpp',
   'items/rendering_item.cpp',
   'items/sprite.cpp',
   'types/rect2.cpp',
   'types/vector2.cpp',
-  'types/uid.cpp',
-  'rendering_server.cpp',
-  'tree.cpp',
-  'window.cpp'
+  'types/uid.cpp'
 ]
 
 project_test_files = [
@@ -43,22 +43,7 @@ project_dependencies = [
 build_args = [
 ]
 
-cpp_defines = []
-
-if get_option('double_precision').enabled()
-  cpp_defines += ['REAL_T_IS_DOUBLE']
-endif
-if get_option('int_64bit').enabled()
-  cpp_defines += ['INT_IS_64BIT']
-endif
-
 public_headers = include_directories('./')
-
-foreach define: cpp_defines
-  build_args += [
-    '-D' + define
-  ]
-endforeach
 
 build_args += [
   '-DPROJECT_NAME=' + meson.project_name(),

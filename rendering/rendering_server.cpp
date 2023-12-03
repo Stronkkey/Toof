@@ -1,5 +1,4 @@
-#include <iostream>
-#include <rendering_server.hpp>
+#include <rendering/rendering_server.hpp>
 
 using namespace sdl;
 
@@ -21,8 +20,10 @@ Rect2 CanvasItem::get_global_destination() const {
   return absolute_destination;
 }
 
-RenderingServer::RenderingServer(SDL_Renderer *new_renderer) {
-  renderer = new_renderer;
+RenderingServer::RenderingServer(): renderer(nullptr) {
+}
+
+RenderingServer::RenderingServer(SDL_Renderer *new_renderer): renderer(new_renderer) {
 }
 
 RenderingServer::~RenderingServer() {

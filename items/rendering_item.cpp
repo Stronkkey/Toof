@@ -1,4 +1,3 @@
-#include <iostream>
 #include <items/rendering_item.hpp>
 
 #include <typeinfo>
@@ -38,7 +37,7 @@ void RenderingItem::on_parent_changed(Item *new_parent) {
   RenderingItem *rendering_item = dynamic_cast<RenderingItem*>(new_parent);
 
   if (rendering_item)
-    rendering_server->canvas_item_set_parent(canvas_item, rendering_item->canvas_item);
+    rendering_server->canvas_item_set_parent(canvas_item, rendering_item->get_canvas_item());
   else
     rendering_server->canvas_item_set_parent(canvas_item, uid());
 }

@@ -1,7 +1,7 @@
 #ifndef WINDOW
 #define WINDOW
 
-#include <rendering_server.hpp>
+#include <rendering/rendering_server.hpp>
 
 namespace sdl {
 

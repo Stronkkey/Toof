@@ -1,5 +1,6 @@
+#include <rendering/window.hpp>
+
 #include <iostream>
-#include <window.hpp>
 
 using namespace sdl;
 
@@ -34,7 +35,7 @@ Window::~Window() {
 }
 
 void Window::fail(const std::string &error_message, const SDL_LogCategory log_category) {
-  std::cout << error_message;
+  std::cout << error_message << std::endl;
   SDL_LogError(log_category, error_message.c_str(), SDL_GetError());
   success = false;
 }

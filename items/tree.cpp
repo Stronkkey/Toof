@@ -1,4 +1,4 @@
-#include <tree.hpp>
+#include <items/tree.hpp>
 #include <items/item.hpp>
 
 using namespace sdl;

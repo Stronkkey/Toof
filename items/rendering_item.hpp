@@ -1,7 +1,6 @@
 #ifndef RENDERING_ITEM
 #define RENDERING_ITEM
 
-#include <tree.hpp>
 #include <items/item.hpp>
 
 namespace sdl {

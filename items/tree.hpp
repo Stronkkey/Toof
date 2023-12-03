@@ -1,7 +1,7 @@
 #ifndef TREE
 #define TREE
 
-#include <window.hpp>
+#include <rendering/window.hpp>
 
 namespace sdl {
 

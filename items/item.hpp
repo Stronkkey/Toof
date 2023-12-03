@@ -1,7 +1,7 @@
 #ifndef ITEM
 #define ITEM
 
-#include <tree.hpp>
+#include <items/tree.hpp>
 
 namespace sdl {
 

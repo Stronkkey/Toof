@@ -1,4 +1,3 @@
-#include <iostream>
 #include <items/item.hpp>
 
 using namespace sdl;

@@ -40,6 +40,7 @@ private:
   Texture get_texture_from_uid(const uid &uid) const;
 
 public:
+  RenderingServer();
   RenderingServer(SDL_Renderer *new_renderer);
   ~RenderingServer();
 
