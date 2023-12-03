@@ -7,7 +7,7 @@ const Vector2 Vector2::ZERO = Vector2();
 const Vector2i Vector2i::ONE = Vector2i(1, 1);
 const Vector2i Vector2i::ZERO = Vector2i();
 
-Vector2::Vector2(const double new_x, const double new_y) {
+Vector2::Vector2(const real_t new_x, const real_t new_y) {
   x = new_x;
   y = new_y;
 }
@@ -68,11 +68,11 @@ Vector2 Vector2::operator*(const Vector2 &right) const {
   return Vector2(x * right.x, y * right.y);
 }
 
-Vector2 Vector2::operator*(const double right) const {
+Vector2 Vector2::operator*(const real_t right) const {
   return Vector2(x * right, y * right);
 }
 
-Vector2 Vector2::operator*(const int64_t right) const {
+Vector2 Vector2::operator*(const int_t right) const {
   return Vector2(x * right, y * right);
 }
 
@@ -80,11 +80,11 @@ Vector2 Vector2::operator/(const Vector2 &right) const {
   return Vector2(x / right.x, y / right.y);
 }
 
-Vector2 Vector2::operator/(const double right) const {
+Vector2 Vector2::operator/(const real_t right) const {
   return Vector2(x / right, y / right);
 }
 
-Vector2 Vector2::operator/(const int64_t right) const {
+Vector2 Vector2::operator/(const int_t right) const {
   return Vector2(x / right, y / right);
 }
  
@@ -103,12 +103,12 @@ void Vector2::operator*=(const Vector2 &right) {
   y *= right.y;
 }
 
-void Vector2::operator*=(const double right) {
+void Vector2::operator*=(const real_t right) {
   x *= right;
   y *= right;
 }
 
-void Vector2::operator*=(const int64_t right) {
+void Vector2::operator*=(const int_t right) {
   x *= right;
   y *= right;
 }
@@ -118,17 +118,17 @@ void Vector2::operator/=(const Vector2 &right) {
   y /= right.y;
 }
 
-void Vector2::operator/=(const double right) {
+void Vector2::operator/=(const real_t right) {
   x /= right;
   y /= right;
 }
 
-void Vector2::operator/=(const int64_t right) {
+void Vector2::operator/=(const int_t right) {
   x /= right;
   y /= right;
 }
 
-double Vector2::operator[](const int64_t index) const {
+real_t Vector2::operator[](const int_t index) const {
   if (index == 0)
     return x;
   else if (index == 1)
@@ -151,7 +151,7 @@ std::string Vector2::to_string() const {
 // Vector2i //
 
 
-Vector2i::Vector2i(const int64_t new_x, const int64_t new_y) {
+Vector2i::Vector2i(const int_t new_x, const int_t new_y) {
   x = new_x;
   y = new_y;
 }
@@ -212,11 +212,11 @@ Vector2i Vector2i::operator*(const Vector2i &right) const {
   return Vector2i(x * right.x, y * right.y);
 }
 
-Vector2i Vector2i::operator*(const double right) const {
+Vector2i Vector2i::operator*(const real_t right) const {
   return Vector2i(x * right, y * right);
 }
 
-Vector2i Vector2i::operator*(const int64_t right) const {
+Vector2i Vector2i::operator*(const int_t right) const {
   return Vector2i(x * right, y * right);
 }
 
@@ -224,11 +224,11 @@ Vector2i Vector2i::operator/(const Vector2 &right) const {
   return Vector2(x / right.x, y / right.y);
 }
 
-Vector2i Vector2i::operator/(const double right) const {
+Vector2i Vector2i::operator/(const real_t right) const {
   return Vector2(x / right, y / right);
 }
 
-Vector2i Vector2i::operator/(const int64_t right) const {
+Vector2i Vector2i::operator/(const int_t right) const {
   return Vector2i(x / right, y / right);
 }
  
@@ -247,12 +247,12 @@ void Vector2i::operator*=(const Vector2i &right) {
   y *= right.y;
 }
 
-void Vector2i::operator*=(const double right) {
+void Vector2i::operator*=(const real_t right) {
   x *= right;
   y *= right;
 }
 
-void Vector2i::operator*=(const int64_t right) {
+void Vector2i::operator*=(const int_t right) {
   x *= right;
   y *= right;
 }
@@ -262,17 +262,17 @@ void Vector2i::operator/=(const Vector2i &right) {
   y /= right.y;
 }
 
-void Vector2i::operator/=(const double right) {
+void Vector2i::operator/=(const real_t right) {
   x /= right;
   y /= right;
 }
 
-void Vector2i::operator/=(const int64_t right) {
+void Vector2i::operator/=(const int_t right) {
   x /= right;
   y /= right;
 }
 
-int64_t Vector2i::operator[](const int64_t index) const {
+int_t Vector2i::operator[](const int_t index) const {
   if (index == 0)
     return x;
   else if (index == 1)
