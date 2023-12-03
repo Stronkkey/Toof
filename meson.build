@@ -43,21 +43,27 @@ project_dependencies = [
 build_args = [
 ]
 
+project_variables = {
+}
+
 public_headers = include_directories('./')
 
-defines = []
+double_precision_enabled = get_option('double_precision').enabled()
+int_64bit_enabled = get_option('int_64bit').enabled()
 
-if get_option('double_precision').enabled()
-  defines += 'REAL_T_IS_DOUBLE'
+if double_precision_enabled
+  build_args += ['-D REAL_T_IS_DOUBLE']
+  project_variables += {'double': 'true'}
+else
+  project_variables += {'double': 'false'}
 endif
 
-if get_option('int_64bit').enabled()
-  defines += 'INT_IS_64BIT'
+if int_64bit_enabled
+  build_args += ['-D INT_IS_64BIT']
+  project_variables += {'int64': 'true'}
+else
+  project_variables += {'int64': 'false'}
 endif
-
-foreach define: defines
-  build_args += ['-D' + define]
-endforeach
 
 build_args += [
   '-DPROJECT_NAME=' + meson.project_name(),
@@ -76,7 +82,8 @@ project_target = shared_library(
 
 project_dep = declare_dependency(
   include_directories: public_headers,
-  link_with : project_target
+  link_with : project_target,
+  variables: project_variables
 )
 set_variable(meson.project_name() + '_dep', project_dep)
 
