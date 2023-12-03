@@ -6,7 +6,7 @@ Rect2 CanvasItem::get_global_destination() const {
   Rect2 absolute_destination = destination;
   std::shared_ptr<CanvasItem> parent_canvas_item = parent;
 
-  if (parent_canvas_item)
+  if (!parent_canvas_item)
     return destination;
 
   while (parent_canvas_item) {
