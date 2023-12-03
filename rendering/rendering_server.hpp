@@ -32,7 +32,7 @@ private:
 
   uid create_new_uid();
   void destroy_uid(uid &destroying_uid);
-  uint64_t index = 1;
+  uint_t index = 1;
 
   void render_canvas_item(const std::shared_ptr<CanvasItem> canvas_item);
 
