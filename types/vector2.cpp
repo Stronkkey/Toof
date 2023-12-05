@@ -3,18 +3,18 @@
 using namespace sdl;
 
 const Vector2 Vector2::ONE = Vector2(1, 1);
-const Vector2 Vector2::ZERO = Vector2(1, 1);
-const Vector2 Vector2::LEFT = Vector2(1, 0);
-const Vector2 Vector2::RIGHT = Vector2(-1, 0);
-const Vector2 Vector2::DOWN = Vector2(0, -1);
-const Vector2 Vector2::UP = Vector2(0, 1);
+const Vector2 Vector2::ZERO = Vector2(0, 0);
+const Vector2 Vector2::LEFT = Vector2(-1, 0);
+const Vector2 Vector2::RIGHT = Vector2(1, 0);
+const Vector2 Vector2::DOWN = Vector2(0, 1);
+const Vector2 Vector2::UP = Vector2(0, -1);
 
 const Vector2i Vector2i::ONE = Vector2i(1, 1);
-const Vector2i Vector2i::ZERO = Vector2i();
-const Vector2i Vector2i::LEFT = Vector2i(1, 0);
-const Vector2i Vector2i::RIGHT = Vector2i(-1, 0);
-const Vector2i Vector2i::DOWN = Vector2i(0, -1);
-const Vector2i Vector2i::UP = Vector2i(0, 1);
+const Vector2i Vector2i::ZERO = Vector2i(0, 0);
+const Vector2i Vector2i::LEFT = Vector2i(-1, 0);
+const Vector2i Vector2i::RIGHT = Vector2i(1, 0);
+const Vector2i Vector2i::DOWN = Vector2i(0, 1);
+const Vector2i Vector2i::UP = Vector2i(0, -1);
 
 Vector2::Vector2(const real_t new_x, const real_t new_y): x(new_x),
   y(new_y)
