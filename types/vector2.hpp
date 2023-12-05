@@ -57,6 +57,10 @@ struct Vector2 {
 
   static const Vector2 ONE;
   static const Vector2 ZERO;
+  static const Vector2 LEFT;
+  static const Vector2 RIGHT;
+  static const Vector2 UP;
+  static const Vector2 DOWN;
 };
 
 struct Vector2i {
@@ -107,6 +111,10 @@ struct Vector2i {
 
   static const Vector2i ONE;
   static const Vector2i ZERO;
+  static const Vector2i LEFT;
+  static const Vector2i RIGHT;
+  static const Vector2i UP;
+  static const Vector2i DOWN;
 };
 }
 
