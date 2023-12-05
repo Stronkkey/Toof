@@ -36,24 +36,20 @@ struct Rect2 {
 
   Rect2 operator*(const Rect2 &right) const;
   Rect2 operator*(const real_t right) const;
-  Rect2 operator*(const int_t right) const;
 
   Rect2 operator/(const Rect2 &right) const;
   Rect2 operator/(const real_t right) const;
-  Rect2 operator/(const int_t right) const;
 
   void operator+=(const Rect2 &right);
   void operator-=(const Rect2 &right);
 
   void operator*=(const Rect2 &right);
   void operator*=(const real_t right);
-  void operator*=(const int_t right);
 
   void operator/=(const Rect2 &right);
   void operator/=(const real_t right);
-  void operator/=(const int_t right);
 
-  real_t operator[](const int_t index) const;
+  real_t operator[](const int index) const;
   Rect2 operator-() const;
   Rect2 operator+() const;
 
@@ -96,25 +92,21 @@ struct Rect2i {
   Rect2i operator-(const Rect2i &right) const;
 
   Rect2i operator*(const Rect2i &right) const;
-  Rect2i operator*(const real_t right) const;
   Rect2i operator*(const int_t right) const;
 
   Rect2i operator/(const Rect2i &right) const;
-  Rect2i operator/(const real_t right) const;
   Rect2i operator/(const int_t right) const;
 
   void operator+=(const Rect2i &right);
   void operator-=(const Rect2i &right);
 
   void operator*=(const Rect2i &right);
-  void operator*=(const real_t right);
   void operator*=(const int_t right);
 
   void operator/=(const Rect2i &right);
-  void operator/=(const real_t right);
   void operator/=(const int_t right);
 
-  int_t operator[](const int_t index) const;
+  int_t operator[](const int index) const;
   Rect2i operator-() const;
   Rect2i operator+() const;
 

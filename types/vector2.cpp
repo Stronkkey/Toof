@@ -3,18 +3,18 @@
 using namespace sdl;
 
 const Vector2 Vector2::ONE = Vector2(1, 1);
-const Vector2 Vector2::ZERO = Vector2();
+const Vector2 Vector2::ZERO = Vector2(1, 1);
 const Vector2 Vector2::LEFT = Vector2(1, 0);
 const Vector2 Vector2::RIGHT = Vector2(-1, 0);
 const Vector2 Vector2::DOWN = Vector2(0, -1);
 const Vector2 Vector2::UP = Vector2(0, 1);
 
-const Vector2i Vector2i::ONE = Vector2(1, 1);
-const Vector2i Vector2i::ZERO = Vector2();
-const Vector2i Vector2i::LEFT = Vector2(1, 0);
-const Vector2i Vector2i::RIGHT = Vector2(-1, 0);
-const Vector2i Vector2i::DOWN = Vector2(0, -1);
-const Vector2i Vector2i::UP = Vector2(0, 1);
+const Vector2i Vector2i::ONE = Vector2i(1, 1);
+const Vector2i Vector2i::ZERO = Vector2i();
+const Vector2i Vector2i::LEFT = Vector2i(1, 0);
+const Vector2i Vector2i::RIGHT = Vector2i(-1, 0);
+const Vector2i Vector2i::DOWN = Vector2i(0, -1);
+const Vector2i Vector2i::UP = Vector2i(0, 1);
 
 Vector2::Vector2(const real_t new_x, const real_t new_y): x(new_x),
   y(new_y)
@@ -77,10 +77,6 @@ Vector2 Vector2::operator*(const real_t right) const {
   return Vector2(x * right, y * right);
 }
 
-Vector2 Vector2::operator*(const int_t right) const {
-  return Vector2(x * right, y * right);
-}
-
 Vector2 Vector2::operator/(const Vector2 &right) const {
   return Vector2(x / right.x, y / right.y);
 }
@@ -113,11 +109,6 @@ void Vector2::operator*=(const real_t right) {
   y *= right;
 }
 
-void Vector2::operator*=(const int_t right) {
-  x *= right;
-  y *= right;
-}
-
 void Vector2::operator/=(const Vector2 &right) {
   x /= right.x;
   y /= right.y;
@@ -128,12 +119,7 @@ void Vector2::operator/=(const real_t right) {
   y /= right;
 }
 
-void Vector2::operator/=(const int_t right) {
-  x /= right;
-  y /= right;
-}
-
-real_t Vector2::operator[](const int_t index) const {
+real_t Vector2::operator[](const int index) const {
   if (index == 0)
     return x;
   else if (index == 1)
@@ -213,20 +199,12 @@ Vector2i Vector2i::operator*(const Vector2i &right) const {
   return Vector2i(x * right.x, y * right.y);
 }
 
-Vector2i Vector2i::operator*(const real_t right) const {
-  return Vector2i(x * right, y * right);
-}
-
 Vector2i Vector2i::operator*(const int_t right) const {
   return Vector2i(x * right, y * right);
 }
 
 Vector2i Vector2i::operator/(const Vector2 &right) const {
   return Vector2(x / right.x, y / right.y);
-}
-
-Vector2i Vector2i::operator/(const real_t right) const {
-  return Vector2(x / right, y / right);
 }
 
 Vector2i Vector2i::operator/(const int_t right) const {
@@ -248,11 +226,6 @@ void Vector2i::operator*=(const Vector2i &right) {
   y *= right.y;
 }
 
-void Vector2i::operator*=(const real_t right) {
-  x *= right;
-  y *= right;
-}
-
 void Vector2i::operator*=(const int_t right) {
   x *= right;
   y *= right;
@@ -263,17 +236,12 @@ void Vector2i::operator/=(const Vector2i &right) {
   y /= right.y;
 }
 
-void Vector2i::operator/=(const real_t right) {
-  x /= right;
-  y /= right;
-}
-
 void Vector2i::operator/=(const int_t right) {
   x /= right;
   y /= right;
 }
 
-int_t Vector2i::operator[](const int_t index) const {
+int_t Vector2i::operator[](const int index) const {
   if (index == 0)
     return x;
   else if (index == 1)

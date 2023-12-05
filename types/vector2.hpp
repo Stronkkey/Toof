@@ -32,7 +32,6 @@ struct Vector2 {
 
   Vector2 operator*(const Vector2 &right) const;
   Vector2 operator*(const real_t right) const;
-  Vector2 operator*(const int_t right) const;
 
   Vector2 operator/(const Vector2 &right) const;
   Vector2 operator/(const real_t right) const;
@@ -43,13 +42,11 @@ struct Vector2 {
 
   void operator*=(const Vector2 &right);
   void operator*=(const real_t right);
-  void operator*=(const int_t right);
 
   void operator/=(const Vector2 &right);
   void operator/=(const real_t right);
-  void operator/=(const int_t right);
 
-  real_t operator[](const int_t index) const;
+  real_t operator[](const int index) const;
   Vector2 operator-() const;
   Vector2 operator+() const;
 
@@ -85,25 +82,21 @@ struct Vector2i {
   Vector2i operator-(const Vector2i &right) const;
 
   Vector2i operator*(const Vector2i &right) const;
-  Vector2i operator*(const real_t right) const;
   Vector2i operator*(const int_t right) const;
 
   Vector2i operator/(const Vector2 &right) const;
-  Vector2i operator/(const real_t right) const;
   Vector2i operator/(const int_t right) const;
 
   void operator+=(const Vector2i &right);
   void operator-=(const Vector2i &right);
 
   void operator*=(const Vector2i &right);
-  void operator*=(const real_t right);
   void operator*=(const int_t right);
 
   void operator/=(const Vector2i &right);
-  void operator/=(const real_t right);
   void operator/=(const int_t right);
 
-  int_t operator[](const int_t index) const;
+  int_t operator[](const int index) const;
   Vector2i operator-() const;
   Vector2i operator+() const;
   
