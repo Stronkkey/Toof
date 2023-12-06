@@ -34,12 +34,12 @@ void Item::propagate_loop() {
   }
 }
 
-void Item::propagate_render() {
+void Item::propagate_render(double delta) {
   for (auto iterator: children) {
     if (iterator.second == nullptr)
       continue;
 
-    iterator.second->render();
+    iterator.second->render(delta);
   }
 }
 

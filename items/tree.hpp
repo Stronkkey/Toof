@@ -11,16 +11,17 @@ class Tree {
 
 protected:
   bool running;
+  double frame_rate;
+
   sdl::Window *window;
   sdl::RenderingServer *rendering_server;
-
   SDL_Event *event;
   Item *root;
 
   virtual void initialize();
   virtual void events();
   virtual void loop();
-  virtual void render();
+  virtual void render(double delta);
   virtual void ended();
 
   virtual Rect2i get_window_rect() const {

@@ -15,7 +15,7 @@ private:
 
 protected:
   virtual void event(const SDL_Event*) {}
-  virtual void render() {}
+  virtual void render(double) {}
   virtual void loop() {}
   virtual void on_parent_changed(Item*) {}
   virtual void ready() {}
@@ -25,7 +25,7 @@ public:
   virtual ~Item() {}
 
   void propagate_event(const SDL_Event *event);
-  void propagate_render();
+  void propagate_render(double delta);
   void propagate_loop();
   void free();
 

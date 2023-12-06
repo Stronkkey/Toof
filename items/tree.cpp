@@ -1,9 +1,12 @@
 #include <items/tree.hpp>
 #include <items/item.hpp>
 
+#include <SDL_timer.h>
+
 using namespace sdl;
 
 Tree::Tree() {
+  frame_rate = 60.0;
   root = new Item;
   window = new sdl::Window(get_window_rect(), get_window_title());
   rendering_server = window->rendering_server;
@@ -24,8 +27,8 @@ void Tree::events() {
   root->propagate_event(event);
 }
 
-void Tree::render() {
-  root->propagate_render();
+void Tree::render(double delta) {
+  root->propagate_render(delta);
   rendering_server->render();
 }
 
@@ -47,10 +50,17 @@ void Tree::start() {
   event = new SDL_Event;
   initialize();
 
+  uint64_t now = SDL_GetPerformanceCounter();
+  uint64_t last = 0;
+
   while (running) {
+    last = now;
+    now = SDL_GetPerformanceCounter();
+    double delta = (double(now - last) * 100) / SDL_GetPerformanceFrequency();
+
     events();
     loop();
-    render();
+    render(delta);
   }
 
   ended();
