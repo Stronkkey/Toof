@@ -1,4 +1,6 @@
-#include "types/vector2.hpp"
+#include <types/vector2.hpp>
+
+#include <cmath>
 
 using namespace sdl;
 
@@ -133,6 +135,21 @@ Vector2 Vector2::operator+() const {
 
 Vector2 Vector2::operator-() const {
   return Vector2(-x, -y);
+}
+
+void Vector2::normalize() {
+  real_t length = (x * x) + (y * y);
+  if (length != 0.0) {
+    length = std::sqrt(length);
+    x /= length;
+    y /= length;
+  }
+}
+
+Vector2 Vector2::normalized() const {
+  Vector2 vector = *this;
+  vector.normalize();
+  return vector;
 }
 
 std::string Vector2::to_string() const {

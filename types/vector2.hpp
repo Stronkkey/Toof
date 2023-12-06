@@ -50,6 +50,10 @@ struct Vector2 {
   Vector2 operator-() const;
   Vector2 operator+() const;
 
+  void normalize();
+
+  Vector2 normalized() const;
+
   std::string to_string() const;
 
   static const Vector2 ONE;
