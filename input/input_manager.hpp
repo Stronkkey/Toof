@@ -14,6 +14,7 @@ struct KeyInputEvent {
   bool failed;
   bool holding;
   bool same;
+  float strength;
   uint8_t repeat;
 };
 
@@ -38,6 +39,9 @@ private:
   static void _add_input_to_map(const std::string &map_name, const Input &input);
   static void _remove_input_from_map(const std::string &map_name, const Input &input);
 
+  static float _get_input_strength(const SDL_Event *event, const Input &input);
+  static float _get_input_map_strength(const std::string &map_name, const SDL_Event *event);
+
 public:
   InputManager();
   ~InputManager();
@@ -58,6 +62,10 @@ public:
   static bool input_is_action_just_pressed(const std::string &map_name, const SDL_Event *event);
   static bool input_is_action_released(const std::string &map_name, const SDL_Event *event);
   static bool input_is_action_just_released(const std::string &map_name, const SDL_Event *event);
+
+  static float get_input_axis(const std::string &negative_x_map, const std::string &positive_x_map, const SDL_Event *event);
+
+  static bool input_is_action_pressed_or_released(const std::string &map_name, const SDL_Event *event);
 };
 
 }

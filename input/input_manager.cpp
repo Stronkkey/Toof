@@ -1,7 +1,6 @@
 #include <input/input_manager.hpp>
 
 #include <algorithm>
-#include <iterator>
 
 using namespace sdl;
 
@@ -33,11 +32,13 @@ KeyInputEvent InputManager::_get_event_info(const SDL_Event *event, const Input 
       key_input_event.repeat = event->key.repeat;
       key_input_event.holding = (event->type == SDL_KEYDOWN);
       key_input_event.same = (event->key.keysym.sym == input.key_sym);
+      key_input_event.strength = (key_input_event.same && key_input_event.holding ? 1.0f : 0.0f);
       break;
     case KEY_INPUT_TYPE_SCANCODE:
       key_input_event.repeat = event->key.repeat;
       key_input_event.holding = (event->type == SDL_KEYDOWN);
       key_input_event.same = (event->key.keysym.scancode == input.scan_code);
+      key_input_event.strength = (key_input_event.same && key_input_event.holding ? 1.0f : 0.0f);
       break;
   }
   
@@ -76,6 +77,25 @@ void InputManager::_remove_input_from_map(const std::string &map_name, const Inp
     if (input_iterator != iterator->second.end())
       iterator->second.erase(input_iterator);
   }
+}
+
+float InputManager::_get_input_strength(const SDL_Event *event, const Input &input) {
+  return _get_event_info(event, input).strength;
+}
+
+float InputManager::_get_input_map_strength(const std::string &map_name, const SDL_Event *event) {
+  auto iterator = mapped_inputs.find(map_name);
+  if (iterator == mapped_inputs.end())
+    return 0.0f;
+
+  float strongest_input = 0.0f;
+  for (Input input: iterator->second) {
+    float input_strength = _get_input_strength(event, input);
+    if (input_strength > strongest_input)
+      strongest_input = input_strength;
+  }
+
+  return strongest_input;
 }
 
 
@@ -144,4 +164,25 @@ bool InputManager::input_is_action_released(const std::string &map_name, const S
 
 bool InputManager::input_is_action_just_released(const std::string &map_name, const SDL_Event *event) {
   return !input_is_action_just_pressed(map_name, event);
+}
+
+float InputManager::get_input_axis(const std::string &negative_x_map, const std::string &positive_x_map, const SDL_Event *event) {
+  const float negative_input_strength = _get_input_map_strength(negative_x_map, event);
+  const float positive_input_strength = _get_input_map_strength(positive_x_map, event);
+  return positive_input_strength - negative_input_strength;
+}
+
+bool InputManager::input_is_action_pressed_or_released(const std::string &map_name, const SDL_Event *event) {
+  auto iterator = mapped_inputs.find(map_name);
+  if (iterator == mapped_inputs.end())
+    return false;
+
+  for (Input input: iterator->second) {
+    KeyInputEvent key_input_event = _get_event_info(event, input);
+    if (key_input_event.same)
+      return true;
+  }
+
+  return false;
+
 }
