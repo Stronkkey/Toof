@@ -17,6 +17,7 @@ project_headers = [
   'types/math_defs.hpp',
   'types/vector2.hpp',
   'types/rect2.hpp',
+  'types/transform2d.hpp',
   'types/uid.hpp',
   'input/input_manager.hpp'
 ]
@@ -30,6 +31,7 @@ project_source_files = [
   'items/sprite.cpp',
   'types/rect2.cpp',
   'types/vector2.cpp',
+  'types/transform2d.cpp',
   'types/uid.cpp',
   'input/input_manager.cpp'
 ]

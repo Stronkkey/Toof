@@ -34,6 +34,14 @@ Vector2::Vector2(const Vector2i &vector2i): x(vector2i.x),
   y(vector2i.y)
 {}
 
+Vector2::Vector2(const SDL_FPoint &fpoint): x(fpoint.x),
+  y(fpoint.y)
+{}
+
+Vector2::Vector2(const SDL_Point &point): x(point.x),
+  y(point.y)
+{}
+
 void Vector2::operator=(const Vector2 &right) {
   x = right.x;
   y = right.y;
@@ -84,10 +92,6 @@ Vector2 Vector2::operator/(const Vector2 &right) const {
 }
 
 Vector2 Vector2::operator/(const real_t right) const {
-  return Vector2(x / right, y / right);
-}
-
-Vector2 Vector2::operator/(const int_t right) const {
   return Vector2(x / right, y / right);
 }
  
@@ -156,6 +160,20 @@ std::string Vector2::to_string() const {
   return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
 }
 
+SDL_FPoint Vector2::to_sdl_fpoint() const {
+  SDL_FPoint fpoint;
+  fpoint.x = x;
+  fpoint.y = y;
+  return fpoint;
+}
+
+SDL_Point Vector2::to_sdl_point() const {
+  SDL_Point point;
+  point.x = x;
+  point.y = y;
+  return point;
+}
+
 // Vector2i //
 
 
@@ -173,6 +191,14 @@ Vector2i::Vector2i(const Vector2 &vector2): x(vector2.x),
 
 Vector2i::Vector2i(const Vector2i &vector2i): x(vector2i.x),
   y(vector2i.y)
+{}
+
+Vector2i::Vector2i(const SDL_FPoint &fpoint): x(fpoint.x),
+  y(fpoint.y)
+{}
+
+Vector2i::Vector2i(const SDL_Point &point): x(point.x),
+  y(point.y)
 {}
 
 void Vector2i::operator=(const Vector2i &right) {
@@ -276,4 +302,18 @@ Vector2i Vector2i::operator-() const {
 
 std::string Vector2i::to_string() const {
   return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
+}
+
+SDL_FPoint Vector2i::to_sdl_fpoint() const {
+  SDL_FPoint fpoint;
+  fpoint.x = x;
+  fpoint.y = y;
+  return fpoint;
+}
+
+SDL_Point Vector2i::to_sdl_point() const {
+  SDL_Point point;
+  point.x = x;
+  point.y = y;
+  return point;
 }

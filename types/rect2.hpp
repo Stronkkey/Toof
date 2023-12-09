@@ -3,8 +3,6 @@
 
 #include <types/vector2.hpp>
 
-#include <SDL2/SDL_rect.h>
-
 namespace sdl {
 
 struct Rect2i;
@@ -21,6 +19,7 @@ struct Rect2 {
   Rect2(const Rect2 &rect);
   Rect2(const Rect2i &rect);
   Rect2(const SDL_Rect &rect);
+  Rect2(const SDL_FRect &frect);
 
   void operator=(const Rect2 &right);
   bool operator==(const Rect2 &right) const;
@@ -61,9 +60,11 @@ struct Rect2 {
   void set_size(const Vector2 &new_size);
 
   SDL_Rect to_sdl_rect() const;
+  SDL_FRect to_sdl_frect() const;
 
   static const Rect2 EMPTY;
   static SDL_Rect to_sdl_rect(const Rect2 &rect2);
+  static SDL_FRect to_sdl_frect(const Rect2 &rect);
 };
 
 struct Rect2i {
@@ -78,6 +79,7 @@ struct Rect2i {
   Rect2i(const Rect2 &rect);
   Rect2i(const Rect2i &rect);
   Rect2i(const SDL_Rect &rect);
+  Rect2i(const SDL_FRect &frect);
 
   void operator=(const Rect2i &right);
   bool operator==(const Rect2i &right) const;
@@ -118,9 +120,11 @@ struct Rect2i {
   void set_size(const Vector2i &new_size);
 
   SDL_Rect to_sdl_rect() const;
+  SDL_FRect to_sdl_frect() const;
 
   static const Rect2i EMPTY;
   static SDL_Rect to_sdl_rect(const Rect2i &rect2i);
+  static SDL_FRect to_sdl_frect(const Rect2i &rect2i);
 };
 
 }

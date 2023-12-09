@@ -1,23 +1,34 @@
+#include <SDL_render.h>
 #include <rendering/rendering_server.hpp>
 
 using namespace sdl;
 
-Rect2 CanvasItem::get_global_destination() const {
-  Rect2 absolute_destination = destination;
+Transform2D CanvasItem::get_global_transform() const {
+  Transform2D absolute_transform = transform;
   std::shared_ptr<CanvasItem> parent_canvas_item = parent;
 
   if (!parent_canvas_item)
-    return destination;
+    return absolute_transform;
 
   while (parent_canvas_item) {
-    Vector2 new_position = absolute_destination.get_position() + parent_canvas_item->destination.get_position();
-    Vector2 new_scale = absolute_destination.get_size() * parent_canvas_item->destination.get_size();
+    Vector2 new_position = absolute_transform.origin + parent_canvas_item->transform.origin;
+    Vector2 new_scale = absolute_transform.scale * parent_canvas_item->transform.scale;
+    double new_rotation = absolute_transform.rotation + parent_canvas_item->transform.rotation;
 
-    absolute_destination = Rect2(new_position, new_scale);
+    absolute_transform = Transform2D(new_rotation, new_position, new_scale);
     parent_canvas_item = parent_canvas_item->parent;
   }
 
-  return absolute_destination;
+  return absolute_transform;
+}
+
+void LineDrawingItem::draw(SDL_Renderer *renderer) {
+  SDL_RenderDrawLineF(renderer, rect.x, rect.y, rect.x, rect.y);
+}
+
+void RectDrawingItem::draw(SDL_Renderer *renderer) {
+  SDL_FRect frect = rect.to_sdl_frect();
+  SDL_RenderDrawRectF(renderer, &frect);
 }
 
 RenderingServer::RenderingServer(): renderer(nullptr) {
@@ -85,14 +96,23 @@ void RenderingServer::render_canvas_item(const std::shared_ptr<CanvasItem> canva
     if (!texture.texture_reference)
       continue;
 
+    Transform2D global_transform = canvas_item->get_global_transform();
+
     Rect2 src_region = texture.src_region.to_sdl_rect();
-    Rect2 global_destination = canvas_item->get_global_destination();
-    Rect2 destination = Rect2(global_destination.get_position(), global_destination.get_size() * src_region.get_size());
+    Rect2 destination = Rect2(global_transform.origin, global_transform.scale * src_region.get_size());
 
     SDL_Rect final_src_region = src_region.to_sdl_rect();
-    SDL_Rect final_destination = destination.to_sdl_rect();
-    SDL_RenderCopy(renderer, texture.texture_reference, &final_src_region, &final_destination);
+    SDL_FRect final_destination = destination.to_sdl_frect();
+    SDL_Texture *texture_reference = texture.texture_reference;
+    SDL_FPoint offset = (texture.offset + (destination.get_position() / 2.0)).to_sdl_fpoint();
+    double rotation = global_transform.rotation;
+
+    SDL_RenderCopyExF(renderer, texture_reference, &final_src_region, &final_destination, rotation, &offset, texture.flip);
+
   }
+
+  for (DrawingItem drawing_item: canvas_item->drawing_items)
+    drawing_item.draw(renderer);
 }
 
 uid RenderingServer::load_texture_from_path(const std::string &path) {
@@ -148,10 +168,10 @@ void RenderingServer::canvas_item_add_texture_region(const uid &texture_uid, con
   }
 }
 
-void RenderingServer::canvas_item_set_destination(const uid &canvas_item_uid, const Rect2 &new_destination) {
+void RenderingServer::canvas_item_set_transform(const uid &canvas_item_uid, const Transform2D &new_transform) {
   std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
   if (canvas_item)
-    canvas_item->destination = new_destination;
+    canvas_item->transform = new_transform;
 }
 
 void RenderingServer::canvas_item_set_parent(const uid &canvas_item_uid, const uid &parent_item_uid) {
@@ -171,14 +191,15 @@ void RenderingServer::canvas_item_clear(const uid &canvas_item_uid) {
     return;
 
   canvas_item_iterator->second->textures.clear();
+  canvas_item_iterator->second->drawing_items.clear();
 }
 
-Rect2 RenderingServer::canvas_item_get_destination(const uid &canvas_item_uid) const {
+Transform2D RenderingServer::canvas_item_get_transform(const uid &canvas_item_uid) const {
   std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-  return canvas_item ? canvas_item->destination : Rect2::EMPTY;
+  return canvas_item ? canvas_item->transform : Transform2D::IDENTITY;
 }
 
-Rect2 RenderingServer::canvas_item_get_global_destination(const uid &canvas_item_uid) const {
+Transform2D RenderingServer::canvas_item_get_global_transform(const uid &canvas_item_uid) const {
   std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-  return canvas_item ? canvas_item->get_global_destination() : Rect2::EMPTY;
+  return canvas_item ? canvas_item->get_global_transform() : Transform2D::IDENTITY;
 }

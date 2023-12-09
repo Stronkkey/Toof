@@ -42,6 +42,12 @@ Rect2::Rect2(const SDL_Rect &rect): x(rect.x),
   h(rect.h)
 {}
 
+Rect2::Rect2(const SDL_FRect &frect): x(frect.x),
+  y(frect.y),
+  w(frect.w),
+  h(frect.h)
+{}
+
 void Rect2::operator=(const Rect2 &right) {
   x = right.x;
   y = right.y;
@@ -192,8 +198,26 @@ SDL_Rect Rect2::to_sdl_rect() const {
   return rect;
 }
 
+SDL_FRect Rect2::to_sdl_frect() const {
+  SDL_FRect rect;
+  rect.x = x;
+  rect.y = y;
+  rect.w = w;
+  rect.h = h;
+  return rect;
+}
+
 SDL_Rect Rect2::to_sdl_rect(const Rect2 &rect2) {
   SDL_Rect rect;
+  rect.x = rect2.x;
+  rect.y = rect2.y;
+  rect.w = rect2.w;
+  rect.h = rect2.h;
+  return rect;
+}
+
+SDL_FRect Rect2::to_sdl_frect(const Rect2 &rect2) {
+  SDL_FRect rect;
   rect.x = rect2.x;
   rect.y = rect2.y;
   rect.w = rect2.w;
@@ -237,6 +261,12 @@ Rect2i::Rect2i(const SDL_Rect &rect): x(rect.x),
   y(rect.y),
   w(rect.w),
   h(rect.h)
+{}
+
+Rect2i::Rect2i(const SDL_FRect &frect): x(frect.x),
+  y(frect.y),
+  w(frect.w),
+  h(frect.h)
 {}
 
 void Rect2i::operator=(const Rect2i &right) {
@@ -381,6 +411,15 @@ SDL_Rect Rect2i::to_sdl_rect() const {
   return rect;
 }
 
+SDL_FRect Rect2i::to_sdl_frect() const {
+  SDL_FRect frect;
+  frect.x = x;
+  frect.y = y;
+  frect.w = w;
+  frect.h = h;
+  return frect;
+}
+
 SDL_Rect Rect2i::to_sdl_rect(const Rect2i &rect2i) {
   SDL_Rect rect;
   rect.x = rect2i.x;
@@ -388,4 +427,13 @@ SDL_Rect Rect2i::to_sdl_rect(const Rect2i &rect2i) {
   rect.w = rect2i.w;
   rect.h = rect2i.h;
   return rect;
+}
+
+SDL_FRect Rect2i::to_sdl_frect(const Rect2i &rect2i) {
+  SDL_FRect frect;
+  frect.x = rect2i.x;
+  frect.y = rect2i.y;
+  frect.w = rect2i.w;
+  frect.h = rect2i.h;
+  return frect;
 }

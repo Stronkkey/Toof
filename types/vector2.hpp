@@ -4,6 +4,7 @@
 #include <types/math_defs.hpp>
 
 #include <string>
+#include <SDL_rect.h>
 
 namespace sdl {
 
@@ -17,6 +18,8 @@ struct Vector2 {
   Vector2(const real_t new_x, const real_t new_y);
   Vector2(const Vector2 &vector2);
   Vector2(const Vector2i &vector2i);
+  Vector2(const SDL_FPoint &fpoint);
+  Vector2(const SDL_Point &point);
 
   void operator=(const Vector2 &right);
   bool operator==(const Vector2 &right) const;
@@ -35,7 +38,6 @@ struct Vector2 {
 
   Vector2 operator/(const Vector2 &right) const;
   Vector2 operator/(const real_t right) const;
-  Vector2 operator/(const int_t right) const;
 
   void operator+=(const Vector2 &right);
   void operator-=(const Vector2 &right);
@@ -55,6 +57,8 @@ struct Vector2 {
   Vector2 normalized() const;
 
   std::string to_string() const;
+  SDL_FPoint to_sdl_fpoint() const;
+  SDL_Point to_sdl_point() const;
 
   static const Vector2 ONE;
   static const Vector2 ZERO;
@@ -72,6 +76,8 @@ struct Vector2i {
   Vector2i(const int_t new_x, const int_t new_y);
   Vector2i(const Vector2 &vector2);
   Vector2i(const Vector2i &vector2i);
+  Vector2i(const SDL_FPoint &fpoint);
+  Vector2i(const SDL_Point &point);
 
   void operator=(const Vector2i &right);
   bool operator==(const Vector2i &right) const;
@@ -105,6 +111,8 @@ struct Vector2i {
   Vector2i operator+() const;
   
   std::string to_string() const;
+  SDL_FPoint to_sdl_fpoint() const;
+  SDL_Point to_sdl_point() const;
 
   static const Vector2i ONE;
   static const Vector2i ZERO;

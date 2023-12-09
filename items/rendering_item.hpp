@@ -8,8 +8,7 @@ namespace sdl {
 class RenderingItem : public Item {
 
 protected:
-  Vector2 position;
-  Vector2 scale;
+  Transform2D transform;
   uid canvas_item;
 
   RenderingServer *get_rendering_server() const;
@@ -33,8 +32,11 @@ public:
   void set_global_scale(const Vector2 &new_global_scale);
   Vector2 get_global_scale() const;
 
-  void set_global_destination(const Rect2 &new_global_destination);
-  Rect2 get_global_destination() const;
+  void set_transform(const Transform2D &new_transform);
+  Transform2D get_transform() const;
+
+  void set_global_transform(const Transform2D &new_global_transform);
+  Transform2D get_global_transform() const;
 };
 
 }

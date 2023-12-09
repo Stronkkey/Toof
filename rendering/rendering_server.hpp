@@ -1,6 +1,7 @@
 #ifndef RENDERING_SERVER
 #define RENDERING_SERVER
 
+#include <types/transform2d.hpp>
 #include <types/rect2.hpp>
 #include <types/uid.hpp>
 
@@ -10,17 +11,34 @@
 
 namespace sdl {
 
+struct DrawingItem {
+  virtual void draw(SDL_Renderer*) {}
+};
+
 struct Texture {
   SDL_Texture *texture_reference;
   Rect2i src_region;
+  Vector2 offset;
+  SDL_RendererFlip flip;
 };
 
 struct CanvasItem {
+  Transform2D transform = Transform2D::IDENTITY;
   std::shared_ptr<CanvasItem> parent;
-  Rect2 destination = Rect2(0, 0, 1, 1);
   std::vector<Texture> textures;
+  std::vector<DrawingItem> drawing_items;
 
-  Rect2 get_global_destination() const;
+  Transform2D get_global_transform() const;
+};
+
+struct LineDrawingItem: public DrawingItem {
+  Rect2 rect;
+  void draw(SDL_Renderer *renderer) override;
+};
+
+struct RectDrawingItem: public DrawingItem {
+  Rect2 rect;
+  void draw(SDL_Renderer *renderer) override;
 };
 
 class RenderingServer {
@@ -56,12 +74,12 @@ public:
 
   void canvas_item_add_texture(const uid &texture_uid, const uid &canvas_item_uid);
   void canvas_item_add_texture_region(const uid &texture_uid, const uid &canvas_item_uid, const Rect2i &src_region);
-  void canvas_item_set_destination(const uid &canvas_item_uid, const Rect2 &new_destination);
+  void canvas_item_set_transform(const uid &canvas_item_uid, const Transform2D &new_transform);
   void canvas_item_set_parent(const uid &canvas_item_uid, const uid &parent_item_uid);
   void canvas_item_clear(const uid &canvas_item_uid);
 
-  Rect2 canvas_item_get_destination(const uid &canvas_item_uid) const;
-  Rect2 canvas_item_get_global_destination(const uid &canvas_item_uid) const;
+  Transform2D canvas_item_get_transform(const uid &canvas_item_uid) const;
+  Transform2D canvas_item_get_global_transform(const uid &canvas_item_uid) const;
 };
 }
 
