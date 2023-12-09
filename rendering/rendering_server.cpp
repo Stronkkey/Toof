@@ -145,9 +145,29 @@ void RenderingServer::texture_set_source_region(const uid &texture_uid, const Re
   texture.src_region = src_region;
 }
 
+void RenderingServer::texture_set_offset(const uid &texture_uid, const Vector2 &offset) {
+  Texture texture = get_texture_from_uid(texture_uid);
+  texture.offset = offset;
+}
+
+void RenderingServer::texture_set_flip(const uid &texture_uid, const SDL_RendererFlip flip) {
+  Texture texture = get_texture_from_uid(texture_uid);
+  texture.flip = flip;
+}
+
 Rect2i RenderingServer::texture_get_source_region(const uid &texture_uid) const {
   Texture texture = get_texture_from_uid(texture_uid);
   return texture.src_region;
+}
+
+Vector2 RenderingServer::texture_get_offset(const uid &texture_uid) const {
+  Texture texture = get_texture_from_uid(texture_uid);
+  return texture.offset;
+}
+
+SDL_RendererFlip RenderingServer::texture_get_flip(const uid &texture_uid) const {
+  Texture texture = get_texture_from_uid(texture_uid);
+  return texture.flip;
 }
 
 void RenderingServer::canvas_item_add_texture(const uid &texture_uid, const uid &canvas_item_uid) {

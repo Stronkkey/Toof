@@ -41,6 +41,7 @@ struct RectDrawingItem: public DrawingItem {
   void draw(SDL_Renderer *renderer) override;
 };
 
+
 class RenderingServer {
 
 private:
@@ -69,8 +70,12 @@ public:
   uid create_canvas_item();
 
   void texture_set_source_region(const uid &texture_uid, const Rect2i &src_region);
+  void texture_set_offset(const uid &texture_uid, const Vector2 &offset);
+  void texture_set_flip(const uid &texture_uid, const SDL_RendererFlip new_flip);
 
   Rect2i texture_get_source_region(const uid &texture_uid) const;
+  Vector2 texture_get_offset(const uid &texture_uid) const;
+  SDL_RendererFlip texture_get_flip(const uid &texture_uid) const;
 
   void canvas_item_add_texture(const uid &texture_uid, const uid &canvas_item_uid);
   void canvas_item_add_texture_region(const uid &texture_uid, const uid &canvas_item_uid, const Rect2i &src_region);
