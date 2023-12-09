@@ -19,22 +19,25 @@ RenderingItem::~RenderingItem() {
 
 RenderingServer *RenderingItem::get_rendering_server() const {
   Window *window = get_tree() ? get_tree()->get_window() : nullptr;
-  return window ? window->rendering_server : nullptr;
+  if (window)
+    return window->rendering_server;
+  return nullptr;
 }
 
 void RenderingItem::update() {
   RenderingServer *rendering_server = get_rendering_server();
+
   if (rendering_server)
     rendering_server->canvas_item_set_transform(canvas_item, transform); 
 }
 
 void RenderingItem::on_parent_changed(Item *new_parent) {
   RenderingServer *rendering_server = get_rendering_server();
+
   if (!rendering_server)
     return;
 
   RenderingItem *rendering_item = dynamic_cast<RenderingItem*>(new_parent);
-
   if (rendering_item)
     rendering_server->canvas_item_set_parent(canvas_item, rendering_item->get_canvas_item());
   else
@@ -63,20 +66,38 @@ Vector2 RenderingItem::get_scale() const {
   return transform.scale;
 }
 
+void RenderingItem::set_rotation(const double new_rotation) {
+  transform.rotation = new_rotation;
+  update();
+}
+
+double RenderingItem::get_rotation() const {
+  return transform.rotation;
+}
+
 void RenderingItem::set_global_position(const Vector2 &new_global_position) {
   RenderingServer *rendering_server = get_rendering_server();
-  Vector2 global_position = rendering_server ? rendering_server->canvas_item_get_global_transform(canvas_item).origin : transform.origin;
+  
+  Vector2 global_position = transform.origin;
+  if (rendering_server)
+    global_position = rendering_server->canvas_item_get_global_transform(canvas_item).origin;
   set_position(-Vector2(global_position - new_global_position));
 }
 
 Vector2 RenderingItem::get_global_position() const {
   RenderingServer *rendering_server = get_rendering_server();
-  return rendering_server ? rendering_server->canvas_item_get_global_transform(canvas_item).origin : transform.origin;
+
+  if (rendering_server)
+    return rendering_server->canvas_item_get_transform(canvas_item).origin;
+  return transform.origin;
 }
 
 void RenderingItem::set_global_scale(const Vector2 &new_global_scale) {
   RenderingServer *rendering_server = get_rendering_server();
-  Vector2 global_scale = rendering_server ? rendering_server->canvas_item_get_global_transform(canvas_item).scale : transform.scale;
+
+  Vector2 global_scale = transform.scale;
+  if (rendering_server)
+    global_scale = rendering_server->canvas_item_get_global_transform(canvas_item).scale;
   set_scale(-Vector2(global_scale - new_global_scale));
 }
 
@@ -86,6 +107,23 @@ Vector2 RenderingItem::get_global_scale() const {
   if (rendering_server)
     return rendering_server->canvas_item_get_global_transform(canvas_item).scale;
   return transform.scale;
+}
+
+void RenderingItem::set_global_rotation(const double new_global_rotation) {
+  RenderingServer *rendering_server = get_rendering_server();
+
+  double global_rotation = transform.rotation;
+  if (rendering_server)
+    global_rotation = rendering_server->canvas_item_get_global_transform(canvas_item).rotation;
+  set_rotation(-(global_rotation - new_global_rotation));
+}
+
+double RenderingItem::get_global_rotation() const {
+  RenderingServer *rendering_server = get_rendering_server();
+
+  if (rendering_server)
+    return rendering_server->canvas_item_get_global_transform(canvas_item).rotation;
+  return transform.rotation;
 }
 
 void RenderingItem::set_global_transform(const Transform2D &new_global_transform) {

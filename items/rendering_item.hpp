@@ -26,11 +26,17 @@ public:
   void set_scale(const Vector2 &new_scale);
   Vector2 get_scale() const;
 
+  void set_rotation(const double new_rotation);
+  double get_rotation() const;
+
   void set_global_position(const Vector2 &new_global_position);
   Vector2 get_global_position() const;
 
   void set_global_scale(const Vector2 &new_global_scale);
   Vector2 get_global_scale() const;
+
+  void set_global_rotation(const double new_global_rotation);
+  double get_global_rotation() const;
 
   void set_transform(const Transform2D &new_transform);
   Transform2D get_transform() const;
