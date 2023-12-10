@@ -10,6 +10,7 @@ project_description = 'Simple wrapper for sdl2'
 project_headers = [
   'rendering/rendering_server.hpp',
   'rendering/window.hpp',
+  'rendering/canvas_item.hpp',
   'items/tree.cpp',
   'items/item.hpp',
   'items/rendering_item.hpp',
@@ -25,6 +26,7 @@ project_headers = [
 project_source_files = [
   'rendering/rendering_server.cpp',
   'rendering/window.cpp',
+  'rendering/canvas_item.cpp',
   'items/tree.cpp',
   'items/item.cpp',
   'items/rendering_item.cpp',
