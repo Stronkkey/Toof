@@ -14,6 +14,12 @@ Color::Color(const Color &from, const uint16_t alpha): r(from.r),
   a(alpha)
 {}
 
+Color::Color(const Color &from): r(from.r),
+  g(from.g),
+  b(from.b),
+  a(from.a)
+{}
+
 Color::Color(const uint16_t red, const uint16_t green, const uint16_t blue): r(red),
   g(green),
   b(blue)
