@@ -2,10 +2,17 @@
 
 using namespace sdl;
 
+const Color Color::BLACK = Color(0, 0, 0, 255);
+const Color Color::WHITE = Color(255, 255, 255, 255);
+const Color Color::TRANSPARENT = Color(0, 0, 0, 0);
+const Color Color::RED = Color(255, 0, 0, 255);
+const Color Color::GREEN = Color(0, 255, 0, 255);
+const Color Color::BLUE = Color(0, 0, 255, 255);
+
 Color::Color(): r(0),
   g(0),
   b(0),
-  a(1)
+  a(255)
 {}
 
 Color::Color(const Color &from, const uint16_t alpha): r(from.r),
@@ -22,7 +29,8 @@ Color::Color(const Color &from): r(from.r),
 
 Color::Color(const uint16_t red, const uint16_t green, const uint16_t blue): r(red),
   g(green),
-  b(blue)
+  b(blue),
+  a(255)
 {}
 
 Color::Color(const uint16_t red, const uint16_t green, const uint16_t blue, const uint16_t alpha): r(red),

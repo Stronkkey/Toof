@@ -48,6 +48,13 @@ struct Color {
   Color operator+() const;
   Color operator-() const;
   uint16_t operator[](const int index) const;
+
+  static const Color WHITE;
+  static const Color BLACK;
+  static const Color TRANSPARENT;
+  static const Color RED;
+  static const Color GREEN;
+  static const Color BLUE;
 };
 
 typedef Color Colour;
