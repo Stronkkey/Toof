@@ -155,13 +155,8 @@ SDL_Color Color::to_sdl_color() const {
   return color;
 }
 
-SDL_Color Color::to_sdl_color(const Color &color) {
-  SDL_Color sdl_color;
-  sdl_color.a = color.a;
-  sdl_color.r = color.r;
-  sdl_color.b = color.b;
-  sdl_color.g = color.g;
-  return sdl_color;
+std::string Color::to_string() const {
+  return "(" + std::to_string(r) + ", " + std::to_string(g) + ", " + std::to_string(b) + ", " + std::to_string(a) + ")";
 }
 
 uint16_t Color::operator[](const int index) const {

@@ -1,6 +1,7 @@
 #ifndef COLOR
 #define COLOR
 
+#include <string>
 #include <types/math_defs.hpp>
 
 #include <SDL_pixels.h>
@@ -41,7 +42,8 @@ struct Color {
   void operator/=(const float right);
 
   SDL_Color to_sdl_color() const;
-  static SDL_Color to_sdl_color(const Color &color);
+
+  std::string to_string() const;
 
   Color operator+() const;
   Color operator-() const;
