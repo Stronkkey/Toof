@@ -68,6 +68,18 @@ void RenderingServer::render_canvas_item(const std::shared_ptr<CanvasItem> &canv
     drawing_item->draw(renderer);
 }
 
+RenderingServer::TextureInfo RenderingServer::get_texture_info_from_uid(const uid &texture_uid) const {
+  auto iterator = textures.find(texture_uid);
+  TextureInfo texture_info;
+
+  if (iterator == textures.end())
+    return texture_info;
+
+  texture_info.size = iterator->second->size;
+  texture_info.format = iterator->second->format;
+  return texture_info;
+}
+
 uid RenderingServer::load_texture_from_path(const std::string &path) {
   SDL_Texture *texture = IMG_LoadTexture(renderer, path.c_str());
 

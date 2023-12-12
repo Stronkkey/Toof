@@ -4,23 +4,23 @@ using namespace sdl;
 
 void SpriteItem::update_texture() {
   RenderingServer *rendering_server = get_rendering_server();
-
-  if (!rendering_server)
+  if (!rendering_server || !texture)
     return;
+
   rendering_server->canvas_item_clear(canvas_item);
 
   if (texture_region == Rect2i::EMPTY)
-    rendering_server->canvas_item_add_texture(texture, canvas_item, texture_transform, flip);
+    rendering_server->canvas_item_add_texture(texture->get_uid(), canvas_item, texture_transform, flip);
   else
-    rendering_server->canvas_item_add_texture_region(texture, canvas_item, texture_region, texture_transform, flip);
+    rendering_server->canvas_item_add_texture_region(texture->get_uid(), canvas_item, texture_region, texture_transform, flip);
 }
 
-void SpriteItem::set_texture(const uid &new_texture) {
+void SpriteItem::set_texture(const std::shared_ptr<Texture2D> &new_texture) {
   texture = new_texture;
   update_texture();
 }
 
-uid SpriteItem::get_texture() const {
+std::shared_ptr<Texture2D> SpriteItem::get_texture() const {
   return texture;
 }
 

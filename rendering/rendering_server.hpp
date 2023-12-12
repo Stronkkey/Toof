@@ -31,6 +31,12 @@ private:
   std::shared_ptr<Texture> get_texture_from_uid(const uid &uid) const;
 
 public:
+  struct TextureInfo {
+    Vector2i size;
+    uint32_t format;
+  };
+
+public:
   RenderingServer();
   RenderingServer(SDL_Renderer *new_renderer);
   ~RenderingServer();
@@ -40,6 +46,8 @@ public:
 
   uid load_texture_from_path(const std::string &path);
   uid create_canvas_item();
+
+  TextureInfo get_texture_info_from_uid(const uid &texture_uid) const;
 
   void canvas_item_add_texture(const uid &texture_uid,
     const uid &canvas_item_uid,
