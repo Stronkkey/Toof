@@ -2,13 +2,14 @@
 #define SPRITE_ITEM
 
 #include <items/rendering_item.hpp>
+#include <rendering/texture.hpp>
 
 namespace sdl {
 
 class SpriteItem : public RenderingItem {
 
 private:
-  uid texture;
+  std::shared_ptr<Texture2D> texture;
   Rect2i texture_region;
   Transform2D texture_transform;
   SDL_RendererFlip flip;
@@ -16,8 +17,8 @@ private:
   void update_texture();
 
 public:
-  void set_texture(const uid &new_texture);
-  uid get_texture() const;
+  void set_texture(const std::shared_ptr<Texture2D> &new_texture);
+  std::shared_ptr<Texture2D> get_texture() const;
 
   void set_texture_region(const Rect2i &new_texture_region);
   Rect2i get_texture_region() const;

@@ -1,23 +1,15 @@
 #ifndef CANVAS_ITEM
 #define CANVAS_ITEM
 
-#include <types/transform2d.hpp>
-#include <types/rect2.hpp>
+#include <rendering/texture.hpp>
 
 #include <SDL_render.h>
 
-#include <memory>
 #include <vector>
 
 namespace sdl {
 
-struct DrawingItem;
-
-struct Texture {
-  SDL_Texture *texture_reference;
-  Vector2i size;
-  uint32_t format;
-};
+class DrawingItem;
 
 struct CanvasItem {
   Transform2D transform = Transform2D::IDENTITY;
@@ -29,13 +21,15 @@ struct CanvasItem {
 
 // DrawingItem
 
-struct DrawingItem {
+class DrawingItem {
+public:
   std::shared_ptr<CanvasItem> canvas_item;
 
   virtual void draw(SDL_Renderer*) {}
 };
 
-struct TextureRectDrawingItem: public DrawingItem {
+class TextureRectDrawingItem: public DrawingItem {
+public:
   std::shared_ptr<Texture> texture;
   Rect2i src_region;
   Transform2D transform;
@@ -44,7 +38,8 @@ struct TextureRectDrawingItem: public DrawingItem {
   void draw(SDL_Renderer *renderer) override;
 };
 
-struct TextureDrawingItem: public DrawingItem {
+class TextureDrawingItem: public DrawingItem {
+public:
   std::shared_ptr<Texture> texture;
   Transform2D transform;
   SDL_RendererFlip flip;
