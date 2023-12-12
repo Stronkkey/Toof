@@ -109,13 +109,17 @@ uid RenderingServer::create_canvas_item() {
   return new_uid;
 }
 
-void RenderingServer::canvas_item_add_texture(const uid &texture_uid,
-  const uid &canvas_item_uid,
-  const Transform2D &transform,
-  const SDL_RendererFlip flip)
-{
-  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-  std::shared_ptr<Texture> texture = get_texture_from_uid(texture_uid);
+void RenderingServer::canvas_item_add_texture(const CanvasItemTexture &canvas_item_texture) {
+  if (!canvas_item_texture.valid())
+    return;
+
+  uid *canvas_item_uid = canvas_item_texture.canvas_item_uid;
+  uid *texture_uid = canvas_item_texture.texture_uid;
+  Transform2D *transform = canvas_item_texture.transform;
+  SDL_RendererFlip flip = canvas_item_texture.flip;
+
+  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(*canvas_item_uid);
+  std::shared_ptr<Texture> texture = get_texture_from_uid(*texture_uid);
 
   if (canvas_item && texture) {
     auto texture_drawing_item = std::make_shared<TextureDrawingItem>();
@@ -123,28 +127,33 @@ void RenderingServer::canvas_item_add_texture(const uid &texture_uid,
 
     texture_drawing_item->texture = texture;
     texture_drawing_item->flip = flip;
-    texture_drawing_item->transform = transform;
+    texture_drawing_item->transform = *transform;
 
     canvas_item->drawing_items.push_back(texture_drawing_item);
   }
 }
 
-void RenderingServer::canvas_item_add_texture_region(const uid &texture_uid,
-  const uid &canvas_item_uid,
-  const Rect2i &src_region,
-  const Transform2D &transform,
-  const SDL_RendererFlip flip)
-{
-  std::shared_ptr<Texture> texture = get_texture_from_uid(texture_uid);
-  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+void RenderingServer::canvas_item_add_texture_region(const CanvasItemRectTexture &canvas_item_rect_texture) {
+  if (!canvas_item_rect_texture.valid())
+    return;
+
+  uid *texture_uid = canvas_item_rect_texture.texture_uid;
+  uid *canvas_item_uid = canvas_item_rect_texture.canvas_item_uid;
+  Rect2i *src_region = canvas_item_rect_texture.src_region;
+  Transform2D *transform = canvas_item_rect_texture.transform;
+
+  SDL_RendererFlip flip = canvas_item_rect_texture.flip;
+
+  std::shared_ptr<Texture> texture = get_texture_from_uid(*texture_uid);
+  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(*canvas_item_uid);
 
   if (canvas_item && texture) {
     auto texture_rect_drawing_item = std::make_shared<TextureRectDrawingItem>();
     texture_rect_drawing_item->canvas_item = canvas_item;
 
     texture_rect_drawing_item->texture = texture;
-    texture_rect_drawing_item->src_region = src_region;
-    texture_rect_drawing_item->transform = transform;
+    texture_rect_drawing_item->src_region = *src_region;
+    texture_rect_drawing_item->transform = *transform;
     texture_rect_drawing_item->flip = flip;
     
     canvas_item->drawing_items.push_back(texture_rect_drawing_item);

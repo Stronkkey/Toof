@@ -20,16 +20,18 @@ Vector2i UidTexture::get_size() const {
   return rendering_server->get_texture_info_from_uid(texture_uid).size;
 }
 
-void UidTexture::draw(const DrawOperation &draw_operation) const {
-  if (!rendering_server || !draw_operation.can_draw())
+void UidTexture::draw(const RenderingServer::CanvasItemTexture &draw_operation) const {
+  if (!rendering_server)
     return;
-  rendering_server->canvas_item_add_texture(texture_uid, *draw_operation.canvas_item, *draw_operation.transform, draw_operation.flip);
+
+  rendering_server->canvas_item_add_texture(draw_operation);
 }
 
-void UidTexture::draw_region(const RectDrawOperation &rect_draw_operation) const {
-  if (!rendering_server || !rect_draw_operation.can_draw())
+void UidTexture::draw_region(const RenderingServer::CanvasItemRectTexture &rect_draw_operation) const {
+  if (!rendering_server)
     return;
-  rendering_server->canvas_item_add_texture_region(texture_uid, *rect_draw_operation.canvas_item, *rect_draw_operation.src_region);
+
+  rendering_server->canvas_item_add_texture_region(rect_draw_operation);
 }
 
 void UidTexture::load_from_path(const std::string &file_path) {

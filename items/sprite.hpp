@@ -8,12 +8,14 @@ namespace sdl {
 
 class SpriteItem : public RenderingItem {
 
-private:
+protected:
   std::shared_ptr<Texture2D> texture;
   Rect2i texture_region;
   Transform2D texture_transform;
   SDL_RendererFlip flip;
 
+  void draw_texture();
+  void draw_rect_texture();
   void update_texture();
 
 public:

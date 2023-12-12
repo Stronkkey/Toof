@@ -2,17 +2,41 @@
 
 using namespace sdl;
 
+void SpriteItem::draw_texture() {
+  RenderingServer::CanvasItemTexture canvas_item_texture;
+  uid texture_uid = texture->get_uid();
+
+  canvas_item_texture.canvas_item_uid = &canvas_item;
+  canvas_item_texture.texture_uid = &texture_uid;
+  canvas_item_texture.flip = flip;
+  canvas_item_texture.transform = &texture_transform;
+
+  get_rendering_server()->canvas_item_add_texture(canvas_item_texture);
+}
+
+void SpriteItem::draw_rect_texture() {
+  RenderingServer::CanvasItemRectTexture canvas_item_rect_texture;
+  uid texture_uid = texture->get_uid();
+
+  canvas_item_rect_texture.canvas_item_uid = &canvas_item;
+  canvas_item_rect_texture.texture_uid = &texture_uid;
+  canvas_item_rect_texture.flip = flip;
+  canvas_item_rect_texture.src_region = &texture_region;
+  canvas_item_rect_texture.transform = &texture_transform;
+
+  get_rendering_server()->canvas_item_add_texture_region(canvas_item_rect_texture);
+}
+
 void SpriteItem::update_texture() {
   RenderingServer *rendering_server = get_rendering_server();
   if (!rendering_server || !texture)
     return;
 
   rendering_server->canvas_item_clear(canvas_item);
-
   if (texture_region == Rect2i::EMPTY)
-    rendering_server->canvas_item_add_texture(texture->get_uid(), canvas_item, texture_transform, flip);
+    draw_texture();
   else
-    rendering_server->canvas_item_add_texture_region(texture->get_uid(), canvas_item, texture_region, texture_transform, flip);
+    draw_rect_texture();
 }
 
 void SpriteItem::set_texture(const std::shared_ptr<Texture2D> &new_texture) {
