@@ -70,10 +70,10 @@ bool Color::operator==(const Color &right) const {
 
 Color Color::operator*(const Color &right) const {
   Color multiplied_color = *this;
-  multiplied_color.r *= right.r;
-  multiplied_color.g *= right.g;
-  multiplied_color.b *= right.b;
-  multiplied_color.a *= right.a;
+  multiplied_color.r *= (right.r / 255);
+  multiplied_color.g *= (right.g / 255);
+  multiplied_color.b *= (right.b / 255);
+  multiplied_color.a *= (right.a / 255);
   return multiplied_color;
 }
 
