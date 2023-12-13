@@ -5,6 +5,9 @@
 
 namespace sdl {
 
+const double PI = 3.1415926535897;
+const double TAU = PI * 2.0;
+
 #ifdef REAL_T_IS_DOUBLE
 typedef double real_t;
 #else
