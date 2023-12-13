@@ -214,3 +214,29 @@ Transform2D RenderingServer::canvas_item_get_global_transform(const uid &canvas_
   std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
   return canvas_item ? canvas_item->get_global_transform() : Transform2D::IDENTITY;
 }
+
+Color RenderingServer::canvas_item_get_modulate(const uid &canvas_item_uid) const {
+  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+  return canvas_item ? canvas_item->modulate : Color::WHITE;
+}
+
+Color RenderingServer::canvas_item_get_global_modulate(const uid &canvas_item_uid) const {
+  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+  return canvas_item ? canvas_item->get_absolute_modulate() : Color::WHITE;
+}
+
+bool RenderingServer::canvas_item_is_visible(const uid &canvas_item_uid) const {
+  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+  return canvas_item ? canvas_item->visible : true;
+}
+
+void RenderingServer::canvas_item_set_visible(const uid &canvas_item_uid, const bool visible) {
+  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+  if (canvas_item)
+    canvas_item->visible = visible;
+}
+
+bool RenderingServer::canvas_item_is_globally_visible(const uid &canvas_item_uid) const {
+  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+  return canvas_item ? canvas_item->is_visible() : true;
+}

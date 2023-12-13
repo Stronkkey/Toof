@@ -31,6 +31,7 @@ void RenderingItem::update() {
     rendering_server->canvas_item_set_transform(canvas_item, transform);
     rendering_server->canvas_item_set_modulate(canvas_item, modulate);
     rendering_server->canvas_item_set_blend_mode(canvas_item, blend_mode);
+    rendering_server->canvas_item_set_visible(canvas_item, visible);
   }
 }
 
@@ -151,6 +152,11 @@ Color RenderingItem::get_modulate() const {
   return modulate;
 }
 
+Color RenderingItem::get_absolute_modulate() const {
+  RenderingServer *rendering_server = get_rendering_server();
+  return rendering_server ? rendering_server->canvas_item_get_global_modulate(canvas_item) : modulate;
+}
+
 void RenderingItem::set_blend_mode(const SDL_BlendMode new_blend_mode) {
   blend_mode = new_blend_mode;
   update();
@@ -158,4 +164,18 @@ void RenderingItem::set_blend_mode(const SDL_BlendMode new_blend_mode) {
 
 SDL_BlendMode RenderingItem::get_blend_mode() const {
   return blend_mode;
+}
+
+void RenderingItem::set_visible(const bool new_visible) {
+  visible = new_visible;
+  update();
+}
+
+bool RenderingItem::is_visible() const {
+  return visible;
+}
+
+bool RenderingItem::is_visible_in_tree() const {
+  RenderingServer *rendering_server = get_rendering_server();
+  return rendering_server ? rendering_server->canvas_item_is_globally_visible(canvas_item) : true;
 }

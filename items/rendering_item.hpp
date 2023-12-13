@@ -12,6 +12,7 @@ protected:
   uid canvas_item;
   Color modulate = Color::WHITE;
   SDL_BlendMode blend_mode = SDL_BLENDMODE_NONE;
+  bool visible = true;
 
   RenderingServer *get_rendering_server() const;
   void update();
@@ -48,9 +49,14 @@ public:
 
   void set_modulate(const Color &new_modulate);
   Color get_modulate() const;
+  Color get_absolute_modulate() const;
 
   void set_blend_mode(const SDL_BlendMode new_blend_mode);
   SDL_BlendMode get_blend_mode() const;
+
+  void set_visible(const bool new_visible);
+  bool is_visible() const;
+  bool is_visible_in_tree() const;
 };
 
 }
