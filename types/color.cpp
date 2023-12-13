@@ -60,6 +60,13 @@ Color Color::darkened(const float amount) const {
   return darkened_color;
 }
 
+void Color::operator=(const Color &right) {
+  r = right.r;
+  g = right.g;
+  b = right.b;
+  a = right.a;
+}
+
 bool Color::operator!=(const Color &right) const {
   return a != right.a || r != right.r || g != right.g || b != right.b;
 }

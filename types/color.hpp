@@ -23,6 +23,7 @@ struct Color {
   Color blend(const Color &over) const;
   Color darkened(const float amount) const;
 
+  void operator=(const Color &right);
   bool operator!=(const Color &right) const;
   bool operator==(const Color &right) const;
 
