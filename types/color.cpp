@@ -93,6 +93,20 @@ Color Color::operator*(const float right) const {
   return multiplied_color;
 }
 
+void Color::operator*=(const float right) {
+  r *= right;
+  g *= right;
+  b *= right;
+  a *= right;
+}
+
+void Color::operator*=(const Color &right) {
+  r *= (right.r / 255);
+  g *= (right.g / 255);
+  b *= (right.b / 255);
+  a *= (right.a / 255);
+}
+
 Color Color::operator+(const Color &right) const {
   Color added_color = *this;
   added_color.a += right.a;
