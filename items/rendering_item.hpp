@@ -10,6 +10,8 @@ class RenderingItem : public Item {
 protected:
   Transform2D transform;
   uid canvas_item;
+  Color modulate = Color::WHITE;
+  SDL_BlendMode blend_mode = SDL_BLENDMODE_NONE;
 
   RenderingServer *get_rendering_server() const;
   void update();
@@ -43,6 +45,12 @@ public:
 
   void set_global_transform(const Transform2D &new_global_transform);
   Transform2D get_global_transform() const;
+
+  void set_modulate(const Color &new_modulate);
+  Color get_modulate() const;
+
+  void set_blend_mode(const SDL_BlendMode new_blend_mode);
+  SDL_BlendMode get_blend_mode() const;
 };
 
 }

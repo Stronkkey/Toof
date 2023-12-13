@@ -105,6 +105,7 @@ uid RenderingServer::create_canvas_item() {
   uid new_uid = create_new_uid();
   auto canvas_item = std::make_shared<CanvasItem>();
   new_uid.type = UID_RENDERING;
+
   canvas_items.insert({new_uid, canvas_item});
   return new_uid;
 }
@@ -115,6 +116,8 @@ void RenderingServer::canvas_item_add_texture(const CanvasItemTexture &canvas_it
 
   uid *canvas_item_uid = canvas_item_texture.canvas_item_uid;
   uid *texture_uid = canvas_item_texture.texture_uid;
+  Color modulate = canvas_item_texture.modulate ? *canvas_item_texture.modulate : Color::WHITE;
+
   Transform2D *transform = canvas_item_texture.transform;
   SDL_RendererFlip flip = canvas_item_texture.flip;
 
@@ -128,6 +131,7 @@ void RenderingServer::canvas_item_add_texture(const CanvasItemTexture &canvas_it
     texture_drawing_item->texture = texture;
     texture_drawing_item->flip = flip;
     texture_drawing_item->transform = *transform;
+    texture_drawing_item->texture_modulate = modulate;
 
     canvas_item->drawing_items.push_back(texture_drawing_item);
   }
@@ -139,6 +143,8 @@ void RenderingServer::canvas_item_add_texture_region(const CanvasItemRectTexture
 
   uid *texture_uid = canvas_item_rect_texture.texture_uid;
   uid *canvas_item_uid = canvas_item_rect_texture.canvas_item_uid;
+  Color modulate = canvas_item_rect_texture.modulate ? *canvas_item_rect_texture.modulate : Color::WHITE;
+
   Rect2i *src_region = canvas_item_rect_texture.src_region;
   Transform2D *transform = canvas_item_rect_texture.transform;
 
@@ -155,6 +161,7 @@ void RenderingServer::canvas_item_add_texture_region(const CanvasItemRectTexture
     texture_rect_drawing_item->src_region = *src_region;
     texture_rect_drawing_item->transform = *transform;
     texture_rect_drawing_item->flip = flip;
+    texture_rect_drawing_item->texture_modulate = modulate;
     
     canvas_item->drawing_items.push_back(texture_rect_drawing_item);
   }
@@ -176,13 +183,23 @@ void RenderingServer::canvas_item_set_parent(const uid &canvas_item_uid, const u
     canvas_item->parent = std::shared_ptr<CanvasItem>(nullptr);
 }
 
+void RenderingServer::canvas_item_set_modulate(const uid &canvas_item_uid, const Color &new_modulate) {
+  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+  if (canvas_item)
+    canvas_item->modulate = new_modulate;
+}
+
+void RenderingServer::canvas_item_set_blend_mode(const uid &canvas_item_uid, const SDL_BlendMode blend_mode) {
+  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+  if (canvas_item)
+    canvas_item->blend_mode = blend_mode;
+}
+
 void RenderingServer::canvas_item_clear(const uid &canvas_item_uid) {
-  auto canvas_item_iterator = canvas_items.find(canvas_item_uid);
+  std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
-  if (canvas_item_iterator == canvas_items.end())
-    return;
-
-  canvas_item_iterator->second->drawing_items.clear();
+  if (canvas_item)
+    canvas_item->drawing_items.clear();
 }
 
 Transform2D RenderingServer::canvas_item_get_transform(const uid &canvas_item_uid) const {

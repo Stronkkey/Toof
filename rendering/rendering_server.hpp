@@ -3,6 +3,7 @@
 
 #include <types/rect2.hpp>
 #include <types/transform2d.hpp>
+#include <types/color.hpp>
 #include <types/uid.hpp>
 
 #include <SDL_image.h>
@@ -39,6 +40,7 @@ public:
   struct CanvasItemTexture {
     uid *texture_uid;
     uid *canvas_item_uid;
+    Color *modulate;
     Transform2D *transform;
     SDL_RendererFlip flip;
 
@@ -50,6 +52,7 @@ public:
   struct CanvasItemRectTexture {
     uid *texture_uid;
     uid *canvas_item_uid;
+    Color *modulate;
     Rect2i *src_region;
     Transform2D *transform;
     SDL_RendererFlip flip;
@@ -77,6 +80,8 @@ public:
 
   void canvas_item_set_transform(const uid &canvas_item_uid, const Transform2D &new_transform);
   void canvas_item_set_parent(const uid &canvas_item_uid, const uid &parent_item_uid);
+  void canvas_item_set_modulate(const uid &canvas_item_uid, const Color &new_modulate);
+  void canvas_item_set_blend_mode(const uid &canvas_item_uid, const SDL_BlendMode blend_mode);
   void canvas_item_clear(const uid &canvas_item_uid);
 
   Transform2D canvas_item_get_transform(const uid &canvas_item_uid) const;

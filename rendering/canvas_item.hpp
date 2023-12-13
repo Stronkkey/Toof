@@ -1,6 +1,7 @@
 #ifndef CANVAS_ITEM
 #define CANVAS_ITEM
 
+#include <types/color.hpp>
 #include <rendering/texture.hpp>
 
 #include <SDL_render.h>
@@ -9,10 +10,12 @@
 
 namespace sdl {
 
-class DrawingItem;
+struct DrawingItem;
 
 struct CanvasItem {
   Transform2D transform = Transform2D::IDENTITY;
+  Color modulate = Color::WHITE;
+  SDL_BlendMode blend_mode;
   std::shared_ptr<CanvasItem> parent;
   std::vector<std::shared_ptr<DrawingItem>> drawing_items;
 
@@ -21,16 +24,15 @@ struct CanvasItem {
 
 // DrawingItem
 
-class DrawingItem {
-public:
+struct DrawingItem {
   std::shared_ptr<CanvasItem> canvas_item;
 
   virtual void draw(SDL_Renderer*) {}
 };
 
-class TextureRectDrawingItem: public DrawingItem {
-public:
+struct TextureRectDrawingItem: public DrawingItem {
   std::shared_ptr<Texture> texture;
+  Color texture_modulate;
   Rect2i src_region;
   Transform2D transform;
   SDL_RendererFlip flip;
@@ -38,9 +40,9 @@ public:
   void draw(SDL_Renderer *renderer) override;
 };
 
-class TextureDrawingItem: public DrawingItem {
-public:
+struct TextureDrawingItem: public DrawingItem {
   std::shared_ptr<Texture> texture;
+  Color texture_modulate;
   Transform2D transform;
   SDL_RendererFlip flip;
 

@@ -34,7 +34,11 @@ void TextureDrawingItem::draw(SDL_Renderer *renderer) {
 
   SDL_FPoint final_offset = transform.origin.to_sdl_fpoint();
   double rotation = global_transform.rotation + transform.rotation;
+  Color modulate = texture_modulate * canvas_item->modulate;
 
+  SDL_SetTextureAlphaMod(texture->texture_reference, modulate.a);
+  SDL_SetTextureColorMod(texture->texture_reference, modulate.r, modulate.g, modulate.b);
+  SDL_SetTextureBlendMode(texture->texture_reference, canvas_item->blend_mode); 
   SDL_RenderCopyExF(renderer, texture->texture_reference, &final_src_region, &final_destination, rotation, &final_offset, flip);
 }
 
@@ -47,9 +51,14 @@ void TextureRectDrawingItem::draw(SDL_Renderer *renderer) {
 
   SDL_Rect final_src_region = src_region.to_sdl_rect();
   SDL_FRect final_destination = destination.to_sdl_frect();
-  SDL_FPoint offset = transform.origin.to_sdl_fpoint();
-  
+  SDL_FPoint offset = transform.origin.to_sdl_fpoint(); 
+
   double rotation = global_transform.rotation + transform.rotation;
+  Color modulate = texture_modulate * canvas_item->modulate;
+
+  SDL_SetTextureColorMod(texture->texture_reference, modulate.r, modulate.g, modulate.b);
+  SDL_SetTextureAlphaMod(texture->texture_reference, modulate.a);
+  SDL_SetTextureBlendMode(texture->texture_reference, canvas_item->blend_mode); 
   SDL_RenderCopyExF(renderer, texture->texture_reference, &final_src_region, &final_destination, rotation, &offset, flip);
 }
 

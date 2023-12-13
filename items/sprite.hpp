@@ -12,7 +12,7 @@ protected:
   std::shared_ptr<Texture2D> texture;
   Rect2i texture_region;
   Transform2D texture_transform;
-  SDL_RendererFlip flip;
+  SDL_RendererFlip flip = SDL_FLIP_NONE;
 
   void draw_texture();
   void draw_rect_texture();

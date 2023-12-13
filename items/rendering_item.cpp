@@ -27,8 +27,11 @@ RenderingServer *RenderingItem::get_rendering_server() const {
 void RenderingItem::update() {
   RenderingServer *rendering_server = get_rendering_server();
 
-  if (rendering_server)
-    rendering_server->canvas_item_set_transform(canvas_item, transform); 
+  if (rendering_server) {
+    rendering_server->canvas_item_set_transform(canvas_item, transform);
+    rendering_server->canvas_item_set_modulate(canvas_item, modulate);
+    rendering_server->canvas_item_set_blend_mode(canvas_item, blend_mode);
+  }
 }
 
 void RenderingItem::on_parent_changed(Item *new_parent) {
@@ -137,4 +140,22 @@ Transform2D RenderingItem::get_global_transform() const {
   if (rendering_server)
     return rendering_server->canvas_item_get_global_transform(canvas_item);
   return transform;
+}
+
+void RenderingItem::set_modulate(const Color &new_modulate) {
+  modulate = new_modulate;
+  update();
+}
+
+Color RenderingItem::get_modulate() const {
+  return modulate;
+}
+
+void RenderingItem::set_blend_mode(const SDL_BlendMode new_blend_mode) {
+  blend_mode = new_blend_mode;
+  update();
+}
+
+SDL_BlendMode RenderingItem::get_blend_mode() const {
+  return blend_mode;
 }
