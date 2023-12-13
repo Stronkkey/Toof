@@ -20,6 +20,32 @@ Transform2D CanvasItem::get_global_transform() const {
   return absolute_transform;
 }
 
+Color CanvasItem::get_absolute_modulate() const {
+  Color absolute_modulate = modulate;
+  std::shared_ptr<CanvasItem> parent_canvas_item = parent;
+
+  while (parent_canvas_item) {
+    absolute_modulate *= parent_canvas_item->modulate;
+    parent_canvas_item = parent_canvas_item->parent;
+  }
+
+  return absolute_modulate;
+}
+
+bool CanvasItem::is_visible() const {
+  std::shared_ptr<CanvasItem> parent_canvas_item = parent;
+  
+
+  while (parent_canvas_item) {
+    if (!parent_canvas_item->visible)
+      return false;
+
+    parent_canvas_item = parent_canvas_item->parent;
+  }
+
+  return true;
+}
+
 void TextureDrawingItem::draw(SDL_Renderer *renderer) {
   if (!canvas_item || !texture)
     return;
@@ -34,7 +60,7 @@ void TextureDrawingItem::draw(SDL_Renderer *renderer) {
 
   SDL_FPoint final_offset = transform.origin.to_sdl_fpoint();
   double rotation = global_transform.rotation + transform.rotation;
-  Color modulate = texture_modulate * canvas_item->modulate;
+  Color modulate = texture_modulate * canvas_item->get_absolute_modulate();
 
   SDL_SetTextureAlphaMod(texture->texture_reference, modulate.a);
   SDL_SetTextureColorMod(texture->texture_reference, modulate.r, modulate.g, modulate.b);
@@ -54,7 +80,7 @@ void TextureRectDrawingItem::draw(SDL_Renderer *renderer) {
   SDL_FPoint offset = transform.origin.to_sdl_fpoint(); 
 
   double rotation = global_transform.rotation + transform.rotation;
-  Color modulate = texture_modulate * canvas_item->modulate;
+  Color modulate = texture_modulate * canvas_item->get_absolute_modulate();
 
   SDL_SetTextureColorMod(texture->texture_reference, modulate.r, modulate.g, modulate.b);
   SDL_SetTextureAlphaMod(texture->texture_reference, modulate.a);

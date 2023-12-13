@@ -16,10 +16,13 @@ struct CanvasItem {
   Transform2D transform = Transform2D::IDENTITY;
   Color modulate = Color::WHITE;
   SDL_BlendMode blend_mode;
+  bool visible = true;
   std::shared_ptr<CanvasItem> parent;
   std::vector<std::shared_ptr<DrawingItem>> drawing_items;
 
   Transform2D get_global_transform() const;
+  Color get_absolute_modulate() const;
+  bool is_visible() const;
 };
 
 // DrawingItem

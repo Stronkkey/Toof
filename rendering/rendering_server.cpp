@@ -19,9 +19,9 @@ void RenderingServer::render() {
     return;
 
   SDL_RenderClear(renderer);
-  for (auto iterator: canvas_items) {
+  for (auto iterator: canvas_items)
     render_canvas_item(iterator.second);
-  }
+
   SDL_RenderPresent(renderer);
 }
 
@@ -64,6 +64,9 @@ void RenderingServer::destroy_uid(uid &destroying_uid) {
 }
 
 void RenderingServer::render_canvas_item(const std::shared_ptr<CanvasItem> &canvas_item) {
+  if (!canvas_item || !canvas_item->is_visible())
+    return;
+
   for (std::shared_ptr<DrawingItem> drawing_item: canvas_item->drawing_items)
     drawing_item->draw(renderer);
 }
