@@ -13,6 +13,7 @@ protected:
   Rect2i texture_region;
   Transform2D texture_transform;
   SDL_RendererFlip flip = SDL_FLIP_NONE;
+  bool centered = true;
 
   void draw_texture();
   void draw_rect_texture();
@@ -39,6 +40,9 @@ public:
 
   void set_flip(const SDL_RendererFlip new_flip);
   SDL_RendererFlip get_flip() const;
+
+  void set_centered(const bool new_centered);
+  bool is_centered() const;
 };
 
 }

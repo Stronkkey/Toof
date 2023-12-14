@@ -5,11 +5,15 @@ using namespace sdl;
 void SpriteItem::draw_texture() {
   RenderingServer::CanvasItemTexture canvas_item_texture;
   uid texture_uid = texture->get_uid();
+  Transform2D new_transform = texture_transform; 
 
+  if (centered)
+    new_transform.origin -= texture->get_size() / 2;
+  
   canvas_item_texture.canvas_item_uid = &canvas_item;
   canvas_item_texture.texture_uid = &texture_uid;
   canvas_item_texture.flip = flip;
-  canvas_item_texture.transform = &texture_transform;
+  canvas_item_texture.transform = &new_transform;
 
   get_rendering_server()->canvas_item_add_texture(canvas_item_texture);
 }
@@ -17,12 +21,16 @@ void SpriteItem::draw_texture() {
 void SpriteItem::draw_rect_texture() {
   RenderingServer::CanvasItemRectTexture canvas_item_rect_texture;
   uid texture_uid = texture->get_uid();
+  Transform2D new_transform = texture_transform; 
+
+  if (centered)
+    new_transform.origin += texture->get_size() / 2;
 
   canvas_item_rect_texture.canvas_item_uid = &canvas_item;
   canvas_item_rect_texture.texture_uid = &texture_uid;
   canvas_item_rect_texture.flip = flip;
   canvas_item_rect_texture.src_region = &texture_region;
-  canvas_item_rect_texture.transform = &texture_transform;
+  canvas_item_rect_texture.transform = &new_transform;
 
   get_rendering_server()->canvas_item_add_texture_region(canvas_item_rect_texture);
 }
@@ -96,4 +104,13 @@ Vector2 SpriteItem::get_texture_scale() const {
 void SpriteItem::set_texture_transform(const Transform2D &new_texture_transform) {
   texture_transform = new_texture_transform;
   update_texture();
+}
+
+void SpriteItem::set_centered(const bool new_centered) {
+  centered = new_centered;
+  update_texture();
+}
+
+bool SpriteItem::is_centered() const {
+  return centered;
 }
