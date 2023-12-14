@@ -39,6 +39,7 @@ project_source_files = [
   'types/transform2d.cpp',
   'types/uid.cpp',
   'types/color.cpp',
+  'types/utility_functions.cpp',
   'input/input_manager.cpp'
 ]
 
