@@ -15,7 +15,7 @@ struct DrawingItem;
 struct CanvasItem {
   Transform2D transform = Transform2D::IDENTITY;
   Color modulate = Color::WHITE;
-  SDL_BlendMode blend_mode;
+  SDL_BlendMode blend_mode = SDL_BLENDMODE_BLEND;
   bool visible = true;
   std::shared_ptr<CanvasItem> parent;
   std::vector<std::shared_ptr<DrawingItem>> drawing_items;

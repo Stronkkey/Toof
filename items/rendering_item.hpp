@@ -11,7 +11,7 @@ protected:
   Transform2D transform;
   uid canvas_item;
   Color modulate = Color::WHITE;
-  SDL_BlendMode blend_mode = SDL_BLENDMODE_NONE;
+  SDL_BlendMode blend_mode = SDL_BLENDMODE_BLEND;
   bool visible = true;
 
   RenderingServer *get_rendering_server() const;
