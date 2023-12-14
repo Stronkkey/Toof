@@ -20,7 +20,6 @@ project_headers = [
   'types/vector2.hpp',
   'types/rect2.hpp',
   'types/transform2d.hpp',
-  'types/uid.hpp',
   'types/color.hpp',
   'input/input_manager.hpp'
 ]
@@ -37,7 +36,6 @@ project_source_files = [
   'types/rect2.cpp',
   'types/vector2.cpp',
   'types/transform2d.cpp',
-  'types/uid.cpp',
   'types/color.cpp',
   'types/utility_functions.cpp',
   'input/input_manager.cpp'

@@ -1,5 +1,4 @@
 #include <rendering/texture.hpp>
-#include <rendering/rendering_server.hpp>
 
 using namespace sdl;
 
@@ -10,7 +9,7 @@ void Texture2D::set_rendering_server(RenderingServer *new_rendering_server) {
 UidTexture::UidTexture() {
 }
 
-UidTexture::UidTexture(const uid &from_uid) {
+UidTexture::UidTexture(const uid from_uid) {
   texture_uid = from_uid;
 }
 

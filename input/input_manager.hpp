@@ -1,7 +1,14 @@
-#ifndef INPUT_MANAGER
-#define INPUT_MANAGER
+#ifndef INPUT_MANAGER_H
+#define INPUT_MANAGER_H
 
-#include <items/tree.hpp>
+#include <types/math_defs.hpp>
+
+#include <SDL_keycode.h>
+#include <SDL_events.h>
+
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 namespace sdl {
 
@@ -70,4 +77,4 @@ public:
 
 }
 
-#endif // !INPUT_MANAGER
+#endif // !INPUT_MANAGER_H

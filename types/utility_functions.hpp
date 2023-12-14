@@ -1,3 +1,6 @@
+#ifndef UTILITY_FUNCTIONS_H
+#define UTILITY_FUNCTIONS_H
+
 #include <types/math_defs.hpp>
 
 #include <string>
@@ -17,3 +20,5 @@ void prints(const std::vector<std::string> &strings);
 
 }
 }
+
+#endif // !UTILITY_FUNCTIONS_H

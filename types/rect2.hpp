@@ -1,5 +1,5 @@
-#ifndef RECT2_LIB
-#define RECT2_LIB
+#ifndef RECT2_H
+#define RECT2_H
 
 #include <types/vector2.hpp>
 
@@ -129,4 +129,4 @@ struct Rect2i {
 
 }
 
-#endif // !RECT2_LIB
+#endif // !RECT2_H

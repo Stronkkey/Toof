@@ -1,7 +1,9 @@
-#ifndef RENDERING_ITEM
-#define RENDERING_ITEM
+#ifndef RENDERING_ITEM_H
+#define RENDERING_ITEM_H
 
 #include <items/item.hpp>
+
+#include <types/transform2d.hpp>
 
 namespace sdl {
 
@@ -10,8 +12,8 @@ class RenderingItem : public Item {
 protected:
   Transform2D transform;
   uid canvas_item;
-  Color modulate = Color::WHITE;
-  SDL_BlendMode blend_mode = SDL_BLENDMODE_BLEND;
+  Color modulate;
+  SDL_BlendMode blend_mode;
   bool visible = true;
 
   RenderingServer *get_rendering_server() const;
@@ -20,6 +22,7 @@ protected:
   void on_parent_changed(Item*) override;
 
 public:
+  RenderingItem();
   ~RenderingItem();
   uid get_canvas_item() const;
 
@@ -61,4 +64,4 @@ public:
 
 }
 
-#endif // !RENDERING_ITEM
+#endif // !RENDERING_ITEM_H

@@ -1,5 +1,5 @@
-#ifndef SPRITE_ITEM
-#define SPRITE_ITEM
+#ifndef SPRITE_ITEM_H
+#define SPRITE_ITEM_H
 
 #include <items/rendering_item.hpp>
 #include <rendering/texture.hpp>
@@ -47,4 +47,4 @@ public:
 
 }
 
-#endif // !SPRITE_ITEM
+#endif // !SPRITE_ITEM_H

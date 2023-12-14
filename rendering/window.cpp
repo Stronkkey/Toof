@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+#include <SDL.h>
+#include <SDL_image.h>
+
 using namespace sdl;
 
 Window::Window(const Rect2i &rect, const std::string &title, const bool use_vsync) {

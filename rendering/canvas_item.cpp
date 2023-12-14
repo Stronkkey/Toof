@@ -1,7 +1,5 @@
 #include <rendering/canvas_item.hpp>
 
-#include <iostream>
-
 using namespace sdl;
 
 Transform2D CanvasItem::get_global_transform() const {

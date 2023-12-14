@@ -1,5 +1,5 @@
-#ifndef COLOR
-#define COLOR
+#ifndef COLOR_H
+#define COLOR_H
 
 #include <string>
 #include <types/math_defs.hpp>
@@ -62,4 +62,4 @@ typedef Color Colour;
 
 }
 
-#endif // !COLOR
+#endif // !COLOR_H

@@ -1,10 +1,9 @@
-#ifndef CANVAS_ITEM
-#define CANVAS_ITEM
+#ifndef CANVAS_ITEM_H
+#define CANVAS_ITEM_H
 
-#include <types/color.hpp>
 #include <rendering/texture.hpp>
-
-#include <SDL_render.h>
+#include <types/transform2d.hpp>
+#include <types/rect2.hpp>
 
 #include <vector>
 
@@ -64,4 +63,4 @@ struct RectDrawingItem: public DrawingItem {
 
 }
 
-#endif // !CANVAS_ITEM
+#endif // !CANVAS_ITEM_H

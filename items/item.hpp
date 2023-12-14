@@ -1,7 +1,9 @@
-#ifndef ITEM
-#define ITEM
+#ifndef ITEM_H
+#define ITEM_H
 
 #include <items/tree.hpp>
+
+#include <vector>
 
 namespace sdl {
 
@@ -44,4 +46,4 @@ public:
 
 }
 
-#endif // !ITEM
+#endif // !ITEM_H

@@ -10,8 +10,8 @@ void SpriteItem::draw_texture() {
   if (centered)
     new_transform.origin -= texture->get_size() / 2;
   
-  canvas_item_texture.canvas_item_uid = &canvas_item;
-  canvas_item_texture.texture_uid = &texture_uid;
+  canvas_item_texture.canvas_item_uid = canvas_item;
+  canvas_item_texture.texture_uid = texture_uid;
   canvas_item_texture.flip = flip;
   canvas_item_texture.transform = &new_transform;
 
@@ -26,8 +26,8 @@ void SpriteItem::draw_rect_texture() {
   if (centered)
     new_transform.origin += texture->get_size() / 2;
 
-  canvas_item_rect_texture.canvas_item_uid = &canvas_item;
-  canvas_item_rect_texture.texture_uid = &texture_uid;
+  canvas_item_rect_texture.canvas_item_uid = canvas_item;
+  canvas_item_rect_texture.texture_uid = texture_uid;
   canvas_item_rect_texture.flip = flip;
   canvas_item_rect_texture.src_region = &texture_region;
   canvas_item_rect_texture.transform = &new_transform;

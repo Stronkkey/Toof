@@ -1,5 +1,5 @@
-#ifndef MATH_DEFS
-#define MATH_DEFS
+#ifndef MATH_DEFS_H
+#define MATH_DEFS_H
 
 #include <cstdint>
 
@@ -22,6 +22,8 @@ typedef int32_t int_t;
 typedef uint32_t uint_t;
 #endif
 
+typedef uint_t uid;
+
 }
 
-#endif // !MATH_DEFS
+#endif // !MATH_DEFS_H

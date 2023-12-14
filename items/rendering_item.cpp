@@ -11,6 +11,10 @@ void RenderingItem::ready() {
   update();
 }
 
+RenderingItem::RenderingItem(): modulate(Color::WHITE),
+  blend_mode(SDL_BLENDMODE_BLEND) {
+}
+
 RenderingItem::~RenderingItem() {
   RenderingServer *rendering_server = get_rendering_server();
   if (rendering_server)

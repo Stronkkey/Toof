@@ -1,7 +1,11 @@
-#ifndef WINDOW
-#define WINDOW
+#ifndef WINDOW_H
+#define WINDOW_H
 
 #include <rendering/rendering_server.hpp>
+#include <types/rect2.hpp>
+
+#include <SDL_events.h>
+#include <SDL_log.h>
 
 namespace sdl {
 
@@ -31,4 +35,4 @@ public:
 };
 };
 
-#endif // !WINDOW
+#endif // !WINDOW_H

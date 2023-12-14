@@ -1,5 +1,5 @@
-#ifndef TREE
-#define TREE
+#ifndef TREE_H
+#define TREE_H
 
 #include <rendering/window.hpp>
 
@@ -50,4 +50,4 @@ public:
 
 }
 
-#endif // !TREE
+#endif // !TREE_H
