@@ -21,6 +21,7 @@ private:
   SDL_Renderer *renderer;
   std::unordered_map<uid, std::shared_ptr<Texture>> textures;
   std::unordered_map<uid, std::shared_ptr<CanvasItem>> canvas_items;
+  Color background_color = Color(77, 77, 77, 255);
 
   uid create_new_uid();
   void destroy_uid(uid &destroying_uid);
@@ -72,6 +73,9 @@ public:
 
   uid load_texture_from_path(const std::string &path);
   uid create_canvas_item();
+
+  void set_default_background_color(const Color &new_background_color);
+  Color get_default_background_color() const;
 
   TextureInfo get_texture_info_from_uid(const uid &texture_uid) const;
 

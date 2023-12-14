@@ -14,6 +14,14 @@ RenderingServer::~RenderingServer() {
     destroy_uid(iterator.first);
 }
 
+void RenderingServer::set_default_background_color(const Color &new_background_color) {
+  background_color = new_background_color;
+}
+
+Color RenderingServer::get_default_background_color() const {
+  return background_color;
+}
+
 void RenderingServer::render() {
   if (!renderer)
     return;
@@ -22,6 +30,7 @@ void RenderingServer::render() {
   for (auto iterator: canvas_items)
     render_canvas_item(iterator.second);
 
+  SDL_SetRenderDrawColor(renderer, background_color.r, background_color.g, background_color.b, background_color.a);
   SDL_RenderPresent(renderer);
 }
 
