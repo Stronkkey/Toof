@@ -179,6 +179,49 @@ Vector2 Rect2::get_size() const {
   return Vector2(w, h);
 }
 
+bool Rect2::has_point(const Vector2 &point) const {
+  if (point.x < x)
+    return false;
+  if (point.y < y)
+    return false;
+  if (point.x >= (x + w))
+    return false;
+  if (point.y >= (y + h))
+    return false;
+  
+  return true;
+}
+
+bool Rect2::intersects(const Rect2 &rect2, const bool include_borders) const {
+  if (include_borders) {
+    if (x > (rect2.x + rect2.w))
+	    return false;
+
+    if ((x + w) < rect2.x)
+	    return false;
+
+    if (y > (rect2.y + rect2.h))
+      return false;
+
+    if ((y + h) < rect2.y)
+      return false;
+  } else {
+    if (x >= (rect2.x + rect2.w))
+    	return false;
+
+    if ((x + w) <= rect2.x)
+    	return false;
+
+    if (y >= (rect2.y + rect2.h))
+	    return false;
+
+    if ((y + h) <= rect2.y)
+	    return false;
+  }
+
+	return true;
+}
+
 void Rect2::set_position(const Vector2 &new_position) {
   x = new_position.x;
   y = new_position.y;
@@ -390,6 +433,49 @@ Vector2i Rect2i::get_position() const {
 
 Vector2i Rect2i::get_size() const {
   return Vector2i(w, h);
+}
+
+bool Rect2i::has_point(const Vector2i &point) const {
+  if (point.x < x)
+    return false;
+  if (point.y < y)
+    return false;
+  if (point.x >= (x + w))
+    return false;
+  if (point.y >= (y + h))
+    return false;
+  
+  return true;
+}
+
+bool Rect2i::intersects(const Rect2i &rect2i, const bool include_borders) const {
+  if (include_borders) {
+    if (x > (rect2i.x + rect2i.w))
+	    return false;
+
+    if ((x + w) < rect2i.x)
+	    return false;
+
+    if (y > (rect2i.y + rect2i.h))
+      return false;
+
+    if ((y + h) < rect2i.y)
+      return false;
+  } else {
+    if (x >= (rect2i.x + rect2i.w))
+    	return false;
+
+    if ((x + w) <= rect2i.x)
+    	return false;
+
+    if (y >= (rect2i.y + rect2i.h))
+	    return false;
+
+    if ((y + h) <= rect2i.y)
+	    return false;
+  }
+
+	return true;
 }
 
 void Rect2i::set_position(const Vector2i &new_position) {

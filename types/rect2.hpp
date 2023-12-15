@@ -55,6 +55,8 @@ struct Rect2 {
   std::string to_string() const;
   Vector2 get_position() const;
   Vector2 get_size() const;
+  bool has_point(const Vector2 &point) const;
+  bool intersects(const Rect2 &rect2, const bool include_borders = false) const;
 
   void set_position(const Vector2 &new_position);
   void set_size(const Vector2 &new_size);
@@ -118,6 +120,8 @@ struct Rect2i {
   std::string to_string() const;
   void set_position(const Vector2i &new_position);
   void set_size(const Vector2i &new_size);
+  bool has_point(const Vector2i &point) const;
+  bool intersects(const Rect2i &rect2i, const bool include_borders = false) const;
 
   SDL_Rect to_sdl_rect() const;
   SDL_FRect to_sdl_frect() const;
