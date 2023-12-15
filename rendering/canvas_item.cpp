@@ -66,8 +66,12 @@ void TextureDrawingItem::draw(SDL_Renderer *renderer) {
 
   SDL_SetTextureAlphaMod(texture->texture_reference, modulate.a);
   SDL_SetTextureColorMod(texture->texture_reference, modulate.r, modulate.g, modulate.b);
-  SDL_SetTextureBlendMode(texture->texture_reference, canvas_item->blend_mode); 
-  SDL_RenderCopyExF(renderer, texture->texture_reference, &final_src_region, &final_destination, rotation, &final_offset, flip);
+  SDL_SetTextureBlendMode(texture->texture_reference, canvas_item->blend_mode);
+
+  if (rotation == 0.0)
+    SDL_RenderCopyF(renderer, texture->texture_reference, &final_src_region, &final_destination);
+  else
+    SDL_RenderCopyExF(renderer, texture->texture_reference, &final_src_region, &final_destination, rotation, &final_offset, flip);
 }
 
 
@@ -91,8 +95,12 @@ void TextureRectDrawingItem::draw(SDL_Renderer *renderer) {
 
   SDL_SetTextureColorMod(texture->texture_reference, modulate.r, modulate.g, modulate.b);
   SDL_SetTextureAlphaMod(texture->texture_reference, modulate.a);
-  SDL_SetTextureBlendMode(texture->texture_reference, canvas_item->blend_mode); 
-  SDL_RenderCopyExF(renderer, texture->texture_reference, &final_src_region, &final_destination, rotation, &offset, flip);
+  SDL_SetTextureBlendMode(texture->texture_reference, canvas_item->blend_mode);
+
+  if (rotation == 0.0)
+    SDL_RenderCopyF(renderer, texture->texture_reference, &final_src_region, &final_destination);
+  else
+    SDL_RenderCopyExF(renderer, texture->texture_reference, &final_src_region, &final_destination, rotation, &offset, flip);
 }
 
 /*void LineDrawingItem::draw(SDL_Renderer *renderer) {
