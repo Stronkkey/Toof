@@ -44,6 +44,11 @@ bool CanvasItem::is_visible() const {
   return true;
 }
 
+Rect2 TextureDrawingItem::get_draw_rect() const {
+  Transform2D global_transform = canvas_item->get_global_transform();
+  return Rect2(global_transform.origin + transform.origin, (global_transform.scale * transform.scale) * texture->size);
+}
+
 void TextureDrawingItem::draw(SDL_Renderer *renderer) {
   if (!canvas_item || !texture)
     return;
@@ -51,10 +56,9 @@ void TextureDrawingItem::draw(SDL_Renderer *renderer) {
   Transform2D global_transform = canvas_item->get_global_transform();
 
   Rect2 src_region = Rect2(Vector2::ZERO, texture->size);
-  Rect2 destination = Rect2(global_transform.origin + transform.origin, (global_transform.scale * transform.scale) * src_region.get_size());
 
   SDL_Rect final_src_region = src_region.to_sdl_rect();
-  SDL_FRect final_destination = destination.to_sdl_frect();
+  SDL_FRect final_destination = get_draw_rect().to_sdl_frect();
 
   SDL_FPoint final_offset = transform.origin.to_sdl_fpoint();
   double rotation = global_transform.rotation + transform.rotation;
@@ -66,15 +70,20 @@ void TextureDrawingItem::draw(SDL_Renderer *renderer) {
   SDL_RenderCopyExF(renderer, texture->texture_reference, &final_src_region, &final_destination, rotation, &final_offset, flip);
 }
 
+
+Rect2 TextureRectDrawingItem::get_draw_rect() const {
+  Transform2D global_transform = canvas_item->get_global_transform();
+  return Rect2(global_transform.origin, (global_transform.scale * transform.scale) * src_region.get_size());
+}
+
 void TextureRectDrawingItem::draw(SDL_Renderer *renderer) {
   if (!canvas_item || !texture)
     return;
 
   Transform2D global_transform = canvas_item->get_global_transform();
-  Rect2 destination = Rect2(global_transform.origin, (global_transform.scale * transform.scale) * src_region.get_size());
 
   SDL_Rect final_src_region = src_region.to_sdl_rect();
-  SDL_FRect final_destination = destination.to_sdl_frect();
+  SDL_FRect final_destination = get_draw_rect().to_sdl_frect();
   SDL_FPoint offset = transform.origin.to_sdl_fpoint(); 
 
   double rotation = global_transform.rotation + transform.rotation;

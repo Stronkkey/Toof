@@ -22,6 +22,13 @@ Color RenderingServer::get_default_background_color() const {
   return background_color;
 }
 
+Vector2i RenderingServer::get_screen_size() const {
+  int width;
+  int height;
+  SDL_GetRendererOutputSize(renderer, &width, &height);
+  return Vector2i(width, height);
+}
+
 void RenderingServer::render() {
   if (!renderer)
     return;
@@ -75,8 +82,14 @@ void RenderingServer::render_canvas_item(const std::shared_ptr<CanvasItem> &canv
   if (!canvas_item || !canvas_item->is_visible())
     return;
 
-  for (std::shared_ptr<DrawingItem> drawing_item: canvas_item->drawing_items)
-    drawing_item->draw(renderer);
+  Rect2i screen_rect = Rect2i(Vector2::ZERO, get_screen_size());
+
+  for (std::shared_ptr<DrawingItem> drawing_item: canvas_item->drawing_items) {
+    bool inside_viewport = screen_rect.intersects(drawing_item->get_draw_rect());
+
+    if (inside_viewport)
+      drawing_item->draw(renderer);
+  }
 }
 
 RenderingServer::TextureInfo RenderingServer::get_texture_info_from_uid(const uid texture_uid) const {

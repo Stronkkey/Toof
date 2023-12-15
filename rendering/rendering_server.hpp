@@ -78,6 +78,7 @@ public:
 
   void set_default_background_color(const Color &new_background_color);
   Color get_default_background_color() const;
+  Vector2i get_screen_size() const;
 
   TextureInfo get_texture_info_from_uid(const uid texture_uid) const;
 
