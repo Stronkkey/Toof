@@ -56,7 +56,7 @@ void Tree::start() {
   while (running) {
     last = now;
     now = SDL_GetPerformanceCounter();
-    double delta = (double(now - last) * 100) / SDL_GetPerformanceFrequency();
+    double delta = (double(now - last) * 1000) / SDL_GetPerformanceFrequency();
     SDL_Delay(1000/frame_rate);
 
     events();
