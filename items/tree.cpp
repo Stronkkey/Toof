@@ -52,7 +52,7 @@ void Tree::main_loop() {
   while (running) {
     last = now;
     now = SDL_GetPerformanceCounter();
-    double delta = (double(now - last) * 1000) / SDL_GetPerformanceFrequency();
+    double delta = (double(now - last)) / SDL_GetPerformanceFrequency();
 
     auto wait_time = std::chrono::duration<double>(1 / fixed_frame_rate);
     std::this_thread::sleep_for(wait_time);
@@ -71,7 +71,7 @@ void Tree::render_loop() {
   while (running) {
     last = now;
     now = SDL_GetPerformanceCounter();
-    double delta = (double(now - last) * 1000) / SDL_GetPerformanceFrequency();
+    double delta = (double(now - last)) / SDL_GetPerformanceFrequency();
 
     auto wait_time = std::chrono::duration<double>(1 / frame_rate);
     std::this_thread::sleep_for(wait_time);
