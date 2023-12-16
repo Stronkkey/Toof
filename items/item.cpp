@@ -25,12 +25,12 @@ void Item::propagate_event(const SDL_Event *event) {
   }
 }
 
-void Item::propagate_loop() {
+void Item::propagate_loop(double delta) {
   for (auto iterator: children) {
     if (iterator.second == nullptr)
       continue;
 
-    iterator.second->loop();
+    iterator.second->loop(delta);
   }
 }
 

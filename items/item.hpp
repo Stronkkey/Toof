@@ -18,7 +18,7 @@ private:
 protected:
   virtual void event(const SDL_Event*) {}
   virtual void render(double) {}
-  virtual void loop() {}
+  virtual void loop(double) {}
   virtual void on_parent_changed(Item*) {}
   virtual void ready() {}
 
@@ -28,7 +28,7 @@ public:
 
   void propagate_event(const SDL_Event *event);
   void propagate_render(double delta);
-  void propagate_loop();
+  void propagate_loop(double delta);
   void free();
 
   Tree *get_tree() const;

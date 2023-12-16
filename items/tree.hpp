@@ -11,6 +11,7 @@ class Tree {
 
 protected:
   bool running;
+  double fixed_frame_rate;
   double frame_rate;
 
   sdl::Window *window;
@@ -18,9 +19,12 @@ protected:
   SDL_Event *event;
   Item *root;
 
+  virtual void render_loop();
+  virtual void main_loop();
+
   virtual void initialize();
   virtual void events();
-  virtual void loop();
+  virtual void loop(double delta);
   virtual void render(double delta);
   virtual void ended();
 
@@ -33,6 +37,15 @@ protected:
   }
 
 public:
+  enum EventProcessType {
+    EVENT_PROCESS_TYPE_FIXED,
+    EVENT_PROCESS_TYPE_RENDER,
+    EVENT_PROCESS_TYPE_FIXED_RENDER,
+    EVENT_PROCESS_TYPE_NONE
+  };
+
+public:
+  EventProcessType event_process_type = EVENT_PROCESS_TYPE_RENDER;
 
   Tree();
   virtual ~Tree();
@@ -46,6 +59,12 @@ public:
 
   void start();
   void stop();
+
+  void set_frame_rate(const double new_frame_rate);
+  double get_frame_rate() const;
+
+  void set_fixed_frame_rate(const double new_fixed_frame_rate);
+  double get_fixed_frame_rate() const;
 
   bool is_running();
 };
