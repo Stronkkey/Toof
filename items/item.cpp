@@ -1,4 +1,7 @@
 #include <items/item.hpp>
+#include <items/tree.hpp>
+
+#include <SDL_events.h>
 
 using namespace sdl;
 

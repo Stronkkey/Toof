@@ -1,10 +1,14 @@
 #pragma once
 
-#include <rendering/window.hpp>
+#include <types/rect2.hpp>
+
+#include <SDL_events.h>
 
 namespace sdl {
 
 class Item;
+class Window;
+class RenderingServer;
 
 class Tree {
 

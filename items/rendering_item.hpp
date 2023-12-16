@@ -3,6 +3,8 @@
 #include <items/item.hpp>
 
 #include <types/transform2d.hpp>
+#include <types/color.hpp>
+#include <rendering/rendering_server.hpp>
 
 namespace sdl {
 

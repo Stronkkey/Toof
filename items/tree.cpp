@@ -1,5 +1,6 @@
 #include <items/tree.hpp>
 #include <items/item.hpp>
+#include <rendering/window.hpp>
 
 #include <SDL_timer.h>
 

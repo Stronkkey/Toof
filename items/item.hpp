@@ -1,10 +1,14 @@
 #pragma once
 
-#include <items/tree.hpp>
-
 #include <vector>
+#include <unordered_map>
+#include <string>
+
+#include <SDL_events.h>
 
 namespace sdl {
+
+class Tree;
 
 class Item {
 

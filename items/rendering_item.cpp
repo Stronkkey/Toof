@@ -1,4 +1,6 @@
 #include <items/rendering_item.hpp>
+#include <rendering/window.hpp>
+#include <items/tree.hpp>
 
 #include <typeinfo>
 

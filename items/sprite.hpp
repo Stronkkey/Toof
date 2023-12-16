@@ -2,6 +2,7 @@
 
 #include <items/rendering_item.hpp>
 #include <rendering/texture.hpp>
+#include <types/rect2.hpp>
 
 namespace sdl {
 
