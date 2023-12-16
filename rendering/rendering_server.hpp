@@ -1,5 +1,4 @@
-#ifndef RENDERING_SERVER_H
-#define RENDERING_SERVER_H
+#pragma once
 
 #include <types/vector2.hpp>
 #include <types/color.hpp>
@@ -101,6 +100,5 @@ public:
   void canvas_item_set_visible(const uid canvas_item_uid, const bool visible);
   bool canvas_item_is_globally_visible(const uid canvas_item_uid) const;
 };
-}
 
-#endif // !RENDERING_SERVER_H
+}

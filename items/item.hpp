@@ -1,5 +1,4 @@
-#ifndef ITEM_H
-#define ITEM_H
+#pragma once
 
 #include <items/tree.hpp>
 
@@ -47,5 +46,3 @@ public:
 };
 
 }
-
-#endif // !ITEM_H

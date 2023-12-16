@@ -1,5 +1,4 @@
-#ifndef VECTOR2_H
-#define VECTOR2_H
+#pragma once
 
 #include <types/math_defs.hpp>
 
@@ -121,6 +120,5 @@ struct Vector2i {
   static const Vector2i UP;
   static const Vector2i DOWN;
 };
-}
 
-#endif // !VECTOR2_H
+}

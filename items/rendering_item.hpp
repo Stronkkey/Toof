@@ -1,5 +1,4 @@
-#ifndef RENDERING_ITEM_H
-#define RENDERING_ITEM_H
+#pragma once
 
 #include <items/item.hpp>
 
@@ -63,5 +62,3 @@ public:
 };
 
 }
-
-#endif // !RENDERING_ITEM_H

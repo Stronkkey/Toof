@@ -1,5 +1,4 @@
-#ifndef CANVAS_ITEM_H
-#define CANVAS_ITEM_H
+#pragma once
 
 #include <rendering/texture.hpp>
 #include <types/transform2d.hpp>
@@ -73,5 +72,3 @@ struct RectDrawingItem: public DrawingItem {
 };*/
 
 }
-
-#endif // !CANVAS_ITEM_H

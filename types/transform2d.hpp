@@ -1,5 +1,4 @@
-#ifndef TRANSFORM2D_H
-#define TRANSFORM2D_H
+#pragma once
 
 #include <types/vector2.hpp>
 
@@ -27,5 +26,3 @@ struct Transform2D {
 };
 
 }
-
-#endif // !TRANSFORM2D_H

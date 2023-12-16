@@ -1,5 +1,4 @@
-#ifndef MATH_DEFS_H
-#define MATH_DEFS_H
+#pragma once
 
 #include <cstdint>
 
@@ -25,5 +24,3 @@ typedef uint32_t uint_t;
 typedef uint_t uid;
 
 }
-
-#endif // !MATH_DEFS_H

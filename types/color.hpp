@@ -1,5 +1,4 @@
-#ifndef COLOR_H
-#define COLOR_H
+#pragma once
 
 #include <string>
 #include <types/math_defs.hpp>
@@ -61,5 +60,3 @@ struct Color {
 typedef Color Colour;
 
 }
-
-#endif // !COLOR_H

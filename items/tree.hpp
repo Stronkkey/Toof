@@ -1,5 +1,4 @@
-#ifndef TREE_H
-#define TREE_H
+#pragma once
 
 #include <rendering/window.hpp>
 
@@ -70,5 +69,3 @@ public:
 };
 
 }
-
-#endif // !TREE_H

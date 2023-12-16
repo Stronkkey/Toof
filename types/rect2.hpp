@@ -1,5 +1,4 @@
-#ifndef RECT2_H
-#define RECT2_H
+#pragma once
 
 #include <types/vector2.hpp>
 
@@ -132,5 +131,3 @@ struct Rect2i {
 };
 
 }
-
-#endif // !RECT2_H

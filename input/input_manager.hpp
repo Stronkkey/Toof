@@ -1,5 +1,4 @@
-#ifndef INPUT_MANAGER_H
-#define INPUT_MANAGER_H
+#pragma once
 
 #include <types/math_defs.hpp>
 
@@ -76,5 +75,3 @@ public:
 };
 
 }
-
-#endif // !INPUT_MANAGER_H

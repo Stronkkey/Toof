@@ -1,5 +1,4 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#pragma once
 
 #include <rendering/rendering_server.hpp>
 
@@ -55,5 +54,3 @@ public:
 };
 
 }
-
-#endif // !TEXTURE_H

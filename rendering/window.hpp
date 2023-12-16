@@ -1,5 +1,4 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#pragma once
 
 #include <rendering/rendering_server.hpp>
 #include <types/rect2.hpp>
@@ -33,6 +32,5 @@ public:
   int get_refresh_rate() const;
   Vector2i get_size() const;
 };
-};
 
-#endif // !WINDOW_H
+}
