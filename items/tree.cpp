@@ -82,3 +82,7 @@ Item *Tree::get_root() const {
 void Tree::set_root(Item *new_root) {
   root = new_root;
 }
+
+SDL_Event *Tree::get_event() const {
+  return event;
+}

@@ -42,6 +42,8 @@ public:
   Item *get_root() const;
   void set_root(Item *new_root);
 
+  SDL_Event *get_event() const;
+
   void start();
   void stop();
 

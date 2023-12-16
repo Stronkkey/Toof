@@ -68,8 +68,8 @@ void Item::add_item(Item *new_item) {
   children.insert({new_item->get_name(), new_item});
   new_item->set_parent(this);
 
-  if (new_item->get_tree() == nullptr && get_tree() != nullptr)
-    new_item->set_tree(get_tree());
+  if (!new_item->tree && tree)
+    new_item->set_tree(tree);
 }
 
 std::vector<Item*> Item::get_children() const {
@@ -83,8 +83,8 @@ std::vector<Item*> Item::get_children() const {
 
 void Item::set_parent(Item *new_parent) {
   parent = new_parent;
-  if (get_tree() == nullptr && parent && parent->get_tree())
-    set_tree(parent->get_tree());
+  if (tree == nullptr && parent && parent->tree)
+    set_tree(parent->tree);
 
   parent->add_item(this);
   on_parent_changed(new_parent);
@@ -92,4 +92,8 @@ void Item::set_parent(Item *new_parent) {
 
 Item *Item::get_parent() const {
   return parent;
+}
+
+SDL_Event *Item::get_event() const {
+  return tree ? tree->get_event() : nullptr;
 }
