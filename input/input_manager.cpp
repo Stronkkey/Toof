@@ -10,6 +10,8 @@ bool Input::operator==(const Input &right) const {
       return key_sym == right.key_sym;
     case KEY_INPUT_TYPE_SCANCODE:
       return scan_code == right.scan_code;
+    default:
+      return false;
   }
 
   return false;
@@ -17,32 +19,23 @@ bool Input::operator==(const Input &right) const {
 
 std::unordered_map<std::string, std::vector<Input>> InputManager::mapped_inputs = {};
 
-InputManager::InputManager() {
-}
-
-InputManager::~InputManager() {
-}
-
 KeyInputEvent InputManager::_get_event_info(const SDL_Event *event, const Input &input) {
   KeyInputEvent key_input_event;
   key_input_event.failed = false;
 
-  switch (input.key_input_type) {
-    case KEY_INPUT_TYPE_KEYSYM:
-      key_input_event.repeat = event->key.repeat;
-      key_input_event.holding = (event->type == SDL_KEYDOWN);
-      key_input_event.same = (event->key.keysym.sym == input.key_sym);
-      key_input_event.strength = (key_input_event.same && key_input_event.holding ? 1.0f : 0.0f);
-      break;
-    case KEY_INPUT_TYPE_SCANCODE:
-      key_input_event.repeat = event->key.repeat;
-      key_input_event.holding = (event->type == SDL_KEYDOWN);
-      key_input_event.same = (event->key.keysym.scancode == input.scan_code);
-      key_input_event.strength = (key_input_event.same && key_input_event.holding ? 1.0f : 0.0f);
-      break;
+  bool is_key_event = event->type == SDL_KEYDOWN || event->type == SDL_KEYUP;
+  if (is_key_event) {
+    key_input_event.repeat = event->key.repeat;
+    key_input_event.holding = event->type == SDL_KEYDOWN;
+
+    if (input.key_input_type == KEY_INPUT_TYPE_KEYSYM)
+      key_input_event.same = event->key.keysym.sym == input.key_sym;
+    else if (input.key_input_type == KEY_INPUT_TYPE_SCANCODE)
+      key_input_event.same = event->key.keysym.scancode == input.scan_code;
+
+    key_input_event.strength = key_input_event.same && key_input_event.holding ? 1.0f : 0.0f;
   }
-  
-  key_input_event.failed = true;
+
   return key_input_event;
 }
 

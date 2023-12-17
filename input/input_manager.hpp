@@ -13,7 +13,8 @@ namespace sdl {
 
 enum KeyInputType {
   KEY_INPUT_TYPE_KEYSYM,
-  KEY_INPUT_TYPE_SCANCODE
+  KEY_INPUT_TYPE_SCANCODE,
+  KEY_INPUT_TYPE_NONE
 };
 
 struct KeyInputEvent {
@@ -26,8 +27,11 @@ struct KeyInputEvent {
 
 struct Input {
   KeyInputType key_input_type;
-  SDL_KeyCode key_sym;
-  SDL_Scancode scan_code;
+
+  union {
+    SDL_KeyCode key_sym;
+    SDL_Scancode scan_code;
+  };
 
   bool operator==(const Input &right) const;
 };
@@ -35,6 +39,9 @@ struct Input {
 class InputManager {
 
 private:
+  InputManager() {}
+  ~InputManager() {}
+
   static std::unordered_map<std::string, std::vector<Input>> mapped_inputs;
 
   static KeyInputEvent _get_event_info(const SDL_Event *event, const Input &input);
@@ -49,8 +56,6 @@ private:
   static float _get_input_map_strength(const std::string &map_name, const SDL_Event *event);
 
 public:
-  InputManager();
-  ~InputManager();
 
   static void set_input_map(const std::string &map_name, std::vector<Input> &inputs);
 
