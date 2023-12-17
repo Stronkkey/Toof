@@ -24,7 +24,6 @@ Tree::~Tree() {
 }
 
 void Tree::events() {
-  SDL_PollEvent(event);
   if (event->type == SDL_QUIT)
     stop();
 
@@ -46,25 +45,6 @@ void Tree::initialize() {
 void Tree::ended() {
 }
 
-void Tree::main_loop() {
-  uint64_t now = SDL_GetPerformanceCounter();
-  uint64_t last = 0;
-
-  while (running) {
-    last = now;
-    now = SDL_GetPerformanceCounter();
-    double delta = (double(now - last)) / SDL_GetPerformanceFrequency();
-
-    auto wait_time = std::chrono::duration<double>(1 / fixed_frame_rate);
-    std::this_thread::sleep_for(wait_time);
-
-    if (event_process_type == EVENT_PROCESS_TYPE_FIXED || event_process_type == EVENT_PROCESS_TYPE_FIXED_RENDER)
-      events();
-
-    loop(delta);
-  }
-}
-
 void Tree::render_loop() {
   uint64_t now = SDL_GetPerformanceCounter();
   uint64_t last = 0;
@@ -77,10 +57,30 @@ void Tree::render_loop() {
     auto wait_time = std::chrono::duration<double>(1 / frame_rate);
     std::this_thread::sleep_for(wait_time);
     
-    if (event_process_type == EVENT_PROCESS_TYPE_RENDER || event_process_type == EVENT_PROCESS_TYPE_FIXED_RENDER)
-      events();
-
     render(delta);
+  }
+}
+
+void Tree::main_loop() {
+  uint64_t now = SDL_GetPerformanceCounter();
+  uint64_t last = 0;
+
+  while (running) {
+    last = now;
+    now = SDL_GetPerformanceCounter();
+    double delta = (double(now - last)) / SDL_GetPerformanceFrequency();
+
+    auto wait_time = std::chrono::duration<double>(1 / fixed_frame_rate);
+    std::this_thread::sleep_for(wait_time);
+
+    loop(delta);
+  }
+}
+
+void Tree::event_loop() {
+  while (running) {
+    SDL_WaitEvent(event);
+    events();
   }
 }
 
@@ -93,9 +93,11 @@ void Tree::start() {
   initialize();
 
   std::thread main_loop_thread = std::thread(&Tree::main_loop, this);
+  std::thread event_loop_thread = std::thread(&Tree::event_loop, this);
   render_loop();
 
   main_loop_thread.join();
+  event_loop_thread.join();
 }
 
 void Tree::stop() {

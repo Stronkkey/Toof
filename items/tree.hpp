@@ -24,6 +24,7 @@ protected:
 
   virtual void render_loop();
   virtual void main_loop();
+  virtual void event_loop();
 
   virtual void initialize();
   virtual void events();
@@ -40,16 +41,6 @@ protected:
   }
 
 public:
-  enum EventProcessType {
-    EVENT_PROCESS_TYPE_FIXED,
-    EVENT_PROCESS_TYPE_RENDER,
-    EVENT_PROCESS_TYPE_FIXED_RENDER,
-    EVENT_PROCESS_TYPE_NONE
-  };
-
-public:
-  EventProcessType event_process_type = EVENT_PROCESS_TYPE_RENDER;
-
   Tree();
   virtual ~Tree();
 
