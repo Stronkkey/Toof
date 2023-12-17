@@ -32,13 +32,11 @@ protected:
   virtual void render(double delta);
   virtual void ended();
 
-  virtual Rect2i get_window_rect() const {
-    return Rect2i(0, 0, 340, 240);
-  }
+  virtual Rect2i get_window_rect() const { return Rect2i(0, 0, 340, 240); }
 
-  virtual std::string get_window_title() const {
-    return "SDL example";
-  }
+  virtual std::string get_window_title() const { return "SDL example"; }
+
+  virtual bool should_use_vsync() const { return true; }
 
 public:
   Tree();

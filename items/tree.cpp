@@ -12,7 +12,7 @@ using namespace sdl;
 Tree::Tree(): fixed_frame_rate(60.0),
   frame_rate(60.0) {
   root = new Item;
-  window = new sdl::Window(get_window_rect(), get_window_title());
+  window = new sdl::Window(get_window_rect(), get_window_title(), should_use_vsync());
   rendering_server = window->rendering_server;
   root->set_tree(this);
   running = false;
