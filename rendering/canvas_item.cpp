@@ -33,7 +33,6 @@ Color CanvasItem::get_absolute_modulate() const {
 bool CanvasItem::is_visible() const {
   std::shared_ptr<CanvasItem> parent_canvas_item = parent;
   
-
   while (parent_canvas_item) {
     if (!parent_canvas_item->visible)
       return false;
@@ -60,7 +59,6 @@ void TextureDrawingItem::draw(SDL_Renderer *renderer) {
   SDL_Rect final_src_region = src_region.to_sdl_rect();
   SDL_FRect final_destination = get_draw_rect().to_sdl_frect();
 
-  SDL_FPoint final_offset = transform.origin.to_sdl_fpoint();
   double rotation = global_transform.rotation + transform.rotation;
   Color modulate = texture_modulate * canvas_item->get_absolute_modulate();
 
@@ -71,7 +69,7 @@ void TextureDrawingItem::draw(SDL_Renderer *renderer) {
   if (rotation == 0.0)
     SDL_RenderCopyF(renderer, texture->texture_reference, &final_src_region, &final_destination);
   else
-    SDL_RenderCopyExF(renderer, texture->texture_reference, &final_src_region, &final_destination, rotation, &final_offset, flip);
+    SDL_RenderCopyExF(renderer, texture->texture_reference, &final_src_region, &final_destination, rotation, NULL, flip);
 }
 
 
@@ -88,7 +86,6 @@ void TextureRectDrawingItem::draw(SDL_Renderer *renderer) {
 
   SDL_Rect final_src_region = src_region.to_sdl_rect();
   SDL_FRect final_destination = get_draw_rect().to_sdl_frect();
-  SDL_FPoint offset = transform.origin.to_sdl_fpoint(); 
 
   double rotation = global_transform.rotation + transform.rotation;
   Color modulate = texture_modulate * canvas_item->get_absolute_modulate();
@@ -100,7 +97,7 @@ void TextureRectDrawingItem::draw(SDL_Renderer *renderer) {
   if (rotation == 0.0)
     SDL_RenderCopyF(renderer, texture->texture_reference, &final_src_region, &final_destination);
   else
-    SDL_RenderCopyExF(renderer, texture->texture_reference, &final_src_region, &final_destination, rotation, &offset, flip);
+    SDL_RenderCopyExF(renderer, texture->texture_reference, &final_src_region, &final_destination, rotation, NULL, flip);
 }
 
 /*void LineDrawingItem::draw(SDL_Renderer *renderer) {
