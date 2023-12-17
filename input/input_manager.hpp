@@ -72,7 +72,6 @@ public:
   static bool input_is_action_pressed(const std::string &map_name, const SDL_Event *event);
   static bool input_is_action_just_pressed(const std::string &map_name, const SDL_Event *event);
   static bool input_is_action_released(const std::string &map_name, const SDL_Event *event);
-  static bool input_is_action_just_released(const std::string &map_name, const SDL_Event *event);
 
   static float get_input_axis(const std::string &negative_x_map, const std::string &positive_x_map, const SDL_Event *event);
 

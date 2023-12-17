@@ -152,11 +152,17 @@ bool InputManager::input_is_action_just_pressed(const std::string &map_name, con
 }
 
 bool InputManager::input_is_action_released(const std::string &map_name, const SDL_Event *event) {
-  return !input_is_action_pressed(map_name, event);
-}
+  auto iterator = mapped_inputs.find(map_name);
+  if (iterator == mapped_inputs.end())
+    return false;
 
-bool InputManager::input_is_action_just_released(const std::string &map_name, const SDL_Event *event) {
-  return !input_is_action_just_pressed(map_name, event);
+  for (Input input: iterator->second) {
+    KeyInputEvent key_input_event = _get_event_info(event, input);
+    if (key_input_event.same && !key_input_event.holding && key_input_event.repeat != 0)
+      return true;
+  }
+
+  return false;
 }
 
 float InputManager::get_input_axis(const std::string &negative_x_map, const std::string &positive_x_map, const SDL_Event *event) {
