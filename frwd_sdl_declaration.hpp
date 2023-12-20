@@ -1,0 +1,15 @@
+#include <input/input_manager.hpp>
+#include <items/item.hpp>
+#include <items/rendering_item.hpp>
+#include <items/sprite.hpp>
+#include <items/tree.hpp>
+#include <rendering/canvas_item.hpp>
+#include <rendering/rendering_server.hpp>
+#include <rendering/texture.hpp>
+#include <rendering/window.hpp>
+#include <types/color.hpp>
+#include <types/math_defs.hpp>
+#include <types/rect2.hpp>
+#include <types/transform2d.hpp>
+#include <types/utility_functions.hpp>
+#include <types/vector2.hpp>
