@@ -10,22 +10,27 @@ namespace sdl {
 
 class RenderingItem : public Item {
 
-protected:
+private:
   Transform2D transform;
   uid canvas_item;
-  Color modulate;
-  SDL_BlendMode blend_mode;
+  Color modulate = Color::WHITE;
+  SDL_BlendMode blend_mode = SDL_BLENDMODE_BLEND;
   bool visible = true;
 
+protected:
   RenderingServer *get_rendering_server() const;
+
   void update();
   void ready() override;
   void on_parent_changed(Item*) override;
 
+  virtual void draw() const;
+
 public:
-  RenderingItem();
   ~RenderingItem();
+
   uid get_canvas_item() const;
+  void redraw() const;
 
   void set_position(const Vector2 &new_position);
   Vector2 get_position() const;

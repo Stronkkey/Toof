@@ -13,10 +13,6 @@ void RenderingItem::ready() {
   update();
 }
 
-RenderingItem::RenderingItem(): modulate(Color::WHITE),
-  blend_mode(SDL_BLENDMODE_BLEND) {
-}
-
 RenderingItem::~RenderingItem() {
   RenderingServer *rendering_server = get_rendering_server();
   if (rendering_server)
@@ -24,10 +20,7 @@ RenderingItem::~RenderingItem() {
 }
 
 RenderingServer *RenderingItem::get_rendering_server() const {
-  Window *window = get_tree() ? get_tree()->get_window() : nullptr;
-  if (window)
-    return window->rendering_server;
-  return nullptr;
+  return get_tree() ? get_tree()->get_rendering_server() : nullptr;
 }
 
 void RenderingItem::update() {
@@ -43,7 +36,6 @@ void RenderingItem::update() {
 
 void RenderingItem::on_parent_changed(Item *new_parent) {
   RenderingServer *rendering_server = get_rendering_server();
-
   if (!rendering_server)
     return;
 
@@ -54,9 +46,17 @@ void RenderingItem::on_parent_changed(Item *new_parent) {
     rendering_server->canvas_item_set_parent(canvas_item, uid());
 }
 
+void RenderingItem::draw() const {
+}
+
 uid RenderingItem::get_canvas_item() const {
   return canvas_item;
 }
+
+void RenderingItem::redraw() const {
+  draw();
+}
+
 
 void RenderingItem::set_position(const Vector2 &new_position) {
   transform.origin = new_position;

@@ -1,23 +1,26 @@
 #pragma once
 
 #include <items/rendering_item.hpp>
-#include <rendering/texture.hpp>
-#include <types/rect2.hpp>
 
 namespace sdl {
 
+class Texture2D;
+
 class SpriteItem : public RenderingItem {
 
-protected:
+private:
   std::shared_ptr<Texture2D> texture;
+
   Rect2i texture_region;
   Transform2D texture_transform;
   SDL_RendererFlip flip = SDL_FLIP_NONE;
   bool centered = true;
 
-  void draw_texture();
-  void draw_rect_texture();
-  void update_texture();
+  void draw_texture() const;
+  void draw_rect_texture() const;
+
+protected:
+  void draw() const override;
 
 public:
   void set_texture(const std::shared_ptr<Texture2D> &new_texture);

@@ -1,10 +1,14 @@
 #pragma once
 
-#include <rendering/rendering_server.hpp>
+#include <types/transform2d.hpp>
+#include <types/rect2.hpp>
+#include <types/color.hpp>
 
 #include <SDL_image.h>
 
 namespace sdl {
+
+class RenderingServer;
 
 struct Texture {
   SDL_Texture *texture_reference;
@@ -19,19 +23,30 @@ public:
 
 class Texture2D {
 
-protected:
+private:
   RenderingServer *rendering_server;
 
 public:
   void set_rendering_server(RenderingServer *rendering_server);
+  RenderingServer *get_rendering_server() const;
 
   virtual Vector2i get_size() const { return Vector2i::ZERO; }
   virtual int get_width() const { return int(get_size().x); }
   virtual int get_height() const { return int(get_size().y); }
   virtual uid get_uid() const { return 0; }
 
-  virtual void draw(const RenderingServer::CanvasItemTexture&) const {}
-  virtual void draw_region(const RenderingServer::CanvasItemRectTexture&) const {}
+  virtual void draw(const uid texture_uid,
+    const uid canvas_item_uid,
+    const SDL_RendererFlip flip = SDL_FLIP_NONE,
+    const Color &modulate = Color::WHITE,
+    const Transform2D &transform = Transform2D::IDENTITY) const;
+
+  virtual void draw_region(const uid texture_uid,
+    const uid canvas_item_uid,
+    const Rect2i &src_region,
+    const SDL_RendererFlip flip = SDL_FLIP_NONE,
+    const Color &modulate = Color::WHITE,
+    const Transform2D &transform = Transform2D::IDENTITY) const;
 
 };
 
@@ -47,8 +62,18 @@ public:
   Vector2i get_size() const override;
   uid get_uid() const override { return texture_uid; }
 
-  void draw(const RenderingServer::CanvasItemTexture &draw_operation) const override;
-  void draw_region(const RenderingServer::CanvasItemRectTexture &rect_draw_operation) const override;
+  void draw(const uid texture_uid,
+    const uid canvas_item_uid,
+    const SDL_RendererFlip flip = SDL_FLIP_NONE,
+    const Color &modulate = Color::WHITE,
+    const Transform2D &transform = Transform2D::IDENTITY) const override;
+
+  void draw_region(const uid texture_uid,
+    const uid canvas_item_uid,
+    const Rect2i &src_region,
+    const SDL_RendererFlip flip = SDL_FLIP_NONE,
+    const Color &modulate = Color::WHITE,
+    const Transform2D &transform = Transform2D::IDENTITY) const override;
 
   void load_from_path(const std::string &file_path) override;
 };

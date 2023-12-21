@@ -19,11 +19,11 @@ private:
   std::string name;
 
 protected:
-  virtual void event(const SDL_Event*) {}
-  virtual void render(double) {}
-  virtual void loop(double) {}
-  virtual void on_parent_changed(Item*) {}
-  virtual void ready() {}
+  virtual void event(const SDL_Event *event);
+  virtual void render(double delta);
+  virtual void loop(double delta);
+  virtual void on_parent_changed(Item *new_parent);
+  virtual void ready();
 
 public:
   Item();

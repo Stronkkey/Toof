@@ -1,6 +1,7 @@
 #pragma once
 
-#include <types/vector2.hpp>
+#include <types/rect2.hpp>
+#include <types/transform2d.hpp>
 #include <types/color.hpp>
 
 #include <SDL_render.h>
@@ -39,31 +40,6 @@ public:
     uint32_t format;
   };
 
-  struct CanvasItemTexture {
-    uid texture_uid;
-    uid canvas_item_uid;
-    std::optional<Color*> modulate;
-    Transform2D *transform;
-    SDL_RendererFlip flip;
-
-    bool valid() const {
-      return transform;
-    }
-  };
-
-  struct CanvasItemRectTexture {
-    uid texture_uid;
-    uid canvas_item_uid;
-    std::optional<Color*> modulate;
-    Rect2i *src_region;
-    Transform2D *transform;
-    SDL_RendererFlip flip;
-
-    bool valid() const {
-      return src_region && transform;
-    }
-  };
-
 public:
   RenderingServer();
   RenderingServer(SDL_Renderer *new_renderer);
@@ -81,8 +57,18 @@ public:
 
   TextureInfo get_texture_info_from_uid(const uid texture_uid) const;
 
-  void canvas_item_add_texture(const CanvasItemTexture &canvas_item_texture);
-  void canvas_item_add_texture_region(const CanvasItemRectTexture &canvass_item_rect_texture);
+  void canvas_item_add_texture(const uid texture_uid,
+    const uid canvas_item_uid,
+    const SDL_RendererFlip flip = SDL_FLIP_NONE,
+    const Color &modulate = Color::WHITE,
+    const Transform2D &transform = Transform2D::IDENTITY);
+
+  void canvas_item_add_texture_region(const uid texture_uid,
+    const uid canvas_item_uid,
+    const Rect2i &src_region,
+    const SDL_RendererFlip flip = SDL_FLIP_NONE,
+    const Color &modulate = Color::WHITE,
+    const Transform2D &transform = Transform2D::IDENTITY);
 
   void canvas_item_set_transform(const uid canvas_item_uid, const Transform2D &new_transform);
   void canvas_item_set_parent(const uid canvas_item_uid, const uid parent_item_uid);

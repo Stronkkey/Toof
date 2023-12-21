@@ -5,6 +5,7 @@
 #include <types/rect2.hpp>
 
 #include <vector>
+#include <memory>
 
 namespace sdl {
 

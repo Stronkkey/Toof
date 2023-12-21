@@ -43,6 +43,7 @@ public:
   virtual ~Tree();
 
   Window *get_window() const;
+  RenderingServer *get_rendering_server() const;
 
   Item *get_root() const;
   void set_root(Item *new_root);

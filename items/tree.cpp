@@ -14,6 +14,8 @@ Tree::Tree(): fixed_frame_rate(60.0),
   root = new Item;
   window = new sdl::Window(get_window_rect(), get_window_title(), should_use_vsync());
   rendering_server = window->rendering_server;
+
+  root->set_name("Root");
   root->set_tree(this);
   running = false;
 }
@@ -24,8 +26,10 @@ Tree::~Tree() {
 }
 
 void Tree::events() {
-  if (event->type == SDL_QUIT)
+  if (event->type == SDL_QUIT) {
     stop();
+    return;
+  }
 
   root->propagate_event(event);
 }
@@ -109,6 +113,10 @@ void Tree::stop() {
 
 Window *Tree::get_window() const {
   return window;
+}
+
+RenderingServer *Tree::get_rendering_server() const {
+  return rendering_server;
 }
 
 Item *Tree::get_root() const {
