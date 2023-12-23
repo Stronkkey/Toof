@@ -55,9 +55,9 @@ struct Vector2 {
 
   Vector2 normalized() const;
 
-  std::string to_string() const;
-  SDL_FPoint to_sdl_fpoint() const;
-  SDL_Point to_sdl_point() const;
+  [[nodiscard]] std::string to_string() const;
+  [[nodiscard]] SDL_FPoint to_sdl_fpoint() const;
+  [[nodiscard]] SDL_Point to_sdl_point() const;
 
   static const Vector2 ONE;
   static const Vector2 ZERO;
@@ -109,9 +109,9 @@ struct Vector2i {
   Vector2i operator-() const;
   Vector2i operator+() const;
   
-  std::string to_string() const;
-  SDL_FPoint to_sdl_fpoint() const;
-  SDL_Point to_sdl_point() const;
+  [[nodiscard]] std::string to_string() const;
+  [[nodiscard]] SDL_FPoint to_sdl_fpoint() const;
+  [[nodiscard]] SDL_Point to_sdl_point() const;
 
   static const Vector2i ONE;
   static const Vector2i ZERO;

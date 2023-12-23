@@ -51,7 +51,7 @@ struct Rect2 {
   Rect2 operator-() const;
   Rect2 operator+() const;
 
-  std::string to_string() const;
+  [[nodiscard]] std::string to_string() const;
   Vector2 get_position() const;
   Vector2 get_size() const;
   bool has_point(const Vector2 &point) const;
@@ -60,8 +60,8 @@ struct Rect2 {
   void set_position(const Vector2 &new_position);
   void set_size(const Vector2 &new_size);
 
-  SDL_Rect to_sdl_rect() const;
-  SDL_FRect to_sdl_frect() const;
+  [[nodiscard]] SDL_Rect to_sdl_rect() const;
+  [[nodiscard]] SDL_FRect to_sdl_frect() const;
 
   static const Rect2 EMPTY;
   static SDL_Rect to_sdl_rect(const Rect2 &rect2);
@@ -116,14 +116,14 @@ struct Rect2i {
   Vector2i get_position() const;
   Vector2i get_size() const;
 
-  std::string to_string() const;
+  [[nodiscard]] std::string to_string() const;
   void set_position(const Vector2i &new_position);
   void set_size(const Vector2i &new_size);
   bool has_point(const Vector2i &point) const;
   bool intersects(const Rect2i &rect2i, const bool include_borders = false) const;
 
-  SDL_Rect to_sdl_rect() const;
-  SDL_FRect to_sdl_frect() const;
+  [[nodiscard]] SDL_Rect to_sdl_rect() const;
+  [[nodiscard]] SDL_FRect to_sdl_frect() const;
 
   static const Rect2i EMPTY;
   static SDL_Rect to_sdl_rect(const Rect2i &rect2i);

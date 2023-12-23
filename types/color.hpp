@@ -43,7 +43,7 @@ struct Color {
 
   SDL_Color to_sdl_color() const;
 
-  std::string to_string() const;
+  [[nodiscard]] std::string to_string() const;
 
   Color operator+() const;
   Color operator-() const;
