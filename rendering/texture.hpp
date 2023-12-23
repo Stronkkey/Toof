@@ -24,7 +24,7 @@ public:
 class Texture2D {
 
 private:
-  RenderingServer *rendering_server;
+  RenderingServer *rendering_server = nullptr;
 
 public:
   void set_rendering_server(RenderingServer *rendering_server);
