@@ -1,9 +1,12 @@
+#include "types/utility_functions.hpp"
 #include <items/item.hpp>
 #include <items/tree.hpp>
 
 #include <SDL_events.h>
 
 using namespace sdl;
+
+// There are at least ten bugs in this
 
 Item::Item() {
 }
@@ -30,6 +33,9 @@ void Item::free() {
 
     iterator.second->free();
   }
+
+  if (parent)
+    parent = nullptr;
 
   delete this;
 }
@@ -69,8 +75,9 @@ Tree *Item::get_tree() const {
 }
 
 void Item::set_tree(Tree *new_tree) {
-  Tree *old_tree = tree;
+  const Tree *old_tree = tree;
   tree = new_tree;
+
   if (!old_tree && tree)
     ready();
 }
@@ -84,11 +91,20 @@ std::string Item::get_name() const {
 }
 
 void Item::add_item(Item *new_item) {
-  if (new_item->get_parent() == this)
+  if (new_item->parent == this)
     return;
 
   children.insert({new_item->get_name(), new_item});
-  new_item->set_parent(this);
+  new_item->parent = this;
+}
+
+void Item::remove_item(const std::string &item_name) {
+  auto iterator = children.find(item_name);
+  if (iterator != children.end()) {
+    iterator->second->parent = nullptr;
+    iterator->second->tree = nullptr;
+    children.erase(iterator);
+  }
 }
 
 std::vector<Item*> Item::get_children() const {
@@ -103,10 +119,12 @@ std::vector<Item*> Item::get_children() const {
 void Item::set_parent(Item *new_parent) {
   parent = new_parent;
   if (!tree && parent && parent->tree)
-    set_tree(parent->tree);
+    tree = parent->tree;
+  
+  if (parent)
+    parent->add_item(this);
 
-  parent->add_item(this);
-  on_parent_changed(new_parent);
+  on_parent_changed(parent);
 }
 
 Item *Item::get_parent() const {

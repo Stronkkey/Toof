@@ -41,6 +41,7 @@ public:
   std::string get_name() const;
 
   void add_item(Item *new_item);
+  void remove_item(const std::string &item_name);
   std::vector<Item*> get_children() const;
 
   void set_parent(Item *new_parent);
