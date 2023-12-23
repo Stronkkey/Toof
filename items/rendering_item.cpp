@@ -11,6 +11,7 @@ void RenderingItem::ready() {
   canvas_item = get_rendering_server()->create_canvas_item();
 
   update();
+  draw();
 }
 
 RenderingItem::~RenderingItem() {
