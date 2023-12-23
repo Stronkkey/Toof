@@ -35,29 +35,32 @@ void Item::free() {
 }
 
 void Item::propagate_event(const SDL_Event *event) {
+  this->event(event);
   for (auto iterator: children) {
     if (iterator.second == nullptr)
       continue;
 
-    iterator.second->event(event);
+    iterator.second->propagate_event(event);
   }
 }
 
 void Item::propagate_loop(double delta) {
+  loop(delta);
   for (auto iterator: children) {
     if (iterator.second == nullptr)
       continue;
 
-    iterator.second->loop(delta);
+    iterator.second->propagate_loop(delta);
   }
 }
 
 void Item::propagate_render(double delta) {
+  render(delta);
   for (auto iterator: children) {
     if (iterator.second == nullptr)
       continue;
 
-    iterator.second->render(delta);
+    iterator.second->propagate_render(delta);
   }
 }
 
