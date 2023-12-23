@@ -44,7 +44,6 @@ public:
   void remove_item(const std::string &item_name);
   std::vector<Item*> get_children() const;
 
-  void set_parent(Item *new_parent);
   Item *get_parent() const;
 
   SDL_Event *get_event() const;

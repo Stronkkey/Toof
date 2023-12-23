@@ -13,8 +13,8 @@ private:
 
   Rect2i texture_region;
   Transform2D texture_transform;
-  SDL_RendererFlip flip = SDL_FLIP_NONE;
-  bool centered = true;
+  SDL_RendererFlip flip;
+  bool centered;
 
   void draw_texture() const;
   void draw_rect_texture() const;
@@ -23,6 +23,8 @@ protected:
   void draw() const override;
 
 public:
+  SpriteItem();
+
   void set_texture(const std::shared_ptr<Texture2D> &new_texture);
   std::shared_ptr<Texture2D> get_texture() const;
 

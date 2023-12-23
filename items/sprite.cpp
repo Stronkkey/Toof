@@ -3,6 +3,14 @@
 
 using namespace sdl;
 
+SpriteItem::SpriteItem(): texture(nullptr),
+  texture_region(),
+  texture_transform(),
+  flip(SDL_FLIP_NONE),
+  centered(true)
+{
+}
+
 void SpriteItem::draw_texture() const {
   Transform2D new_transform = texture_transform; 
   if (centered)

@@ -1,3 +1,4 @@
+#include "types/utility_functions.hpp"
 #include <items/rendering_item.hpp>
 #include <rendering/window.hpp>
 #include <items/tree.hpp>
@@ -8,13 +9,15 @@ using namespace sdl;
 
 void RenderingItem::ready() {
   transform = transform.IDENTITY;
-
   canvas_item = get_rendering_server()->create_canvas_item();
+
   update();
+  sdl::UtilityFunctions::print(std::to_string(canvas_item));
 }
 
 RenderingItem::~RenderingItem() {
   RenderingServer *rendering_server = get_rendering_server();
+
   if (rendering_server)
     rendering_server->remove_uid(canvas_item);
 }

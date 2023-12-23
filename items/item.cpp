@@ -95,6 +95,10 @@ void Item::add_item(Item *new_item) {
 
   children.insert({new_item->get_name(), new_item});
   new_item->parent = this;
+  new_item->on_parent_changed(this);
+
+  if (tree)
+    new_item->set_tree(tree);
 }
 
 void Item::remove_item(const std::string &item_name) {
@@ -113,17 +117,6 @@ std::vector<Item*> Item::get_children() const {
     item_children.push_back(iterator.second);
 
   return item_children;
-}
-
-void Item::set_parent(Item *new_parent) {
-  parent = new_parent;
-  if (!tree && parent && parent->tree)
-    tree = parent->tree;
-  
-  if (parent)
-    parent->add_item(this);
-
-  on_parent_changed(parent);
 }
 
 Item *Item::get_parent() const {
