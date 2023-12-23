@@ -4,6 +4,8 @@
 
 #include <SDL_events.h>
 
+#include <functional>
+
 namespace sdl {
 
 class Item;
@@ -11,6 +13,12 @@ class Window;
 class RenderingServer;
 
 class Tree {
+
+typedef std::function<void(void)> callback;
+
+private:
+  std::vector<callback> deferred_callbacks;
+  std::vector<Item*> deferred_item_removal;
 
 protected:
   bool running;
@@ -52,6 +60,9 @@ public:
 
   void start();
   void stop();
+
+  void defer_callable(const callback &callable);
+  void queue_free(Item *item);
 
   void set_frame_rate(const double new_frame_rate);
   double get_frame_rate() const;

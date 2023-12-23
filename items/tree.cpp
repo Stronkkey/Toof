@@ -9,12 +9,13 @@
 
 using namespace sdl;
 
-Tree::Tree(): fixed_frame_rate(60.0),
-  frame_rate(60.0) {
-  root = new Item;
-  window = new sdl::Window(get_window_rect(), get_window_title(), should_use_vsync());
-  rendering_server = window->rendering_server;
-
+Tree::Tree(): running(false),
+  fixed_frame_rate(60.0),
+  frame_rate(60.0),
+  window(new Window(get_window_rect(), get_window_title(), should_use_vsync())),
+  rendering_server(window->rendering_server),
+  root(new Item)
+{
   root->set_name("Root");
   root->set_tree(this);
   running = false;
@@ -78,6 +79,13 @@ void Tree::main_loop() {
     std::this_thread::sleep_for(wait_time);
 
     loop(delta);
+
+    for (callback callable: deferred_callbacks)
+      callable();
+    for (Item *item: deferred_item_removal)
+      item->free();
+
+    deferred_callbacks.clear();
   }
 }
 
@@ -110,6 +118,18 @@ void Tree::stop() {
     ended();
   }
 }
+
+void Tree::defer_callable(const callback &callable) {
+  if (!callable)
+    return;
+
+  deferred_callbacks.push_back(callable);
+}
+
+void Tree::queue_free(Item *item) {
+  deferred_item_removal.push_back(item);
+}
+
 
 Window *Tree::get_window() const {
   return window;
