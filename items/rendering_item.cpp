@@ -1,4 +1,3 @@
-#include "types/utility_functions.hpp"
 #include <items/rendering_item.hpp>
 #include <rendering/window.hpp>
 #include <items/tree.hpp>
@@ -12,7 +11,6 @@ void RenderingItem::ready() {
   canvas_item = get_rendering_server()->create_canvas_item();
 
   update();
-  sdl::UtilityFunctions::print(std::to_string(canvas_item));
 }
 
 RenderingItem::~RenderingItem() {

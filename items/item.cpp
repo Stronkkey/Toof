@@ -26,6 +26,8 @@ void Item::on_parent_changed(Item*) {
 }
 
 void Item::free() {
+  tree = nullptr;
+  parent = nullptr;
   for (auto iterator: children) {
     if (iterator.second == nullptr)
       continue;
@@ -33,19 +35,16 @@ void Item::free() {
     iterator.second->free();
   }
 
-  if (parent)
-    parent = nullptr;
-
   delete this;
 }
 
-void Item::propagate_event(const SDL_Event *event) {
-  this->event(event);
+void Item::propagate_event(const SDL_Event *sdl_event) {
+  event(sdl_event);
   for (auto iterator: children) {
     if (iterator.second == nullptr)
       continue;
 
-    iterator.second->propagate_event(event);
+    iterator.second->propagate_event(sdl_event);
   }
 }
 
