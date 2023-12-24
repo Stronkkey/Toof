@@ -17,14 +17,14 @@ class Tree {
 typedef std::function<void(void)> callback;
 
 private:
-  std::vector<callback> deferred_callbacks;
-  std::vector<Item*> deferred_item_removal;
-
-protected:
   bool running;
   double fixed_frame_rate;
   double frame_rate;
 
+  std::vector<callback> deferred_callbacks;
+  std::vector<Item*> deferred_item_removal;
+
+protected:
   sdl::Window *window;
   sdl::RenderingServer *rendering_server;
   SDL_Event *event;
@@ -54,7 +54,6 @@ public:
   RenderingServer *get_rendering_server() const;
 
   Item *get_root() const;
-  void set_root(Item *new_root);
 
   SDL_Event *get_event() const;
 

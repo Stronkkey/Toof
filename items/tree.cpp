@@ -22,6 +22,7 @@ Tree::Tree(): running(false),
 }
 
 Tree::~Tree() {
+  stop();
   root->free();
   delete window;
 }
@@ -36,6 +37,9 @@ void Tree::events() {
 }
 
 void Tree::render(double delta) {
+  if (!running)
+    return;
+
   root->propagate_render(delta);
   rendering_server->render();
 }
@@ -141,10 +145,6 @@ RenderingServer *Tree::get_rendering_server() const {
 
 Item *Tree::get_root() const {
   return root;
-}
-
-void Tree::set_root(Item *new_root) {
-  root = new_root;
 }
 
 SDL_Event *Tree::get_event() const {

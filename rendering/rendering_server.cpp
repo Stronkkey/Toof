@@ -10,8 +10,8 @@ RenderingServer::RenderingServer(SDL_Renderer *new_renderer): renderer(new_rende
 }
 
 RenderingServer::~RenderingServer() {
-  for (std::pair<uid, std::shared_ptr<CanvasItem>> iterator: canvas_items)
-    destroy_uid(iterator.first);
+  for (std::pair<uint_t, std::shared_ptr<Texture>> iterator: textures)
+    SDL_DestroyTexture(iterator.second->texture_reference);
 }
 
 void RenderingServer::set_default_background_color(const Color &new_background_color) {
