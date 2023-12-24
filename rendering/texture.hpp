@@ -16,32 +16,23 @@ struct Texture {
   uint32_t format;
 };
 
-class ILoadableTexture {
-public:
-  virtual void load_from_path(const std::string &file_path) =0;
-};
-
 class Texture2D {
 
-private:
-  RenderingServer *rendering_server = nullptr;
-
 public:
-  void set_rendering_server(RenderingServer *rendering_server);
-  RenderingServer *get_rendering_server() const;
-
   virtual Vector2i get_size() const { return Vector2i::ZERO; }
   virtual int get_width() const { return int(get_size().x); }
   virtual int get_height() const { return int(get_size().y); }
   virtual uid get_uid() const { return 0; }
 
-  virtual void draw(const uid texture_uid,
+  virtual void draw(RenderingServer *rendering_server,
+    const uid texture_uid,
     const uid canvas_item_uid,
     const SDL_RendererFlip flip = SDL_FLIP_NONE,
     const Color &modulate = Color::WHITE,
     const Transform2D &transform = Transform2D::IDENTITY) const;
 
-  virtual void draw_region(const uid texture_uid,
+  virtual void draw_region(RenderingServer *rendering_server,
+    const uid texture_uid,
     const uid canvas_item_uid,
     const Rect2i &src_region,
     const SDL_RendererFlip flip = SDL_FLIP_NONE,
@@ -50,7 +41,7 @@ public:
 
 };
 
-class UidTexture : public Texture2D, public ILoadableTexture {
+class UidTexture : public Texture2D {
 
 private:
   uid texture_uid;
@@ -60,22 +51,25 @@ public:
   UidTexture(const uid from_uid);
 
   Vector2i get_size() const override;
+  Vector2i get_size(RenderingServer *rendering_server) const;
   uid get_uid() const override { return texture_uid; }
 
-  void draw(const uid texture_uid,
+  void draw(RenderingServer *rendering_server,
+    const uid texture_uid,
     const uid canvas_item_uid,
     const SDL_RendererFlip flip = SDL_FLIP_NONE,
     const Color &modulate = Color::WHITE,
     const Transform2D &transform = Transform2D::IDENTITY) const override;
 
-  void draw_region(const uid texture_uid,
+  void draw_region(RenderingServer *rendering_server,
+    const uid texture_uid,
     const uid canvas_item_uid,
     const Rect2i &src_region,
     const SDL_RendererFlip flip = SDL_FLIP_NONE,
     const Color &modulate = Color::WHITE,
     const Transform2D &transform = Transform2D::IDENTITY) const override;
 
-  void load_from_path(const std::string &file_path) override;
+  void load_from_path(RenderingServer *rendering_server, const std::string &file_path);
 };
 
 }
