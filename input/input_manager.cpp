@@ -165,6 +165,10 @@ bool InputManager::input_is_action_released(const std::string &map_name, const S
   return false;
 }
 
+float InputManager::get_input_strength(const std::string &input_map_name, const SDL_Event *event) {
+  return _get_input_map_strength(input_map_name, event);
+}
+
 float InputManager::get_input_axis(const std::string &negative_x_map, const std::string &positive_x_map, const SDL_Event *event) {
   const float negative_input_strength = _get_input_map_strength(negative_x_map, event);
   const float positive_input_strength = _get_input_map_strength(positive_x_map, event);
