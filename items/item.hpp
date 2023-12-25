@@ -12,6 +12,32 @@ class Tree;
 
 class Item {
 
+public:
+  enum ProcessMode {
+    PROCESS_MODE_INHERIT,
+    PROCESS_MODE_PAUSABLE,
+    PROCESS_MODE_WHEN_PAUSED,
+    PROCESS_MODE_ALWAYS,
+    PROCESS_MODE_DISABLED
+  };
+
+  enum {
+    NOTIFICATION_READY = 1000,
+    NOTIFICATION_EVENT,
+    NOTIFICATION_RENDER,
+    NOTIFICATION_LOOP,
+    NOTIFICATION_ENTER_TREE,
+    NOTIFICATION_EXIT_TREE,
+    NOTIFICATION_PAUSED,
+    NOTIFICATION_UNPAUSED,
+    NOTIFICATION_UNPARENTED,
+    NOTIFICATION_PARENTED,
+    NOTIFICATION_DISABLED,
+    NOTIFICATION_ENABLED,
+    NOTIFICATION_CLOSE_REQUEST,
+    NOTIFICATION_PREDELETE
+  };
+
 private:
   std::unordered_map<std::string, Item*> children;
   Tree *tree = nullptr;
@@ -19,19 +45,22 @@ private:
   std::string name;
 
 protected:
-  virtual void event(const SDL_Event *event);
-  virtual void render(double delta);
-  virtual void loop(double delta);
-  virtual void on_parent_changed(Item *new_parent);
-  virtual void ready();
+  virtual void _notification(const int what);
+  virtual void _event(const SDL_Event *event);
+  virtual void _render(double delta);
+  virtual void _loop(double delta);
+  virtual void _ready();
 
 public:
   Item();
   virtual ~Item() {}
 
-  void propagate_event(const SDL_Event *event);
-  void propagate_render(double delta);
-  void propagate_loop(double delta);
+  SDL_Event *get_event() const;
+  double get_delta_time() const;
+  double get_loop_delta_time() const;
+
+  void notification(const int what);
+  void propagate_notification(const int what);
   void free();
 
   Tree *get_tree() const;
@@ -45,8 +74,6 @@ public:
   std::vector<Item*> get_children() const;
 
   Item *get_parent() const;
-
-  SDL_Event *get_event() const;
 };
 
 }

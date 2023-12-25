@@ -10,6 +10,14 @@ namespace sdl {
 
 class RenderingItem : public Item {
 
+public:
+  enum {
+    NOTIFICATION_DRAW = 900,
+    NOTIFICATION_VISIBILITY_CHANGED,
+    NOTIFICATION_ENTER_CANVAS,
+    NOTIFICATION_EXIT_CANVAS
+  };
+
 private:
   Transform2D transform;
   uid canvas_item;
@@ -17,20 +25,21 @@ private:
   SDL_BlendMode blend_mode = SDL_BLENDMODE_BLEND;
   bool visible = true;
 
+  void update();
+  void on_parent_changed(Item *new_parent);
+  void ready();
+
 protected:
   RenderingServer *get_rendering_server() const;
 
-  void update();
-  void ready() override;
-  void on_parent_changed(Item*) override;
-
-  virtual void draw() const;
+  void _notification(const int what);
+  virtual void _draw() const;
 
 public:
   ~RenderingItem();
 
   uid get_canvas_item() const;
-  void redraw() const;
+  void redraw();
 
   void set_position(const Vector2 &new_position);
   Vector2 get_position() const;

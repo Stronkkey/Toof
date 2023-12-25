@@ -12,6 +12,8 @@ using namespace sdl;
 Tree::Tree(): running(false),
   fixed_frame_rate(60.0),
   frame_rate(60.0),
+  render_delta_time(0.0),
+  loop_delta_time(0.0),
   window(new Window(get_window_rect(), get_window_title(), should_use_vsync())),
   rendering_server(window->rendering_server),
   root(new Item)
@@ -33,19 +35,19 @@ void Tree::events() {
     return;
   }
 
-  root->propagate_event(event);
+  root->propagate_notification(Item::NOTIFICATION_EVENT);
 }
 
-void Tree::render(double delta) {
+void Tree::render() {
   if (!running)
     return;
 
-  root->propagate_render(delta);
+  root->propagate_notification(Item::NOTIFICATION_RENDER);
   rendering_server->render();
 }
 
-void Tree::loop(double delta) {
-  root->propagate_loop(delta);
+void Tree::loop() {
+  root->propagate_notification(Item::NOTIFICATION_LOOP);
 }
 
 void Tree::initialize() {
@@ -66,7 +68,8 @@ void Tree::render_loop() {
     auto wait_time = std::chrono::duration<double>(1 / frame_rate);
     std::this_thread::sleep_for(wait_time);
     
-    render(delta);
+    render_delta_time = delta;
+    render();
   }
 }
 
@@ -82,7 +85,8 @@ void Tree::main_loop() {
     auto wait_time = std::chrono::duration<double>(1 / fixed_frame_rate);
     std::this_thread::sleep_for(wait_time);
 
-    loop(delta);
+    loop_delta_time = delta;
+    loop();
 
     for (callback callable: deferred_callbacks)
       callable();
@@ -90,6 +94,7 @@ void Tree::main_loop() {
       item->free();
 
     deferred_callbacks.clear();
+    deferred_item_removal.clear();
   }
 }
 
@@ -165,4 +170,12 @@ void Tree::set_fixed_frame_rate(const double new_fixed_frame_rate) {
 
 double Tree::get_fixed_frame_rate() const {
   return fixed_frame_rate;
+}
+
+double Tree::get_render_delta_time() const {
+  return render_delta_time;
+}
+
+double Tree::get_loop_delta_time() const {
+  return loop_delta_time;
 }

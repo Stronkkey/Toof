@@ -1,3 +1,4 @@
+#include "types/utility_functions.hpp"
 #include <items/rendering_item.hpp>
 #include <rendering/window.hpp>
 #include <items/tree.hpp>
@@ -11,7 +12,7 @@ void RenderingItem::ready() {
   canvas_item = get_rendering_server()->create_canvas_item();
 
   update();
-  draw();
+  notification(NOTIFICATION_DRAW);
 }
 
 RenderingItem::~RenderingItem() {
@@ -48,15 +49,25 @@ void RenderingItem::on_parent_changed(Item *new_parent) {
     rendering_server->canvas_item_set_parent(canvas_item, uid());
 }
 
-void RenderingItem::draw() const {
+void RenderingItem::_notification(const int what) {
+  switch (what) {
+    case NOTIFICATION_DRAW:
+      _draw();
+      break;
+    default:
+      break;
+  }
+}
+
+void RenderingItem::_draw() const {
 }
 
 uid RenderingItem::get_canvas_item() const {
   return canvas_item;
 }
 
-void RenderingItem::redraw() const {
-  draw();
+void RenderingItem::redraw() {
+  notification(NOTIFICATION_DRAW);
 }
 
 

@@ -15,7 +15,7 @@ void SpriteItem::draw_texture() const {
   Transform2D new_transform = texture_transform; 
   if (centered)
     new_transform.origin -= texture->get_size() / 2;
-  
+ 
   texture->draw(get_rendering_server(), texture->get_uid(), get_canvas_item(), flip, Color::WHITE, new_transform);
 }
 
@@ -37,6 +37,13 @@ void SpriteItem::draw() const {
     draw_texture();
   else
     draw_rect_texture();
+}
+
+void SpriteItem::_notification(const int what) {
+  RenderingItem::_notification(what);
+
+  if (what == NOTIFICATION_DRAW)
+    draw();
 }
 
 void SpriteItem::set_texture(const std::shared_ptr<Texture2D> &new_texture) {

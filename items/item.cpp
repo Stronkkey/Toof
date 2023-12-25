@@ -1,3 +1,4 @@
+#include "types/utility_functions.hpp"
 #include <items/item.hpp>
 #include <items/tree.hpp>
 
@@ -10,19 +11,20 @@ using namespace sdl;
 Item::Item() {
 }
 
-void Item::ready() {
+void Item::_ready() {
+  UtilityFunctions::print("ready " + get_name());
 }
 
-void Item::loop(double) {
+void Item::_loop(double) {
 }
 
-void Item::render(double) {
+void Item::_render(double) {
 }
 
-void Item::event(const SDL_Event*) {
+void Item::_event(const SDL_Event*) {
 }
 
-void Item::on_parent_changed(Item*) {
+void Item::_notification(const int) {
 }
 
 void Item::free() {
@@ -38,34 +40,34 @@ void Item::free() {
   delete this;
 }
 
-void Item::propagate_event(const SDL_Event *sdl_event) {
-  event(sdl_event);
-  for (auto iterator: children) {
-    if (iterator.second == nullptr)
-      continue;
+void Item::notification(const int what) {
+  _notification(what);
 
-    iterator.second->propagate_event(sdl_event);
+  if (!tree)
+    return;
+  switch (what) {
+    case NOTIFICATION_RENDER:
+      _render(get_delta_time());
+      break;
+    case NOTIFICATION_LOOP:
+      _loop(get_loop_delta_time());
+      break;
+    case NOTIFICATION_EVENT:
+      _event(get_event());
+      break;
+    case NOTIFICATION_READY:
+      _ready();
+      break;
+    default:
+      break;
   }
 }
 
-void Item::propagate_loop(double delta) {
-  loop(delta);
-  for (auto iterator: children) {
-    if (iterator.second == nullptr)
-      continue;
+void Item::propagate_notification(const int what) {
+  notification(what);
 
-    iterator.second->propagate_loop(delta);
-  }
-}
-
-void Item::propagate_render(double delta) {
-  render(delta);
-  for (auto iterator: children) {
-    if (iterator.second == nullptr)
-      continue;
-
-    iterator.second->propagate_render(delta);
-  }
+  for (std::pair<std::string, Item*> iterator: children)
+    iterator.second->propagate_notification(what);
 }
 
 Tree *Item::get_tree() const {
@@ -77,7 +79,7 @@ void Item::set_tree(Tree *new_tree) {
   tree = new_tree;
 
   if (!old_tree && tree)
-    ready();
+    propagate_notification(NOTIFICATION_READY);
 }
 
 void Item::set_name(const std::string &new_name) {
@@ -94,7 +96,7 @@ void Item::add_item(Item *new_item) {
 
   children.insert({new_item->get_name(), new_item});
   new_item->parent = this;
-  new_item->on_parent_changed(this);
+  new_item->notification(NOTIFICATION_PARENTED);
 
   if (tree)
     new_item->set_tree(tree);
@@ -120,6 +122,14 @@ std::vector<Item*> Item::get_children() const {
 
 Item *Item::get_parent() const {
   return parent;
+}
+
+double Item::get_delta_time() const {
+  return tree ? tree->get_render_delta_time() : 0.0;
+}
+
+double Item::get_loop_delta_time() const {
+  return tree ? tree->get_loop_delta_time() : 0.0;
 }
 
 SDL_Event *Item::get_event() const {
