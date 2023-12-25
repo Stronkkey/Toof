@@ -1,6 +1,6 @@
-#include "types/utility_functions.hpp"
 #include <items/item.hpp>
 #include <items/tree.hpp>
+#include <types/utility_functions.hpp>
 
 #include <SDL_events.h>
 
@@ -12,7 +12,6 @@ Item::Item() {
 }
 
 void Item::_ready() {
-  UtilityFunctions::print("ready " + get_name());
 }
 
 void Item::_loop(double) {
@@ -28,8 +27,12 @@ void Item::_notification(const int) {
 }
 
 void Item::free() {
+  if (parent)
+    parent->children.erase(name);
+
   tree = nullptr;
   parent = nullptr;
+
   for (auto iterator: children) {
     if (iterator.second == nullptr)
       continue;
@@ -75,11 +78,13 @@ Tree *Item::get_tree() const {
 }
 
 void Item::set_tree(Tree *new_tree) {
-  const Tree *old_tree = tree;
+  Tree *old_tree = tree;
   tree = new_tree;
 
-  if (!old_tree && tree)
+  if (!old_tree && tree) {
+    propagate_notification(NOTIFICATION_ENTER_TREE);
     propagate_notification(NOTIFICATION_READY);
+  }
 }
 
 void Item::set_name(const std::string &new_name) {
@@ -104,6 +109,7 @@ void Item::add_item(Item *new_item) {
 
 void Item::remove_item(const std::string &item_name) {
   auto iterator = children.find(item_name);
+  
   if (iterator != children.end()) {
     iterator->second->parent = nullptr;
     iterator->second->tree = nullptr;

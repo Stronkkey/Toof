@@ -1,3 +1,4 @@
+#include "types/utility_functions.hpp"
 #include <items/sprite.hpp>
 #include <rendering/texture.hpp>
 
@@ -27,23 +28,15 @@ void SpriteItem::draw_rect_texture() const {
   texture->draw_region(get_rendering_server(), texture->get_uid(), get_canvas_item(), texture_region, flip, Color::WHITE, new_transform);
 }
 
-void SpriteItem::draw() const {
+void SpriteItem::_draw() const {
   RenderingServer *rendering_server = get_rendering_server();
   if (!rendering_server || !texture)
     return;
 
-  rendering_server->canvas_item_clear(get_canvas_item());
   if (texture_region == Rect2i::EMPTY)
     draw_texture();
   else
     draw_rect_texture();
-}
-
-void SpriteItem::_notification(const int what) {
-  RenderingItem::_notification(what);
-
-  if (what == NOTIFICATION_DRAW)
-    draw();
 }
 
 void SpriteItem::set_texture(const std::shared_ptr<Texture2D> &new_texture) {

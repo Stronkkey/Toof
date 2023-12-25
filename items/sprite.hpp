@@ -18,9 +18,7 @@ private:
 
   void draw_texture() const;
   void draw_rect_texture() const;
-  void draw() const;
-
-  void _notification(const int what) override;
+  void _draw() const override;
 
 public:
   SpriteItem();
