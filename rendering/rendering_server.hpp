@@ -41,7 +41,6 @@ public:
   };
 
 public:
-  RenderingServer();
   RenderingServer(SDL_Renderer *new_renderer);
   ~RenderingServer();
 

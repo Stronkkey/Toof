@@ -3,9 +3,6 @@
 
 using namespace sdl;
 
-RenderingServer::RenderingServer(): renderer(nullptr) {
-}
-
 RenderingServer::RenderingServer(SDL_Renderer *new_renderer): renderer(new_renderer) {
 }
 
