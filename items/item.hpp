@@ -65,6 +65,7 @@ public:
 
   Tree *get_tree() const;
   void set_tree(Tree *new_tree);
+  bool is_inside_tree() const;
 
   void set_name(const std::string &new_name);
   std::string get_name() const;
