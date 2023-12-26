@@ -45,6 +45,7 @@ project_test_files = [
 ]
 
 project_dependencies = [
+  dependency('boost'),
   dependency('sdl2'),
   dependency('sdl2_image')
 ]
