@@ -1,3 +1,4 @@
+#include "items/item.hpp"
 #include "types/utility_functions.hpp"
 #include <items/rendering_item.hpp>
 #include <rendering/window.hpp>
@@ -12,7 +13,7 @@ void RenderingItem::ready() {
   canvas_item = get_rendering_server()->create_canvas_item();
 
   update();
-  notification(NOTIFICATION_DRAW);
+  redraw();
 }
 
 RenderingItem::~RenderingItem() {
@@ -39,7 +40,7 @@ void RenderingItem::update() {
 
 void RenderingItem::on_parent_changed(Item *new_parent) {
   RenderingServer *rendering_server = get_rendering_server();
-  if (!rendering_server)
+  if (!rendering_server || !new_parent)
     return;
 
   RenderingItem *rendering_item = dynamic_cast<RenderingItem*>(new_parent);
@@ -51,8 +52,14 @@ void RenderingItem::on_parent_changed(Item *new_parent) {
 
 void RenderingItem::_notification(const int what) {
   switch (what) {
+    case NOTIFICATION_READY:
+      ready();
+      break;
     case NOTIFICATION_DRAW:
       _draw();
+      break;
+    case NOTIFICATION_PARENTED:
+      on_parent_changed(get_parent());
       break;
     default:
       break;
@@ -67,7 +74,8 @@ uid RenderingItem::get_canvas_item() const {
 }
 
 void RenderingItem::redraw() {
-  notification(NOTIFICATION_DRAW);
+  if (is_inside_tree())
+    notification(NOTIFICATION_DRAW);
 }
 
 

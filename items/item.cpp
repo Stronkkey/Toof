@@ -1,6 +1,5 @@
 #include <items/item.hpp>
 #include <items/tree.hpp>
-#include <types/utility_functions.hpp>
 
 #include <SDL_events.h>
 
@@ -48,6 +47,7 @@ void Item::notification(const int what) {
 
   if (!tree)
     return;
+  
   switch (what) {
     case NOTIFICATION_RENDER:
       _render(get_delta_time());
@@ -77,6 +77,10 @@ Tree *Item::get_tree() const {
   return tree;
 }
 
+bool Item::is_inside_tree() const {
+  return tree;
+}
+
 void Item::set_tree(Tree *new_tree) {
   Tree *old_tree = tree;
   tree = new_tree;
@@ -101,10 +105,11 @@ void Item::add_item(Item *new_item) {
 
   children.insert({new_item->get_name(), new_item});
   new_item->parent = this;
-  new_item->notification(NOTIFICATION_PARENTED);
 
   if (tree)
     new_item->set_tree(tree);
+
+  new_item->notification(NOTIFICATION_PARENTED);
 }
 
 void Item::remove_item(const std::string &item_name) {

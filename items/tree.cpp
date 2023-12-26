@@ -25,7 +25,7 @@ Tree::Tree(): running(false),
 
 Tree::~Tree() {
   stop();
-  root->free();
+  delete root;
   delete window;
 }
 

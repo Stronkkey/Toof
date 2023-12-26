@@ -79,7 +79,7 @@ void RenderingServer::destroy_uid(const uid destroying_uid) {
 }
 
 void RenderingServer::render_canvas_item(const std::shared_ptr<CanvasItem> &canvas_item) {
-  if (!canvas_item || !canvas_item->is_visible())
+  if (!canvas_item || !canvas_item->is_visible() || canvas_item->drawing_items.empty())
     return;
 
   Rect2i screen_rect = Rect2i(Vector2::ZERO, get_screen_size());
