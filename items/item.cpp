@@ -7,7 +7,14 @@ using namespace sdl;
 
 // There are at least ten bugs in this
 
-Item::Item() {
+Item::Item(): children(),
+  tree(nullptr),
+  parent(nullptr),
+  name("Item"),
+  is_ready(false) {
+}
+
+Item::~Item() {
 }
 
 void Item::_ready() {
@@ -26,6 +33,7 @@ void Item::_notification(const int) {
 }
 
 void Item::free() {
+  notification(NOTIFICATION_PREDELETE);
   if (parent)
     parent->children.erase(name);
 
@@ -87,8 +95,14 @@ void Item::set_tree(Tree *new_tree) {
 
   if (!old_tree && tree) {
     propagate_notification(NOTIFICATION_ENTER_TREE);
-    propagate_notification(NOTIFICATION_READY);
-  }
+
+    if (!is_ready) {
+      notification(NOTIFICATION_READY);
+      is_ready = true;
+    }
+    
+  } else if (old_tree && !tree)
+    propagate_notification(NOTIFICATION_EXIT_TREE);
 }
 
 void Item::set_name(const std::string &new_name) {
