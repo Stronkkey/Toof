@@ -4,7 +4,7 @@
 
 using namespace sdl;
 
-bool Input::operator==(const Input &right) const {
+bool InputManager::Input::operator==(const InputManager::Input &right) const {
   switch (key_input_type) {
     case KEY_INPUT_TYPE_KEYSYM:
       return key_sym == right.key_sym;
@@ -17,10 +17,10 @@ bool Input::operator==(const Input &right) const {
   return false;
 }
 
-std::unordered_map<std::string, std::vector<Input>> InputManager::mapped_inputs = {};
+std::unordered_map<std::string, std::vector<InputManager::Input>> InputManager::mapped_inputs = {};
 
-KeyInputEvent InputManager::_get_event_info(const SDL_Event *event, const Input &input) {
-  KeyInputEvent key_input_event;
+InputManager::KeyInputEvent InputManager::_get_event_info(const SDL_Event *event, const InputManager::Input &input) {
+  InputManager::KeyInputEvent key_input_event;
   key_input_event.failed = false;
 
   bool is_key_event = event->type == SDL_KEYDOWN || event->type == SDL_KEYUP;
@@ -39,21 +39,21 @@ KeyInputEvent InputManager::_get_event_info(const SDL_Event *event, const Input 
   return key_input_event;
 }
 
-Input InputManager::_get_input_from_key(const SDL_KeyCode key_code) {
-  Input input;
+InputManager::Input InputManager::_get_input_from_key(const SDL_KeyCode key_code) {
+  InputManager::Input input;
   input.key_input_type = KEY_INPUT_TYPE_KEYSYM;
   input.key_sym = key_code;
   return input;
 }
 
-Input InputManager::_get_input_from_key(const SDL_Scancode scancode) {
-  Input input;
+InputManager::Input InputManager::_get_input_from_key(const SDL_Scancode scancode) {
+  InputManager::Input input;
   input.key_input_type = KEY_INPUT_TYPE_SCANCODE;
   input.scan_code = scancode;
   return input;
 }
 
-void InputManager::_add_input_to_map(const std::string &map_name, const Input &input) {
+void InputManager::_add_input_to_map(const std::string &map_name, const InputManager::Input &input) {
   auto iterator = mapped_inputs.find(map_name);
 
   if (iterator != mapped_inputs.end())
@@ -62,7 +62,7 @@ void InputManager::_add_input_to_map(const std::string &map_name, const Input &i
     mapped_inputs.insert({map_name, {input}});
 }
 
-void InputManager::_remove_input_from_map(const std::string &map_name, const Input &input) {
+void InputManager::_remove_input_from_map(const std::string &map_name, const InputManager::Input &input) {
   auto iterator = mapped_inputs.find(map_name);
 
   if (iterator != mapped_inputs.end()) {
@@ -72,7 +72,7 @@ void InputManager::_remove_input_from_map(const std::string &map_name, const Inp
   }
 }
 
-float InputManager::_get_input_strength(const SDL_Event *event, const Input &input) {
+float InputManager::_get_input_strength(const SDL_Event *event, const InputManager::Input &input) {
   return _get_event_info(event, input).strength;
 }
 
@@ -82,7 +82,7 @@ float InputManager::_get_input_map_strength(const std::string &map_name, const S
     return 0.0f;
 
   float strongest_input = 0.0f;
-  for (Input input: iterator->second) {
+  for (InputManager::Input input: iterator->second) {
     float input_strength = _get_input_strength(event, input);
     if (input_strength > strongest_input)
       strongest_input = input_strength;
@@ -92,11 +92,11 @@ float InputManager::_get_input_map_strength(const std::string &map_name, const S
 }
 
 
-void InputManager::set_input_map(const std::string &map_name, std::vector<Input> &inputs) {
+void InputManager::set_input_map(const std::string &map_name, std::vector<InputManager::Input> &inputs) {
   mapped_inputs.insert({map_name, inputs});
 }
 
-void InputManager::add_key_to_input_map(const std::string &map_name, const Input &input) {
+void InputManager::add_key_to_input_map(const std::string &map_name, const InputManager::Input &input) {
   _add_input_to_map(map_name, input);
 }
 
@@ -108,7 +108,7 @@ void InputManager::add_key_to_input_map(const std::string &map_name, const SDL_K
   _add_input_to_map(map_name, _get_input_from_key(key_code));
 }
 
-void InputManager::remove_key_from_input_map(const std::string &map_name, const Input &input) {
+void InputManager::remove_key_from_input_map(const std::string &map_name, const InputManager::Input &input) {
   _remove_input_from_map(map_name, input);
 }
 
@@ -128,8 +128,8 @@ bool InputManager::input_is_action_pressed(const std::string &map_name, const SD
   if (iterator == mapped_inputs.end())
     return false;
 
-  for (Input input: iterator->second) {
-    KeyInputEvent key_input_event = _get_event_info(event, input);
+  for (InputManager::Input input: iterator->second) {
+    InputManager::KeyInputEvent key_input_event = _get_event_info(event, input);
     if (key_input_event.same && key_input_event.holding)
       return true;
   }
@@ -142,8 +142,8 @@ bool InputManager::input_is_action_just_pressed(const std::string &map_name, con
   if (iterator == mapped_inputs.end())
     return false;
 
-  for (Input input: iterator->second) {
-    KeyInputEvent key_input_event = _get_event_info(event, input);
+  for (InputManager::Input input: iterator->second) {
+    InputManager::KeyInputEvent key_input_event = _get_event_info(event, input);
     if (key_input_event.same && key_input_event.holding && key_input_event.repeat != 0)
       return true;
   }
@@ -156,8 +156,8 @@ bool InputManager::input_is_action_released(const std::string &map_name, const S
   if (iterator == mapped_inputs.end())
     return false;
 
-  for (Input input: iterator->second) {
-    KeyInputEvent key_input_event = _get_event_info(event, input);
+  for (InputManager::Input input: iterator->second) {
+    InputManager::KeyInputEvent key_input_event = _get_event_info(event, input);
     if (key_input_event.same && !key_input_event.holding && key_input_event.repeat != 0)
       return true;
   }
@@ -180,8 +180,8 @@ bool InputManager::input_is_action_pressed_or_released(const std::string &map_na
   if (iterator == mapped_inputs.end())
     return false;
 
-  for (Input input: iterator->second) {
-    KeyInputEvent key_input_event = _get_event_info(event, input);
+  for (InputManager::Input input: iterator->second) {
+    InputManager::KeyInputEvent key_input_event = _get_event_info(event, input);
     if (key_input_event.same)
       return true;
   }

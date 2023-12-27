@@ -11,32 +11,33 @@
 
 namespace sdl {
 
-enum KeyInputType {
-  KEY_INPUT_TYPE_KEYSYM,
-  KEY_INPUT_TYPE_SCANCODE,
-  KEY_INPUT_TYPE_NONE
-};
+class InputManager {
 
-struct KeyInputEvent {
-  bool failed;
-  bool holding;
-  bool same;
-  float strength;
-  uint8_t repeat;
-};
-
-struct Input {
-  KeyInputType key_input_type;
-
-  union {
-    SDL_KeyCode key_sym;
-    SDL_Scancode scan_code;
+private:
+  enum KeyInputType {
+    KEY_INPUT_TYPE_KEYSYM,
+    KEY_INPUT_TYPE_SCANCODE,
+    KEY_INPUT_TYPE_NONE
   };
 
-  bool operator==(const Input &right) const;
-};
+  struct KeyInputEvent {
+    bool failed;
+    bool holding;
+    bool same;
+    float strength;
+    uint8_t repeat;
+  };
 
-class InputManager {
+  struct Input {
+    KeyInputType key_input_type;
+
+    union {
+      SDL_KeyCode key_sym;
+      SDL_Scancode scan_code;
+    };
+
+    bool operator==(const Input &right) const;
+  };
 
 private:
   InputManager() {}
