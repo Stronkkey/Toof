@@ -31,7 +31,7 @@ bool Transform2D::operator==(const Transform2D &right) const {
 }
 
 bool Transform2D::operator!() const {
-  return origin == Vector2::ZERO && rotation == 0.0; 
+  return origin == Vector2::ZERO || rotation == 0.0; 
 }
 
 Transform2D Transform2D::operator*(const Transform2D &right) const {

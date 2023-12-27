@@ -60,7 +60,7 @@ bool Rect2::operator==(const Rect2 &right) const {
 }
 
 bool Rect2::operator!=(const Rect2 &right) const {
-  return get_position() != right.get_position() && get_size() != right.get_size();
+  return get_position() != right.get_position() || get_size() != right.get_size();
 }
 
 bool Rect2::operator<(const Rect2 &right) const {

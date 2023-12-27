@@ -52,7 +52,7 @@ bool Vector2::operator==(const Vector2 &right) const {
 }
 
 bool Vector2::operator!=(const Vector2 &right) const {
-  return x != right.x && y != right.y;
+  return x != right.x || y != right.y;
 }
 
 bool Vector2::operator<(const Vector2 &right) const {
