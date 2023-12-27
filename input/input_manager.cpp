@@ -1,3 +1,4 @@
+#include <types/vector2.hpp>
 #include <input/input_manager.hpp>
 
 #include <algorithm>
@@ -169,10 +170,24 @@ float InputManager::get_input_strength(const std::string &input_map_name, const 
   return _get_input_map_strength(input_map_name, event);
 }
 
-float InputManager::get_input_axis(const std::string &negative_x_map, const std::string &positive_x_map, const SDL_Event *event) {
+float InputManager::get_input_axis(
+          const std::string &negative_x_map,
+          const std::string &positive_x_map,
+          const SDL_Event *event) {
   const float negative_input_strength = _get_input_map_strength(negative_x_map, event);
   const float positive_input_strength = _get_input_map_strength(positive_x_map, event);
   return positive_input_strength - negative_input_strength;
+}
+
+Vector2 InputManager::get_input_vector(
+          const std::string &negative_x_map_name,
+          const std::string &positive_x_map_name,
+          const std::string &negative_y_map_name,
+          const std::string &positive_y_map_name,
+          const SDL_Event *event) {
+  const float x_input_axis = get_input_axis(negative_x_map_name, positive_x_map_name, event);
+  const float y_input_axis = get_input_axis(negative_y_map_name, positive_y_map_name, event);
+  return Vector2(x_input_axis, y_input_axis).normalized();
 }
 
 bool InputManager::input_is_action_pressed_or_released(const std::string &map_name, const SDL_Event *event) {
