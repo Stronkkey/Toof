@@ -84,6 +84,7 @@ public:
   bool canvas_item_is_visible(const uid canvas_item_uid) const;
   void canvas_item_set_visible(const uid canvas_item_uid, const bool visible);
   bool canvas_item_is_globally_visible(const uid canvas_item_uid) const;
+  bool canvas_item_is_visible_inside_viewport(const uid canvas_item_uid) const;
 };
 
 }
