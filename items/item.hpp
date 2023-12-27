@@ -10,6 +10,9 @@ namespace sdl {
 
 class Tree;
 
+/**
+* Base class for all scene objects.
+*/
 class Item {
 
 public:

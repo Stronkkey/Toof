@@ -1,5 +1,4 @@
 #include "items/item.hpp"
-#include "types/utility_functions.hpp"
 #include <items/rendering_item.hpp>
 #include <rendering/window.hpp>
 #include <items/tree.hpp>
@@ -8,12 +7,11 @@
 
 using namespace sdl;
 
-void RenderingItem::ready() {
-  transform = transform.IDENTITY;
-  canvas_item = get_rendering_server()->create_canvas_item();
-
-  update();
-  redraw();
+RenderingItem::RenderingItem(): transform(Transform2D::IDENTITY),
+  canvas_item(0),
+  modulate(Color::WHITE),
+  blend_mode(SDL_BLENDMODE_BLEND),
+  visible(true) {
 }
 
 RenderingItem::~RenderingItem() {
@@ -21,6 +19,14 @@ RenderingItem::~RenderingItem() {
 
   if (rendering_server)
     rendering_server->remove_uid(canvas_item);
+}
+
+void RenderingItem::ready() {
+  transform = transform.IDENTITY;
+  canvas_item = get_rendering_server()->create_canvas_item();
+
+  update();
+  redraw();
 }
 
 RenderingServer *RenderingItem::get_rendering_server() const {
@@ -46,8 +52,6 @@ void RenderingItem::on_parent_changed(Item *new_parent) {
   RenderingItem *rendering_item = dynamic_cast<RenderingItem*>(new_parent);
   if (rendering_item)
     rendering_server->canvas_item_set_parent(canvas_item, rendering_item->get_canvas_item());
-  else
-    rendering_server->canvas_item_set_parent(canvas_item, uid());
 }
 
 void RenderingItem::_notification(const int what) {
@@ -193,8 +197,19 @@ SDL_BlendMode RenderingItem::get_blend_mode() const {
   return blend_mode;
 }
 
-void RenderingItem::set_visible(const bool new_visible) {
-  visible = new_visible;
+void RenderingItem::hide() {
+  if (!visible)
+    return;
+
+  visible = false;
+  update();
+}
+
+void RenderingItem::show() {
+  if (visible)
+    return;
+
+  visible = true;
   update();
 }
 
