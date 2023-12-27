@@ -1,3 +1,4 @@
+#include "types/utility_functions.hpp"
 #include <rendering/rendering_server.hpp>
 #include <rendering/canvas_item.hpp>
 
@@ -133,8 +134,7 @@ void RenderingServer::canvas_item_add_texture(const uid texture_uid,
     const uid canvas_item_uid,
     const SDL_RendererFlip flip,
     const Color &modulate,
-    const Transform2D &transform) 
-{
+    const Transform2D &transform) {
   std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
   std::shared_ptr<Texture> texture = get_texture_from_uid(texture_uid);
 
@@ -152,12 +152,11 @@ void RenderingServer::canvas_item_add_texture(const uid texture_uid,
 }
 
 void RenderingServer::canvas_item_add_texture_region(const uid texture_uid,
-      const uid canvas_item_uid,
-      const Rect2i &src_region,
-      const SDL_RendererFlip flip,
-      const Color &modulate,
-      const Transform2D &transform)
-{
+    const uid canvas_item_uid,
+    const Rect2i &src_region,
+    const SDL_RendererFlip flip,
+    const Color &modulate,
+    const Transform2D &transform) {
   std::shared_ptr<Texture> texture = get_texture_from_uid(texture_uid);
   std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
