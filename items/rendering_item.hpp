@@ -182,6 +182,11 @@ public:
   * Returns true if the CanvasItem and its parent are visible, otherwise false. See also is_visible.
   */
   bool is_visible_in_tree() const;
+
+  /**
+  * Returns true if the CanvasItem is visible inside the viewport, otherwise false.
+  */
+  bool is_visible_inside_viewport() const;
 };
 
 }

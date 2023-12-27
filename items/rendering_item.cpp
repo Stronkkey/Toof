@@ -221,3 +221,8 @@ bool RenderingItem::is_visible_in_tree() const {
   RenderingServer *rendering_server = get_rendering_server();
   return rendering_server ? rendering_server->canvas_item_is_globally_visible(canvas_item) : true;
 }
+
+bool RenderingItem::is_visible_inside_viewport() const {
+  RenderingServer *rendering_server = get_rendering_server();
+  return rendering_server ? rendering_server->canvas_item_is_visible_inside_viewport(canvas_item) : true;
+}
