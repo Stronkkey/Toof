@@ -1,13 +1,13 @@
 #pragma once
 
-#include <types/rect2.hpp>
-
 #include <SDL_events.h>
 
 #include <functional>
+#include <string>
 
 namespace sdl {
 
+struct Rect2i;
 class Item;
 class Window;
 class RenderingServer;
@@ -44,17 +44,12 @@ protected:
   virtual void render();
   virtual void ended();
 
-  virtual Rect2i get_window_rect() const { return Rect2i(0, 0, 340, 240); }
-
-  virtual std::string get_window_title() const { return "SDL example"; }
-
-  virtual bool should_use_vsync() const { return true; }
-
 public:
   Tree();
   virtual ~Tree();
 
   Window *get_window() const;
+  Viewport *get_viewport() const;
   RenderingServer *get_rendering_server() const;
 
   Item *get_root() const;

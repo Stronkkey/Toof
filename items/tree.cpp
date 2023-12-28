@@ -147,6 +147,10 @@ Window *Tree::get_window() const {
   return window;
 }
 
+Viewport *Tree::get_viewport() const {
+  return viewport;
+}
+
 RenderingServer *Tree::get_rendering_server() const {
   return rendering_server;
 }
