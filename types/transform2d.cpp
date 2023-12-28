@@ -35,7 +35,7 @@ bool Transform2D::operator!() const {
 }
 
 Transform2D Transform2D::operator*(const Transform2D &right) const {
-  return Transform2D(rotation + right.rotation, origin + right.origin, scale + right.scale);
+  return Transform2D(rotation + right.rotation, origin + right.origin, scale * right.scale);
 }
 
 void Transform2D::operator=(const Transform2D &right) {
@@ -46,4 +46,5 @@ void Transform2D::operator=(const Transform2D &right) {
 void Transform2D::operator*=(const Transform2D &right) {
   origin += right.origin;
   rotation += right.rotation;
+  scale *= right.scale;
 }
