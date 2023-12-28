@@ -16,18 +16,20 @@ struct Texture;
 struct CanvasItem;
 struct Transform2D;
 struct Rect2i;
+class Viewport;
 
 class RenderingServer {
 
 private:
-  SDL_Renderer *renderer;
+  Viewport *viewport;
   std::unordered_map<uint_t, std::shared_ptr<Texture>> textures;
   std::unordered_map<uint_t, std::shared_ptr<CanvasItem>> canvas_items;
-  Color background_color = Color(77, 77, 77, 255);
+  Color background_color;
+  Vector2 viewport_offset;
 
   uid create_new_uid();
   void destroy_uid(const uid target_uid);
-  uint_t index = 1;
+  uint_t index;
 
   void render_canvas_item(const std::shared_ptr<CanvasItem> &canvas_item);
 
@@ -41,11 +43,13 @@ public:
   };
 
 public:
-  RenderingServer(SDL_Renderer *new_renderer);
+  RenderingServer(Viewport *viewport);
   ~RenderingServer();
 
   void render();
   void remove_uid(const uid destroying_uid);
+
+  SDL_Renderer *get_renderer() const;
 
   uint_t load_texture_from_path(const std::string &path);
   uint_t create_canvas_item();

@@ -1,10 +1,15 @@
-#include "types/utility_functions.hpp"
 #include <rendering/rendering_server.hpp>
 #include <rendering/canvas_item.hpp>
+#include <rendering/viewport.hpp>
 
 using namespace sdl;
 
-RenderingServer::RenderingServer(SDL_Renderer *new_renderer): renderer(new_renderer) {
+RenderingServer::RenderingServer(Viewport *viewport): viewport(viewport),
+  textures(),
+  canvas_items(),
+  background_color(Color(77, 77, 77, 255)),
+  viewport_offset(sdl::Vector2::ZERO),
+  index(1) {
 }
 
 RenderingServer::~RenderingServer() {
@@ -21,17 +26,13 @@ Color RenderingServer::get_default_background_color() const {
 }
 
 Vector2i RenderingServer::get_screen_size() const {
-  int width;
-  int height;
-  SDL_GetRendererOutputSize(renderer, &width, &height);
-  return Vector2i(width, height);
+  return viewport->get_viewport_size();
 }
 
 void RenderingServer::render() {
-  if (!renderer)
-    return;
+  SDL_Renderer *renderer = viewport->get_renderer();
 
-  SDL_RenderClear(renderer);
+  SDL_RenderClear(viewport->get_renderer());
   for (auto iterator: canvas_items)
     render_canvas_item(iterator.second);
 
@@ -81,6 +82,7 @@ void RenderingServer::render_canvas_item(const std::shared_ptr<CanvasItem> &canv
     return;
 
   const Rect2i screen_rect = Rect2i(Vector2::ZERO, get_screen_size());
+  SDL_Renderer *renderer = viewport->get_renderer();
 
   for (std::shared_ptr<DrawingItem> drawing_item: canvas_item->drawing_items) {
     bool inside_viewport = screen_rect.intersects(drawing_item->get_draw_rect());
@@ -103,7 +105,7 @@ RenderingServer::TextureInfo RenderingServer::get_texture_info_from_uid(const ui
 }
 
 uid RenderingServer::load_texture_from_path(const std::string &path) {
-  SDL_Texture *texture = IMG_LoadTexture(renderer, path.c_str());
+  SDL_Texture *texture = IMG_LoadTexture(viewport->get_renderer(), path.c_str());
 
   if (texture == NULL)
     return uid();

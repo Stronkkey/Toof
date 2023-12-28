@@ -11,6 +11,7 @@ namespace sdl {
 class Item;
 class Window;
 class RenderingServer;
+class Viewport;
 
 class Tree {
 
@@ -31,8 +32,9 @@ private:
   std::vector<Item*> deferred_item_removal;
 
 protected:
-  sdl::Window *window;
-  sdl::RenderingServer *rendering_server;
+  Window *window;
+  Viewport *viewport;
+  RenderingServer *rendering_server;
   SDL_Event *event;
   Item *root;
 

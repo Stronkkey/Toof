@@ -1,5 +1,7 @@
 #include <items/tree.hpp>
 #include <items/item.hpp>
+#include <rendering/rendering_server.hpp>
+#include <rendering/viewport.hpp>
 #include <rendering/window.hpp>
 
 #include <SDL_timer.h>
@@ -10,14 +12,15 @@
 using namespace sdl;
 
 Tree::Tree(): running(false),
-  fixed_frame_rate(60.0),
-  frame_rate(60.0),
-  render_delta_time(0.0),
-  loop_delta_time(0.0),
-  window(new Window(get_window_rect(), get_window_title(), should_use_vsync())),
-  rendering_server(window->rendering_server),
-  root(new Item)
-{
+    fixed_frame_rate(60.0),
+    frame_rate(60.0),
+    render_delta_time(0.0),
+    loop_delta_time(0.0),
+    window(new Window),
+    viewport(new Viewport),
+    rendering_server(new RenderingServer{viewport}),
+    root(new Item) {
+  viewport->create(window);
   root->set_name("Root");
   root->set_tree(this);
   running = false;

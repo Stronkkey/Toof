@@ -1,63 +1,84 @@
 #include <rendering/window.hpp>
-
-#include <iostream>
+#include <rendering/rendering_server.hpp>
 
 #include <SDL.h>
 #include <SDL_image.h>
 
 using namespace sdl;
 
-Window::Window(const Rect2i &rect, const std::string &title, const bool use_vsync) {
-  success = true;
-  if (SDL_Init(SDL_INIT_VIDEO) != 0)
-    fail("Couldn't initialize SDL: %s", SDL_LOG_CATEGORY_APPLICATION);
+Window::InitilizationStatus Window::initialized = Window::NOT_INITIALIZED;
 
-  if (!(IMG_Init(IMG_INIT_PNG)))
-    fail("Couldn't initialize SDL_Image: %s", SDL_LOG_CATEGORY_APPLICATION);
+Window::Window() : window_title("SDL Example"), window_rect(Rect2i(0, 0, 320, 240)) {
+	try_initialize();
+	if (!intialized_successfully())
+		return;
 
-  if (rect.get_position() == Vector2i::ZERO)
-    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, rect.w, rect.h, SDL_WINDOW_RESIZABLE);
-  else
-    window = SDL_CreateWindow(title.c_str(), rect.x, rect.y, rect.w, rect.h, SDL_WINDOW_RESIZABLE);
-
-  if (window == NULL)
-    fail("Couldn't create window: %s", SDL_LOG_CATEGORY_APPLICATION);
- 
-  if (use_vsync)
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-  else
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-  rendering_server = new RenderingServer(renderer);
+	window = SDL_CreateWindow(window_title.c_str(),
+	     window_rect.x,
+		 window_rect.y,
+		 window_rect.w,
+		 window_rect.h,
+		 SDL_WINDOW_RESIZABLE);
 }
 
 Window::~Window() {
-  if (renderer)
-    SDL_DestroyRenderer(renderer);
-  if (window)
-    SDL_DestroyWindow(window);
-
-  delete rendering_server;
-  SDL_Quit();
+	if (window) {
+		SDL_DestroyWindow(window);
+		window = nullptr;
+	}
 }
 
-void Window::fail(const std::string &error_message, const SDL_LogCategory log_category) {
-  std::cout << error_message << std::endl;
-  SDL_LogError(log_category, error_message.c_str(), SDL_GetError());
-  success = false;
+SDL_Window *Window::get_window() const {
+	return window;
+}
+
+void Window::try_initialize() {
+	if (initialized != NOT_INITIALIZED)
+		return;
+
+	const bool sdl_init_success = SDL_Init(SDL_INIT_VIDEO) == 0;
+	const bool sdl_img_success = IMG_Init(IMG_INIT_PNG) != 0;
+
+	if (!sdl_init_success)
+		fail_with_message("Couldn't initialize SDL.", SDL_LOG_CATEGORY_APPLICATION);
+
+	if (!sdl_img_success)
+		fail_with_message("Couldn't initialize SDL_Image.", SDL_LOG_CATEGORY_APPLICATION);
+
+	initialized = INITIALIZED;
+}
+
+void Window::fail_with_message(const std::string &message, const SDL_LogCategory category) {
+	const std::string aborting_string = " Aborting...";
+
+	SDL_LogCritical(category, (message + aborting_string).c_str(), SDL_GetError());
+	initialized = INITILIZATION_FAILED;
 }
 
 bool Window::intialized_successfully() const {
-  return success;
+	return initialized == INITIALIZED;
 }
 
-void Window::render() {
-  SDL_RenderClear(renderer);
-  rendering_server->render();
-  SDL_RenderPresent(renderer);
+void Window::set_window_rect(const Rect2i &window_rect) {
+	this->window_rect = window_rect;
+	if (window) {
+		SDL_SetWindowPosition(window, window_rect.x, window_rect.y);
+		SDL_SetWindowSize(window, window_rect.w, window_rect.h);
+	}
 }
 
-bool Window::is_vsync_enabled() const {
-  return vsync;
+Rect2i Window::get_window_rect() const {
+	return window_rect;
+}
+
+void Window::set_window_title(const std::string &new_title) {
+	window_title = new_title;
+	if (window)
+		SDL_SetWindowTitle(window, window_title.c_str());
+}
+
+std::string Window::get_window_title() const {
+	return window_title;
 }
 
 int Window::get_refresh_rate() const {
@@ -65,11 +86,4 @@ int Window::get_refresh_rate() const {
   SDL_DisplayMode mode;
   SDL_GetDisplayMode(display_index, 0, &mode);
   return mode.refresh_rate;
-}
-
-Vector2i Window::get_size() const {
-  int display_index = SDL_GetWindowDisplayIndex(window);
-  SDL_DisplayMode mode;
-  SDL_GetDisplayMode(display_index, 0, &mode);
-  return Vector2i(mode.w, mode.h);
 }

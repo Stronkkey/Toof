@@ -1,36 +1,46 @@
 #pragma once
 
-#include <rendering/rendering_server.hpp>
 #include <types/rect2.hpp>
 
-#include <SDL_events.h>
+#include <SDL_video.h>
 #include <SDL_log.h>
 
 namespace sdl {
 
 class Window {
-  
-private:
-  bool success, vsync;
 
-  void fail(const std::string &error_message, const SDL_LogCategory category = SDL_LOG_CATEGORY_APPLICATION);
+private:
+	enum InitilizationStatus {
+		INITIALIZED,
+		NOT_INITIALIZED,
+		INITILIZATION_FAILED
+	};
+
+	static InitilizationStatus initialized;
+	static void try_initialize();
+	static void fail_with_message(const std::string &message,
+	    const SDL_LogCategory category = SDL_LOG_CATEGORY_APPLICATION);
+
+	std::string window_title;
+	Rect2i window_rect;
+
+	SDL_Window *window;
 
 public:
-  Window(const Rect2i &size = Rect2i(0, 0, 320, 240), const std::string &title = "Default", const bool use_vsync = true);
-  ~Window();
+	Window();
+	~Window();
 
-  SDL_Window *window;
-  SDL_Renderer *renderer;
-  SDL_Surface *surface;
-  SDL_Event *event;
-  RenderingServer *rendering_server;
+	SDL_Window *get_window() const;
 
-  void render();
+	void set_window_rect(const Rect2i &window_rect);
+  	Rect2i get_window_rect() const;
 
-  bool intialized_successfully() const;
-  bool is_vsync_enabled() const;
-  int get_refresh_rate() const;
-  Vector2i get_size() const;
+	void set_window_title(const std::string &new_title);
+	std::string get_window_title() const;
+
+	int get_refresh_rate() const;
+
+	bool intialized_successfully() const;
 };
 
 }
