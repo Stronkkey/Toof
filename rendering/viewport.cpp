@@ -13,6 +13,7 @@ Viewport::~Viewport() {
 void Viewport::create(Window *from_window) {
   window = from_window;
   renderer = SDL_CreateRenderer(window->get_window(), -1, SDL_RENDERER_ACCELERATED);
+  set_vsync_enabled(vsync);
 }
 
 Window *Viewport::get_window() const {
