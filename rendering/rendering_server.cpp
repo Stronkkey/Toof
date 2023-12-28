@@ -85,7 +85,7 @@ void RenderingServer::render_canvas_item(const std::shared_ptr<CanvasItem> &canv
   const Rect2i screen_rect = Rect2i(Vector2::ZERO, get_screen_size());
 
   for (std::shared_ptr<DrawingItem> drawing_item: canvas_item->drawing_items) {
-    bool inside_viewport = screen_rect.intersects(drawing_item->get_draw_rect());
+    bool inside_viewport = screen_rect.intersects(drawing_item->get_draw_rect(viewport));
 
     if (inside_viewport)
       drawing_item->draw(viewport);
@@ -256,7 +256,7 @@ bool RenderingServer::canvas_item_is_visible_inside_viewport(const uid canvas_it
   bool is_visible = true;
 
   for (std::shared_ptr<DrawingItem> drawing_item: canvas_item->drawing_items) {
-    bool inside_viewport = screen_rect.intersects(drawing_item->get_draw_rect());
+    bool inside_viewport = screen_rect.intersects(drawing_item->get_draw_rect(viewport));
 
     if (!inside_viewport) {
       is_visible = false;

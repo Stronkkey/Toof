@@ -4,7 +4,7 @@
 
 using namespace sdl;
 
-Viewport::Viewport(): vsync(true), window(nullptr) {
+Viewport::Viewport(): vsync(true), window(nullptr), canvas_transform(Transform2D::IDENTITY) {
 }
 
 Viewport::~Viewport() {
@@ -38,4 +38,12 @@ void Viewport::set_vsync_enabled(const bool vsync_enabled) {
 
 bool Viewport::is_vsync_enabled() const {
   return vsync;
+}
+
+void Viewport::set_canvas_transform(const Transform2D &new_canvas_transform) {
+  canvas_transform = new_canvas_transform;
+}
+
+Transform2D Viewport::get_canvas_transform() const {
+  return canvas_transform;
 }

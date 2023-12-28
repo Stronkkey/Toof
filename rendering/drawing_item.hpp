@@ -17,10 +17,9 @@ class Viewport;
 struct DrawingItem {
   std::shared_ptr<CanvasItem> canvas_item;
 
-  virtual void draw(Viewport *viewport);
-  virtual Rect2 get_draw_rect() const;
+  virtual void draw(const Viewport *viewport);
+  virtual Rect2 get_draw_rect(const Viewport *viewport) const;
 };
-
 
 struct TextureRectDrawingItem: public DrawingItem {
   std::shared_ptr<Texture> texture;
@@ -30,10 +29,15 @@ struct TextureRectDrawingItem: public DrawingItem {
   Transform2D transform;
   SDL_RendererFlip flip;
  
-  void draw(Viewport *viewport) override;
-  Rect2 get_draw_rect() const override;
-};
+  void draw(const Viewport *viewport) override;
+  void draw_texture(const Viewport *viewport,
+    const SDL_Rect &src_region,
+    const SDL_FRect &destination,
+    const double rotation,
+    const SDL_FPoint &center = SDL_FPoint());
 
+  Rect2 get_draw_rect(const Viewport *viewport) const override;
+};
 
 struct TextureDrawingItem: public DrawingItem {
   std::shared_ptr<Texture> texture;
@@ -42,18 +46,14 @@ struct TextureDrawingItem: public DrawingItem {
   Transform2D transform;
   SDL_RendererFlip flip;
 
-  void draw(Viewport *viewport) override;
-  Rect2 get_draw_rect() const override;
-};
-/*
-struct LineDrawingItem: public DrawingItem {
-  Rect2 rect;
-  void draw(SDL_Renderer *renderer) override;
-};
+  void draw(const Viewport *viewport) override;
+  void draw_texture(const Viewport *viewport,
+    const SDL_Rect &src_region,
+    const SDL_FRect &destination,
+    const double rotation,
+    const SDL_FPoint &center = SDL_FPoint());
 
-struct RectDrawingItem: public DrawingItem {
-  Rect2 rect;
-  void draw(SDL_Renderer *renderer) override;
-};*/
+  Rect2 get_draw_rect(const Viewport *viewport) const override;
+};
 
 }

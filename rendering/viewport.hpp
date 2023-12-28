@@ -1,6 +1,6 @@
 #pragma once
 
-#include <types/vector2.hpp>
+#include <types/transform2d.hpp>
 
 #include <SDL_video.h>
 #include <SDL_render.h>
@@ -19,6 +19,8 @@ private:
   Window *window;
   SDL_Renderer *renderer;
 
+  Transform2D canvas_transform;
+
 public:
   Viewport();
   ~Viewport();
@@ -32,6 +34,9 @@ public:
 
   void set_vsync_enabled(const bool vsync_enabled);
   bool is_vsync_enabled() const;
+
+  void set_canvas_transform(const Transform2D &new_canvas_transform);
+  Transform2D get_canvas_transform() const;
 };
 
 }
