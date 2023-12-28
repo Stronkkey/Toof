@@ -1,5 +1,6 @@
-#include <rendering/rendering_server.hpp>
 #include <rendering/canvas_item.hpp>
+#include <rendering/drawing_item.hpp>
+#include <rendering/rendering_server.hpp>
 #include <rendering/viewport.hpp>
 
 using namespace sdl;
@@ -82,13 +83,12 @@ void RenderingServer::render_canvas_item(const std::shared_ptr<CanvasItem> &canv
     return;
 
   const Rect2i screen_rect = Rect2i(Vector2::ZERO, get_screen_size());
-  SDL_Renderer *renderer = viewport->get_renderer();
 
   for (std::shared_ptr<DrawingItem> drawing_item: canvas_item->drawing_items) {
     bool inside_viewport = screen_rect.intersects(drawing_item->get_draw_rect());
 
     if (inside_viewport)
-      drawing_item->draw(renderer);
+      drawing_item->draw(viewport);
   }
 }
 
