@@ -34,24 +34,24 @@ void TextureDrawingItem::draw(const Viewport *viewport) {
 }
 
 void TextureDrawingItem::draw_texture(const Viewport *viewport,
-	  const SDL_Rect &src_region,
-	  const SDL_FRect &destination,
-	  const double rotation,
-	  const SDL_FPoint &center)	{
+        const SDL_Rect &src_region,
+        const SDL_FRect &destination,
+        const double rotation,
+        const SDL_FPoint &center)	{
 	if (rotation == 0.0)
 		SDL_RenderCopyF(
 		viewport->get_renderer(),
-		texture->texture_reference, 
-		&src_region, 
+		texture->texture_reference,
+		&src_region,
 		&destination);
 	else
 		SDL_RenderCopyExF(viewport->get_renderer(),
-		  texture->texture_reference,
-		  &src_region,
-		  &destination,
+		    texture->texture_reference,
+		    &src_region,
+		    &destination,
 		    rotation,
-		   (center.x == 0.0f && center.y == 0.0f) ? NULL : &center,
-		    flip);
+		    (center.x == 0.0f && center.y == 0.0f) ? NULL : &center,
+		        flip);
 }
 
 Rect2 TextureRectDrawingItem::get_draw_rect(const Viewport *viewport) const {
@@ -73,29 +73,29 @@ void TextureRectDrawingItem::draw(const Viewport *viewport) {
 	SDL_SetTextureBlendMode(texture->texture_reference, canvas_item->blend_mode);
 
 	draw_texture(viewport,
-		  src_region.to_sdl_rect(),
-		  get_draw_rect(viewport).to_sdl_frect(),
-		  rotation);
+	    src_region.to_sdl_rect(),
+	    get_draw_rect(viewport).to_sdl_frect(),
+	    rotation);
 }
 
 void TextureRectDrawingItem::draw_texture(const Viewport *viewport,
-	  const SDL_Rect &src_region,
-	  const SDL_FRect &destination,
-	  const double rotation,
-	  const SDL_FPoint &center)
+      const SDL_Rect &src_region,
+      const SDL_FRect &destination,
+      const double rotation,
+      const SDL_FPoint &center)
 {
 	if (rotation == 0.0)
 		SDL_RenderCopyF(
-		viewport->get_renderer(),
-		texture->texture_reference, 
-		&src_region, 
-		&destination);
+		    viewport->get_renderer(),
+		    texture->texture_reference,
+		    &src_region,
+		    &destination);
 	else
 		SDL_RenderCopyExF(viewport->get_renderer(),
-		  texture->texture_reference,
-	      &src_region,
-		  &destination,
+		    texture->texture_reference,
+	        &src_region,
+		    &destination,
 		    rotation,
-		   (center.x == 0.0f && center.y == 0.0f) ? NULL : &center,
+		    (center.x == 0.0f && center.y == 0.0f) ? NULL : &center,
 		    flip);
 }

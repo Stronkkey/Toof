@@ -15,45 +15,45 @@ struct Texture;
 class Viewport;
 
 struct DrawingItem {
-  std::shared_ptr<CanvasItem> canvas_item;
+	std::shared_ptr<CanvasItem> canvas_item;
 
-  virtual void draw(const Viewport *viewport);
-  virtual Rect2 get_draw_rect(const Viewport *viewport) const;
+	virtual void draw(const Viewport *viewport);
+	virtual Rect2 get_draw_rect(const Viewport *viewport) const;
 };
 
 struct TextureRectDrawingItem: public DrawingItem {
-  std::shared_ptr<Texture> texture;
+	std::shared_ptr<Texture> texture;
 
-  Color texture_modulate;
-  Rect2i src_region;
-  Transform2D transform;
-  SDL_RendererFlip flip;
- 
-  void draw(const Viewport *viewport) override;
-  void draw_texture(const Viewport *viewport,
-    const SDL_Rect &src_region,
-    const SDL_FRect &destination,
-    const double rotation,
-    const SDL_FPoint &center = SDL_FPoint());
+	Color texture_modulate;
+	Rect2i src_region;
+	Transform2D transform;
+	SDL_RendererFlip flip;
 
-  Rect2 get_draw_rect(const Viewport *viewport) const override;
+	void draw(const Viewport *viewport) override;
+	void draw_texture(const Viewport *viewport,
+		const SDL_Rect &src_region,
+		const SDL_FRect &destination,
+		const double rotation,
+		const SDL_FPoint &center = SDL_FPoint());
+
+	Rect2 get_draw_rect(const Viewport *viewport) const override;
 };
 
 struct TextureDrawingItem: public DrawingItem {
-  std::shared_ptr<Texture> texture;
+	std::shared_ptr<Texture> texture;
 
-  Color texture_modulate;
-  Transform2D transform;
-  SDL_RendererFlip flip;
+	Color texture_modulate;
+	Transform2D transform;
+	SDL_RendererFlip flip;
 
-  void draw(const Viewport *viewport) override;
-  void draw_texture(const Viewport *viewport,
-    const SDL_Rect &src_region,
-    const SDL_FRect &destination,
-    const double rotation,
-    const SDL_FPoint &center = SDL_FPoint());
+	void draw(const Viewport *viewport) override;
+	void draw_texture(const Viewport *viewport,
+		const SDL_Rect &src_region,
+		const SDL_FRect &destination,
+		const double rotation,
+		const SDL_FPoint &center = SDL_FPoint());
 
-  Rect2 get_draw_rect(const Viewport *viewport) const override;
+	Rect2 get_draw_rect(const Viewport *viewport) const override;
 };
 
 }

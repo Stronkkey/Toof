@@ -14,11 +14,11 @@ Window::Window() : window_title("SDL Example"), window_rect(Rect2i(0, 0, 320, 24
 		return;
 
 	window = SDL_CreateWindow(window_title.c_str(),
-	     window_rect.x,
-		 window_rect.y,
-		 window_rect.w,
-		 window_rect.h,
-		 SDL_WINDOW_RESIZABLE);
+	    window_rect.x,
+	    window_rect.y,
+	    window_rect.w,
+	    window_rect.h,
+	    SDL_WINDOW_RESIZABLE);
 }
 
 Window::~Window() {

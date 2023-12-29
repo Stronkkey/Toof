@@ -11,20 +11,18 @@ namespace sdl {
 struct DrawingItem;
 
 struct CanvasItem {
-  Transform2D transform = Transform2D::IDENTITY;
-  Color modulate = Color::WHITE;
-  bool visible = true;
+	Transform2D transform = Transform2D::IDENTITY;
+	Color modulate = Color::WHITE;
+	bool visible = true;
 
-  SDL_BlendMode blend_mode = SDL_BLENDMODE_BLEND;
+	SDL_BlendMode blend_mode = SDL_BLENDMODE_BLEND;
 
-  std::shared_ptr<CanvasItem> parent;
-  std::vector<std::shared_ptr<DrawingItem>> drawing_items;
+	std::shared_ptr<CanvasItem> parent;
+	std::vector<std::shared_ptr<DrawingItem>> drawing_items;
 
-  Transform2D get_global_transform() const;
-  Color get_absolute_modulate() const;
-  bool is_visible() const;
+	Transform2D get_global_transform() const;
+	Color get_absolute_modulate() const;
+	bool is_visible() const;
 };
-
-// DrawingItem
 
 }
