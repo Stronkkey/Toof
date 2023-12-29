@@ -34,6 +34,7 @@ Transform2D Transform2D::operator*(const Transform2D &right) const {
 void Transform2D::operator=(const Transform2D &right) {
 	origin = right.origin;
 	rotation = right.rotation;
+	scale = right.scale;
 }
 
 void Transform2D::operator*=(const Transform2D &right) {
