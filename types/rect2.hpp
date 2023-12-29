@@ -52,10 +52,16 @@ struct Rect2 {
 	Rect2 operator+() const;
 
 	[[nodiscard]] std::string to_string() const;
+	[[nodiscard]] Rect2 merge(const Rect2 &right) const;
+	[[nodiscard]] Rect2 abs() const;
+	[[nodiscard]] Rect2 remove_negative_size() const;
+	[[nodiscard]] Rect2 expand(const Vector2 &to) const;
+
 	Vector2 get_position() const;
 	Vector2 get_size() const;
 	bool has_point(const Vector2 &point) const;
 	bool intersects(const Rect2 &rect2, const bool include_borders = false) const;
+	void expand_to(const Vector2 &to);
 
 	void set_position(const Vector2 &new_position);
 	void set_size(const Vector2 &new_size);
@@ -117,10 +123,16 @@ struct Rect2i {
 	Vector2i get_size() const;
 
 	[[nodiscard]] std::string to_string() const;
+	[[nodiscard]] Rect2i merge(const Rect2i &right) const;
+	[[nodiscard]] Rect2i abs() const;
+	[[nodiscard]] Rect2i remove_negative_size() const;
+	[[nodiscard]] Rect2i expand(const Vector2i &to) const;
+
 	void set_position(const Vector2i &new_position);
 	void set_size(const Vector2i &new_size);
 	bool has_point(const Vector2i &point) const;
 	bool intersects(const Rect2i &rect2i, const bool include_borders = false) const;
+	void expand_to(const Vector2i &to);
 
 	[[nodiscard]] SDL_Rect to_sdl_rect() const;
 	[[nodiscard]] SDL_FRect to_sdl_frect() const;

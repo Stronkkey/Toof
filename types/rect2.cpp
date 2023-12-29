@@ -1,5 +1,5 @@
-#include "types/rect2.hpp"
-#include <cstdlib>
+#include <types/rect2.hpp>
+#include <algorithm>
 
 using namespace sdl;
 
@@ -199,6 +199,75 @@ bool Rect2::intersects(const Rect2 &rect2, const bool include_borders) const {
 	}
 
 	return true;
+}
+
+Rect2 Rect2::merge(const Rect2 &right) const {
+	Rect2 new_rect;
+
+	new_rect.x = std::min(right.x, x);
+	new_rect.y = std::min(right.y, y);
+
+	new_rect.w = std::max(right.x + right.w, x + w);
+	new_rect.h = std::max(right.y + right.h, y + h);
+
+	new_rect.w -= new_rect.x;
+	new_rect.h -= new_rect.h;
+
+	return new_rect;
+}
+
+Rect2 Rect2::abs() const {
+	Rect2 rect = Rect2{};
+
+	rect.x = std::abs(rect.x);
+	rect.y = std::abs(rect.y);
+	rect.w = std::abs(rect.w);
+	rect.h = std::abs(rect.h);
+
+	return rect;
+}
+
+Rect2 Rect2::remove_negative_size() const {
+	Rect2 rect = *this;
+	if (w < 0.0) {
+		rect.x += w;
+		rect.w = std::abs(rect.w);
+	}
+
+	if (h < 0.0) {
+		rect.y += h;
+		rect.h = std::abs(h);
+	}
+
+	return rect;
+}
+
+Rect2 Rect2::expand(const Vector2 &to) const {
+	Rect2 rect = *this;
+	rect.expand_to(to);
+	return rect;
+}
+
+void Rect2::expand_to(const Vector2 &to) {
+	Vector2 begin = get_position();
+	Vector2 end = begin + get_size();
+
+	if (to.x < begin.x)
+		begin.x = to.x;
+
+	if (to.y < begin.y)
+		begin.y = to.y;
+
+	if (to.x > end.x)
+		end.x = to.x;
+
+	if (to.y > end.y)
+		end.y = to.y;
+
+	x = begin.x;
+	y = begin.y;
+	w = end.x;
+	h = end.y;
 }
 
 void Rect2::set_position(const Vector2 &new_position) {
@@ -434,6 +503,75 @@ bool Rect2i::intersects(const Rect2i &rect2i, const bool include_borders) const 
 	}
 
 	return true;
+}
+
+Rect2i Rect2i::merge(const Rect2i &right) const {
+	Rect2i new_rect;
+
+	new_rect.x = std::min(right.x, x);
+	new_rect.y = std::min(right.y, y);
+
+	new_rect.w = std::max(right.x + right.w, x + w);
+	new_rect.h = std::max(right.y + right.h, y + h);
+
+	new_rect.w -= new_rect.x;
+	new_rect.h -= new_rect.h;
+
+	return new_rect;
+}
+
+Rect2i Rect2i::abs() const {
+	Rect2i rect = Rect2i{};
+
+	rect.x = std::abs(rect.x);
+	rect.y = std::abs(rect.y);
+	rect.w = std::abs(rect.w);
+	rect.h = std::abs(rect.h);
+
+	return rect;
+}
+
+Rect2i Rect2i::remove_negative_size() const {
+	Rect2i rect = *this;
+	if (w < 0.0) {
+		rect.x += w;
+		rect.w = std::abs(rect.w);
+	}
+
+	if (h < 0.0) {
+		rect.y += h;
+		rect.h = std::abs(h);
+	}
+
+	return rect;
+}
+
+Rect2i Rect2i::expand(const Vector2i &to) const {
+	Rect2i rect = *this;
+	rect.expand_to(to);
+	return rect;
+}
+
+void Rect2i::expand_to(const Vector2i &to) {
+	Vector2i begin = get_position();
+	Vector2i end = begin + get_size();
+
+	if (to.x < begin.x)
+		begin.x = to.x;
+
+	if (to.y < begin.y)
+		begin.y = to.y;
+
+	if (to.x > end.x)
+		end.x = to.x;
+
+	if (to.y > end.y)
+		end.y = to.y;
+
+	x = begin.x;
+	y = begin.y;
+	w = end.x;
+	h = end.y;
 }
 
 void Rect2i::set_position(const Vector2i &new_position) {
