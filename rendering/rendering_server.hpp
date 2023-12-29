@@ -49,6 +49,7 @@ public:
 	void render();
 	void remove_uid(const uid destroying_uid);
 
+	Viewport *get_viewport() const;
 	SDL_Renderer *get_renderer() const;
 
 	uint_t load_texture_from_path(const std::string &path);

@@ -41,6 +41,14 @@ void RenderingServer::render() {
 	SDL_RenderPresent(renderer);
 }
 
+Viewport *RenderingServer::get_viewport() const {
+	return viewport;
+}
+
+SDL_Renderer *RenderingServer::get_renderer() const {
+	return viewport->get_renderer();
+}
+
 std::shared_ptr<Texture> RenderingServer::get_texture_from_uid(const uid texture_uid) const {
 	auto iterator = textures.find(texture_uid);
 	return iterator != textures.end() ? iterator->second : std::shared_ptr<Texture>(nullptr);
