@@ -22,7 +22,6 @@ project_headers = [
   'types/vector2.hpp',
   'types/rect2.hpp',
   'types/transform2d.hpp',
-  'types/error_macros.hpp',
   'types/color.hpp',
   'input/input_manager.hpp',
 ]
