@@ -1,3 +1,4 @@
+#include <types/utility_functions.hpp>
 #include <rendering/canvas_item.hpp>
 #include <rendering/drawing_item.hpp>
 #include <rendering/rendering_server.hpp>
@@ -91,9 +92,10 @@ void RenderingServer::render_canvas_item(const std::shared_ptr<CanvasItem> &canv
 		return;
 
 	const Rect2i screen_rect = Rect2i(Vector2::ZERO, get_screen_size());
+	const Transform2D canvas_transform = viewport->get_canvas_transform();
 
 	for (std::shared_ptr<DrawingItem> drawing_item: canvas_item->drawing_items) {
-		bool inside_viewport = screen_rect.intersects(drawing_item->get_draw_rect(viewport));
+		bool inside_viewport = screen_rect.intersects(drawing_item->get_draw_rect() * canvas_transform);
 
 		if (inside_viewport)
 			drawing_item->draw(viewport);
@@ -184,6 +186,66 @@ void RenderingServer::canvas_item_add_texture_region(const uid texture_uid,
 	}
 }
 
+void RenderingServer::canvas_item_add_line(const uid canvas_item_uid, const Vector2 &start, const Vector2 &end, const Color &modulate) {
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+
+	if (canvas_item) {
+		auto line_drawing_item = std::make_shared<LineDrawingItem>();
+		line_drawing_item->canvas_item = canvas_item;
+
+		line_drawing_item->start_point = start.to_sdl_fpoint();
+		line_drawing_item->end_point = end.to_sdl_fpoint();
+		line_drawing_item->modulate = modulate;
+
+		canvas_item->drawing_items.push_back(line_drawing_item);
+	}
+}
+
+void RenderingServer::canvas_item_add_lines(const uid canvas_item_uid, const std::vector<SDL_FPoint> &points, const Color &modulate) {
+	UtilityFunctions::print(std::string(__PRETTY_FUNCTION__) + " is not implemented currently");
+	return;
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	if (!canvas_item)
+		return;
+
+	auto lines_drawing_item = std::make_shared<LinesDrawingItem>();
+
+	lines_drawing_item->canvas_item = canvas_item;
+	lines_drawing_item->points = points;
+	lines_drawing_item->modulate = modulate;
+
+	canvas_item->drawing_items.push_back(lines_drawing_item);
+}
+
+void RenderingServer::canvas_item_add_rect(const uid canvas_item_uid, const Rect2 &rect, const Color &modulate) {
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+
+	if (canvas_item) {
+		auto rect_drawing_item = std::make_shared<RectDrawingItem>();
+		rect_drawing_item->canvas_item = canvas_item;
+
+		rect_drawing_item->rectangle = rect.to_sdl_frect();
+		rect_drawing_item->modulate = modulate;
+
+		canvas_item->drawing_items.push_back(rect_drawing_item);
+	}
+}
+
+void RenderingServer::canvas_item_add_rects(const uid canvas_item_uid, const std::vector<SDL_FRect> &rectangles, const Color &modulate) {
+	UtilityFunctions::print(std::string(__PRETTY_FUNCTION__) + " is not implemented currently");
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	if (!canvas_item)
+		return;
+
+	auto rects_drawing_item = std::make_shared<RectsDrawingItem>();
+	rects_drawing_item->canvas_item = canvas_item;
+
+	rects_drawing_item->rectangles = rectangles;
+	rects_drawing_item->modulate = modulate;
+
+	canvas_item->drawing_items.push_back(rects_drawing_item);
+}
+
 void RenderingServer::canvas_item_set_transform(const uid canvas_item_uid, const Transform2D &new_transform) {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 	if (canvas_item)
@@ -261,10 +323,11 @@ bool RenderingServer::canvas_item_is_visible_inside_viewport(const uid canvas_it
 		return false;
 
 	const Rect2i screen_rect = Rect2i(Vector2::ZERO, get_screen_size());
+	const Transform2D canvas_transform = viewport->get_canvas_transform();
 	bool is_visible = true;
 
 	for (std::shared_ptr<DrawingItem> drawing_item: canvas_item->drawing_items) {
-		bool inside_viewport = screen_rect.intersects(drawing_item->get_draw_rect(viewport));
+		bool inside_viewport = screen_rect.intersects(drawing_item->get_draw_rect() * canvas_transform);
 
 		if (!inside_viewport) {
 			is_visible = false;
