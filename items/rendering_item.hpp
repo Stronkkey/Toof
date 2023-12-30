@@ -8,6 +8,7 @@
 
 namespace sdl {
 
+class Texture2D;
 /** A 2D GameObject. Has a position, scale, and rotation.*/
 
 class RenderingItem : public Item {
@@ -188,6 +189,11 @@ public:
 	* Returns true if the CanvasItem is visible inside the viewport, otherwise false.
 	*/
 	bool is_visible_inside_viewport() const;
+
+	void draw_texture(const std::shared_ptr<Texture2D> &texture, const Transform2D &texture_transform = Transform2D::IDENTITY, const Color &modulation = Color::WHITE) const;
+	void draw_texture_rect(const std::shared_ptr<Texture2D> &texture, const Rect2i &region, const Transform2D &texture_transform = Transform2D::IDENTITY, const Color &modulation = Color::WHITE) const;
+	void draw_line(const Vector2 &start, const Vector2 &end, const Color &modulation) const;
+	void draw_rect(const Rect2 &rect, const Color &modulation) const;
 };
 
 }

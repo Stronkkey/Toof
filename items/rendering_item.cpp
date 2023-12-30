@@ -1,7 +1,7 @@
-#include "items/item.hpp"
 #include <items/rendering_item.hpp>
 #include <rendering/window.hpp>
 #include <items/tree.hpp>
+#include <rendering/texture.hpp>
 
 #include <typeinfo>
 
@@ -225,4 +225,30 @@ bool RenderingItem::is_visible_in_tree() const {
 bool RenderingItem::is_visible_inside_viewport() const {
 	RenderingServer *rendering_server = get_rendering_server();
 	return rendering_server ? rendering_server->canvas_item_is_visible_inside_viewport(canvas_item) : true;
+}
+
+void RenderingItem::draw_texture(const std::shared_ptr<Texture2D> &texture, const Transform2D &texture_transform, const Color &modulation) const {
+	RenderingServer *rendering_server = get_rendering_server();
+	if (rendering_server)
+		rendering_server->canvas_item_add_texture(texture->get_uid(), canvas_item, SDL_FLIP_NONE, modulation, texture_transform);
+}
+
+void RenderingItem::draw_texture_rect(const std::shared_ptr<Texture2D> &texture, const Rect2i &region, const Transform2D &texture_transform, const Color &modulation) const {
+	RenderingServer *rendering_server = get_rendering_server();
+	if (rendering_server)
+		rendering_server->canvas_item_add_texture_region(texture->get_uid(), canvas_item, region, SDL_FLIP_NONE, modulation, texture_transform);
+}
+
+
+void RenderingItem::draw_line(const Vector2 &start, const Vector2 &end, const Color &modulation) const {
+	RenderingServer *rendering_server = get_rendering_server();
+	if (rendering_server)
+		rendering_server->canvas_item_add_line(canvas_item, start, end);
+	(void)modulation; // Unused for now
+}
+
+void RenderingItem::draw_rect(const Rect2 &rect, const Color &modulation) const {
+	RenderingServer *rendering_server = get_rendering_server();
+	if (rendering_server)
+		rendering_server->canvas_item_add_rect(canvas_item, rect, modulation);
 }
