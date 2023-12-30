@@ -5,6 +5,7 @@
 namespace sdl {
 
 struct Rect2i;
+struct Transform2D;
 
 struct Rect2 {
 	real_t x;
@@ -34,6 +35,7 @@ struct Rect2 {
 
 	Rect2 operator*(const Rect2 &right) const;
 	Rect2 operator*(const real_t right) const;
+	Rect2 operator*(const Transform2D &right) const;
 
 	Rect2 operator/(const Rect2 &right) const;
 	Rect2 operator/(const real_t right) const;
@@ -43,6 +45,7 @@ struct Rect2 {
 
 	void operator*=(const Rect2 &right);
 	void operator*=(const real_t right);
+	void operator*=(const Transform2D &right);
 
 	void operator/=(const Rect2 &right);
 	void operator/=(const real_t right);

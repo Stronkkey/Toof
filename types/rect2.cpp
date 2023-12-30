@@ -1,3 +1,4 @@
+#include <types/transform2d.hpp>
 #include <types/rect2.hpp>
 #include <algorithm>
 
@@ -74,6 +75,12 @@ Rect2 Rect2::operator*(const real_t right) const {
 	return Rect2(get_position() * right, get_size() * right);
 }
 
+Rect2 Rect2::operator*(const Transform2D &right) const {
+	Rect2 rect = *this;
+	rect *= right;
+	return rect;
+}
+
 Rect2 Rect2::operator/(const Rect2 &right) const {
 	return Rect2(get_position() / right.get_position(), get_size() / right.get_size());
 }
@@ -108,6 +115,13 @@ void Rect2::operator*=(const real_t right) {
 	y *= right;
 	w *= right;
 	h *= right;
+}
+
+void Rect2::operator*=(const Transform2D &right) {
+	x += right.origin.x;
+	y += right.origin.y;
+	w *= right.scale.x;
+	h *= right.scale.y;
 }
 
 void Rect2::operator/=(const Rect2 &right) {
