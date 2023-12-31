@@ -185,6 +185,10 @@ bool Rect2::has_point(const Vector2 &point) const {
 	return true;
 }
 
+bool Rect2::has_area() const {
+	return w > 0 && h > 0;
+}
+
 bool Rect2::intersects(const Rect2 &rect2, const bool include_borders) const {
 	if (include_borders) {
 		if (x > (rect2.x + rect2.w))
@@ -487,6 +491,10 @@ bool Rect2i::has_point(const Vector2i &point) const {
 		return false;
 
 	return true;
+}
+
+bool Rect2i::has_area() const {
+	return w > 0 && h > 0;
 }
 
 bool Rect2i::intersects(const Rect2i &rect2i, const bool include_borders) const {

@@ -63,6 +63,7 @@ struct Rect2 {
 	Vector2 get_position() const;
 	Vector2 get_size() const;
 	bool has_point(const Vector2 &point) const;
+	bool has_area() const;
 	bool intersects(const Rect2 &rect2, const bool include_borders = false) const;
 	void expand_to(const Vector2 &to);
 
@@ -134,6 +135,7 @@ struct Rect2i {
 	void set_position(const Vector2i &new_position);
 	void set_size(const Vector2i &new_size);
 	bool has_point(const Vector2i &point) const;
+	bool has_area() const;
 	bool intersects(const Rect2i &rect2i, const bool include_borders = false) const;
 	void expand_to(const Vector2i &to);
 
