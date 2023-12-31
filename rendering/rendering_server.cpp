@@ -150,17 +150,18 @@ void RenderingServer::canvas_item_add_texture(const uid texture_uid,
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 	std::shared_ptr<Texture> texture = get_texture_from_uid(texture_uid);
 
-	if (canvas_item && texture) {
-		auto texture_drawing_item = std::make_shared<TextureDrawingItem>();
-		texture_drawing_item->canvas_item = canvas_item;
+	if (!canvas_item || !texture)
+		return;
 
-		texture_drawing_item->texture = texture;
-		texture_drawing_item->flip = flip;
-		texture_drawing_item->transform = transform;
-		texture_drawing_item->texture_modulate = modulate;
+	auto texture_drawing_item = std::make_shared<TextureDrawingItem>();
+	texture_drawing_item->canvas_item = canvas_item;
 
-		canvas_item->drawing_items.push_back(texture_drawing_item);
-	}
+	texture_drawing_item->texture = texture;
+	texture_drawing_item->flip = flip;
+	texture_drawing_item->transform = transform;
+	texture_drawing_item->texture_modulate = modulate;
+
+	canvas_item->drawing_items.push_back(texture_drawing_item);
 }
 
 void RenderingServer::canvas_item_add_texture_region(const uid texture_uid,
@@ -172,40 +173,41 @@ void RenderingServer::canvas_item_add_texture_region(const uid texture_uid,
 	std::shared_ptr<Texture> texture = get_texture_from_uid(texture_uid);
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
-	if (canvas_item && texture) {
-		auto texture_rect_drawing_item = std::make_shared<TextureRectDrawingItem>();
-		texture_rect_drawing_item->canvas_item = canvas_item;
+	if (!canvas_item || !texture || !src_region.has_area())
+		return;
 
-		texture_rect_drawing_item->texture = texture;
-		texture_rect_drawing_item->src_region = src_region;
-		texture_rect_drawing_item->transform = transform;
-		texture_rect_drawing_item->flip = flip;
-		texture_rect_drawing_item->texture_modulate = modulate;
+	auto texture_rect_drawing_item = std::make_shared<TextureRectDrawingItem>();
+	texture_rect_drawing_item->canvas_item = canvas_item;
 
-		canvas_item->drawing_items.push_back(texture_rect_drawing_item);
-	}
+	texture_rect_drawing_item->texture = texture;
+	texture_rect_drawing_item->src_region = src_region;
+	texture_rect_drawing_item->transform = transform;
+	texture_rect_drawing_item->flip = flip;
+	texture_rect_drawing_item->texture_modulate = modulate;
+
+	canvas_item->drawing_items.push_back(texture_rect_drawing_item);
 }
 
 void RenderingServer::canvas_item_add_line(const uid canvas_item_uid, const Vector2 &start, const Vector2 &end, const Color &modulate) {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
-	if (canvas_item) {
-		auto line_drawing_item = std::make_shared<LineDrawingItem>();
-		line_drawing_item->canvas_item = canvas_item;
+	if (!canvas_item)
+		return;
 
-		line_drawing_item->start_point = start.to_sdl_fpoint();
-		line_drawing_item->end_point = end.to_sdl_fpoint();
-		line_drawing_item->modulate = modulate;
+	auto line_drawing_item = std::make_shared<LineDrawingItem>();
+	line_drawing_item->canvas_item = canvas_item;
 
-		canvas_item->drawing_items.push_back(line_drawing_item);
-	}
+	line_drawing_item->start_point = start.to_sdl_fpoint();
+	line_drawing_item->end_point = end.to_sdl_fpoint();
+	line_drawing_item->modulate = modulate;
+
+	canvas_item->drawing_items.push_back(line_drawing_item);
 }
 
 void RenderingServer::canvas_item_add_lines(const uid canvas_item_uid, const std::vector<SDL_FPoint> &points, const Color &modulate) {
-	UtilityFunctions::print(std::string(__PRETTY_FUNCTION__) + " is not implemented currently");
-	return;
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-	if (!canvas_item)
+	
+	if (!canvas_item || points.empty())
 		return;
 
 	auto lines_drawing_item = std::make_shared<LinesDrawingItem>();
@@ -220,21 +222,22 @@ void RenderingServer::canvas_item_add_lines(const uid canvas_item_uid, const std
 void RenderingServer::canvas_item_add_rect(const uid canvas_item_uid, const Rect2 &rect, const Color &modulate) {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
-	if (canvas_item) {
-		auto rect_drawing_item = std::make_shared<RectDrawingItem>();
-		rect_drawing_item->canvas_item = canvas_item;
+	if (!canvas_item || !rect.has_area())
+		return;
 
-		rect_drawing_item->rectangle = rect.to_sdl_frect();
-		rect_drawing_item->modulate = modulate;
+	auto rect_drawing_item = std::make_shared<RectDrawingItem>();
+	rect_drawing_item->canvas_item = canvas_item;
 
-		canvas_item->drawing_items.push_back(rect_drawing_item);
-	}
+	rect_drawing_item->rectangle = rect.to_sdl_frect();
+	rect_drawing_item->modulate = modulate;
+
+	canvas_item->drawing_items.push_back(rect_drawing_item);
 }
 
 void RenderingServer::canvas_item_add_rects(const uid canvas_item_uid, const std::vector<SDL_FRect> &rectangles, const Color &modulate) {
-	UtilityFunctions::print(std::string(__PRETTY_FUNCTION__) + " is not implemented currently");
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-	if (!canvas_item)
+	
+	if (!canvas_item || rectangles.empty())
 		return;
 
 	auto rects_drawing_item = std::make_shared<RectsDrawingItem>();
@@ -255,7 +258,7 @@ void RenderingServer::canvas_item_set_transform(const uid canvas_item_uid, const
 void RenderingServer::canvas_item_set_parent(const uid canvas_item_uid, const uid parent_item_uid) {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 	std::shared_ptr<CanvasItem> parent_canvas_item = get_canvas_item_from_uid(parent_item_uid);
-
+	
 	if (canvas_item)
 		canvas_item->parent = parent_canvas_item;
 	else
