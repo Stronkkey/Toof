@@ -190,10 +190,41 @@ public:
 	*/
 	bool is_visible_inside_viewport() const;
 
+	/**
+	* Draws the @param texture on this CanvasItem using the RenderingServer.
+	* See also RenderingServer::canvas_item_add_texture.
+	*/
 	void draw_texture(const std::shared_ptr<Texture2D> &texture, const Transform2D &texture_transform = Transform2D::IDENTITY, const Color &modulation = Color::WHITE) const;
+
+	/**
+	* Draws the @param texture in the specified @param region using RenderingServer.
+	* See also RenderingServer::canvas_item_add_texture_region.
+	*/
 	void draw_texture_rect(const std::shared_ptr<Texture2D> &texture, const Rect2i &region, const Transform2D &texture_transform = Transform2D::IDENTITY, const Color &modulation = Color::WHITE) const;
-	void draw_line(const Vector2 &start, const Vector2 &end, const Color &modulation) const;
-	void draw_rect(const Rect2 &rect, const Color &modulation) const;
+	
+	/**
+	* Draws a colored line beginning from @param start to @param end with the color @param modulation using the RenderingServer.
+	* See also RenderingServer::canvas_item_add_line.
+	*/
+	void draw_line(const Vector2 &start, const Vector2 &end, const Color &modulation = Color::WHITE) const;
+
+	/**
+	* Draws multiple lines with the color @param modulation using the RenderingServer.
+	* See also RenderingServer::canvas_item_add_lines.
+	*/
+	void draw_lines(const std::vector<SDL_FPoint> &points, const Color &modulation = Color::WHITE) const;
+
+	/**
+	* Draws a colored rectangle that is inside @param rect with color @param modulation.
+	* See also RenderingServer::canvas_item_add_rect.
+	*/
+	void draw_rect(const Rect2 &rect, const Color &modulation = Color::WHITE) const;
+
+	/**
+	* Draws multipled rectangle with the color @param modulation using the RenderingServer.
+	* See also RenderingServer::canvas_item_add_rects.
+	*/
+	void draw_rects(const std::vector<SDL_FRect> &rects, const Color &modulation = Color::WHITE) const;
 };
 
 }

@@ -239,16 +239,26 @@ void RenderingItem::draw_texture_rect(const std::shared_ptr<Texture2D> &texture,
 		rendering_server->canvas_item_add_texture_region(texture->get_uid(), canvas_item, region, SDL_FLIP_NONE, modulation, texture_transform);
 }
 
-
 void RenderingItem::draw_line(const Vector2 &start, const Vector2 &end, const Color &modulation) const {
 	RenderingServer *rendering_server = get_rendering_server();
 	if (rendering_server)
-		rendering_server->canvas_item_add_line(canvas_item, start, end);
-	(void)modulation; // Unused for now
+		rendering_server->canvas_item_add_line(canvas_item, start, end,  modulation);
+}
+
+void RenderingItem::draw_lines(const std::vector<SDL_FPoint> &points, const Color &modulation) const {
+	RenderingServer *rendering_server = get_rendering_server();
+	if (rendering_server)
+		rendering_server->canvas_item_add_lines(canvas_item, points, modulation);
 }
 
 void RenderingItem::draw_rect(const Rect2 &rect, const Color &modulation) const {
 	RenderingServer *rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_rect(canvas_item, rect, modulation);
+}
+
+void RenderingItem::draw_rects(const std::vector<SDL_FRect> &rects, const Color &modulation) const {
+	RenderingServer *rendering_server = get_rendering_server();
+	if (rendering_server)
+		rendering_server->canvas_item_add_rects(canvas_item, rects, modulation);
 }
