@@ -267,25 +267,27 @@ Rect2 Rect2::expand(const Vector2 &to) const {
 }
 
 void Rect2::expand_to(const Vector2 &to) {
-	Vector2 begin = get_position();
-	Vector2 end = begin + get_size();
+	real_t begin_x = x;
+	real_t begin_y = y;
+	real_t end_x = x + w;
+	real_t end_y = y + h;
 
-	if (to.x < begin.x)
-		begin.x = to.x;
+	if (to.x < begin_x)
+		begin_x = to.x;
 
-	if (to.y < begin.y)
-		begin.y = to.y;
+	if (to.y < begin_y)
+		begin_y = to.y;
 
-	if (to.x > end.x)
-		end.x = to.x;
+	if (to.x > end_x)
+		end_x = to.x;
 
-	if (to.y > end.y)
-		end.y = to.y;
+	if (to.y > end_y)
+		end_y = to.y;
 
-	x = begin.x;
-	y = begin.y;
-	w = end.x;
-	h = end.y;
+	x = begin_x;
+	y = begin_y;
+	w = end_x - begin_x;
+	h = end_y - begin_y;
 }
 
 void Rect2::set_position(const Vector2 &new_position) {
@@ -575,25 +577,27 @@ Rect2i Rect2i::expand(const Vector2i &to) const {
 }
 
 void Rect2i::expand_to(const Vector2i &to) {
-	Vector2i begin = get_position();
-	Vector2i end = begin + get_size();
+	int_t begin_x = x;
+	int_t begin_y = y;
+	int_t end_x = x + w;
+	int_t end_y = y + h;
 
-	if (to.x < begin.x)
-		begin.x = to.x;
+	if (to.x < begin_x)
+		begin_x = to.x;
 
-	if (to.y < begin.y)
-		begin.y = to.y;
+	if (to.y < begin_y)
+		begin_y = to.y;
 
-	if (to.x > end.x)
-		end.x = to.x;
+	if (to.x > end_x)
+		end_x = to.x;
 
-	if (to.y > end.y)
-		end.y = to.y;
+	if (to.y > end_y)
+		end_y = to.y;
 
-	x = begin.x;
-	y = begin.y;
-	w = end.x;
-	h = end.y;
+	x = begin_x;
+	y = begin_y;
+	w = end_x - begin_x;
+	h = end_y - begin_y;
 }
 
 void Rect2i::set_position(const Vector2i &new_position) {
