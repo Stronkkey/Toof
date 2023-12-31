@@ -18,8 +18,11 @@ class Viewport;
 struct DrawingItem {
 	std::shared_ptr<CanvasItem> canvas_item = std::shared_ptr<CanvasItem>();
 
-	virtual void draw(const Viewport *viewport);
-	virtual Rect2 get_draw_rect() const;
+	void draw(const Viewport *viewport);
+	Rect2 get_draw_rect() const;
+
+	virtual void _draw(const Viewport*) {}
+	virtual Rect2 _get_draw_rect() const { return Rect2::EMPTY; }
 };
 
 struct TextureRectDrawingItem: public DrawingItem {
@@ -30,14 +33,14 @@ struct TextureRectDrawingItem: public DrawingItem {
 	Transform2D transform;
 	SDL_RendererFlip flip;
 
-	void draw(const Viewport *viewport) override;
+	void _draw(const Viewport *viewport) override;
 	void draw_texture(const Viewport *viewport,
 		const SDL_Rect &src_region,
 		const SDL_FRect &destination,
 		const double rotation,
 		const SDL_FPoint &center = SDL_FPoint());
 
-	Rect2 get_draw_rect() const override;
+	Rect2 _get_draw_rect() const override;
 };
 
 struct TextureDrawingItem: public DrawingItem {
@@ -47,32 +50,32 @@ struct TextureDrawingItem: public DrawingItem {
 	Transform2D transform;
 	SDL_RendererFlip flip;
 
-	void draw(const Viewport *viewport) override;
+	void _draw(const Viewport *viewport) override;
 	void draw_texture(const Viewport *viewport,
 		const SDL_Rect &src_region,
 		const SDL_FRect &destination,
 		const double rotation,
 		const SDL_FPoint &center = SDL_FPoint());
 
-	Rect2 get_draw_rect() const override;
+	Rect2 _get_draw_rect() const override;
 };
 
 struct RectDrawingItem: public DrawingItem {
 	SDL_FRect rectangle;
 	Color modulate;
 
-	void draw(const Viewport *viewport) override;
+	void _draw(const Viewport *viewport) override;
 
-	Rect2 get_draw_rect() const override;
+	Rect2 _get_draw_rect() const override;
 };
 
 struct RectsDrawingItem: public DrawingItem {
 	std::vector<SDL_FRect> rectangles;
 	Color modulate;
 
-	void draw(const Viewport *viewport) override;
+	void _draw(const Viewport *viewport) override;
 	
-	Rect2 get_draw_rect() const override;
+	Rect2 _get_draw_rect() const override;
 };
 
 struct LineDrawingItem: public DrawingItem {
@@ -80,18 +83,18 @@ struct LineDrawingItem: public DrawingItem {
 	SDL_FPoint end_point;
 	Color modulate;
 
-	void draw(const Viewport *viewport) override;
+	void _draw(const Viewport *viewport) override;
 
-	Rect2 get_draw_rect() const override;
+	Rect2 _get_draw_rect() const override;
 };
 
 struct LinesDrawingItem: public DrawingItem {
 	std::vector<SDL_FPoint> points;
 	Color modulate;
 
-	void draw(const Viewport *viewport) override;
+	void _draw(const Viewport *viewport) override;
 	
-	Rect2 get_draw_rect() const override;
+	Rect2 _get_draw_rect() const override;
 };
 
 }
