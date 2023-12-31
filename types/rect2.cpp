@@ -229,7 +229,7 @@ Rect2 Rect2::merge(const Rect2 &right) const {
 	new_rect.h = std::max(right.y + right.h, y + h);
 
 	new_rect.w -= new_rect.x;
-	new_rect.h -= new_rect.h;
+	new_rect.h -= new_rect.y;
 
 	return new_rect;
 }
@@ -539,7 +539,7 @@ Rect2i Rect2i::merge(const Rect2i &right) const {
 	new_rect.h = std::max(right.y + right.h, y + h);
 
 	new_rect.w -= new_rect.x;
-	new_rect.h -= new_rect.h;
+	new_rect.h -= new_rect.y;
 
 	return new_rect;
 }
