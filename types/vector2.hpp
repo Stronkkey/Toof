@@ -52,10 +52,16 @@ struct Vector2 {
 	Vector2 operator+() const;
 
 	void normalize();
+	void rounded();
+	void floored();
+	void ceiled();
 
 	real_t length() const;
 	real_t length_squared() const;
 
+	[[nodiscard]] Vector2 round() const;
+	[[nodiscard]] Vector2 floor() const;
+	[[nodiscard]] Vector2 ceil() const;
 	[[nodiscard]] Vector2 normalized() const;
 	[[nodiscard]] Vector2 move_toward(const Vector2 &to, const real_t delta) const;
 	[[nodiscard]] std::string to_string() const;

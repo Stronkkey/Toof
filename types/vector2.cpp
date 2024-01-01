@@ -144,6 +144,21 @@ void Vector2::normalize() {
 	}
 }
 
+void Vector2::rounded() {
+	x = std::round(x);
+	y = std::round(y);
+}
+
+void Vector2::floored() {
+	x = std::floor(x);
+	y = std::floor(y);
+}
+
+void Vector2::ceiled() {
+	x = std::ceil(x);
+	y = std::ceil(y);
+}
+
 Vector2 Vector2::move_toward(const Vector2 &to, const real_t delta) const {
 	Vector2 vector = *this;
 	Vector2 from_vector = to - vector;
@@ -162,6 +177,24 @@ real_t Vector2::length_squared() const {
 Vector2 Vector2::normalized() const {
 	Vector2 vector = *this;
 	vector.normalize();
+	return vector;
+}
+
+Vector2 Vector2::ceil() const {
+	Vector2 vector = *this;
+	vector.ceiled();
+	return vector;
+}
+
+Vector2 Vector2::round() const {
+	Vector2 vector = *this;
+	vector.rounded();
+	return vector;
+}
+
+Vector2 Vector2::floor() const {
+	Vector2 vector = *this;
+	vector.floored();
 	return vector;
 }
 
