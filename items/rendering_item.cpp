@@ -111,29 +111,21 @@ double RenderingItem::get_rotation() const {
 }
 
 void RenderingItem::set_global_position(const Vector2 &new_global_position) {
-	RenderingServer *rendering_server = get_rendering_server();
-
-	Vector2 global_position = transform.origin;
-	if (rendering_server)
-		global_position = rendering_server->canvas_item_get_global_transform(canvas_item).origin;
-	set_position(-Vector2(global_position - new_global_position));
+	Vector2 global_position = get_global_position();
+	transform.origin = -Vector2(global_position - new_global_position);
 }
 
 Vector2 RenderingItem::get_global_position() const {
 	RenderingServer *rendering_server = get_rendering_server();
 
 	if (rendering_server)
-		return rendering_server->canvas_item_get_transform(canvas_item).origin;
+		return rendering_server->canvas_item_get_global_transform(canvas_item).origin;
 	return transform.origin;
 }
 
 void RenderingItem::set_global_scale(const Vector2 &new_global_scale) {
-	RenderingServer *rendering_server = get_rendering_server();
-
-	Vector2 global_scale = transform.scale;
-	if (rendering_server)
-		global_scale = rendering_server->canvas_item_get_global_transform(canvas_item).scale;
-	set_scale(-Vector2(global_scale - new_global_scale));
+	Vector2 global_scale = get_global_scale();
+	transform.scale = -Vector2(global_scale - new_global_scale);
 }
 
 Vector2 RenderingItem::get_global_scale() const {
@@ -145,12 +137,8 @@ Vector2 RenderingItem::get_global_scale() const {
 }
 
 void RenderingItem::set_global_rotation(const double new_global_rotation) {
-	RenderingServer *rendering_server = get_rendering_server();
-
-	double global_rotation = transform.rotation;
-	if (rendering_server)
-		global_rotation = rendering_server->canvas_item_get_global_transform(canvas_item).rotation;
-	set_rotation(-(global_rotation - new_global_rotation));
+	double global_rotation = get_global_rotation();
+	transform.rotation = -(global_rotation - new_global_rotation);
 }
 
 double RenderingItem::get_global_rotation() const {
@@ -161,8 +149,22 @@ double RenderingItem::get_global_rotation() const {
 	return transform.rotation;
 }
 
+void RenderingItem::set_transform(const Transform2D &new_transform) {
+	transform = new_transform;
+	update();
+}
+
+Transform2D RenderingItem::get_transform() const {
+	return transform;
+}
+
 void RenderingItem::set_global_transform(const Transform2D &new_global_transform) {
-	transform = new_global_transform;
+	const Transform2D global_transform = get_global_transform();
+	Transform2D new_transform = new_global_transform;
+
+	transform.origin = -(global_transform.origin - new_global_transform.origin);
+	transform.rotation = -(global_transform.rotation - new_transform.rotation);
+	transform.scale = -(global_transform.scale - new_transform.scale);
 	update();
 }
 
