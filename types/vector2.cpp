@@ -144,6 +144,21 @@ void Vector2::normalize() {
 	}
 }
 
+Vector2 Vector2::move_toward(const Vector2 &to, const real_t delta) const {
+	Vector2 vector = *this;
+	Vector2 from_vector = to - vector;
+	real_t length = from_vector.length();
+	return length <= delta ? to : vector + from_vector / length * delta;
+}
+
+real_t Vector2::length() const {
+	return std::sqrt(x * x + y * y);
+}
+
+real_t Vector2::length_squared() const {
+	return x * x + y * y;
+}
+
 Vector2 Vector2::normalized() const {
 	Vector2 vector = *this;
 	vector.normalize();

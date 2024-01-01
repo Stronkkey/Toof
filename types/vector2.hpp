@@ -53,8 +53,11 @@ struct Vector2 {
 
 	void normalize();
 
-	Vector2 normalized() const;
+	real_t length() const;
+	real_t length_squared() const;
 
+	[[nodiscard]] Vector2 normalized() const;
+	[[nodiscard]] Vector2 move_toward(const Vector2 &to, const real_t delta) const;
 	[[nodiscard]] std::string to_string() const;
 	[[nodiscard]] SDL_FPoint to_sdl_fpoint() const;
 	[[nodiscard]] SDL_Point to_sdl_point() const;
