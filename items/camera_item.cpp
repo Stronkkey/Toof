@@ -10,6 +10,8 @@ CameraItem::CameraItem(): offset(),
     ignore_rotation(true),
     position_smoothing_enabled(false),
     rotation_smoothing_enabled(false),
+	fix_x(false),
+	fix_y(false),
 	process_callback(CAMERA_ITEM_PROCESS_RENDER),
 	anchor_mode(CAMERA_ITEM_ANCHOR_DRAG_CENTER) {
 }
@@ -24,7 +26,7 @@ Transform2D CameraItem::_get_camera_transform() const {
 
 	if (anchor_mode == CAMERA_ITEM_ANCHOR_DRAG_CENTER)
 		final_offset -= (viewport->get_viewport_size() / 2);
-	
+
 	if (!position_smoothing_enabled)
 		camera_position = get_global_position() + final_offset;
 	else { // What the hell
@@ -35,17 +37,24 @@ Transform2D CameraItem::_get_camera_transform() const {
 
 	if (!ignore_rotation)
 		camera_rotation = get_global_rotation();
-	
+
 	return Transform2D(camera_rotation, -camera_position, zoom);
 }
 
 void CameraItem::step_camera(const double) {
 	Viewport *viewport = get_rendering_server() ? get_rendering_server()->get_viewport() : nullptr;
 
-	if (!viewport)
-		return;
+	if (viewport) {
+		const Transform2D canvas_transform = viewport->get_canvas_transform();
+		Transform2D camera_transform = _get_camera_transform();
 
-	viewport->set_canvas_transform(_get_camera_transform());
+		if (fix_x)
+			camera_transform.origin.x = canvas_transform.origin.x;
+		if (fix_y)
+			camera_transform.origin.y = canvas_transform.origin.y;
+
+		viewport->set_canvas_transform(camera_transform);
+	}
 }
 
 void CameraItem::_notification(const int what) {
@@ -57,7 +66,7 @@ void CameraItem::_notification(const int what) {
 	if (what == NOTIFICATION_RENDER)
 		if (process_callback == CAMERA_ITEM_PROCESS_LOOP_RENDER || process_callback == CAMERA_ITEM_PROCESS_RENDER)
 			step_camera(get_delta_time());
-	
+
 	if (what == NOTIFICATION_LOOP)
 		if (process_callback == CAMERA_ITEM_PROCESS_LOOP_RENDER || process_callback == CAMERA_ITEM_PROCESS_LOOP)
 			step_camera(get_loop_delta_time());

@@ -31,9 +31,15 @@ public:
 public:
 	CameraItem();
 
-	Vector2 offset, zoom;
-	real_t position_smoothing_speed, rotation_smoothing_speed;
-	bool ignore_rotation, position_smoothing_enabled, rotation_smoothing_enabled;
+	Vector2 offset;
+	Vector2 zoom;
+	real_t position_smoothing_speed;
+	real_t rotation_smoothing_speed;
+	bool ignore_rotation;
+	bool position_smoothing_enabled;
+	bool rotation_smoothing_enabled;
+	bool fix_x;
+	bool fix_y;
 	
 	CameraItemProcessCallback process_callback;
 	CameraItemAnchorMode anchor_mode;
