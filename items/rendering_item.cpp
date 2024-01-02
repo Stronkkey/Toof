@@ -11,6 +11,7 @@ RenderingItem::RenderingItem(): transform(Transform2D::IDENTITY),
     canvas_item(0),
     modulate(Color::WHITE),
     blend_mode(SDL_BLENDMODE_BLEND),
+	scale_mode(SDL_ScaleModeLinear),
     visible(true) {
 }
 
@@ -40,6 +41,7 @@ void RenderingItem::update() {
 		rendering_server->canvas_item_set_transform(canvas_item, transform);
 		rendering_server->canvas_item_set_modulate(canvas_item, modulate);
 		rendering_server->canvas_item_set_blend_mode(canvas_item, blend_mode);
+		rendering_server->canvas_item_set_scale_mode(canvas_item, scale_mode);
 		rendering_server->canvas_item_set_visible(canvas_item, visible);
 	}
 }
@@ -197,6 +199,15 @@ void RenderingItem::set_blend_mode(const SDL_BlendMode new_blend_mode) {
 
 SDL_BlendMode RenderingItem::get_blend_mode() const {
 	return blend_mode;
+}
+
+void RenderingItem::set_scale_mode(const SDL_ScaleMode scaling_mode) {
+	scale_mode = scaling_mode;
+	update();
+}
+
+SDL_ScaleMode RenderingItem::get_scale_mode() const {
+	return scale_mode;
 }
 
 void RenderingItem::hide() {

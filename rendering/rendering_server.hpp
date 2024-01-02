@@ -82,6 +82,7 @@ public:
 	void canvas_item_set_parent(const uid canvas_item_uid, const uid parent_item_uid);
 	void canvas_item_set_modulate(const uid canvas_item_uid, const Color &new_modulate);
 	void canvas_item_set_blend_mode(const uid canvas_item_uid, const SDL_BlendMode blend_mode);
+	void canvas_item_set_scale_mode(const uid canvas_item_uid, const SDL_ScaleMode scale_mode);
 	void canvas_item_clear(const uint_t canvas_item_uid);
 
 	Transform2D canvas_item_get_transform(const uint_t canvas_item_uid) const;
@@ -94,6 +95,9 @@ public:
 	void canvas_item_set_visible(const uid canvas_item_uid, const bool visible);
 	bool canvas_item_is_globally_visible(const uid canvas_item_uid) const;
 	bool canvas_item_is_visible_inside_viewport(const uid canvas_item_uid) const;
+
+	SDL_BlendMode canvas_item_get_blend_mode(const uid canvas_item_uid) const;
+	SDL_ScaleMode canvas_item_get_scale_mode(const uid canvas_item_uid) const;
 };
 
 }

@@ -277,6 +277,12 @@ void RenderingServer::canvas_item_set_blend_mode(const uid canvas_item_uid, cons
 		canvas_item->blend_mode = blend_mode;
 }
 
+void RenderingServer::canvas_item_set_scale_mode(const uid canvas_item_uid, const SDL_ScaleMode scale_mode) {
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	if (canvas_item)
+		canvas_item->scale_mode = scale_mode;
+}
+
 void RenderingServer::canvas_item_clear(const uid canvas_item_uid) {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
@@ -339,4 +345,14 @@ bool RenderingServer::canvas_item_is_visible_inside_viewport(const uid canvas_it
 	}
 
 	return is_visible;
+}
+
+SDL_BlendMode RenderingServer::canvas_item_get_blend_mode(const uid canvas_item_uid) const {
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	return canvas_item ? canvas_item->blend_mode : SDL_BLENDMODE_BLEND;
+}
+
+SDL_ScaleMode RenderingServer::canvas_item_get_scale_mode(const uid canvas_item_uid) const {
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	return canvas_item ? canvas_item->scale_mode : SDL_ScaleModeLinear;
 }

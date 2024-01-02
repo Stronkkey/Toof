@@ -24,10 +24,11 @@ private:
 	uid canvas_item;
 	Color modulate;
 	SDL_BlendMode blend_mode;
+	SDL_ScaleMode scale_mode;
 	bool visible;
 
 	/**
-	* Syncs the transform, modulate, blend_mode and visible property with the RenderingServer.
+	* Syncs the transform, modulate, blend_mode, scale_mode, and visible property with the RenderingServer.
 	*/
 	void update();
 	void on_parent_changed(Item *new_parent);
@@ -155,14 +156,29 @@ public:
 	Color get_absolute_modulate() const;
 
 	/**
-	* Sets the blending mode for this CanvasItem to @param new_blend_mode that is used for future draw operations. See SDL_BlendMode.
+	* Sets the blending mode for this CanvasItem to @param new_blend_mode that is used for future draw operations.
+	* See also SDL_BlendMode.
 	*/
 	void set_blend_mode(const SDL_BlendMode new_blend_mode);
 
 	/**
-	* Returns the blending mode of this CanvasItem that is used for future draw operations. See SDL_BlendMode.
+	* Returns the blending mode of this CanvasItem.
+	* See also SDL_BlendMode.
 	*/
 	SDL_BlendMode get_blend_mode() const;
+
+
+	/**
+	* Sets the scaling mode for this CanvasItem to @param scaling_mode, used for future draw operations.
+	* See also SDL_ScaleMode.
+	*/
+	void set_scale_mode(const SDL_ScaleMode scaling_mode);
+
+	/**
+	* Returns the scaling mode of this CanvasItem.
+	* See also SDL_ScaleMode.
+	*/
+	SDL_ScaleMode get_scale_mode() const;
 
 	/**
 	* Hides the CanvasItem and its children.
@@ -175,13 +191,15 @@ public:
 	void show();
 
 	/**
-	* Return true if the CanvasItem is visible, otherwise false. See also is_visible_in_tree.
+	* Return true if the CanvasItem is visible, otherwise false.
+	* See also is_visible_in_tree.
 	* Note: This only takes into account this CanvasItem's visiblity.
 	*/
 	bool is_visible() const;
 
 	/**
-	* Returns true if the CanvasItem and its parent are visible, otherwise false. See also is_visible.
+	* Returns true if the CanvasItem and its parent are visible, otherwise false.
+	* See also is_visible.
 	*/
 	bool is_visible_in_tree() const;
 
