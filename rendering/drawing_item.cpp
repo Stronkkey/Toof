@@ -106,12 +106,14 @@ void TextureRectDrawingItem::draw_texture(const Viewport *viewport,
 }
 
 void RectDrawingItem::_draw(const Viewport *viewport) {
-	const Vector2 global_scale = canvas_item->get_global_transform().scale * viewport->get_canvas_transform().scale;
+	const Transform2D global_transform = canvas_item->get_global_transform() * viewport->get_canvas_transform();
 	SDL_Renderer *renderer = viewport->get_renderer();
 	SDL_FRect rect = rectangle;
 
-	rect.w *= global_scale.x;
-	rect.h *= global_scale.y;
+	rect.x += global_transform.origin.x;
+	rect.y += global_transform.origin.y;
+	rect.w *= global_transform.scale.x;
+	rect.h *= global_transform.scale.y;
 
 	SDL_SetRenderDrawColor(renderer, modulate.r, modulate.g, modulate.b, modulate.a);
 	SDL_SetRenderDrawBlendMode(renderer, canvas_item->blend_mode);
@@ -135,6 +137,9 @@ void RectsDrawingItem::_draw(const Viewport *viewport) {
 
 	for (Rect2 rectangle: rectangles) {
 		SDL_FRect frect = rectangle.to_sdl_frect();
+
+		frect.x += global_transform.origin.x;
+		frect.y += global_transform.origin.y;
 		frect.w *= global_transform.scale.x;
 		frect.h *= global_transform.scale.y;
 
@@ -152,13 +157,13 @@ Rect2 RectsDrawingItem::_get_draw_rect() const {
 }
 
 void LineDrawingItem::_draw(const Viewport *viewport) {
-	const Vector2 global_scale = canvas_item->get_global_transform().scale * viewport->get_canvas_transform().scale;
+	const Transform2D global_transform = canvas_item->get_global_transform() * viewport->get_canvas_transform();
 	SDL_Renderer *renderer = viewport->get_renderer();
 
-	int x_1 = start_point.x;
-	int y_1 = start_point.y;
-	int x_2 = end_point.x * global_scale.x;
-	int y_2 = end_point.y * global_scale.y;
+	int x_1 = start_point.x + global_transform.origin.x;
+	int y_1 = start_point.y + global_transform.origin.y;
+	int x_2 = (end_point.x + global_transform.origin.x) * global_transform.scale.x;
+	int y_2 = (end_point.y + global_transform.origin.y) * global_transform.scale.y;
 
 	SDL_SetRenderDrawColor(renderer, modulate.r, modulate.g, modulate.b, modulate.a);
 	SDL_SetRenderDrawBlendMode(renderer, canvas_item->blend_mode);
