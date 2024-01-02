@@ -9,7 +9,9 @@ CameraItem::CameraItem(): offset(),
     rotation_smoothing_speed(360),
     ignore_rotation(true),
     position_smoothing_enabled(false),
-    rotation_smoothing_enabled(false) {
+    rotation_smoothing_enabled(false),
+	process_callback(CAMERA_ITEM_PROCESS_RENDER),
+	anchor_mode(CAMERA_ITEM_ANCHOR_DRAG_CENTER) {
 }
 
 Transform2D CameraItem::_get_camera_transform() const {
@@ -20,7 +22,8 @@ Transform2D CameraItem::_get_camera_transform() const {
 	Vector2 global_scale;
 	double camera_rotation = 0;
 
-	final_offset.x += (real_t)-(viewport->get_viewport_size().x / 4.0);
+	if (anchor_mode == CAMERA_ITEM_ANCHOR_DRAG_CENTER)
+		final_offset -= (viewport->get_viewport_size() / 2);
 	
 	if (!position_smoothing_enabled)
 		camera_position = get_global_position() + final_offset;
@@ -48,13 +51,16 @@ void CameraItem::step_camera(const double) {
 void CameraItem::_notification(const int what) {
 	RenderingItem::_notification(what);
 
-	switch (what) {
-		case NOTIFICATION_RENDER:
+	if (process_callback == CAMERA_ITEM_PROCESS_NONE)
+		return;
+
+	if (what == NOTIFICATION_RENDER)
+		if (process_callback == CAMERA_ITEM_PROCESS_LOOP_RENDER || process_callback == CAMERA_ITEM_PROCESS_RENDER)
 			step_camera(get_delta_time());
-			break;
-		default:
-			break;
-	}
+	
+	if (what == NOTIFICATION_LOOP)
+		if (process_callback == CAMERA_ITEM_PROCESS_LOOP_RENDER || process_callback == CAMERA_ITEM_PROCESS_LOOP)
+			step_camera(get_loop_delta_time());
 }
 
 std::optional<Transform2D> CameraItem::get_camera_transform() const {
