@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SDL_render.h"
 #include <rendering/texture.hpp>
 #include <types/transform2d.hpp>
 
@@ -16,6 +17,7 @@ struct CanvasItem {
 	bool visible = true;
 
 	SDL_BlendMode blend_mode = SDL_BLENDMODE_BLEND;
+	SDL_ScaleMode scale_mode = SDL_ScaleModeLinear;
 
 	std::shared_ptr<CanvasItem> parent;
 	std::vector<std::shared_ptr<DrawingItem>> drawing_items;
