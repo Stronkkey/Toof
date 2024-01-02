@@ -19,7 +19,7 @@ struct Texture {
 class Texture2D {
 
 public:
-	virtual Vector2i get_size() const { return Vector2i::ZERO; }
+	virtual Vector2i get_size(const RenderingServer* = nullptr) const { return Vector2i::ZERO; }
 	virtual int get_width() const { return int(get_size().x); }
 	virtual int get_height() const { return int(get_size().y); }
 	virtual uid get_uid() const { return 0; }
@@ -50,8 +50,7 @@ public:
 	UidTexture();
 	UidTexture(const uid from_uid);
 
-	Vector2i get_size() const override;
-	Vector2i get_size(RenderingServer *rendering_server) const;
+	Vector2i get_size(const RenderingServer* = nullptr) const override;
 	uid get_uid() const override { return texture_uid; }
 
 	void draw(RenderingServer *rendering_server,

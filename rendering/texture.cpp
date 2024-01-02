@@ -17,12 +17,8 @@ UidTexture::UidTexture(const uid from_uid) {
 	texture_uid = from_uid;
 }
 
-Vector2i UidTexture::get_size() const {
-	return Vector2i::ZERO;
-}
-
-Vector2i UidTexture::get_size(RenderingServer *rendering_server) const {
-	return rendering_server->get_texture_info_from_uid(texture_uid).size;
+Vector2i UidTexture::get_size(const RenderingServer *rendering_server) const {
+	return rendering_server ? rendering_server->get_texture_info_from_uid(texture_uid).size : Vector2i::ZERO;
 }
 
 void UidTexture::draw(RenderingServer *rendering_server,
