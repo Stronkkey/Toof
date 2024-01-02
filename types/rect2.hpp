@@ -54,6 +54,13 @@ struct Rect2 {
 	Rect2 operator-() const;
 	Rect2 operator+() const;
 
+	void rounded();
+	void floored();
+	void ceiled();
+
+	[[nodiscard]] Rect2 round() const;
+	[[nodiscard]] Rect2 floor() const;
+	[[nodiscard]] Rect2 ceil() const;
 	[[nodiscard]] std::string to_string() const;
 	[[nodiscard]] Rect2 merge(const Rect2 &right) const;
 	[[nodiscard]] Rect2 abs() const;

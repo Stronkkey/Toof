@@ -160,6 +160,45 @@ Rect2 Rect2::operator-() const {
 	return Rect2(-x, -y, -w, -h);
 }
 
+void Rect2::rounded() {
+	x = std::round(x);
+	y = std::round(y);
+	w = std::round(w);
+	h = std::round(h);
+}
+
+void Rect2::floored() {
+	x = std::floor(x);
+	y = std::floor(y);
+	w = std::floor(w);
+	h = std::floor(h);
+}
+
+void Rect2::ceiled() {
+	x = std::ceil(x);
+	y = std::ceil(y);
+	w = std::ceil(w);
+	h = std::ceil(h);
+}
+
+Rect2 Rect2::round() const {
+	Rect2 rect = *this;
+	rect.rounded();
+	return rect;
+}
+
+Rect2 Rect2::floor() const {
+	Rect2 rect = *this;
+	rect.floored();
+	return rect;
+}
+
+Rect2 Rect2::ceil() const {
+	Rect2 rect = *this;
+	rect.ceiled();
+	return rect;
+}
+
 std::string Rect2::to_string() const {
 	return "(" + get_position().to_string() + ", " + get_size().to_string() + ")";
 }
