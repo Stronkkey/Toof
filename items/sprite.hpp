@@ -16,6 +16,7 @@ private:
 	SDL_RendererFlip flip;
 	bool centered;
 
+	Transform2D get_placement_texture_transform() const;
 	void draw_texture() const;
 	void draw_rect_texture() const;
 	void draw() const;
