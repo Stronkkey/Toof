@@ -14,7 +14,7 @@ SpriteItem::SpriteItem(): texture(nullptr),
 void SpriteItem::draw_texture() const {
 	Transform2D new_transform = texture_transform;
 	if (centered)
-		new_transform.origin -= texture->get_size() / 2;
+		new_transform.origin -= texture->get_size(get_rendering_server()) / (texture_transform.scale * 2);
 
 	texture->draw(get_rendering_server(), texture->get_uid(), get_canvas_item(), flip, Color::WHITE, new_transform);
 }
@@ -22,7 +22,7 @@ void SpriteItem::draw_texture() const {
 void SpriteItem::draw_rect_texture() const {
 	Transform2D new_transform = texture_transform;
 	if (centered)
-		new_transform.origin += texture->get_size() / 2;
+		new_transform.origin += texture->get_size(get_rendering_server()) / 2;
 
 	texture->draw_region(get_rendering_server(), texture->get_uid(), get_canvas_item(), texture_region, flip, Color::WHITE, new_transform);
 }
