@@ -4,7 +4,7 @@
 
 #include <types/transform2d.hpp>
 #include <types/color.hpp>
-#include <rendering/rendering_server.hpp>
+#include <servers/rendering_server.hpp>
 
 #include <boost/signals2.hpp>
 

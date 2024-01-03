@@ -8,7 +8,7 @@ project(
 project_description = 'Simple wrapper for sdl2'
 
 project_headers = [
-  'rendering/rendering_server.hpp',
+  'servers/rendering_server.hpp',
   'rendering/window.hpp',
   'rendering/texture.hpp',
   'rendering/canvas_item.hpp',
@@ -28,7 +28,7 @@ project_headers = [
 ]
 
 project_source_files = [
-  'rendering/rendering_server.cpp',
+  'servers/rendering_server.cpp',
   'rendering/window.cpp',
   'rendering/canvas_item.cpp',
   'rendering/texture.cpp',

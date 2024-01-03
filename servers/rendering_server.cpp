@@ -1,7 +1,7 @@
 #include <types/utility_functions.hpp>
 #include <rendering/canvas_item.hpp>
 #include <rendering/drawing_item.hpp>
-#include <rendering/rendering_server.hpp>
+#include <servers/rendering_server.hpp>
 #include <rendering/viewport.hpp>
 
 using namespace sdl;

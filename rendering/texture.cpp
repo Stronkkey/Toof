@@ -1,5 +1,5 @@
 #include <rendering/texture.hpp>
-#include <rendering/rendering_server.hpp>
+#include <servers/rendering_server.hpp>
 
 using namespace sdl;
 

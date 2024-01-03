@@ -1,5 +1,5 @@
 #include <rendering/window.hpp>
-#include <rendering/rendering_server.hpp>
+#include <servers/rendering_server.hpp>
 
 #include <SDL.h>
 #include <SDL_image.h>

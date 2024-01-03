@@ -1,6 +1,6 @@
 #include <rendering/viewport.hpp>
-#include <rendering/rendering_server.hpp>
 #include <rendering/window.hpp>
+#include <servers/rendering_server.hpp>
 
 using namespace sdl;
 
