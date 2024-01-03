@@ -6,6 +6,8 @@
 
 #include <SDL_events.h>
 
+#include <boost/signals2.hpp>
+
 namespace sdl {
 
 class Tree;
@@ -88,6 +90,28 @@ protected:
 public:
 	Item();
 	virtual ~Item();
+
+	/**
+	* Emitted when the item is ready. Called after _ready callback and follows the same rules.
+	*/
+	boost::signals2::signal<void()> ready;
+
+	/**
+	* Emitted when the item is renamed.
+	*/
+	boost::signals2::signal<void(const std::string &name)> renamed;
+
+	/**
+	* Emitted when the item enters the tree.
+	* This signal is emitted before the related NOTIFICATION_ENTER_TREE notification.
+	*/
+	boost::signals2::signal<void()> tree_entering;
+
+	/**
+	* Emitted when the node is still active but about to exit the tree. This is the right place for de-initialization (or a "destructor", if you will).
+	* This signal is emitted before the related NOTIFICATION_EXIT_TREE notification
+	*/
+	boost::signals2::signal<void()> tree_exiting;
 
 	/**
 	* Gets the global event from the tree or nullptr if the tree is not set.

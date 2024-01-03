@@ -6,6 +6,8 @@
 #include <types/color.hpp>
 #include <rendering/rendering_server.hpp>
 
+#include <boost/signals2.hpp>
+
 namespace sdl {
 
 class Texture2D;
@@ -49,6 +51,21 @@ protected:
 public:
 	RenderingItem();
 	~RenderingItem();
+
+	/**
+	* Emitted when the renderingitem must redraw, after the related NOTIFICATION_DRAW notification, and before _draw is called.
+	*/
+	boost::signals2::signal<void()> draw;
+
+	/**
+	* Emitted when becoming hidden.
+	*/
+	boost::signals2::signal<void()> hidden;
+
+	/**
+	* Emitted when the visibility (hidden/visible) changes.
+	*/
+	boost::signals2::signal<void()> visibility_changed;
 
 	/**
 	* Returns the CanvasItem uid used by the RenderingServer for this item.

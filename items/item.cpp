@@ -68,6 +68,13 @@ void Item::notification(const int what) {
 			break;
 		case NOTIFICATION_READY:
 			_ready();
+			ready();
+			break;
+		case NOTIFICATION_EXIT_TREE:
+			tree_exiting();
+			break;
+		case NOTIFICATION_ENTER_TREE:
+			tree_entering();
 			break;
 		default:
 			break;
@@ -107,6 +114,7 @@ void Item::set_tree(Tree *new_tree) {
 
 void Item::set_name(const std::string &new_name) {
 	name = new_name;
+	renamed(name);
 }
 
 std::string Item::get_name() const {

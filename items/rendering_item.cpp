@@ -62,6 +62,7 @@ void RenderingItem::_notification(const int what) {
 			ready();
 			break;
 		case NOTIFICATION_DRAW:
+			draw();
 			_draw();
 			break;
 		case NOTIFICATION_PARENTED:
@@ -215,6 +216,8 @@ void RenderingItem::hide() {
 		return;
 
 	visible = false;
+	hidden();
+	visibility_changed();
 	update();
 }
 
@@ -223,6 +226,7 @@ void RenderingItem::show() {
 		return;
 
 	visible = true;
+	visibility_changed();
 	update();
 }
 

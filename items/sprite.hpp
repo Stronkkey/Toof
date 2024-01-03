@@ -25,6 +25,8 @@ private:
 public:
 	SpriteItem();
 
+	boost::signals2::signal<void()> texture_changed;
+
 	void set_texture(const std::shared_ptr<Texture2D> &new_texture);
 	std::shared_ptr<Texture2D> get_texture() const;
 

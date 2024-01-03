@@ -50,6 +50,7 @@ void SpriteItem::_notification(const int what) {
 
 void SpriteItem::set_texture(const std::shared_ptr<Texture2D> &new_texture) {
 	texture = new_texture;
+	texture_changed();
 	redraw();
 }
 
