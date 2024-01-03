@@ -45,11 +45,13 @@ void Tree::render() {
 	if (!running)
 		return;
 
+	render_frame();
 	root->propagate_notification(Item::NOTIFICATION_RENDER);
 	rendering_server->render();
 }
 
 void Tree::loop() {
+	loop_frame();
 	root->propagate_notification(Item::NOTIFICATION_LOOP);
 }
 
@@ -91,12 +93,11 @@ void Tree::main_loop() {
 		loop_delta_time = delta;
 		loop();
 
-		for (callback callable: deferred_callbacks)
-			callable();
+		deferred_signals();
 		for (Item *item: deferred_item_removal)
 			item->free();
 
-		deferred_callbacks.clear();
+		deferred_signals.disconnect_all_slots();
 		deferred_item_removal.clear();
 	}
 }
@@ -131,11 +132,11 @@ void Tree::stop() {
 	}
 }
 
-void Tree::defer_callable(const callback &callable) {
+void Tree::defer_callable(void(*callable)()) {
 	if (!callable)
 		return;
 
-	deferred_callbacks.push_back(callable);
+	deferred_signals.connect(callable);
 }
 
 void Tree::queue_free(Item *item) {

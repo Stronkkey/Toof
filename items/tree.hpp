@@ -2,8 +2,9 @@
 
 #include <SDL_events.h>
 
-#include <functional>
 #include <string>
+
+#include <boost/signals2.hpp>
 
 namespace sdl {
 
@@ -14,8 +15,6 @@ class RenderingServer;
 class Viewport;
 
 class Tree {
-
-typedef std::function<void(void)> callback;
 
 private:
 	bool running;
@@ -28,7 +27,7 @@ private:
 	void main_loop();
 	void event_loop();
 
-	std::vector<callback> deferred_callbacks;
+	boost::signals2::signal<void()> deferred_signals;
 	std::vector<Item*> deferred_item_removal;
 
 protected:
@@ -48,6 +47,9 @@ public:
 	Tree();
 	virtual ~Tree();
 
+	boost::signals2::signal<void()> loop_frame;
+	boost::signals2::signal<void()> render_frame;
+
 	Window *get_window() const;
 	Viewport *get_viewport() const;
 	RenderingServer *get_rendering_server() const;
@@ -59,7 +61,7 @@ public:
 	void start();
 	void stop();
 
-	void defer_callable(const callback &callable);
+	void defer_callable(void(*callable)());
 	void queue_free(Item *item);
 
 	void set_frame_rate(const double new_frame_rate);
