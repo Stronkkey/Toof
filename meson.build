@@ -7,44 +7,95 @@ project(
 
 project_description = 'Simple wrapper for sdl2'
 
-project_headers = [
+rendering_server_headers = [
   'servers/rendering_server.hpp',
-  'rendering/window.hpp',
-  'rendering/texture.hpp',
-  'rendering/canvas_item.hpp',
-  'rendering/viewport.hpp',
-  'rendering/drawing_item.hpp',
-  'items/tree.cpp',
+  'servers/rendering/2d/canvas_item.hpp',
+  'servers/rendering/2d/drawing_item.hpp',
+  'servers/rendering/viewport.hpp',
+  'servers/rendering/window.hpp',
+  'servers/rendering/texture.hpp'
+]
+
+rendering_server_sources = [
+  'servers/rendering_server.cpp',
+  'servers/rendering/2d/canvas_item.cpp',
+  'servers/rendering/2d/drawing_item.cpp',
+  'servers/rendering/viewport.cpp',
+  'servers/rendering/window.cpp'
+]
+
+resources_headers = [
+  'resources/texture2d.hpp'
+]
+
+resources_sources = [
+  'resources/texture2d.cpp'
+]
+
+item_headers = [
+  'items/tree.hpp',
   'items/item.hpp',
   'items/rendering_item.hpp',
   'items/sprite.hpp',
   'items/camera_item.hpp',
-  'types/math_defs.hpp',
-  'types/vector2.hpp',
-  'types/rect2.hpp',
-  'types/transform2d.hpp',
-  'types/color.hpp',
-  'input/input_manager.hpp',
 ]
 
-project_source_files = [
-  'servers/rendering_server.cpp',
-  'rendering/window.cpp',
-  'rendering/canvas_item.cpp',
-  'rendering/texture.cpp',
-  'rendering/viewport.cpp',
-  'rendering/drawing_item.cpp',
+item_sources = [
   'items/tree.cpp',
   'items/item.cpp',
   'items/rendering_item.cpp',
   'items/sprite.cpp',
   'items/camera_item.cpp',
-  'types/rect2.cpp',
-  'types/vector2.cpp',
-  'types/transform2d.cpp',
-  'types/color.cpp',
-  'types/utility_functions.cpp',
+]
+
+input_headers = [
+  'input/input_manager.hpp'
+]
+
+input_sources = [
   'input/input_manager.cpp'
+]
+
+math_headers = [
+  'core/math/math_defs.hpp',
+  'core/math/vector2.hpp',
+  'core/math/rect2.hpp',
+  'core/math/transform2d.hpp',
+  'core/math/color.hpp',
+]
+
+math_sources = [
+  'core/math/math_defs.cpp',
+  'core/math/vector2.cpp',
+  'core/math/rect2.cpp',
+  'core/math/transform2d.cpp',
+  'core/math/color.cpp',
+]
+
+core_headers = [
+  math_headers,
+  'core/utility_functions.hpp'
+]
+
+core_sources = [
+  math_sources,
+  'core/utility_functions.cpp'
+]
+
+project_headers = [
+  core_headers,
+  input_headers,
+  item_headers,
+  resources_headers,
+  rendering_server_headers,
+]
+
+project_source_files = [
+  core_sources,
+  input_sources,
+  item_sources,
+  resources_sources,
+  rendering_server_sources,
 ]
 
 project_test_files = [

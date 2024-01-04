@@ -1,6 +1,6 @@
-#include "items/rendering_item.hpp"
+#include <items/rendering_item.hpp>
 #include <items/sprite.hpp>
-#include <rendering/texture.hpp>
+#include <resources/texture2d.hpp>
 
 using namespace sdl;
 

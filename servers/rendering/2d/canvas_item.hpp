@@ -1,11 +1,12 @@
 #pragma once
 
-#include "SDL_render.h"
-#include <rendering/texture.hpp>
-#include <types/transform2d.hpp>
+#include <core/math/transform2d.hpp>
+#include <core/math/color.hpp>
 
 #include <vector>
 #include <memory>
+
+#include <SDL_render.h>
 
 namespace sdl {
 

@@ -1,8 +1,10 @@
-#include <types/utility_functions.hpp>
-#include <rendering/canvas_item.hpp>
-#include <rendering/drawing_item.hpp>
+#include <servers/rendering/2d/canvas_item.hpp>
+#include <servers/rendering/2d/drawing_item.hpp>
 #include <servers/rendering_server.hpp>
-#include <rendering/viewport.hpp>
+#include <servers/rendering/viewport.hpp>
+#include <servers/rendering/texture.hpp>
+
+#include <SDL_image.h>
 
 using namespace sdl;
 

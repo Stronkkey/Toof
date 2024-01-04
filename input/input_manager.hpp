@@ -1,7 +1,5 @@
 #pragma once
 
-#include <types/math_defs.hpp>
-
 #include <SDL_keycode.h>
 #include <SDL_events.h>
 

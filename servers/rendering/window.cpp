@@ -1,4 +1,4 @@
-#include <rendering/window.hpp>
+#include <servers/rendering/window.hpp>
 #include <servers/rendering_server.hpp>
 
 #include <SDL.h>

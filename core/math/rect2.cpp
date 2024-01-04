@@ -1,5 +1,6 @@
-#include <types/transform2d.hpp>
-#include <types/rect2.hpp>
+#include <core/math/transform2d.hpp>
+#include <core/math/rect2.hpp>
+
 #include <algorithm>
 
 using namespace sdl;

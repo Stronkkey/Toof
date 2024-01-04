@@ -1,8 +1,8 @@
 #pragma once
 
-#include <types/rect2.hpp>
-#include <types/color.hpp>
-#include <types/transform2d.hpp>
+#include <core/math/rect2.hpp>
+#include <core/math/color.hpp>
+#include <core/math/transform2d.hpp>
 
 #include <SDL_render.h>
 

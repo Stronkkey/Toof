@@ -1,7 +1,23 @@
-#include <rendering/texture.hpp>
+#include <resources/texture2d.hpp>
 #include <servers/rendering_server.hpp>
 
 using namespace sdl;
+
+Vector2i Texture2D::get_size(const RenderingServer*) const {
+    return Vector2i::ZERO;
+}
+
+int Texture2D::get_width(const RenderingServer *rendering_server) const {
+	return get_size(rendering_server).x;
+}
+
+int Texture2D::get_height(const RenderingServer *rendering_server) const {
+	return get_size(rendering_server).y;
+}
+
+uid Texture2D::get_uid() const {
+	return 0;
+}
 
 void Texture2D::draw(RenderingServer*, const uid, const uid, const SDL_RendererFlip, const Color&, const Transform2D&) const {
 }
@@ -22,21 +38,21 @@ Vector2i UidTexture::get_size(const RenderingServer *rendering_server) const {
 }
 
 void UidTexture::draw(RenderingServer *rendering_server,
-        const uid texture_uid,
-        const uid canvas_item_uid,
-        const SDL_RendererFlip flip,
-        const Color &modulate,
-        const Transform2D &transform) const {
+	const uid texture_uid,
+	const uid canvas_item_uid,
+	const SDL_RendererFlip flip,
+	const Color &modulate,
+	const Transform2D &transform) const {
 	rendering_server->canvas_item_add_texture(texture_uid, canvas_item_uid, flip, modulate, transform);
 }
 
 void UidTexture::draw_region(RenderingServer *rendering_server,
-        const uid texture_uid,
-        const uid canvas_item_uid,
-        const Rect2i &src_region,
-        const SDL_RendererFlip flip,
-        const Color &modulate,
-        const Transform2D &transform ) const {
+	const uid texture_uid,
+	const uid canvas_item_uid,
+	const Rect2i &src_region,
+	const SDL_RendererFlip flip,
+	const Color &modulate,
+	const Transform2D &transform ) const {
 	rendering_server->canvas_item_add_texture_region(texture_uid, canvas_item_uid, src_region, flip, modulate, transform);
 }
 

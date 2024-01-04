@@ -2,8 +2,8 @@
 
 #include <items/item.hpp>
 
-#include <types/transform2d.hpp>
-#include <types/color.hpp>
+#include <core/math/transform2d.hpp>
+#include <core/math/color.hpp>
 #include <servers/rendering_server.hpp>
 
 #include <boost/signals2.hpp>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <types/math_defs.hpp>
+#include <core/math/math_defs.hpp>
 
 #include <SDL_pixels.h>
 

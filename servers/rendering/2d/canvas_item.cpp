@@ -1,5 +1,5 @@
-#include <rendering/canvas_item.hpp>
-#include <rendering/drawing_item.hpp>
+#include <servers/rendering/2d/canvas_item.hpp>
+#include <servers/rendering/2d/drawing_item.hpp>
 
 using namespace sdl;
 

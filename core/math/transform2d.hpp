@@ -1,6 +1,6 @@
 #pragma once
 
-#include <types/vector2.hpp>
+#include <core/math/vector2.hpp>
 
 namespace sdl {
 

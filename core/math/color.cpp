@@ -1,4 +1,4 @@
-#include <types/color.hpp>
+#include <core/math/color.hpp>
 
 using namespace sdl;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <types/rect2.hpp>
+#include <core/math/rect2.hpp>
 
 #include <SDL_video.h>
 #include <SDL_log.h>

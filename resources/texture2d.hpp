@@ -1,28 +1,23 @@
 #pragma once
 
-#include <types/transform2d.hpp>
-#include <types/rect2.hpp>
-#include <types/color.hpp>
+#include <core/math/math_defs.hpp>
+#include <core/math/transform2d.hpp>
+#include <core/math/color.hpp>
 
-#include <SDL_image.h>
+#include <SDL_render.h>
 
 namespace sdl {
 
+struct Rect2i;
 class RenderingServer;
-
-struct Texture {
-	SDL_Texture *texture_reference;
-	Vector2i size;
-	uint32_t format;
-};
 
 class Texture2D {
 
 public:
-	virtual Vector2i get_size(const RenderingServer* = nullptr) const { return Vector2i::ZERO; }
-	virtual int get_width() const { return int(get_size().x); }
-	virtual int get_height() const { return int(get_size().y); }
-	virtual uid get_uid() const { return 0; }
+	virtual Vector2i get_size(const RenderingServer* = nullptr) const;
+	virtual int get_width(const RenderingServer* = nullptr) const;
+	virtual int get_height(const RenderingServer* = nullptr) const;
+	virtual uid get_uid() const;
 
 	virtual void draw(RenderingServer *rendering_server,
 	    const uid texture_uid,

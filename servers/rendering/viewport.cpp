@@ -1,5 +1,5 @@
-#include <rendering/viewport.hpp>
-#include <rendering/window.hpp>
+#include <servers/rendering/viewport.hpp>
+#include <servers/rendering/window.hpp>
 #include <servers/rendering_server.hpp>
 
 using namespace sdl;

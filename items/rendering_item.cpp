@@ -1,7 +1,7 @@
 #include <items/rendering_item.hpp>
-#include <rendering/window.hpp>
+#include <servers/rendering/window.hpp>
 #include <items/tree.hpp>
-#include <rendering/texture.hpp>
+#include <resources/texture2d.hpp>
 
 #include <typeinfo>
 

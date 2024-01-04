@@ -1,5 +1,5 @@
 #include <items/camera_item.hpp>
-#include <rendering/viewport.hpp>
+#include <servers/rendering/viewport.hpp>
 
 using namespace sdl;
 

@@ -1,7 +1,7 @@
 #include <items/tree.hpp>
 #include <items/item.hpp>
-#include <rendering/viewport.hpp>
-#include <rendering/window.hpp>
+#include <servers/rendering/viewport.hpp>
+#include <servers/rendering/window.hpp>
 #include <servers/rendering_server.hpp>
 
 #include <SDL_timer.h>
