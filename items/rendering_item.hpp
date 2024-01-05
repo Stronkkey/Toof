@@ -6,8 +6,6 @@
 #include <core/math/color.hpp>
 #include <servers/rendering_server.hpp>
 
-#include <boost/signals2.hpp>
-
 namespace sdl {
 
 class Texture2D;

@@ -78,14 +78,12 @@ math_sources = [
 
 core_headers = [
   math_headers,
-  'core/utility_functions.hpp',
-  'core/signal.hpp'
+  'core/utility_functions.hpp'
 ]
 
 core_sources = [
   math_sources,
-  'core/utility_functions.cpp',
-  'core/signal.cpp'
+  'core/utility_functions.cpp'
 ]
 
 project_headers = [
