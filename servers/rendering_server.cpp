@@ -178,7 +178,7 @@ void RenderingServer::canvas_item_add_texture_region(const uid texture_uid,
 	if (!canvas_item || !texture || !src_region.has_area())
 		return;
 
-	auto texture_rect_drawing_item = std::make_shared<TextureRectDrawingItem>();
+	auto texture_rect_drawing_item = std::make_shared<TextureDrawingItem>();
 	texture_rect_drawing_item->canvas_item = canvas_item;
 
 	texture_rect_drawing_item->texture = texture;
