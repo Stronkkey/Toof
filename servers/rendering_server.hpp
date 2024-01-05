@@ -22,8 +22,8 @@ class RenderingServer {
 
 private:
 	Viewport *viewport;
-	std::unordered_map<uint_t, std::shared_ptr<Texture>> textures;
-	std::unordered_map<uint_t, std::shared_ptr<CanvasItem>> canvas_items;
+	std::unordered_map<uid, std::shared_ptr<Texture>> textures;
+	std::unordered_map<uid, std::shared_ptr<CanvasItem>> canvas_items;
 	Color background_color;
 	Vector2 viewport_offset;
 
