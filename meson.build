@@ -25,11 +25,15 @@ rendering_server_sources = [
 ]
 
 resources_headers = [
-  'resources/texture2d.hpp'
+  'resources/resource.hpp',
+  'resources/texture2d.hpp',
+  'resources/uid_texture.hpp'
 ]
 
 resources_sources = [
-  'resources/texture2d.cpp'
+  'resources/resource.cpp',
+  'resources/texture2d.cpp',
+  'resources/uid_texture.cpp'
 ]
 
 item_headers = [
