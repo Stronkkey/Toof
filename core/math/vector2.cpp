@@ -166,6 +166,14 @@ Vector2 Vector2::move_toward(const Vector2 &to, const real_t delta) const {
 	return length <= delta ? to : vector + from_vector / length * delta;
 }
 
+real_t Vector2::distance_to(const Vector2 &to) const {
+	return std::sqrt((x - to.x) * (x - to.x) + (y - to.y) * (y - to.y));
+}
+
+real_t Vector2::distance_to_squared(const Vector2 &to) const {
+	return ((x - to.x) * (x - to.x) + (y - to.y) * (y - to.y));
+}
+
 real_t Vector2::length() const {
 	return std::sqrt(x * x + y * y);
 }

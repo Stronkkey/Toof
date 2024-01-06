@@ -64,6 +64,8 @@ struct Vector2 {
 	[[nodiscard]] Vector2 ceil() const;
 	[[nodiscard]] Vector2 normalized() const;
 	[[nodiscard]] Vector2 move_toward(const Vector2 &to, const real_t delta) const;
+	[[nodiscard]] real_t distance_to_squared(const Vector2 &to) const;
+	[[nodiscard]] real_t distance_to(const Vector2 &to) const;
 	[[nodiscard]] std::string to_string() const;
 	[[nodiscard]] SDL_FPoint to_sdl_fpoint() const;
 	[[nodiscard]] SDL_Point to_sdl_point() const;
