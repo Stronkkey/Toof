@@ -35,10 +35,16 @@ bool are_circles_intersecting(const real_t left_circle_radius, const Vector2 &le
 std::optional<Vector2> line_intersects_line(const Vector2 &from_a, const Vector2 &dir_a, const Vector2 &from_b, const Vector2 &dir_b);
 
 /**
-* Returns true if the two lines @param from_a, @param dir_a and @param from_b, @param dir_b intersect.
-* Note: The lines are specified using direction vectors, not end points.
+* Returns true if the directions @param dir_a and @param dir_b intersect.
 */
-bool is_line_intersecting_line(const Vector2 &from_a, const Vector2 &dir_a, const Vector2 &from_b, const Vector2 &dir_b);
+bool is_direction_intersecting_direction(const Vector2 &dir_a, const Vector2 &dir_b);
+
+/**
+* Returns true if the @param rect intersects with the circle.
+* @param circle_radius describes the radius of the circle.
+* @param circle_position describes the position of the circle.
+*/
+bool rect_intersects_circle(const Rect2 &rect, const real_t circle_radius, const Vector2 &circle_position);
 
 }
 
