@@ -15,6 +15,7 @@ public:
 
 	Vector2i get_size(const RenderingServer* = nullptr) const override;
 	uid get_uid() const override { return texture_uid; }
+	SDL_Texture *get_texture(const RenderingServer *rendering_server = nullptr) const override;
 
 	void draw(RenderingServer *rendering_server,
 	    const uid texture_uid,

@@ -36,7 +36,7 @@ Vector2i RenderingServer::get_screen_size() const {
 void RenderingServer::render() {
 	SDL_Renderer *renderer = viewport->get_renderer();
 
-	SDL_RenderClear(viewport->get_renderer());
+	SDL_RenderClear(renderer);
 	for (auto iterator: canvas_items)
 		render_canvas_item(iterator.second);
 
@@ -113,6 +113,7 @@ RenderingServer::TextureInfo RenderingServer::get_texture_info_from_uid(const ui
 
 	texture_info.size = iterator->second->size;
 	texture_info.format = iterator->second->format;
+	texture_info.texture = iterator->second->texture_reference;
 	return texture_info;
 }
 

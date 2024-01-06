@@ -12,6 +12,10 @@ sdl::Vector2i sdl::UidTexture::get_size(const RenderingServer *rendering_server)
 	return rendering_server ? rendering_server->get_texture_info_from_uid(texture_uid).size : Vector2i::ZERO;
 }
 
+SDL_Texture *sdl::UidTexture::get_texture(const RenderingServer *rendering_server) const {
+	return rendering_server ? rendering_server->get_texture_info_from_uid(texture_uid).texture : nullptr;
+}
+
 void sdl::UidTexture::draw(RenderingServer *rendering_server,
 	const uid texture_uid,
 	const uid canvas_item_uid,

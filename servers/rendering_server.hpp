@@ -40,6 +40,7 @@ public:
 	struct TextureInfo {
 		Vector2i size;
 		uint32_t format;
+		SDL_Texture *texture;
 	};
 
 public:

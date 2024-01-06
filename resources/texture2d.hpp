@@ -19,6 +19,7 @@ public:
 	virtual int get_width(const RenderingServer* = nullptr) const;
 	virtual int get_height(const RenderingServer* = nullptr) const;
 	virtual uid get_uid() const;
+	virtual SDL_Texture *get_texture(const RenderingServer* = nullptr) const;
 
 	virtual void draw(RenderingServer *rendering_server,
 	    const uid texture_uid,
