@@ -66,6 +66,7 @@ math_headers = [
   'core/math/rect2.hpp',
   'core/math/transform2d.hpp',
   'core/math/color.hpp',
+  'core/math/geometry2d.hpp',
 ]
 
 math_sources = [
@@ -74,6 +75,7 @@ math_sources = [
   'core/math/rect2.cpp',
   'core/math/transform2d.cpp',
   'core/math/color.cpp',
+  'core/math/geometry2d.cpp',
 ]
 
 core_headers = [
