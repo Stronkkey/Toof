@@ -7,11 +7,106 @@ project(
 
 project_description = 'Simple wrapper for sdl2'
 
-subdir('core')
-subdir('input')
-subdir('items')
-subdir('resources')
-subdir('servers')
+rendering_server_headers = [
+  'servers/rendering_server.hpp',
+  'servers/rendering/2d/canvas_item.hpp',
+  'servers/rendering/2d/drawing_item.hpp',
+  'servers/rendering/viewport.hpp',
+  'servers/rendering/window.hpp',
+  'servers/rendering/texture.hpp'
+]
+
+rendering_server_sources = [
+  'servers/rendering_server.cpp',
+  'servers/rendering/2d/canvas_item.cpp',
+  'servers/rendering/2d/drawing_item.cpp',
+  'servers/rendering/viewport.cpp',
+  'servers/rendering/window.cpp'
+]
+
+physics_server_headers = [
+  'servers/physics/physics_body.hpp',
+  'servers/physics/physics_shape.hpp'
+]
+
+physics_server_sources = [
+  'servers/physics/physics_body.cpp',
+  'servers/physics/physics_shape.cpp'
+]
+
+server_headers = [
+  rendering_server_headers,
+  physics_server_headers
+]
+
+server_sources = [
+  rendering_server_sources,
+  physics_server_sources
+]
+
+resources_headers = [
+  'resources/resource.hpp',
+  'resources/texture2d.hpp',
+  'resources/uid_texture.hpp'
+]
+
+resources_sources = [
+  'resources/resource.cpp',
+  'resources/texture2d.cpp',
+  'resources/uid_texture.cpp'
+]
+
+item_headers = [
+  'items/tree.hpp',
+  'items/item.hpp',
+  'items/rendering_item.hpp',
+  'items/sprite.hpp',
+  'items/camera_item.hpp',
+]
+
+item_sources = [
+  'items/tree.cpp',
+  'items/item.cpp',
+  'items/rendering_item.cpp',
+  'items/sprite.cpp',
+  'items/camera_item.cpp',
+]
+
+input_headers = [
+  'input/input_manager.hpp'
+]
+
+input_sources = [
+  'input/input_manager.cpp'
+]
+
+math_headers = [
+  'core/math/math_defs.hpp',
+  'core/math/vector2.hpp',
+  'core/math/rect2.hpp',
+  'core/math/transform2d.hpp',
+  'core/math/color.hpp',
+  'core/math/geometry2d.hpp',
+]
+
+math_sources = [
+  'core/math/math_defs.cpp',
+  'core/math/vector2.cpp',
+  'core/math/rect2.cpp',
+  'core/math/transform2d.cpp',
+  'core/math/color.cpp',
+  'core/math/geometry2d.cpp'
+]
+
+core_headers = [
+  math_headers,
+  'core/utility_functions.hpp'
+]
+
+core_sources = [
+  math_sources,
+  'core/utility_functions.cpp'
+]
 
 project_headers = [
   core_headers,
@@ -19,19 +114,17 @@ project_headers = [
   item_headers,
   resources_headers,
   servers_headers,
+  server_headers,
+  box2d_headers
 ]
 
 project_source_files = [
-  core_source_files,
-  input_source_files,
-  item_source_files,
-  resources_source_files,
-  servers_source_files,
-]
-
-test_headers = [
-  project_headers,
-  'tests/test_geometry2d.hpp',
+  core_sources,
+  input_sources,
+  item_sources,
+  resources_sources,
+  server_sources,
+  box2d_sources
 ]
 
 project_test_files = [
