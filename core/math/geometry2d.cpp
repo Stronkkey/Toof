@@ -34,11 +34,10 @@ bool sdl::Geometry2D::rect_intersects_circle(const Rect2 &rect, const real_t cir
 	return position_intersection || size_intersection;
 }
 
-sdl::Vector2 sdl::Geometry2D::rotate_point_around(const double rotation_degrees, const Vector2 &point, const Vector2 &center)  {
+sdl::Vector2 sdl::Geometry2D::rotate_point_around(const double rotation_degrees, const Vector2 &point)  {
 	real_t rotation_radians = Math::degrees_to_radians(rotation_degrees);
-	Vector2 final_point = center - point;
-	real_t x_rot = -(final_point.x * cos(rotation_radians)) + (final_point.y * cos(rotation_radians));
-	real_t y_rot = -(final_point.x * sin(rotation_radians)) + (final_point.y * sin(rotation_radians));
+	real_t x_rot = -(point.x * cos(rotation_radians)) + (point.y * cos(rotation_radians));
+	real_t y_rot = -(point.x * sin(rotation_radians)) + (point.y * sin(rotation_radians));
 	
 	return Vector2(x_rot, y_rot);
 }

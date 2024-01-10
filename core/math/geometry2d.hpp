@@ -47,9 +47,11 @@ bool is_direction_intersecting_direction(const Vector2 &dir_a, const Vector2 &di
 bool rect_intersects_circle(const Rect2 &rect, const real_t circle_radius, const Vector2 &circle_position);
 
 /**
-* Returns a Vector that represents the @param point rotated around @param center by @param rotation_degrees.
+* Returns a Vector (in global position) that represents the @param point rotated by @param rotation_degrees.
+* If you want to get a point's rotation relative to a another point then
+* simply subtract the point's position by the other point. Note: The value returned is in global coordinates.
 */
-Vector2 rotate_point_around(const double rotation_degrees, const Vector2 &point, const Vector2 &center);
+Vector2 rotate_point_around(const double rotation_degrees, const Vector2 &point);
 
 }
 
