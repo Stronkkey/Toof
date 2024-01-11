@@ -20,6 +20,6 @@ void UtilityFunctions::print(const std::string &string) {
 	std::cout << string + "\n";
 }
 
-void UtilityFunctions::prints(const std::string &string) {
-	std::cout << string + "\n";
+void UtilityFunctions::print_err(const std::string &string) {
+	std::cerr << string + "\n";
 }

@@ -6,16 +6,22 @@
 
 namespace sdl {
 
-struct Vector2;
-struct Rect2;
-struct Transform2D;
-
 namespace UtilityFunctions {
 
+/**
+* Returns the amount of time passed in seconds since the program started.
+*/
 real_t get_passed_time();
 
+/**
+* Prints the @param string to the standard output.
+*/
 void print(const std::string &string);
-void prints(const std::string &string);
+
+/**
+* Prints the @param string to the standard error output.
+*/
+void print_err(const std::string &string);
 
 }
 
