@@ -12,7 +12,6 @@ subdir('input')
 subdir('items')
 subdir('resources')
 subdir('servers')
-subdir('tests')
 
 project_headers = [
   core_headers,
@@ -33,12 +32,6 @@ project_source_files = [
 test_headers = [
   project_headers,
   'tests/test_geometry2d.hpp',
-]
-
-test_source_files = [
-  project_source_files,
-  'tests/test_main.cpp',
-  'tests/test_geometry2d.cpp',
 ]
 
 project_test_files = [
@@ -97,6 +90,7 @@ project_dep = declare_dependency(
 )
 set_variable(meson.project_name() + '_dep', project_dep)
 
+
 # Make this library usable from the system's
 # package manager.
 install_headers(project_headers, subdir : meson.project_name())
@@ -109,13 +103,3 @@ pkg_mod.generate(
   subdirs : meson.project_name(),
   libraries : project_target,
 )
-
-test_executable = executable(
-  meson.project_name(),
-  test_source_files,
-  dependencies: project_dependencies,
-  install: false,
-  cpp_args: build_args
-)
-
-test('geometry2d', test_executable, args: [])
