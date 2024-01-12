@@ -2,7 +2,7 @@
 
 using namespace sdl;
 
-const Transform2D Transform2D::IDENTITY = Transform2D();
+const Transform2D Transform2D::IDENTITY = Transform2D(0, 0, 0, 1, 1);
 
 Transform2D::Transform2D(): rotation(0.0), origin(Vector2::ZERO), scale(Vector2::ONE) {
 }
