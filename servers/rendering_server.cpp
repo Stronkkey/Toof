@@ -18,7 +18,9 @@ RenderingServer::RenderingServer(Viewport *viewport): viewport(viewport),
 
 RenderingServer::~RenderingServer() {
 	for (const auto &iterator: textures)
-		SDL_DestroyTexture(iterator.second->texture_reference);
+		destroy_uid(iterator.first);
+	for (const auto &iterator: canvas_items)
+		destroy_uid(iterator.first);
 }
 
 void RenderingServer::set_default_background_color(const Color &new_background_color) {
