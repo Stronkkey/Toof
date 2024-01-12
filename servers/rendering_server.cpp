@@ -17,7 +17,7 @@ RenderingServer::RenderingServer(Viewport *viewport): viewport(viewport),
 }
 
 RenderingServer::~RenderingServer() {
-	for (std::pair<uint_t, std::shared_ptr<Texture>> iterator: textures)
+	for (const auto &iterator: textures)
 		SDL_DestroyTexture(iterator.second->texture_reference);
 }
 
@@ -37,7 +37,7 @@ void RenderingServer::render() {
 	SDL_Renderer *renderer = viewport->get_renderer();
 
 	SDL_RenderClear(renderer);
-	for (auto iterator: canvas_items)
+	for (const auto &iterator: canvas_items)
 		render_canvas_item(iterator.second);
 
 	SDL_SetRenderDrawColor(renderer, background_color.r, background_color.g, background_color.b, background_color.a);
@@ -96,7 +96,7 @@ void RenderingServer::render_canvas_item(const std::shared_ptr<CanvasItem> &canv
 	const Rect2i screen_rect = Rect2i(Vector2::ZERO, get_screen_size());
 	const Transform2D canvas_transform = viewport->get_canvas_transform();
 
-	for (std::shared_ptr<DrawingItem> drawing_item: canvas_item->drawing_items) {
+	for (const std::shared_ptr<DrawingItem> &drawing_item: canvas_item->drawing_items) {
 		bool inside_viewport = screen_rect.intersects(drawing_item->get_draw_rect() * canvas_transform);
 
 		if (inside_viewport)
@@ -265,7 +265,7 @@ void RenderingServer::canvas_item_set_parent(const uid canvas_item_uid, const ui
 	if (canvas_item)
 		canvas_item->parent = parent_canvas_item;
 	else
-		canvas_item->parent = std::shared_ptr<CanvasItem>(nullptr);
+		canvas_item->parent = std::weak_ptr<CanvasItem>();
 }
 
 void RenderingServer::canvas_item_set_modulate(const uid canvas_item_uid, const Color &new_modulate) {
@@ -338,7 +338,7 @@ bool RenderingServer::canvas_item_is_visible_inside_viewport(const uid canvas_it
 	const Transform2D canvas_transform = viewport->get_canvas_transform();
 	bool is_visible = true;
 
-	for (std::shared_ptr<DrawingItem> drawing_item: canvas_item->drawing_items) {
+	for (const std::shared_ptr<DrawingItem> &drawing_item: canvas_item->drawing_items) {
 		bool inside_viewport = screen_rect.intersects(drawing_item->get_draw_rect() * canvas_transform);
 
 		if (!inside_viewport) {

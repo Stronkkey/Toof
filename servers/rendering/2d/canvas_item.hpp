@@ -20,7 +20,7 @@ struct CanvasItem {
 	SDL_BlendMode blend_mode = SDL_BLENDMODE_BLEND;
 	SDL_ScaleMode scale_mode = SDL_ScaleModeLinear;
 
-	std::shared_ptr<CanvasItem> parent;
+	std::weak_ptr<CanvasItem> parent;
 	std::vector<std::shared_ptr<DrawingItem>> drawing_items;
 
 	Transform2D get_global_transform() const;
