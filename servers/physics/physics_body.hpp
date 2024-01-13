@@ -5,30 +5,21 @@
 #include <memory>
 #include <vector>
 
+class b2Body;
+class b2Shape;
+
 namespace sdl {
 
 struct PhysicsShape;
+struct PhysicsWorld2D;
 
-enum PhysicsBodyTypes {
-	PHYSICS_BODY_TYPE_STATIC,
-	PHYSICS_BODY_TYPE_RIGID,
-	PHYSICS_BODY_TYPE_AREA
-};
 
 struct PhysicsBody {
-	PhysicsBodyTypes type;
-	Transform2D transform;
-	std::vector<std::weak_ptr<PhysicsShape>> shapes;
-};
+	b2Body *body;
+	std::weak_ptr<PhysicsWorld2D> world;
 
-namespace Physics {
-
-void rigid_body_physics_tick(const std::shared_ptr<PhysicsBody> &body, const double delta);
-void static_body_physics_tick(const std::shared_ptr<PhysicsBody> &body, const double delta);
-void area_body_physics_tick(const std::shared_ptr<PhysicsBody> &body, const double delta);
-void physics_body_physics_tick(const std::shared_ptr<PhysicsBody> &body, const double delta);
-bool physics_body_collides_against(const std::shared_ptr<PhysicsBody> &body, const std::shared_ptr<PhysicsBody> &right_body);
-
+	void physics_tick(const double delta);
+	bool collides_with(const std::shared_ptr<PhysicsBody> &body);
 };
 
 }

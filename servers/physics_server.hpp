@@ -7,16 +7,16 @@
 
 namespace sdl {
 
-struct PhysicsBody;
-struct PhysicsShape;
+struct PhysicsWorld2D;
 
 class PhysicsServer2D {
 
 private:
-	std::unordered_map<uid, std::shared_ptr<PhysicsBody>> bodies;
-	std::unordered_map<uid, std::shared_ptr<PhysicsShape>> shapes;
+	std::unique_ptr<PhysicsWorld2D> world;
 
 public:
+	PhysicsServer2D();
+	
 	void tick(const double delta);
 
 };
