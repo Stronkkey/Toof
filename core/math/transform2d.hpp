@@ -2,6 +2,10 @@
 
 #include <core/math/vector2.hpp>
 
+#ifdef B2_INCLUDED
+struct b2Transform;
+#endif
+
 namespace sdl {
 
 struct Transform2D {
@@ -18,6 +22,10 @@ struct Transform2D {
 	bool operator!() const;
 
 	Transform2D operator*(const Transform2D &right) const;
+
+	#ifdef B2_INCLUDED
+	[[nodiscard]] b2Transform to_b2_transform() const;
+	#endif
 
 	void operator=(const Transform2D &right);
 	void operator*=(const Transform2D &right);

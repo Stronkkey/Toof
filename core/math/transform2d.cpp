@@ -1,3 +1,5 @@
+#include "core/math/math_defs.hpp"
+#include <box2d/b2_math.h>
 #include <core/math/transform2d.hpp>
 
 using namespace sdl;
@@ -30,6 +32,12 @@ bool Transform2D::operator!() const {
 Transform2D Transform2D::operator*(const Transform2D &right) const {
 	return Transform2D(rotation + right.rotation, origin + right.origin, scale * right.scale);
 }
+
+#ifdef B2_INCLUDED
+b2Transform Transform2D::to_b2_transform() const {
+	return b2Transform(origin.to_b2_vec2(), b2Rot(Math::degrees_to_radians(rotation)));
+}
+#endif
 
 void Transform2D::operator=(const Transform2D &right) {
 	origin = right.origin;

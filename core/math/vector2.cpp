@@ -1,6 +1,8 @@
 #include <core/math/vector2.hpp>
 
-#include <cmath>
+#ifdef B2_INCLUDED
+#include <box2d/b2_math.h>
+#endif
 
 using namespace sdl;
 
@@ -223,6 +225,12 @@ SDL_Point Vector2::to_sdl_point() const {
 	point.y = y;
 	return point;
 }
+
+#ifdef B2_INCLUDED
+b2Vec2 Vector2::to_b2_vec2() const {
+	return b2Vec2((float)x, (float)y);
+}
+#endif
 
 // Vector2i //
 
