@@ -21,6 +21,11 @@ Transform2D::Transform2D(const double new_rotation, const real_t origin_x, const
 Transform2D::Transform2D(const Transform2D &transform2d): rotation(transform2d.rotation), origin(transform2d.origin), scale(transform2d.scale) {
 }
 
+#ifdef B2_INCLUDED
+Transform2D::Transform2D(const b2Transform &b2_transform): rotation(Math::radians_to_degrees(b2_transform.q.GetAngle())), origin(b2_transform.p), scale(Vector2::ONE) {
+}
+#endif
+
 bool Transform2D::operator==(const Transform2D &right) const {
 	return origin == right.origin && rotation == right.rotation;
 }

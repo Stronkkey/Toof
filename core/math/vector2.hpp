@@ -23,6 +23,9 @@ struct Vector2 {
 	Vector2(const Vector2i &vector2i);
 	Vector2(const SDL_FPoint &fpoint);
 	Vector2(const SDL_Point &point);
+	#ifdef B2_INCLUDED
+	Vector2(const b2Vec2 &b2_vec2);
+	#endif
 
 	void operator=(const Vector2 &right);
 	bool operator==(const Vector2 &right) const;

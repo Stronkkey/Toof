@@ -38,6 +38,11 @@ Vector2::Vector2(const SDL_FPoint &fpoint): x(fpoint.x), y(fpoint.y) {
 Vector2::Vector2(const SDL_Point &point): x(point.x), y(point.y) {
 }
 
+#ifdef B2_INCLUDED
+Vector2::Vector2(const b2Vec2 &b2_vec2): x(b2_vec2.x), y(b2_vec2.y) {
+}
+#endif
+
 void Vector2::operator=(const Vector2 &right) {
 	x = right.x;
 	y = right.y;
