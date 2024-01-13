@@ -1,2 +1,3 @@
 option('double_precision', type: 'feature', value: 'enabled', description: 'Use double-precision floating point numbers instead of single-precision.')
 option('int_64bit', type: 'feature', value: 'enabled', description: 'Use 64 bits for storing integers instead of 32.')
+option('box2d', type: 'feature', value: 'enabled', description: 'Enable Physics and conversion to box2d units.')
