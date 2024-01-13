@@ -1,3 +1,5 @@
+#ifdef B2_INCLUDED
+
 #pragma once
 
 #include <core/math/transform2d.hpp>
@@ -23,3 +25,5 @@ struct PhysicsBody {
 };
 
 }
+
+#endif // !B2_INCLUDED
