@@ -7,5 +7,6 @@ servers_physics_source_files = files(
 servers_physics_headers = files(
 	'physics_body.hpp',
 	'physics_shape.hpp',
-	'physics_world.hpp'
+	'physics_world.hpp',
+	'physics_info.hpp',
 )
