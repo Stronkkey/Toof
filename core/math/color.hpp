@@ -19,8 +19,8 @@ struct Color {
 	uint16_t b;
 	uint16_t a;
 
-	Color blend(const Color &over) const;
-	Color darkened(const float amount) const;
+	[[nodiscard]] Color blend(const Color &over) const;
+	[[nodiscard]] Color darkened(const float amount) const;
 
 	void operator=(const Color &right);
 	bool operator!=(const Color &right) const;
@@ -41,8 +41,7 @@ struct Color {
 	void operator/=(const Color &right);
 	void operator/=(const float right);
 
-	SDL_Color to_sdl_color() const;
-
+	[[nodiscard]] SDL_Color to_sdl_color() const;
 	[[nodiscard]] std::string to_string() const;
 
 	Color operator+() const;
