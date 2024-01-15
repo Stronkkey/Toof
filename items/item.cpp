@@ -57,6 +57,9 @@ void Item::notification(const int what) {
 		return;
 
 	switch (what) {
+		case NOTIFICATION_PHYSICS_PROCESS:
+			_physics_process(get_physics_delta_time());
+			break;
 		case NOTIFICATION_RENDER:
 			_render(get_delta_time());
 			break;

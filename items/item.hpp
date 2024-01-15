@@ -30,6 +30,7 @@ public:
 	enum {
 		NOTIFICATION_READY = 1000 /* Notification received when the item is ready. See _ready.*/,
 		NOTIFICATION_EVENT /* Notification received when an event has been process. See _event.*/,
+		NOTIFICATION_PHYSICS_PROCESS /* Notification received for each physics step. See _physics_process.*/,
 		NOTIFICATION_RENDER /* Notification received each render step. See _render.*/,
 		NOTIFICATION_LOOP /* Notification received each loop step. See _loop.*/,
 		NOTIFICATION_ENTER_TREE /* Notification received when the item enters the tree*/,
@@ -81,6 +82,14 @@ protected:
 	virtual void _loop(double delta);
 
 	/**
+	* Called for each physics step of the tree.
+	* This usually happens every 1/physics_frame_rate seconds
+	* but can take longer if the system cannot catch up.
+	* @param delta The time from between the previous frame and the current frame. Note: This value is very close to 0 on the first frame.
+	*/
+	virtual void _physics_process(const double delta);
+
+	/**
 	* Called when the item is "ready".
 	* An Item is "ready" when the set_tree has been called with a valid Tree.
 	* This only gets called once and not on any subsequent set_tree.
@@ -129,6 +138,12 @@ public:
 	* Note: This value is very close to 0 on the first frame.
 	*/
 	double get_loop_delta_time() const;
+
+	/**
+	* @return the time between the previous physics step and the current physics step.
+	* Note: This value is very close to 0 on the first frame.
+	*/
+	double get_physics_delta_time() const;
 
 	/**
 	* Sends the given @param what notification to the item, calling _notification with @param what.
