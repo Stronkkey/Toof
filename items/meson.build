@@ -13,3 +13,8 @@ item_headers = files(
 	'sprite.hpp',
 	'tree.hpp',
 )
+
+subdir('physics')
+
+item_source_files += item_physics_source_files
+item_headers += item_physics_headers
