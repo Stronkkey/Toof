@@ -1,6 +1,8 @@
 #include <core/math/vector2.hpp>
 
-#include <cmath>
+#ifdef B2_INCLUDED
+#include <box2d/b2_math.h>
+#endif
 
 using namespace sdl;
 
@@ -35,6 +37,11 @@ Vector2::Vector2(const SDL_FPoint &fpoint): x(fpoint.x), y(fpoint.y) {
 
 Vector2::Vector2(const SDL_Point &point): x(point.x), y(point.y) {
 }
+
+#ifdef B2_INCLUDED
+Vector2::Vector2(const b2Vec2 &b2_vec2): x(b2_vec2.x), y(b2_vec2.y) {
+}
+#endif
 
 void Vector2::operator=(const Vector2 &right) {
 	x = right.x;
@@ -223,6 +230,12 @@ SDL_Point Vector2::to_sdl_point() const {
 	point.y = y;
 	return point;
 }
+
+#ifdef B2_INCLUDED
+b2Vec2 Vector2::to_b2_vec2() const {
+	return b2Vec2((float)x, (float)y);
+}
+#endif
 
 // Vector2i //
 

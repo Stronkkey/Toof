@@ -30,9 +30,9 @@ public:
 	enum {
 		NOTIFICATION_READY = 1000 /* Notification received when the item is ready. See _ready.*/,
 		NOTIFICATION_EVENT /* Notification received when an event has been process. See _event.*/,
-		NOTIFICATION_PHYSICS_PROCESS /* Notification received for each physics step. See _physics_process.*/,
 		NOTIFICATION_RENDER /* Notification received each render step. See _render.*/,
 		NOTIFICATION_LOOP /* Notification received each loop step. See _loop.*/,
+		NOTIFICATION_PHYSICS_PROCESS /* Notification received each physics step. See _physics_process.*/,
 		NOTIFICATION_ENTER_TREE /* Notification received when the item enters the tree*/,
 		NOTIFICATION_EXIT_TREE /* Notification received when the item is removed from the tree.*/,
 		NOTIFICATION_PAUSED /* Notification received when the processing of this item has been paused.*/,
@@ -49,7 +49,7 @@ private:
 	Tree *tree ;
 	Item *parent;
 	std::string name;
-	bool is_ready;
+	bool is_ready, is_deletion_queued;
 
 protected:
 	/**
@@ -82,10 +82,10 @@ protected:
 	virtual void _loop(double delta);
 
 	/**
-	* Called for each physics step of the tree.
+	* Called in each physics step of the tree.
 	* This usually happens every 1/physics_frame_rate seconds
 	* but can take longer if the system cannot catch up.
-	* @param delta The time from between the previous frame and the current frame. Note: This value is very close to 0 on the first frame.
+	* \param delta The time from between the previous frame and the current frame. Note: This value is very close to 0 on the first frame.
 	*/
 	virtual void _physics_process(const double delta);
 
@@ -140,8 +140,9 @@ public:
 	double get_loop_delta_time() const;
 
 	/**
-	* @return the time between the previous physics step and the current physics step.
-	* Note: This value is very close to 0 on the first frame.
+	* @returns the time between the previous physics step and the current physics step.
+	* @note this value is very close to 0 on the first frame.
+	* @note always returns the 0 when physics is not enabled.
 	*/
 	double get_physics_delta_time() const;
 
@@ -159,6 +160,19 @@ public:
 	* Deletes the item from memory and calls free on all children.
 	*/
 	void free();
+
+	/**
+	* Queues an Item for deletion at the end of the current frame.
+	* When deleted, all of its child nodes will be deleted as well, and all references to the node and its children will become invalid, see free.
+	* It is safe to call queue_free multiple times per frame on a node, and to free a node that is currently queued for deletion. Use is_queued_for_deletion to check whether an item will be deleted at the end of the frame.
+	* The item will only be freed after all other deferred calls are finished.
+	*/
+	void queue_free();
+
+	/**
+	* @returns true if the item is queued for deletion.
+	*/
+	bool is_queued_for_deletion() const;
 
 	/**
 	* Returns the tree this item belongs to or nullptr if the tree hasn't been set.

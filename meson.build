@@ -40,7 +40,8 @@ project_test_files = [
 project_dependencies = [
   dependency('boost'),
   dependency('sdl2'),
-  dependency('sdl2_image')
+  dependency('sdl2_image'),
+  dependency('box2d'),
 ]
 
 build_args = [
@@ -53,16 +54,24 @@ public_headers = include_directories('./')
 
 double_precision_enabled = get_option('double_precision').enabled()
 int_64bit_enabled = get_option('int_64bit').enabled()
+box2d_enabled = get_option('box2d').enabled()
 
 if double_precision_enabled
-  build_args += ['-D REAL_T_IS_DOUBLE']
+  build_args += '-D REAL_T_IS_DOUBLE'
   project_variables += {'double': 'true'}
 else
   project_variables += {'double': 'false'}
 endif
 
+if box2d_enabled
+  build_args += '-D B2_INCLUDED'
+  project_variables += {'b2': 'true'}
+else
+  project_variables += {'b2': 'false'}
+endif
+
 if int_64bit_enabled
-  build_args += ['-D INT_IS_64BIT']
+  build_args += '-D INT_IS_64BIT'
   project_variables += {'int64': 'true'}
 else
   project_variables += {'int64': 'false'}

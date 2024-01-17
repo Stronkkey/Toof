@@ -5,6 +5,10 @@
 #include <string>
 #include <SDL_rect.h>
 
+#ifdef B2_INCLUDED
+struct b2Vec2;
+#endif
+
 namespace sdl {
 
 struct Vector2i;
@@ -19,6 +23,9 @@ struct Vector2 {
 	Vector2(const Vector2i &vector2i);
 	Vector2(const SDL_FPoint &fpoint);
 	Vector2(const SDL_Point &point);
+	#ifdef B2_INCLUDED
+	Vector2(const b2Vec2 &b2_vec2);
+	#endif
 
 	void operator=(const Vector2 &right);
 	bool operator==(const Vector2 &right) const;
@@ -69,6 +76,10 @@ struct Vector2 {
 	[[nodiscard]] std::string to_string() const;
 	[[nodiscard]] SDL_FPoint to_sdl_fpoint() const;
 	[[nodiscard]] SDL_Point to_sdl_point() const;
+
+	#ifdef B2_INCLUDED
+	[[nodiscard]] b2Vec2 to_b2_vec2() const;
+	#endif
 
 	static const Vector2 ONE;
 	static const Vector2 ZERO;
