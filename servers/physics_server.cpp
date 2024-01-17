@@ -1,3 +1,4 @@
+#include "core/math/math_defs.hpp"
 #ifdef B2_INCLUDED
 
 #include <servers/physics/physics_world.hpp>
@@ -7,7 +8,6 @@
 #include <servers/physics_server.hpp>
 
 #include <box2d/b2_world.h>
-#include <box2d/b2_body.h>
 
 sdl::uid sdl::PhysicsServer2D::assign_uid() {
 	uid_index++;
@@ -33,7 +33,48 @@ void sdl::PhysicsServer2D::tick_world(const std::unique_ptr<PhysicsWorld2D> &wor
 	world->step(delta);
 }
 
-sdl::PhysicsServer2D::PhysicsServer2D(): gravity(Physics::default_gravity), uid_index(1) {
+std::unique_ptr<b2BodyDef> sdl::PhysicsServer2D::get_body_def_from_body(const b2Body *body) const {
+	auto body_def = std::make_unique<b2BodyDef>();
+
+	body_def->angle = body->GetAngle();
+	body_def->allowSleep = body->IsSleepingAllowed();
+	body_def->angularDamping = body->GetAngularDamping();
+	body_def->angularVelocity = body->GetAngularVelocity();
+	body_def->bullet = body->IsBullet();
+	body_def->fixedRotation = body->IsFixedRotation();
+	body_def->enabled = body->IsEnabled();
+	body_def->awake = body->IsAwake();
+	body_def->linearVelocity = body->GetLinearVelocity();
+	body_def->type = body->GetType();
+
+	return body_def;
+}
+
+void sdl::PhysicsServer2D::create_physics_body_from_def(const std::unique_ptr<PhysicsBody> &physics_body, const uid world_uid, const b2BodyDef *body_def) {
+	auto iterator = worlds.find(world_uid);
+	if (iterator == worlds.end())
+		return;
+
+	std::unique_ptr<PhysicsWorld2D> &world = iterator->second;
+	physics_body->body = world->get_world()->CreateBody(body_def ? body_def : &default_body_definition);
+	physics_body->world_uid = world_uid;
+}
+
+void sdl::PhysicsServer2D::transfer_body_to_world(const std::unique_ptr<PhysicsBody> &physics_body, const uid world_uid) {
+	auto iterator = worlds.find(physics_body->world_uid);
+	b2Body *old_body = physics_body->body;
+	bool clean_body = false;
+
+	if (iterator != worlds.end() && physics_body->body)
+		clean_body = true;
+	
+	create_physics_body_from_def(physics_body, world_uid);
+	if (clean_body)
+		iterator->second->get_world()->DestroyBody(old_body);
+}
+
+
+sdl::PhysicsServer2D::PhysicsServer2D(): gravity(Physics::default_gravity), uid_index(1), default_body_definition() {
 }
 
 sdl::PhysicsServer2D::~PhysicsServer2D() {
@@ -68,6 +109,12 @@ sdl::Vector2 sdl::PhysicsServer2D::get_gravity() const {
 sdl::uid sdl::PhysicsServer2D::create_world() {
 	uid assigned_uid = assign_uid();
 	worlds.insert({assigned_uid, std::make_unique<PhysicsWorld2D>(gravity)});
+	return assigned_uid;
+}
+
+sdl::uid sdl::PhysicsServer2D::body_create() {
+	uid assigned_uid = assign_uid();
+	bodies.insert({assigned_uid, std::make_unique<PhysicsBody>()});
 	return assigned_uid;
 }
 
@@ -109,7 +156,7 @@ void sdl::PhysicsServer2D::world_set_position_iterations(const uid world_uid, co
 		iterator->second->position_iterations = position_iterations;
 }
 
-std::optional<int32_t> sdl::PhysicsServer2D::world_get_position_iterations(const uid world_uid) {
+std::optional<int32_t> sdl::PhysicsServer2D::world_get_position_iterations(const uid world_uid) const {
 	auto iterator = worlds.find(world_uid);
 
 	if (iterator != worlds.end())
@@ -118,5 +165,40 @@ std::optional<int32_t> sdl::PhysicsServer2D::world_get_position_iterations(const
 	return std::nullopt;
 }
 
+void sdl::PhysicsServer2D::body_set_world(const uid body_uid, const uid world_uid) {
+	auto iterator = bodies.find(body_uid);
+	if (iterator != bodies.end())
+		transfer_body_to_world(iterator->second, world_uid);
+}
+
+std::optional<sdl::uid> sdl::PhysicsServer2D::body_get_world(const uid body_uid) const {
+	auto iterator = bodies.find(body_uid);
+
+	if (iterator != bodies.end())
+		return iterator->second->world_uid;
+	
+	return std::nullopt;
+}
+
+void body_set_state_transform(const std::unique_ptr<sdl::PhysicsBody> &body, const sdl::PhysicsServer2D::body_state_variant &state_value) {
+	try {
+		const sdl::Transform2D transform = std::get<sdl::Transform2D>(state_value);
+		body->body->SetTransform(transform.origin.to_b2_vec2(), sdl::Math::degrees_to_radians(transform.rotation));
+	} catch(const std::bad_variant_access &ex) {
+	}
+}
+
+void sdl::PhysicsServer2D::body_set_state(const uid body_uid, const BodyState body_state, const body_state_variant &state_value) {
+	auto iterator = bodies.find(body_uid);
+	if (iterator == bodies.end() || body_state == BODY_STATE_NONE)
+		return;
+
+	switch (body_state) {
+		case BODY_STATE_TRANSFORM:
+			body_set_state_transform(iterator->second, state_value);
+		default:
+			break;
+	}
+}
 
 #endif // !B2_INCLUDED
