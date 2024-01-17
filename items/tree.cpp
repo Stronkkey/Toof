@@ -4,6 +4,10 @@
 #include <servers/rendering/window.hpp>
 #include <servers/rendering_server.hpp>
 
+#ifdef B2_INCLUDED
+#include <servers/physics_server.hpp>
+#endif
+
 #include <SDL_timer.h>
 
 #include <thread>
@@ -12,23 +16,29 @@
 using namespace sdl;
 
 Tree::Tree(): running(false),
-		fixed_frame_rate(60.0),
-		frame_rate(60.0),
-		render_delta_time(0.0),
-		loop_delta_time(0.0),
-		window(new Window),
-		viewport(new Viewport),
-		rendering_server(new RenderingServer{viewport}),
-		root(new Item) {
+        fixed_frame_rate(60.0),
+        frame_rate(60.0),
+        render_delta_time(0.0),
+        loop_delta_time(0.0),
+        window(new Window),
+        viewport(new Viewport),
+        rendering_server(new RenderingServer{viewport}),
+        root(new Item)
+{
 	viewport->create(window);
 	root->set_name("Root");
 	root->set_tree(this);
 	running = false;
+	#ifdef B2_INCLUDED
+	physics_frame_rate = 60.0;
+	physics_delta_time = 0.0;
+	physics_server = new PhysicsServer2D;
+	#endif
 }
 
 Tree::~Tree() {
 	stop();
-	delete root;
+	root->free();
 	delete window;
 }
 
@@ -45,13 +55,24 @@ void Tree::render() {
 	if (!running)
 		return;
 
-	render_frame();
+	//render_frame();
 	root->propagate_notification(Item::NOTIFICATION_RENDER);
 	rendering_server->render();
 }
 
+#ifdef B2_INCLUDED
+void Tree::physics() {
+	if (!running)
+		return;
+
+	physics_server->tick(physics_delta_time);
+	//physics_frame();
+	//root->propagate_notification(Item::)
+}
+#endif
+
 void Tree::loop() {
-	loop_frame();
+	//loop_frame();
 	root->propagate_notification(Item::NOTIFICATION_LOOP);
 }
 
@@ -61,17 +82,18 @@ void Tree::initialize() {
 void Tree::ended() {
 }
 
+double Tree::wait_for(const double time_seconds) const {
+	std::chrono::time_point start = std::chrono::system_clock::now();
+	auto wait_time = std::chrono::duration<double>(time_seconds);
+	std::this_thread::sleep_for(wait_time);
+	std::chrono::time_point end = std::chrono::system_clock::now();
+
+	return (end - start).count() / 1e9;
+}
+
 void Tree::render_loop() {
-	uint64_t now = SDL_GetPerformanceCounter();
-	uint64_t last = 0;
-
 	while (running) {
-		last = now;
-		now = SDL_GetPerformanceCounter();
-		double delta = (double(now - last)) / SDL_GetPerformanceFrequency();
-
-		auto wait_time = std::chrono::duration<double>(1 / frame_rate);
-		std::this_thread::sleep_for(wait_time);
+		const double delta = wait_for(1 / frame_rate);
 
 		render_delta_time = delta;
 		render();
@@ -79,25 +101,17 @@ void Tree::render_loop() {
 }
 
 void Tree::main_loop() {
-	uint64_t now = SDL_GetPerformanceCounter();
-	uint64_t last = 0;
-
 	while (running) {
-		last = now;
-		now = SDL_GetPerformanceCounter();
-		double delta = (double(now - last)) / SDL_GetPerformanceFrequency();
-
-		auto wait_time = std::chrono::duration<double>(1 / fixed_frame_rate);
-		std::this_thread::sleep_for(wait_time);
+		const double delta = wait_for(1 / fixed_frame_rate);
 
 		loop_delta_time = delta;
 		loop();
+		//deferred_signals();
 
-		deferred_signals();
 		for (Item *item: deferred_item_removal)
 			item->free();
 
-		deferred_signals.disconnect_all_slots();
+		//deferred_signals.disconnect_all_slots();
 		deferred_item_removal.clear();
 	}
 }
@@ -108,6 +122,17 @@ void Tree::event_loop() {
 		events();
 	}
 }
+
+#ifdef B2_INCLUDED
+void Tree::physics_loop() {
+	while (running) {
+		const double delta = wait_for(1 / physics_delta_time);
+
+		physics();
+		physics_delta_time = delta;
+	}
+}
+#endif
 
 void Tree::start() {
 	if (!window->intialized_successfully() || running)
@@ -136,7 +161,7 @@ void Tree::defer_callable(void(*callable)()) {
 	if (!callable)
 		return;
 
-	deferred_signals.connect(callable);
+//	deferred_signals.connect(callable);
 }
 
 void Tree::queue_free(Item *item) {
@@ -164,6 +189,12 @@ SDL_Event *Tree::get_event() const {
 	return event;
 }
 
+#ifdef B2_INCLUDED
+PhysicsServer2D *Tree::get_physics_server() const {
+	return physics_server;
+}
+#endif
+
 void Tree::set_frame_rate(const double new_frame_rate) {
 	frame_rate = new_frame_rate;
 }
@@ -187,3 +218,17 @@ double Tree::get_render_delta_time() const {
 double Tree::get_loop_delta_time() const {
 	return loop_delta_time;
 }
+
+#ifdef B2_INCLUDED
+void Tree::set_physics_frame_rate(const double new_physics_frame_rate) {
+	physics_frame_rate = new_physics_frame_rate;
+}
+
+double Tree::get_physics_frame_rate() const {
+	return physics_frame_rate;
+}
+
+double Tree::get_physics_delta_time() const {
+	return physics_delta_time;
+}
+#endif
