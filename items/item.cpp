@@ -11,7 +11,8 @@ Item::Item(): children(),
     tree(nullptr),
     parent(nullptr),
     name("Item"),
-    is_ready(false) {
+    is_ready(false),
+	is_deletion_queued(false) {
 }
 
 Item::~Item() {
@@ -21,6 +22,9 @@ void Item::_ready() {
 }
 
 void Item::_loop(double) {
+}
+
+void Item::_physics_process(const double) {
 }
 
 void Item::_render(double) {
@@ -41,13 +45,22 @@ void Item::free() {
 	parent = nullptr;
 
 	for (auto iterator: children) {
-		if (iterator.second == nullptr)
-			continue;
-
 		iterator.second->free();
 	}
 
 	delete this;
+}
+
+void Item::queue_free() {
+	if (is_deletion_queued || !tree)
+		return;
+
+	tree->queue_free(this);
+	is_deletion_queued = true;
+}
+
+bool Item::is_queued_for_deletion() const {
+	return is_deletion_queued;
 }
 
 void Item::notification(const int what) {
@@ -62,6 +75,9 @@ void Item::notification(const int what) {
 			break;
 		case NOTIFICATION_LOOP:
 			_loop(get_loop_delta_time());
+			break;
+		case NOTIFICATION_PHYSICS_PROCESS:
+			_physics_process(get_physics_delta_time());
 			break;
 		case NOTIFICATION_EVENT:
 			_event(get_event());
@@ -163,6 +179,10 @@ double Item::get_delta_time() const {
 
 double Item::get_loop_delta_time() const {
 	return tree ? tree->get_loop_delta_time() : 0.0;
+}
+
+double Item::get_physics_delta_time() const {
+	return tree ? tree->get_physics_delta_time() : 0.0;
 }
 
 SDL_Event *Item::get_event() const {
