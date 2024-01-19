@@ -29,6 +29,7 @@ Tree::Tree(): running(false),
 	root->set_name("Root");
 	root->set_tree(this);
 	running = false;
+	
 	#ifdef B2_INCLUDED
 	physics_frame_rate = 60.0;
 	physics_delta_time = 0.0;
@@ -38,8 +39,20 @@ Tree::Tree(): running(false),
 
 Tree::~Tree() {
 	stop();
-	root->free();
-	delete window;
+	
+	if (root)
+		delete root;
+	root = nullptr;
+
+	if (window)
+		delete window;
+	window = nullptr;
+
+	#ifdef B2_INCLUDED
+	if (physics_server)
+		delete physics_server;
+	physics_server = nullptr;
+	#endif
 }
 
 void Tree::events() {
@@ -48,7 +61,8 @@ void Tree::events() {
 		return;
 	}
 
-	root->propagate_notification(Item::NOTIFICATION_EVENT);
+	if (root)
+		root->propagate_notification(Item::NOTIFICATION_EVENT);
 }
 
 void Tree::render() {
@@ -56,7 +70,8 @@ void Tree::render() {
 		return;
 
 	//render_frame();
-	root->propagate_notification(Item::NOTIFICATION_RENDER);
+	if (root)
+		root->propagate_notification(Item::NOTIFICATION_RENDER);
 	rendering_server->render();
 }
 
@@ -67,19 +82,22 @@ void Tree::physics() {
 
 	physics_server->tick(physics_delta_time);
 	//physics_frame();
-	//root->propagate_notification(Item::)
+	
+	if (root)
+		root->propagate_notification(Item::NOTIFICATION_PREDELETE);
 }
 #endif
 
 void Tree::loop() {
 	//loop_frame();
-	root->propagate_notification(Item::NOTIFICATION_LOOP);
+	if (root)
+		root->propagate_notification(Item::NOTIFICATION_LOOP);
 }
 
-void Tree::initialize() {
+void Tree::_initialize() {
 }
 
-void Tree::ended() {
+void Tree::_ended() {
 }
 
 double Tree::wait_for(const double time_seconds) const {
@@ -88,7 +106,7 @@ double Tree::wait_for(const double time_seconds) const {
 	std::this_thread::sleep_for(wait_time);
 	std::chrono::time_point end = std::chrono::system_clock::now();
 
-	return (end - start).count() / 1e9;
+	return (end - start).count() / (double)std::nano::den;
 }
 
 void Tree::render_loop() {
@@ -109,7 +127,7 @@ void Tree::main_loop() {
 		//deferred_signals();
 
 		for (Item *item: deferred_item_removal)
-			item->free();
+			delete item;
 
 		//deferred_signals.disconnect_all_slots();
 		deferred_item_removal.clear();
@@ -140,7 +158,7 @@ void Tree::start() {
 
 	running = true;
 	event = new SDL_Event;
-	initialize();
+	_initialize();
 
 	std::thread main_loop_thread = std::thread(&Tree::main_loop, this);
 	std::thread event_loop_thread = std::thread(&Tree::event_loop, this);
@@ -153,7 +171,7 @@ void Tree::start() {
 void Tree::stop() {
 	if (running) {
 		running = false;
-		ended();
+		_ended();
 	}
 }
 
@@ -161,7 +179,7 @@ void Tree::defer_callable(void(*callable)()) {
 	if (!callable)
 		return;
 
-//	deferred_signals.connect(callable);
+	//deferred_signals.connect(callable);
 }
 
 void Tree::queue_free(Item *item) {
@@ -217,6 +235,10 @@ double Tree::get_render_delta_time() const {
 
 double Tree::get_loop_delta_time() const {
 	return loop_delta_time;
+}
+
+bool Tree::is_running() const {
+	return running;
 }
 
 #ifdef B2_INCLUDED

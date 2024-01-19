@@ -25,6 +25,7 @@ private:
 	double frame_rate;
 	double render_delta_time;
 	double loop_delta_time;
+
 	#ifdef B2_INCLUDED
 	double physics_frame_rate;
 	double physics_delta_time;
@@ -34,11 +35,12 @@ private:
 	void render_loop();
 	void main_loop();
 	void event_loop();
+
 	#ifdef B2_INCLUDED
 	void physics_loop();
 	#endif
 
-	boost::signals2::signal<void()> deferred_signals;
+	//boost::signals2::signal<void()> deferred_signals;
 	std::vector<Item*> deferred_item_removal;
 
 	Window *window;
@@ -50,22 +52,23 @@ private:
 	PhysicsServer2D *physics_server;
 	#endif
 
-	virtual void initialize();
-	virtual void events();
-	virtual void loop();
-	virtual void render();
-	virtual void physics();
-	virtual void ended();
+	virtual void _initialize();
+	virtual void _ended();
+	void events();
+	void loop();
+	void render();
+	void physics();
 
 public:
 	Tree();
 	virtual ~Tree();
 
-	//boost::signals2::signal<void()> loop_frame;
-//	boost::signals2::signal<void()> render_frame;
+	/*boost::signals2::signal<void()> loop_frame;
+	boost::signals2::signal<void()> render_frame;
+
 	#ifdef B2_INCLUDED
-	//boost::signals2::signal<void()> physics_frame;
-	#endif
+	boost::signals2::signal<void()> physics_frame;
+	#endif*/
 
 	Window *get_window() const;
 	Viewport *get_viewport() const;
@@ -97,7 +100,7 @@ public:
 	double get_physics_delta_time() const;
 	#endif
 
-	bool is_running();
+	bool is_running() const;
 };
 
 }
