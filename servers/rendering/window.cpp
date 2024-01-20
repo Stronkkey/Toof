@@ -45,6 +45,9 @@ void Window::try_initialize() {
 	if (!sdl_img_success)
 		fail_with_message("Couldn't initialize SDL_Image.", SDL_LOG_CATEGORY_APPLICATION);
 
+	if (initialized == INITILIZATION_FAILED)
+		return;
+
 	initialized = INITIALIZED;
 }
 
