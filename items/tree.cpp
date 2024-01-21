@@ -71,7 +71,7 @@ void Tree::render() {
 
 	//render_frame();
 	if (root)
-		root->propagate_notification(Item::NOTIFICATION_RENDER);
+		root->notification(Item::NOTIFICATION_RENDER);
 	rendering_server->render();
 }
 
@@ -84,14 +84,14 @@ void Tree::physics() {
 	//physics_frame();
 	
 	if (root)
-		root->propagate_notification(Item::NOTIFICATION_PREDELETE);
+		root->notification(Item::NOTIFICATION_PREDELETE);
 }
 #endif
 
 void Tree::loop() {
 	//loop_frame();
 	if (root)
-		root->propagate_notification(Item::NOTIFICATION_LOOP);
+		root->notification(Item::NOTIFICATION_LOOP);
 }
 
 void Tree::_initialize() {

@@ -18,6 +18,8 @@ class Tree;
 
 class Item {
 
+typedef std::unordered_map<const std::string*, Item*> children_t;
+
 public:
 	enum ProcessMode {
 		PROCESS_MODE_INHERIT /* Inherits the process mode from the item's parent. */,
@@ -45,7 +47,7 @@ public:
 	};
 
 private:
-	std::unordered_map<std::string, Item*> children;
+	children_t children;
 	Tree *tree ;
 	Item *parent;
 	std::string name;
@@ -206,15 +208,15 @@ public:
 	void add_item(Item *child);
 
 	/**
-	* Removes the child @param item_name as a child from this item and sets the parent and tree property to nullptr.
-	* Does nothing if the child does not exist.
+	* Removes the child @param item as a child from this item and sets the parent and tree property to nullptr.
+	* Does nothing if the child does not exist or is not a parent of this item.
 	*/
-	void remove_item(const std::string &item_name);
+	void remove_item(Item *item);
 
 	/**
 	* @returns a vector of all children.
 	*/
-	const std::unordered_map<std::string, Item*> &get_children() const;
+	const children_t &get_children() const;
 
 	/**
 	* @returns the parent of this item or nullptr if it has no parent.

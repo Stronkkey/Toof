@@ -39,7 +39,7 @@ void Item::_notification(const int) {
 void Item::free() {
 	notification(NOTIFICATION_PREDELETE);
 	if (parent)
-		parent->children.erase(name);
+		parent->children.erase(&name);
 
 	tree = nullptr;
 	parent = nullptr;
@@ -64,7 +64,6 @@ bool Item::is_queued_for_deletion() const {
 }
 
 void Item::notification(const int what) {
-	_notification(what);
 
 	if (!tree)
 		return;
@@ -100,7 +99,7 @@ void Item::notification(const int what) {
 void Item::propagate_notification(const int what) {
 	notification(what);
 
-	for (std::pair<std::string, Item*> iterator: children)
+	for (const auto &iterator: children)
 		iterator.second->propagate_notification(what);
 }
 
@@ -141,7 +140,7 @@ void Item::add_item(Item *new_item) {
 	if (new_item->parent == this)
 		return;
 
-	children.insert({new_item->get_name(), new_item});
+	children.insert({&new_item->name, new_item});
 	new_item->parent = this;
 
 	if (tree)
@@ -150,17 +149,16 @@ void Item::add_item(Item *new_item) {
 	new_item->notification(NOTIFICATION_PARENTED);
 }
 
-void Item::remove_item(const std::string &item_name) {
-	auto iterator = children.find(item_name);
+void Item::remove_item(Item *item) {
+	if (!item || item->parent != this)
+		return;
 
-	if (iterator != children.end()) {
-		iterator->second->parent = nullptr;
-		iterator->second->tree = nullptr;
-		children.erase(iterator);
-	}
+	item->parent = nullptr;
+	item->set_tree(nullptr);
+	children.erase(&item->name);
 }
 
-const std::unordered_map<std::string, Item*> &Item::get_children() const {
+const Item::children_t &Item::get_children() const {
 	return children;
 }
 
