@@ -36,7 +36,7 @@ private:
 
 protected:
 	/**
-	* Returns the RenderingServer inside the tree or nullptr if the tree hasn't been set.
+	* @returns the RenderingServer inside the tree or nullptr if the tree hasn't been set.
 	*/
 	RenderingServer *get_rendering_server() const;
 
@@ -66,7 +66,7 @@ public:
 	boost::signals2::signal<void()> visibility_changed;
 
 	/**
-	* Returns the CanvasItem uid used by the RenderingServer for this item.
+	* @returns the CanvasItem uid used by the RenderingServer for this item.
 	*/
 	uid get_canvas_item() const;
 
@@ -81,7 +81,7 @@ public:
 	void set_position(const Vector2 &new_position);
 
 	/**
-	* Returns the position of this CanvasItem, relative to the parent.
+	* @returns the position of this CanvasItem, relative to the parent.
 	*/
 	const Vector2 &get_position() const;
 
@@ -91,7 +91,7 @@ public:
 	void set_scale(const Vector2 &new_scale);
 
 	/**
-	* Returns the scale of this CanvasItem, relative to the parent.
+	* @returns the scale of this CanvasItem, relative to the parent.
 	*/
 	const Vector2 &get_scale() const;
 
@@ -101,7 +101,7 @@ public:
 	void set_rotation(const double new_rotation);
 
 	/**
-	* Returns the relative rotation of this CanvasItem in degrees, relative to the parent.
+	* @returns the relative rotation of this CanvasItem in degrees, relative to the parent.
 	*/
 	double get_rotation() const;
 
@@ -111,7 +111,7 @@ public:
 	void set_global_position(const Vector2 &new_global_position);
 
 	/**
-	* Returns the global position of this CanvasItem.
+	* @returns the global position of this CanvasItem.
 	*/
 	Vector2 get_global_position() const;
 
@@ -121,7 +121,7 @@ public:
 	void set_global_scale(const Vector2 &new_global_scale);
 
 	/**
-	* Returns the global scale of this CanvasItem.
+	* @returns the global scale of this CanvasItem.
 	*/
 	Vector2 get_global_scale() const;
 
@@ -131,7 +131,7 @@ public:
 	void set_global_rotation(const double new_global_rotation);
 
 	/**
-	* Returns the global rotation (in degrees) of this CanvasItem.
+	* @returns the global rotation (in degrees) of this CanvasItem.
 	*/
 	double get_global_rotation() const;
 
@@ -141,7 +141,7 @@ public:
 	void set_transform(const Transform2D &new_transform);
 
 	/**
-	* Returns the relative transform (position, scale, and rotation) of this CanvasItem.
+	* @returns the relative transform (position, scale, and rotation) of this CanvasItem.
 	*/
 	const Transform2D &get_transform() const;
 
@@ -151,7 +151,7 @@ public:
 	void set_global_transform(const Transform2D &new_global_transform);
 
 	/**
-	* Returns the global transform (position, scale, and rotation) of this CanvasItem.
+	* @returns the global transform (position, scale, and rotation) of this CanvasItem.
 	*/
 	Transform2D get_global_transform() const;
 
@@ -161,12 +161,12 @@ public:
 	void set_modulate(const Color &new_modulate);
 
 	/**
-	* Returns the modulate (tint) of this CanvasItem, relative to the parent.
+	* @returns the modulate (tint) of this CanvasItem, relative to the parent.
 	*/
 	const Color &get_modulate() const;
 
 	/**
-	* Returns the global modulation (tint) of this CanvasItem.
+	* @returns the global modulation (tint) of this CanvasItem.
 	*/
 	Color get_absolute_modulate() const;
 
@@ -177,7 +177,7 @@ public:
 	void set_blend_mode(const SDL_BlendMode new_blend_mode);
 
 	/**
-	* Returns the blending mode of this CanvasItem.
+	* @returns the blending mode of this CanvasItem.
 	* See also SDL_BlendMode.
 	*/
 	SDL_BlendMode get_blend_mode() const;
@@ -189,7 +189,7 @@ public:
 	void set_scale_mode(const SDL_ScaleMode scaling_mode);
 
 	/**
-	* Returns the scaling mode of this CanvasItem.
+	* @returns the scaling mode of this CanvasItem.
 	* See also SDL_ScaleMode.
 	*/
 	SDL_ScaleMode get_scale_mode() const;
@@ -207,18 +207,18 @@ public:
 	/**
 	* Return true if the CanvasItem is visible, otherwise false.
 	* See also is_visible_in_tree.
-	* Note: This only takes into account this CanvasItem's visiblity.
+	* @note this only takes into account this CanvasItem's visiblity.
 	*/
 	bool is_visible() const;
 
 	/**
-	* Returns true if the CanvasItem and its parent are visible, otherwise false.
+	* @returns true if the CanvasItem and its parent are visible, otherwise false.
 	* See also is_visible.
 	*/
 	bool is_visible_in_tree() const;
 
 	/**
-	* Returns true if the CanvasItem is visible inside the viewport, otherwise false.
+	* @returns true if the CanvasItem is visible inside the viewport, otherwise false.
 	*/
 	bool is_visible_inside_viewport() const;
 

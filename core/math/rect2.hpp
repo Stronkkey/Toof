@@ -73,13 +73,13 @@ struct Rect2 {
 
 	/** 
 	* @returns true if both x, y, w, and h of the rectangles are exactly equal, respectively.
-	* Note: Due to floating-point precision errors, consider using Math::is_equal_approx instead, which is more reliable.
+	* @note due to floating-point precision errors, consider using Math::is_equal_approx instead, which is more reliable.
 	*/
 	bool operator==(const Rect2 &right) const;
 	
 	/** 
 	* @returns true if both x, y, w, and h of the rectangles are exactly equal, respectively.
-	* Note: Due to floating-point precision errors, consider using Math::is_equal_approx instead, which is more reliable.
+	* @note due to floating-point precision errors, consider using Math::is_equal_approx instead, which is more reliable.
 	*/
 	bool operator!=(const Rect2 &right) const;
 

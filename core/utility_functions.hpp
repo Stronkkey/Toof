@@ -9,7 +9,7 @@ namespace sdl {
 namespace UtilityFunctions {
 
 /**
-* Returns the amount of time passed in seconds since the program started.
+* @returns the amount of time passed in seconds since the program started.
 */
 real_t get_passed_time();
 

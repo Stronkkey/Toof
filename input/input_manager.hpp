@@ -76,16 +76,16 @@ public:
 
 	static float get_input_strength(const std::string &input_map_name, const SDL_Event *event);
 	static float get_input_axis(
-	        const std::string &negative_x_map,
-	        const std::string &positive_x_map,
-	        const SDL_Event *event);
+	    const std::string &negative_x_map,
+	    const std::string &positive_x_map,
+	    const SDL_Event *event);
 	
 	static Vector2 get_input_vector(
-	        const std::string &negative_x_map_name,
-	        const std::string &positive_x_map_name,
-	        const std::string &negative_y_map_name,
-	        const std::string &positive_y_map_name,
-	        const SDL_Event *event);
+	    const std::string &negative_x_map_name,
+	    const std::string &positive_x_map_name,
+	    const std::string &negative_y_map_name,
+	    const std::string &positive_y_map_name,
+	    const SDL_Event *event);
 
 	static bool input_is_action_pressed_or_released(const std::string &map_name, const SDL_Event *event);
 };

@@ -60,13 +60,13 @@ struct Color {
 
 	/**
 	* @return true if this color and @param right_color are not exactly equal.
-	* Note: Due to floating-point precision errors, consider using Math::is_equal_approx instead, which is more reliable.
+	* @note due to floating-point precision errors, consider using Math::is_equal_approx instead, which is more reliable.
 	*/
 	bool operator!=(const Color &right_color) const;
 
 	/**
 	* @return true if this color and @param right_color are exactly equal.
-	* Note: Due to floating-point precision errors, consider using Math::is_equal_approx instead, which is more reliable.
+	* @note due to floating-point precision errors, consider using Math::is_equal_approx instead, which is more reliable.
 	*/
 	bool operator==(const Color &right_color) const;
 	

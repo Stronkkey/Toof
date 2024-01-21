@@ -61,7 +61,7 @@ protected:
 	/**
 	* Called each time an "event" happens.
 	* This can be keyboard input, mouse movement, window size changing, etc.
-	* Note: Events are instantly processed from when they happen.
+	* @note vents are instantly processed from when they happen.
 	*/
 	virtual void _event(const SDL_Event *event);
 
@@ -128,14 +128,14 @@ public:
 	SDL_Event *get_event() const;
 
 	/**
-	* Returns the time between the previous render step and the current render step.
-	* Note: This value is very close to 0 on the first frame.
+	* @returns the time between the previous render step and the current render step.
+	* @note This value is very close to 0 on the first frame.
 	*/
 	double get_delta_time() const;
 
 	/**
-	* Returns the time between the previous loop step and the c urrent loop step.
-	* Note: This value is very close to 0 on the first frame.
+	* @returns the time between the previous loop step and the c urrent loop step.
+	* @note This value is very close to 0 on the first frame.
 	*/
 	double get_loop_delta_time() const;
 
@@ -175,7 +175,7 @@ public:
 	bool is_queued_for_deletion() const;
 
 	/**
-	* Returns the tree this item belongs to or nullptr if the tree hasn't been set.
+	* @returns the tree this item belongs to or nullptr if the tree hasn't been set.
 	*/
 	Tree *get_tree() const;
 
@@ -186,7 +186,7 @@ public:
 	void set_tree(Tree *new_tree);
 
 	/**
-	* Returns true if the tree property is set to a valid Tree, otherwise false.
+	* @returns true if the tree property is set to a valid Tree, otherwise false.
 	*/
 	bool is_inside_tree() const;
 
@@ -196,7 +196,7 @@ public:
 	void set_name(const std::string &new_name);
 
 	/**
-	* Returns the name of the item.
+	* @returns the name of the item.
 	*/
 	const std::string &get_name() const;
 
@@ -212,12 +212,12 @@ public:
 	void remove_item(const std::string &item_name);
 
 	/**
-	* Returns a vector of all children.
+	* @returns a vector of all children.
 	*/
 	const std::unordered_map<std::string, Item*> &get_children() const;
 
 	/**
-	* Returns the parent of this item or nullptr if it has no parent.
+	* @returns the parent of this item or nullptr if it has no parent.
 	*/
 	Item *get_parent() const;
 };
