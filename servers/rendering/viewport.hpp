@@ -36,7 +36,7 @@ public:
 	bool is_vsync_enabled() const;
 
 	void set_canvas_transform(const Transform2D &new_canvas_transform);
-	Transform2D get_canvas_transform() const;
+	const Transform2D &get_canvas_transform() const;
 };
 
 }

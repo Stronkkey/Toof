@@ -67,7 +67,7 @@ void Window::set_window_rect(const Rect2i &window_rect) {
 	}
 }
 
-Rect2i Window::get_window_rect() const {
+const Rect2i &Window::get_window_rect() const {
 	return window_rect;
 }
 
@@ -77,7 +77,7 @@ void Window::set_window_title(const std::string &new_title) {
 		SDL_SetWindowTitle(window, window_title.c_str());
 }
 
-std::string Window::get_window_title() const {
+const std::string &Window::get_window_title() const {
 	return window_title;
 }
 

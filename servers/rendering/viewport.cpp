@@ -44,6 +44,6 @@ void Viewport::set_canvas_transform(const Transform2D &new_canvas_transform) {
 	canvas_transform = new_canvas_transform;
 }
 
-Transform2D Viewport::get_canvas_transform() const {
+const Transform2D &Viewport::get_canvas_transform() const {
 	return canvas_transform;
 }

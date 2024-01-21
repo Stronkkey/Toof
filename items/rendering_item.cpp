@@ -91,7 +91,7 @@ void RenderingItem::set_position(const Vector2 &new_position) {
 	update();
 }
 
-Vector2 RenderingItem::get_position() const {
+const Vector2 &RenderingItem::get_position() const {
 	return transform.origin;
 }
 
@@ -100,7 +100,7 @@ void RenderingItem::set_scale(const Vector2 &new_scale) {
 	update();
 }
 
-Vector2 RenderingItem::get_scale() const {
+const Vector2 &RenderingItem::get_scale() const {
 	return transform.scale;
 }
 
@@ -157,7 +157,7 @@ void RenderingItem::set_transform(const Transform2D &new_transform) {
 	update();
 }
 
-Transform2D RenderingItem::get_transform() const {
+const Transform2D &RenderingItem::get_transform() const {
 	return transform;
 }
 
@@ -184,7 +184,7 @@ void RenderingItem::set_modulate(const Color &new_modulate) {
 	update();
 }
 
-Color RenderingItem::get_modulate() const {
+const Color &RenderingItem::get_modulate() const {
 	return modulate;
 }
 

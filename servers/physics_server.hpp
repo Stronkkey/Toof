@@ -49,7 +49,7 @@ public:
 	void tick(const double delta);
 
 	void set_gravity(const Vector2 &new_gravity);
-	Vector2 get_gravity() const;
+	const Vector2 &get_gravity() const;
 
 	uid create_world();
 	uid body_create();

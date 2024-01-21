@@ -83,7 +83,7 @@ public:
 	/**
 	* Returns the position of this CanvasItem, relative to the parent.
 	*/
-	Vector2 get_position() const;
+	const Vector2 &get_position() const;
 
 	/**
 	* Sets the relative scale for this CanvasItem to @param new_scale.
@@ -93,7 +93,7 @@ public:
 	/**
 	* Returns the scale of this CanvasItem, relative to the parent.
 	*/
-	Vector2 get_scale() const;
+	const Vector2 &get_scale() const;
 
 	/**
 	* Sets the relative rotation (in degrees) for this CanvasItem to @param new_rotation.
@@ -143,7 +143,7 @@ public:
 	/**
 	* Returns the relative transform (position, scale, and rotation) of this CanvasItem.
 	*/
-	Transform2D get_transform() const;
+	const Transform2D &get_transform() const;
 
 	/**
 	* Sets the global transform (position, scale, and rotation) for this CanvasItem to @param new_global_transform.
@@ -163,7 +163,7 @@ public:
 	/**
 	* Returns the modulate (tint) of this CanvasItem, relative to the parent.
 	*/
-	Color get_modulate() const;
+	const Color &get_modulate() const;
 
 	/**
 	* Returns the global modulation (tint) of this CanvasItem.
@@ -181,7 +181,6 @@ public:
 	* See also SDL_BlendMode.
 	*/
 	SDL_BlendMode get_blend_mode() const;
-
 
 	/**
 	* Sets the scaling mode for this CanvasItem to @param scaling_mode, used for future draw operations.

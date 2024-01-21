@@ -33,10 +33,10 @@ public:
 	SDL_Window *get_window() const;
 
 	void set_window_rect(const Rect2i &window_rect);
-  	Rect2i get_window_rect() const;
+  	const Rect2i &get_window_rect() const;
 
 	void set_window_title(const std::string &new_title);
-	std::string get_window_title() const;
+	const std::string &get_window_title() const;
 
 	int get_refresh_rate() const;
 

@@ -27,7 +27,7 @@ void RenderingServer::set_default_background_color(const Color &new_background_c
 	background_color = new_background_color;
 }
 
-Color RenderingServer::get_default_background_color() const {
+const Color &RenderingServer::get_default_background_color() const {
 	return background_color;
 }
 
@@ -295,7 +295,7 @@ void RenderingServer::canvas_item_clear(const uid canvas_item_uid) {
 		canvas_item->drawing_items.clear();
 }
 
-Transform2D RenderingServer::canvas_item_get_transform(const uid canvas_item_uid) const {
+const Transform2D &RenderingServer::canvas_item_get_transform(const uid canvas_item_uid) const {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 	return canvas_item ? canvas_item->transform : Transform2D::IDENTITY;
 }
@@ -305,7 +305,7 @@ Transform2D RenderingServer::canvas_item_get_global_transform(const uid canvas_i
 	return canvas_item ? canvas_item->get_global_transform() : Transform2D::IDENTITY;
 }
 
-Color RenderingServer::canvas_item_get_modulate(const uid canvas_item_uid) const {
+const Color &RenderingServer::canvas_item_get_modulate(const uid canvas_item_uid) const {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 	return canvas_item ? canvas_item->modulate : Color::WHITE;
 }

@@ -54,7 +54,7 @@ void SpriteItem::set_texture(const std::shared_ptr<Texture2D> &new_texture) {
 	redraw();
 }
 
-std::shared_ptr<Texture2D> SpriteItem::get_texture() const {
+const std::shared_ptr<Texture2D> &SpriteItem::get_texture() const {
 	return texture;
 }
 
@@ -63,7 +63,7 @@ void SpriteItem::set_texture_region(const Rect2i &new_texture_region) {
 	redraw();
 }
 
-Rect2i SpriteItem::get_texture_region() const {
+const Rect2i &SpriteItem::get_texture_region() const {
 	return texture_region;
 }
 
@@ -72,7 +72,7 @@ void SpriteItem::set_offset(const Vector2 &new_offset) {
 	redraw();
 }
 
-Vector2 SpriteItem::get_offset() const {
+const Vector2 &SpriteItem::get_offset() const {
 	return texture_transform.origin;
 }
 
@@ -99,7 +99,7 @@ void SpriteItem::set_texture_scale(const Vector2 &new_texture_scale) {
 	redraw();
 }
 
-Vector2 SpriteItem::get_texture_scale() const {
+const Vector2 &SpriteItem::get_texture_scale() const {
 	return texture_transform.scale;
 }
 

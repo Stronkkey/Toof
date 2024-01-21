@@ -198,7 +198,7 @@ public:
 	/**
 	* Returns the name of the item.
 	*/
-	std::string get_name() const;
+	const std::string &get_name() const;
 
 	/**
 	* Adds the @param child as a child to this item. Reparenting the @param child if it already has a parent.
@@ -214,7 +214,7 @@ public:
 	/**
 	* Returns a vector of all children.
 	*/
-	std::vector<Item*> get_children() const;
+	const std::unordered_map<std::string, Item*> &get_children() const;
 
 	/**
 	* Returns the parent of this item or nullptr if it has no parent.

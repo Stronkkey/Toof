@@ -133,7 +133,7 @@ void Item::set_name(const std::string &new_name) {
 	renamed(name);
 }
 
-std::string Item::get_name() const {
+const std::string &Item::get_name() const {
 	return name;
 }
 
@@ -160,13 +160,8 @@ void Item::remove_item(const std::string &item_name) {
 	}
 }
 
-std::vector<Item*> Item::get_children() const {
-	std::vector<Item*> item_children;
-
-	for (std::pair<std::string, Item*> iterator: children)
-		item_children.push_back(iterator.second);
-
-	return item_children;
+const std::unordered_map<std::string, Item*> &Item::get_children() const {
+	return children;
 }
 
 Item *Item::get_parent() const {

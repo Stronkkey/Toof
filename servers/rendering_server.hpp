@@ -29,7 +29,7 @@ private:
 
 	uid create_new_uid();
 	void destroy_uid(const uid target_uid);
-	uint_t index;
+	uid index;
 
 	void render_canvas_item(const std::shared_ptr<CanvasItem> &canvas_item);
 
@@ -57,7 +57,7 @@ public:
 	uint_t create_canvas_item();
 
 	void set_default_background_color(const Color &new_background_color);
-	Color get_default_background_color() const;
+	const Color &get_default_background_color() const;
 	Vector2i get_screen_size() const;
 
 	TextureInfo get_texture_info_from_uid(const uid texture_uid) const;
@@ -86,10 +86,10 @@ public:
 	void canvas_item_set_scale_mode(const uid canvas_item_uid, const SDL_ScaleMode scale_mode);
 	void canvas_item_clear(const uint_t canvas_item_uid);
 
-	Transform2D canvas_item_get_transform(const uint_t canvas_item_uid) const;
+	const Transform2D &canvas_item_get_transform(const uint_t canvas_item_uid) const;
 	Transform2D canvas_item_get_global_transform(const uid canvas_item_uid) const;
 
-	Color canvas_item_get_modulate(const uid canvas_item_uid) const;
+	const Color &canvas_item_get_modulate(const uid canvas_item_uid) const;
 	Color canvas_item_get_global_modulate(const uid canvas_item_uid) const;
 
 	bool canvas_item_is_visible(const uid canvas_item_uid) const;

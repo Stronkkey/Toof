@@ -102,7 +102,7 @@ void sdl::PhysicsServer2D::set_gravity(const Vector2 &new_gravity) {
 		iterator.second->get_world()->SetGravity(new_gravity.to_b2_vec2());
 }
 
-sdl::Vector2 sdl::PhysicsServer2D::get_gravity() const {
+const sdl::Vector2 &sdl::PhysicsServer2D::get_gravity() const {
 	return gravity;
 }
 
