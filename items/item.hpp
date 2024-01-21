@@ -28,18 +28,18 @@ public:
 	};
 
 	enum {
-		NOTIFICATION_READY = 1000 /* Notification received when the item is ready. See _ready.*/,
-		NOTIFICATION_EVENT /* Notification received when an event has been process. See _event.*/,
-		NOTIFICATION_RENDER /* Notification received each render step. See _render.*/,
-		NOTIFICATION_LOOP /* Notification received each loop step. See _loop.*/,
-		NOTIFICATION_PHYSICS_PROCESS /* Notification received each physics step. See _physics_process.*/,
+		NOTIFICATION_READY = 1000 /* Notification received when the item is ready. @see _ready.*/,
+		NOTIFICATION_EVENT /* Notification received when an event has been process. @see _event.*/,
+		NOTIFICATION_RENDER /* Notification received each render step. @see _render.*/,
+		NOTIFICATION_LOOP /* Notification received each loop step. @see _loop.*/,
+		NOTIFICATION_PHYSICS_PROCESS /* Notification received each physics step. @see _physics_process.*/,
 		NOTIFICATION_ENTER_TREE /* Notification received when the item enters the tree*/,
 		NOTIFICATION_EXIT_TREE /* Notification received when the item is removed from the tree.*/,
 		NOTIFICATION_PAUSED /* Notification received when the processing of this item has been paused.*/,
 		NOTIFICATION_UNPAUSED /* Notification received when the processing of this item has been unpaused.*/,
 		NOTIFICATION_PARENTED /* Notification received when the parent is set. Note: This doesn't mean the parent is valid.*/,
-		NOTIFICATION_DISABLED /* Notification received when the item is disabled. See PROCESS_MODE_DISABLED.*/,
-		NOTIFICATION_ENABLED /* Notification received when the item is enabled after being disabled. See PROCESS_MODE_DISABLED.*/,
+		NOTIFICATION_DISABLED /* Notification received when the item is disabled. @see PROCESS_MODE_DISABLED.*/,
+		NOTIFICATION_ENABLED /* Notification received when the item is enabled after being disabled. @see PROCESS_MODE_DISABLED.*/,
 		NOTIFICATION_CLOSE_REQUEST /* Notification received when the window is about to be closed.*/,
 		NOTIFICATION_PREDELETE /* Notification received before the Item is deleted with free.*/
 	};

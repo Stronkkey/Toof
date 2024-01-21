@@ -36,12 +36,12 @@ const real_t TAU = PI * 2.0;
 const real_t DEGREES_RADIAN_SCALAR = 180.0 / PI;
 
 /**
-* @returns the @param rotation_degrees converted to degrees rotation. See also DEGREES_RADIAN_SCALAR.
+* @returns the @param rotation_degrees converted to degrees rotation. @see also DEGREES_RADIAN_SCALAR.
 */
 real_t radians_to_degrees(const real_t rotation_radians);
 
 /**
-* @returns the @param rotation_degrees converted to radians rotation. See also DEGREES_RADIAN_SCALAR.
+* @returns the @param rotation_degrees converted to radians rotation. @see also DEGREES_RADIAN_SCALAR.
 */
 real_t degrees_to_radians(const real_t rotation_degrees);
 
