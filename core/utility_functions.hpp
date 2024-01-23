@@ -16,12 +16,12 @@ real_t get_passed_time();
 /**
 * Prints the @param string to the standard output.
 */
-void print(const std::string &string);
+void print(const std::string &string = "");
 
 /**
 * Prints the @param string to the standard error output.
 */
-void print_err(const std::string &string);
+void print_err(const std::string &string = "");
 
 }
 
