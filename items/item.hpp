@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
-#include <unordered_map>
+#include <memory>
 #include <string>
+#include <unordered_set>
 
 #include <SDL_events.h>
 
@@ -18,7 +18,7 @@ class Tree;
 
 class Item {
 
-typedef std::unordered_map<const std::string*, Item*> children_t;
+typedef std::unordered_set<Item*> children_t;
 
 public:
 	enum ProcessMode {
@@ -48,7 +48,7 @@ public:
 
 private:
 	children_t children;
-	Tree *tree ;
+	Tree *tree = nullptr;
 	Item *parent;
 	std::string name;
 	bool is_ready, is_deletion_queued;
@@ -100,6 +100,11 @@ protected:
 
 public:
 	Item();
+
+	/**
+	* Destroys the item and deletes all its children items.
+	* @note the children should be heap allocated.
+	*/
 	virtual ~Item();
 
 	/**
@@ -159,14 +164,9 @@ public:
 	void propagate_notification(const int what);
 
 	/**
-	* Deletes the item from memory and calls free on all children.
-	*/
-	void free();
-
-	/**
 	* Queues an Item for deletion at the end of the current frame.
-	* When deleted, all of its child nodes will be deleted as well, and all references to the node and its children will become invalid, see free.
-	* It is safe to call queue_free multiple times per frame on a node, and to free a node that is currently queued for deletion. Use is_queued_for_deletion to check whether an item will be deleted at the end of the frame.
+	* When deleted, all references to the item will become invalid.
+	* It is safe to call queue_free multiple times per frame on a item, and to free a item that is currently queued for deletion. Use is_queued_for_deletion to check whether an item will be deleted at the end of the frame.
 	* The item will only be freed after all other deferred calls are finished.
 	*/
 	void queue_free();
@@ -203,9 +203,10 @@ public:
 	const std::string &get_name() const;
 
 	/**
-	* Adds the @param child as a child to this item. Reparenting the @param child if it already has a parent.
+	* Adds the @param child_item as a child to this item. Reparenting the @param child if it already has a parent.
+	* @note the @param child_item MUST be allocated on the heap and not be deleted without calling remove_item.
 	*/
-	void add_item(Item *child);
+	void add_item(Item *child_item);
 
 	/**
 	* Removes the child @param item as a child from this item and sets the parent and tree property to nullptr.
@@ -214,14 +215,19 @@ public:
 	void remove_item(Item *item);
 
 	/**
-	* @returns a vector of all children.
+	* @returns all children.
 	*/
 	const children_t &get_children() const;
 
 	/**
-	* @returns the parent of this item or nullptr if it has no parent.
+	* @returns the parent of this item.
 	*/
 	Item *get_parent() const;
+
+	/**
+	* Calls remove_item on all the children of this item.
+	*/
+	void remove_children();
 };
 
 }

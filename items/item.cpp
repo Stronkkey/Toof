@@ -1,3 +1,4 @@
+#include "core/utility_functions.hpp"
 #include <items/item.hpp>
 #include <items/tree.hpp>
 
@@ -9,13 +10,17 @@ using namespace sdl;
 
 Item::Item(): children(),
     tree(nullptr),
-    parent(nullptr),
+    parent(),
     name("Item"),
     is_ready(false),
 	is_deletion_queued(false) {
 }
 
 Item::~Item() {
+	notification(NOTIFICATION_PREDELETE);
+
+	for (Item *child: children)
+		delete child;
 }
 
 void Item::_ready() {
@@ -36,21 +41,6 @@ void Item::_event(const SDL_Event*) {
 void Item::_notification(const int) {
 }
 
-void Item::free() {
-	notification(NOTIFICATION_PREDELETE);
-	if (parent)
-		parent->children.erase(&name);
-
-	tree = nullptr;
-	parent = nullptr;
-
-	for (auto iterator: children) {
-		iterator.second->free();
-	}
-
-	delete this;
-}
-
 void Item::queue_free() {
 	if (is_deletion_queued || !tree)
 		return;
@@ -64,7 +54,6 @@ bool Item::is_queued_for_deletion() const {
 }
 
 void Item::notification(const int what) {
-
 	if (!tree)
 		return;
 
@@ -99,8 +88,8 @@ void Item::notification(const int what) {
 void Item::propagate_notification(const int what) {
 	notification(what);
 
-	for (const auto &iterator: children)
-		iterator.second->propagate_notification(what);
+	for (Item *child: children)
+		child->propagate_notification(what);
 }
 
 Tree *Item::get_tree() const {
@@ -140,7 +129,7 @@ void Item::add_item(Item *new_item) {
 	if (new_item->parent == this)
 		return;
 
-	children.insert({&new_item->name, new_item});
+	children.insert(new_item);
 	new_item->parent = this;
 
 	if (tree)
@@ -149,13 +138,13 @@ void Item::add_item(Item *new_item) {
 	new_item->notification(NOTIFICATION_PARENTED);
 }
 
-void Item::remove_item(Item *item) {
+void Item::remove_item(Item* item) {
 	if (!item || item->parent != this)
 		return;
 
 	item->parent = nullptr;
 	item->set_tree(nullptr);
-	children.erase(&item->name);
+	children.erase(item);
 }
 
 const Item::children_t &Item::get_children() const {
@@ -175,9 +164,21 @@ double Item::get_loop_delta_time() const {
 }
 
 double Item::get_physics_delta_time() const {
+	#ifdef B2_INCLUDED
 	return tree ? tree->get_physics_delta_time() : 0.0;
+	#else
+	return 0.0;
+	#endif
 }
 
 SDL_Event *Item::get_event() const {
 	return tree ? tree->get_event() : nullptr;
+}
+
+void Item::remove_children() {
+	for (Item *child: children) {
+		child->parent = nullptr;
+		child->set_tree(nullptr);
+	}
+	children.clear();
 }

@@ -15,20 +15,21 @@
 
 using namespace sdl;
 
+
 Tree::Tree(): running(false),
-        fixed_frame_rate(60.0),
-        frame_rate(60.0),
-        render_delta_time(0.0),
-        loop_delta_time(0.0),
-        window(new Window),
-        viewport(new Viewport),
-        rendering_server(new RenderingServer{viewport}),
-        root(new Item)
+    fixed_frame_rate(60.0),
+    frame_rate(60.0),
+    render_delta_time(0.0),
+    loop_delta_time(0.0)
 {
+	window = new Window;
+	viewport = new Viewport;
+	rendering_server = new RenderingServer(viewport);
+	root = new Item;
+
 	viewport->create(window);
 	root->set_name("Root");
 	root->set_tree(this);
-	running = false;
 	
 	#ifdef B2_INCLUDED
 	physics_frame_rate = 60.0;
@@ -40,18 +41,20 @@ Tree::Tree(): running(false),
 Tree::~Tree() {
 	stop();
 	
-	if (root)
-		delete root;
-	root = nullptr;
-
 	if (window)
 		delete window;
-	window = nullptr;
+	if (viewport)
+		delete viewport;
+	if (rendering_server)
+		delete rendering_server;
+	if (event)
+		delete event;
+	if (root)
+		delete root;
 
 	#ifdef B2_INCLUDED
 	if (physics_server)
 		delete physics_server;
-	physics_server = nullptr;
 	#endif
 }
 
@@ -69,9 +72,9 @@ void Tree::render() {
 	if (!running)
 		return;
 
-	//render_frame();
+	render_frame();
 	if (root)
-		root->notification(Item::NOTIFICATION_RENDER);
+		root->propagate_notification(Item::NOTIFICATION_RENDER);
 	rendering_server->render();
 }
 
@@ -84,14 +87,14 @@ void Tree::physics() {
 	//physics_frame();
 	
 	if (root)
-		root->notification(Item::NOTIFICATION_PREDELETE);
+		root->propagate_notification(Item::NOTIFICATION_PREDELETE);
 }
 #endif
 
 void Tree::loop() {
-	//loop_frame();
+	loop_frame();
 	if (root)
-		root->notification(Item::NOTIFICATION_LOOP);
+		root->propagate_notification(Item::NOTIFICATION_LOOP);
 }
 
 void Tree::_initialize() {
@@ -124,12 +127,12 @@ void Tree::main_loop() {
 
 		loop_delta_time = delta;
 		loop();
-		//deferred_signals();
+		deferred_signals();
 
 		for (Item *item: deferred_item_removal)
 			delete item;
 
-		//deferred_signals.disconnect_all_slots();
+		deferred_signals.disconnect_all_slots();
 		deferred_item_removal.clear();
 	}
 }

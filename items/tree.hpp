@@ -40,16 +40,15 @@ private:
 	void physics_loop();
 	#endif
 
-	//boost::signals2::signal<void()> deferred_signals;
 	std::vector<Item*> deferred_item_removal;
 
-	Window *window;
-	Viewport *viewport;
-	RenderingServer *rendering_server;
-	SDL_Event *event;
-	Item *root;
+	Window *window = nullptr;
+	Viewport *viewport = nullptr;
+	RenderingServer *rendering_server = nullptr;
+	SDL_Event *event = nullptr;
+	Item *root = nullptr;
 	#ifdef B2_INCLUDED
-	PhysicsServer2D *physics_server;
+	PhysicsServer2D *physics_server = nullptr;
 	#endif
 
 	virtual void _initialize();
@@ -63,12 +62,13 @@ public:
 	Tree();
 	virtual ~Tree();
 
-	/*boost::signals2::signal<void()> loop_frame;
+	boost::signals2::signal<void()> loop_frame;
 	boost::signals2::signal<void()> render_frame;
+	boost::signals2::signal<void()> deferred_signals;
 
 	#ifdef B2_INCLUDED
 	boost::signals2::signal<void()> physics_frame;
-	#endif*/
+	#endif
 
 	Window *get_window() const;
 	Viewport *get_viewport() const;
