@@ -17,10 +17,13 @@ RenderingServer::RenderingServer(Viewport *viewport): viewport(viewport),
 }
 
 RenderingServer::~RenderingServer() {
-	for (const auto &iterator: textures)
-		destroy_uid(iterator.first);
-	for (const auto &iterator: canvas_items)
-		destroy_uid(iterator.first);
+	for (auto &iterator: textures)
+		destroy_texture(iterator.second);
+	for (auto &iterator: canvas_items)
+		destroy_canvas_item(iterator.second);
+
+	textures.clear();
+	canvas_items.clear();
 }
 
 void RenderingServer::set_default_background_color(const Color &new_background_color) {
@@ -74,21 +77,36 @@ uid RenderingServer::create_new_uid() {
 	return new_uid;
 }
 
+void RenderingServer::destroy_texture(std::shared_ptr<Texture> &texture) {
+	SDL_DestroyTexture(texture->texture_reference);
+	texture.reset();
+}
+
+void RenderingServer::destroy_canvas_item(std::shared_ptr<CanvasItem> &canvas_item) {
+	canvas_item.reset();
+}
+
+void RenderingServer::destroy_texture_uid(const uid texture_uid) {
+	auto iterator = textures.find(texture_uid);
+
+	if (iterator != textures.end()) {
+		textures.erase(iterator);
+		destroy_texture(iterator->second);
+	}
+}
+
+void RenderingServer::destroy_canvas_item_uid(const uid canvas_item_uid) {
+	auto iterator = canvas_items.find(canvas_item_uid);
+
+	if (iterator != canvas_items.end()) {
+		canvas_items.erase(iterator);
+		destroy_canvas_item(iterator->second);
+	}
+}
+
 void RenderingServer::destroy_uid(const uid destroying_uid) {
-	auto canvas_item_iterator = canvas_items.find(destroying_uid);
-	auto texture_iterator = textures.find(destroying_uid);
-
-	if (canvas_item_iterator != canvas_items.end()) {
-		canvas_items.erase(canvas_item_iterator);
-		canvas_item_iterator->second.reset(); // CanvasItem should be deleted now.
-	}
-
-	if (texture_iterator != textures.end()) {
-		textures.erase(texture_iterator);
-		SDL_DestroyTexture(texture_iterator->second->texture_reference);
-		texture_iterator->second.reset();
-	}
-
+	destroy_canvas_item_uid(destroying_uid);
+	destroy_texture_uid(destroying_uid);
 }
 
 void RenderingServer::render_canvas_item(const std::shared_ptr<CanvasItem> &canvas_item) {

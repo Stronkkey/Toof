@@ -28,10 +28,14 @@ private:
 	Vector2 viewport_offset;
 
 	uid create_new_uid();
-	void destroy_uid(const uid target_uid);
 	uid index;
 
 	void render_canvas_item(const std::shared_ptr<CanvasItem> &canvas_item);
+	void destroy_texture(std::shared_ptr<Texture> &texture);
+	void destroy_canvas_item(std::shared_ptr<CanvasItem> &canvas_item);
+	void destroy_texture_uid(const uid texture_uid);
+	void destroy_canvas_item_uid(const uid canvas_item_uid);
+	void destroy_uid(const uid target_uid);
 
 	std::shared_ptr<CanvasItem> get_canvas_item_from_uid(const uid canvas_item_uid) const;
 	std::shared_ptr<Texture> get_texture_from_uid(const uid texture_uid) const;
