@@ -104,10 +104,12 @@ void Tree::_ended() {
 }
 
 double Tree::wait_for(const double time_seconds) const {
-	std::chrono::time_point start = std::chrono::system_clock::now();
+	auto start = std::chrono::system_clock::now();
 	auto wait_time = std::chrono::duration<double>(time_seconds);
+	
 	std::this_thread::sleep_for(wait_time);
-	std::chrono::time_point end = std::chrono::system_clock::now();
+
+	auto end = std::chrono::system_clock::now();
 
 	return (end - start).count() / (double)std::nano::den;
 }
