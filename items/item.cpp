@@ -54,6 +54,10 @@ bool Item::is_queued_for_deletion() const {
 }
 
 void Item::notification(const int what) {
+	_notification(what);
+	if (what == NOTIFICATION_EXIT_TREE)
+		tree_exiting();
+	
 	if (!tree)
 		return;
 
@@ -73,9 +77,6 @@ void Item::notification(const int what) {
 		case NOTIFICATION_READY:
 			_ready();
 			ready();
-			break;
-		case NOTIFICATION_EXIT_TREE:
-			tree_exiting();
 			break;
 		case NOTIFICATION_ENTER_TREE:
 			tree_entering();
