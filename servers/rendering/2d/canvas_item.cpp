@@ -45,3 +45,17 @@ bool CanvasItem::is_visible() const {
 
 	return true;
 }
+
+int CanvasItem::get_zindex() const {
+	if (parent.expired() || !zindex_relative)
+		return zindex;
+	std::shared_ptr<CanvasItem> parent_canvas_item = parent.lock();
+	int absolute_zindex = zindex;
+
+	while (parent_canvas_item) {
+		absolute_zindex += parent_canvas_item->zindex;
+		parent_canvas_item = parent_canvas_item->parent.lock();
+	}
+
+	return absolute_zindex;
+}

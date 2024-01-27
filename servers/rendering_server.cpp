@@ -6,6 +6,9 @@
 
 #include <SDL_image.h>
 
+#include <algorithm>
+#include <map>
+
 using namespace sdl;
 
 RenderingServer::RenderingServer(Viewport *viewport): viewport(viewport),
@@ -42,9 +45,7 @@ void RenderingServer::render() {
 	SDL_Renderer *renderer = viewport->get_renderer();
 
 	SDL_RenderClear(renderer);
-	for (const auto &iterator: canvas_items)
-		render_canvas_item(iterator.second);
-
+	render_canvas_items();
 	SDL_SetRenderDrawColor(renderer, background_color.r, background_color.g, background_color.b, background_color.a);
 	SDL_RenderPresent(renderer);
 }
@@ -122,6 +123,20 @@ void RenderingServer::render_canvas_item(const std::shared_ptr<CanvasItem> &canv
 		if (inside_viewport)
 			drawing_item->draw(viewport);
 	}
+}
+
+void RenderingServer::render_canvas_items() {
+	std::vector<std::shared_ptr<CanvasItem>> sorted_canvas_items;
+	for (const auto &iterator: canvas_items)
+		sorted_canvas_items.push_back(iterator.second);
+
+	std::sort(sorted_canvas_items.begin(), sorted_canvas_items.end(), []
+		(const std::shared_ptr<CanvasItem> &left, const std::shared_ptr<CanvasItem> &right) {
+			return left->get_zindex() < right->get_zindex();
+		});
+
+	for (const std::shared_ptr<CanvasItem> &canvas_item: sorted_canvas_items)
+		render_canvas_item(canvas_item);
 }
 
 RenderingServer::TextureInfo RenderingServer::get_texture_info_from_uid(const uid texture_uid) const {
@@ -313,6 +328,18 @@ void RenderingServer::canvas_item_clear(const uid canvas_item_uid) {
 		canvas_item->drawing_items.clear();
 }
 
+void RenderingServer::canvas_item_set_zindex(const uid canvas_item_uid, const int zindex) {
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	if (canvas_item)
+		canvas_item->zindex = zindex;
+}
+
+void RenderingServer::canvas_item_set_zindex_relative(const uid canvas_item_uid, const bool zindex_relative) {
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	if (canvas_item)
+		canvas_item->zindex_relative = zindex_relative;
+}
+
 const Transform2D &RenderingServer::canvas_item_get_transform(const uid canvas_item_uid) const {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 	return canvas_item ? canvas_item->transform : Transform2D::IDENTITY;
@@ -378,4 +405,19 @@ SDL_BlendMode RenderingServer::canvas_item_get_blend_mode(const uid canvas_item_
 SDL_ScaleMode RenderingServer::canvas_item_get_scale_mode(const uid canvas_item_uid) const {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 	return canvas_item ? canvas_item->scale_mode : SDL_ScaleModeLinear;
+}
+
+int RenderingServer::canvas_item_get_zindex(const uid canvas_item_uid) const {
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	return canvas_item ? canvas_item->zindex : 0;
+}
+
+int RenderingServer::canvas_item_get_absolute_zindex(const uid canvas_item_uid) const {
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	return canvas_item ? canvas_item->get_zindex() : 0;
+}
+
+bool RenderingServer::canvas_item_is_zindex_relative(const uid canvas_item_uid) const {
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	return canvas_item ? canvas_item->zindex_relative : false;
 }

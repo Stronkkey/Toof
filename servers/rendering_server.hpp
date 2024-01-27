@@ -31,6 +31,7 @@ private:
 	uid index;
 
 	void render_canvas_item(const std::shared_ptr<CanvasItem> &canvas_item);
+	void render_canvas_items();
 	void destroy_texture(std::shared_ptr<Texture> &texture);
 	void destroy_canvas_item(std::shared_ptr<CanvasItem> &canvas_item);
 	void destroy_texture_uid(const uid texture_uid);
@@ -88,7 +89,9 @@ public:
 	void canvas_item_set_modulate(const uid canvas_item_uid, const Color &new_modulate);
 	void canvas_item_set_blend_mode(const uid canvas_item_uid, const SDL_BlendMode blend_mode);
 	void canvas_item_set_scale_mode(const uid canvas_item_uid, const SDL_ScaleMode scale_mode);
-	void canvas_item_clear(const uint_t canvas_item_uid);
+	void canvas_item_clear(const uid canvas_item_uid);
+	void canvas_item_set_zindex(const uid canvas_item_uid, const int zindex);
+	void canvas_item_set_zindex_relative(const uid canvas_item_uid, const bool zindex_relative);
 
 	const Transform2D &canvas_item_get_transform(const uint_t canvas_item_uid) const;
 	Transform2D canvas_item_get_global_transform(const uid canvas_item_uid) const;
@@ -103,6 +106,10 @@ public:
 
 	SDL_BlendMode canvas_item_get_blend_mode(const uid canvas_item_uid) const;
 	SDL_ScaleMode canvas_item_get_scale_mode(const uid canvas_item_uid) const;
+
+	int canvas_item_get_zindex(const uid canvas_item_uid) const;
+	int canvas_item_get_absolute_zindex(const uid canvas_item_uid) const;
+	bool canvas_item_is_zindex_relative(const uid canvas_item_uid) const;
 };
 
 }
