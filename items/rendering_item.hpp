@@ -26,11 +26,15 @@ private:
 	SDL_BlendMode blend_mode;
 	SDL_ScaleMode scale_mode;
 	bool visible;
+	bool zindex_relative;
+	bool update_queued;
+	int zindex;
 
 	/**
-	* Syncs the transform, modulate, blend_mode, scale_mode, and visible property with the RenderingServer.
+	* Syncs the transform, modulate, blend_mode, scale_mode, zindex, and visible property with the RenderingServer.
 	*/
 	void update();
+
 	void on_parent_changed(Item *new_parent);
 	void ready();
 
@@ -51,6 +55,12 @@ public:
 	~RenderingItem();
 
 	/**
+	* Queues this RenderingItem to update on the next render frame.
+	* This can be safely called multiple times in one frame.
+	*/
+	void queue_redraw();
+
+	/**
 	* Emitted when the renderingitem must redraw, after the related NOTIFICATION_DRAW notification, and before _draw is called.
 	*/
 	boost::signals2::signal<void()> draw;
@@ -69,11 +79,6 @@ public:
 	* @returns the CanvasItem uid used by the RenderingServer for this item.
 	*/
 	uid get_canvas_item() const;
-
-	/**
-	* Tells the RenderingItem to redraw calling _draw and sending notification NOTIFICATION_DRAW.
-	*/
-	void redraw();
 
 	/**
 	* Sets the relative position for this CanvasItem to @param new_position.
@@ -221,6 +226,36 @@ public:
 	* @returns true if the CanvasItem is visible inside the viewport, otherwise false.
 	*/
 	bool is_visible_inside_viewport() const;
+
+	/**
+	* Sets the zindex of this CanvasItem to @param zindex.
+	* @see also RenderingServer::canvas_item_set_zindex.
+	*/
+	void set_zindex(const int zindex);
+
+	/**
+	* @returns the zindex of this CanvasItem.
+	* @see also RenderingServer::canvas_item_get_zindex.
+	*/
+	int get_zindex() const;
+
+	/**
+	* @returns the zindex of this item including its parents if zindex relative is on.
+	* @see also RenderingServer::canvas_item_get_absolute_zindex.
+	*/
+	int get_absolute_zindex() const;
+
+	/**
+	* Sets the zindex relative to @param zindex_relative.
+	* @see also RenderingServer::canvas_item_set_zindex.
+	*/
+	void set_zindex_relative(const bool zindex_relative);
+
+	/**
+	* @returns true if zindex is relative.
+	* @see also RenderingServer::canvas_item_is_zindex_relative.
+	*/
+	bool get_zindex_relative() const;
 
 	/**
 	* Draws the @param texture on this CanvasItem using the RenderingServer.

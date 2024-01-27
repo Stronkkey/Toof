@@ -12,7 +12,10 @@ RenderingItem::RenderingItem(): transform(Transform2D::IDENTITY),
     modulate(Color::WHITE),
     blend_mode(SDL_BLENDMODE_BLEND),
 	scale_mode(SDL_ScaleModeLinear),
-    visible(true) {
+    visible(true),
+	zindex_relative(true),
+	update_queued(false),
+	zindex(0) {
 }
 
 RenderingItem::~RenderingItem() {
@@ -26,8 +29,7 @@ void RenderingItem::ready() {
 	transform = transform.IDENTITY;
 	canvas_item = get_rendering_server()->create_canvas_item();
 
-	update();
-	redraw();
+	queue_redraw();
 }
 
 RenderingServer *RenderingItem::get_rendering_server() const {
@@ -36,6 +38,7 @@ RenderingServer *RenderingItem::get_rendering_server() const {
 
 void RenderingItem::update() {
 	RenderingServer *rendering_server = get_rendering_server();
+	update_queued = false;
 
 	if (rendering_server) {
 		rendering_server->canvas_item_set_transform(canvas_item, transform);
@@ -43,6 +46,8 @@ void RenderingItem::update() {
 		rendering_server->canvas_item_set_blend_mode(canvas_item, blend_mode);
 		rendering_server->canvas_item_set_scale_mode(canvas_item, scale_mode);
 		rendering_server->canvas_item_set_visible(canvas_item, visible);
+		rendering_server->canvas_item_set_zindex(canvas_item, zindex);
+		rendering_server->canvas_item_set_zindex_relative(canvas_item, zindex_relative);
 	}
 }
 
@@ -76,19 +81,21 @@ void RenderingItem::_notification(const int what) {
 void RenderingItem::_draw() const {
 }
 
+void RenderingItem::queue_redraw() {
+	if (!is_inside_tree() || update_queued)
+		return;
+
+	get_tree()->deferred_signals.connect(std::bind(&RenderingItem::update, this));
+	notification(NOTIFICATION_DRAW);
+}
+
 uid RenderingItem::get_canvas_item() const {
 	return canvas_item;
 }
 
-void RenderingItem::redraw() {
-	if (is_inside_tree())
-		notification(NOTIFICATION_DRAW);
-}
-
-
 void RenderingItem::set_position(const Vector2 &new_position) {
 	transform.origin = new_position;
-	update();
+	queue_redraw();
 }
 
 const Vector2 &RenderingItem::get_position() const {
@@ -97,7 +104,7 @@ const Vector2 &RenderingItem::get_position() const {
 
 void RenderingItem::set_scale(const Vector2 &new_scale) {
 	transform.scale = new_scale;
-	update();
+	queue_redraw();
 }
 
 const Vector2 &RenderingItem::get_scale() const {
@@ -106,7 +113,7 @@ const Vector2 &RenderingItem::get_scale() const {
 
 void RenderingItem::set_rotation(const double new_rotation) {
 	transform.rotation = new_rotation;
-	update();
+	queue_redraw();
 }
 
 double RenderingItem::get_rotation() const {
@@ -168,7 +175,7 @@ void RenderingItem::set_global_transform(const Transform2D &new_global_transform
 	transform.origin = -(global_transform.origin - new_global_transform.origin);
 	transform.rotation = -(global_transform.rotation - new_transform.rotation);
 	transform.scale = -(global_transform.scale - new_transform.scale);
-	update();
+	queue_redraw();
 }
 
 Transform2D RenderingItem::get_global_transform() const {
@@ -181,7 +188,7 @@ Transform2D RenderingItem::get_global_transform() const {
 
 void RenderingItem::set_modulate(const Color &new_modulate) {
 	modulate = new_modulate;
-	update();
+	queue_redraw();
 }
 
 const Color &RenderingItem::get_modulate() const {
@@ -195,7 +202,7 @@ Color RenderingItem::get_absolute_modulate() const {
 
 void RenderingItem::set_blend_mode(const SDL_BlendMode new_blend_mode) {
 	blend_mode = new_blend_mode;
-	update();
+	queue_redraw();
 }
 
 SDL_BlendMode RenderingItem::get_blend_mode() const {
@@ -204,7 +211,7 @@ SDL_BlendMode RenderingItem::get_blend_mode() const {
 
 void RenderingItem::set_scale_mode(const SDL_ScaleMode scaling_mode) {
 	scale_mode = scaling_mode;
-	update();
+	queue_redraw();
 }
 
 SDL_ScaleMode RenderingItem::get_scale_mode() const {
@@ -218,7 +225,7 @@ void RenderingItem::hide() {
 	visible = false;
 	hidden();
 	visibility_changed();
-	update();
+	queue_redraw();
 }
 
 void RenderingItem::show() {
@@ -227,7 +234,7 @@ void RenderingItem::show() {
 
 	visible = true;
 	visibility_changed();
-	update();
+	queue_redraw();
 }
 
 bool RenderingItem::is_visible() const {
@@ -242,6 +249,24 @@ bool RenderingItem::is_visible_in_tree() const {
 bool RenderingItem::is_visible_inside_viewport() const {
 	RenderingServer *rendering_server = get_rendering_server();
 	return rendering_server ? rendering_server->canvas_item_is_visible_inside_viewport(canvas_item) : true;
+}
+
+void RenderingItem::set_zindex(const int zindex) {
+	this->zindex = zindex;
+}
+
+int RenderingItem::get_zindex() const {
+	return zindex;
+}
+
+int RenderingItem::get_absolute_zindex() const {
+	RenderingServer *rendering_server = get_rendering_server();
+	return rendering_server ? rendering_server->canvas_item_get_absolute_zindex(canvas_item) : 0;
+}
+
+void RenderingItem::set_zindex_relative(const bool zindex_relative) {
+	this->zindex_relative = zindex_relative;
+	update();
 }
 
 void RenderingItem::draw_texture(const std::shared_ptr<Texture2D> &texture, const Transform2D &texture_transform, const Color &modulation) const {

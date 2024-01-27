@@ -51,7 +51,7 @@ void SpriteItem::_notification(const int what) {
 void SpriteItem::set_texture(const std::shared_ptr<Texture2D> &new_texture) {
 	texture = new_texture;
 	texture_changed();
-	redraw();
+	queue_redraw();
 }
 
 const std::shared_ptr<Texture2D> &SpriteItem::get_texture() const {
@@ -60,7 +60,7 @@ const std::shared_ptr<Texture2D> &SpriteItem::get_texture() const {
 
 void SpriteItem::set_texture_region(const Rect2i &new_texture_region) {
 	texture_region = new_texture_region;
-	redraw();
+	queue_redraw();
 }
 
 const Rect2i &SpriteItem::get_texture_region() const {
@@ -69,7 +69,7 @@ const Rect2i &SpriteItem::get_texture_region() const {
 
 void SpriteItem::set_offset(const Vector2 &new_offset) {
 	texture_transform.origin = new_offset;
-	redraw();
+	queue_redraw();
 }
 
 const Vector2 &SpriteItem::get_offset() const {
@@ -78,7 +78,7 @@ const Vector2 &SpriteItem::get_offset() const {
 
 void SpriteItem::set_flip(const SDL_RendererFlip new_flip) {
 	flip = new_flip;
-	redraw();
+	queue_redraw();
 }
 
 SDL_RendererFlip SpriteItem::get_flip() const {
@@ -87,7 +87,7 @@ SDL_RendererFlip SpriteItem::get_flip() const {
 
 void SpriteItem::set_texture_rotation(const double new_rotation) {
 	texture_transform.rotation = new_rotation;
-	redraw();
+	queue_redraw();
 }
 
 double SpriteItem::get_texture_rotation() const {
@@ -96,7 +96,7 @@ double SpriteItem::get_texture_rotation() const {
 
 void SpriteItem::set_texture_scale(const Vector2 &new_texture_scale) {
 	texture_transform.scale = new_texture_scale;
-	redraw();
+	queue_redraw();
 }
 
 const Vector2 &SpriteItem::get_texture_scale() const {
@@ -105,12 +105,12 @@ const Vector2 &SpriteItem::get_texture_scale() const {
 
 void SpriteItem::set_texture_transform(const Transform2D &new_texture_transform) {
 	texture_transform = new_texture_transform;
-	redraw();
+	queue_redraw();
 }
 
 void SpriteItem::set_centered(const bool new_centered) {
 	centered = new_centered;
-	redraw();
+	queue_redraw();
 }
 
 bool SpriteItem::is_centered() const {
