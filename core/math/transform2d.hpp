@@ -29,6 +29,7 @@ struct Transform2D {
 	#ifdef B2_INCLUDED
 	[[nodiscard]] b2Transform to_b2_transform() const;
 	#endif
+	[[nodiscard]] std::string to_string() const;
 
 	void operator=(const Transform2D &right);
 	void operator*=(const Transform2D &right);

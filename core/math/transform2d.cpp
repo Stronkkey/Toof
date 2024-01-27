@@ -44,6 +44,10 @@ b2Transform Transform2D::to_b2_transform() const {
 }
 #endif
 
+std::string Transform2D::to_string() const {
+	return "[Scale: " + scale.to_string() + ", Origin: " + origin.to_string() + ", Rotation: " + std::to_string(rotation) + " degrees" + "]";
+}
+
 void Transform2D::operator=(const Transform2D &right) {
 	origin = right.origin;
 	rotation = right.rotation;
