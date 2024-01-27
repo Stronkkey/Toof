@@ -180,13 +180,6 @@ void Tree::stop() {
 	}
 }
 
-void Tree::defer_callable(void(*callable)()) {
-	if (!callable)
-		return;
-
-	//deferred_signals.connect(callable);
-}
-
 void Tree::queue_free(Item *item) {
 	deferred_item_removal.push_back(item);
 }

@@ -82,7 +82,6 @@ public:
 	void start();
 	void stop();
 
-	void defer_callable(void(*callable)());
 	void queue_free(Item *item);
 
 	void set_frame_rate(const double new_frame_rate);
