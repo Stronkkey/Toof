@@ -1,4 +1,3 @@
-#include "core/utility_functions.hpp"
 #include <items/item.hpp>
 #include <items/tree.hpp>
 
