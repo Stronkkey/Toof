@@ -1,5 +1,4 @@
-#include "servers/rendering_server.hpp"
-#include <resources/resource.hpp>
+#include <scene/resources/resource.hpp>
 
 sdl::uid sdl::Resource::_get_uid() const {
 	return 0;

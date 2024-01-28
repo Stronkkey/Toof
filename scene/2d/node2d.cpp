@@ -1,13 +1,13 @@
-#include <items/rendering_item.hpp>
+#include <scene/2d/node2d.hpp>
 #include <servers/rendering/window.hpp>
-#include <items/tree.hpp>
-#include <resources/texture2d.hpp>
+#include <scene/main/scene_tree.hpp>
+#include <scene/resources/texture2d.hpp>
 
 #include <typeinfo>
 
 using namespace sdl;
 
-RenderingItem::RenderingItem(): transform(Transform2D::IDENTITY),
+Node2D::Node2D(): transform(Transform2D::IDENTITY),
     canvas_item(0),
     modulate(Color::WHITE),
     blend_mode(SDL_BLENDMODE_BLEND),
@@ -18,25 +18,25 @@ RenderingItem::RenderingItem(): transform(Transform2D::IDENTITY),
 	zindex(0) {
 }
 
-RenderingItem::~RenderingItem() {
+Node2D::~Node2D() {
 	RenderingServer *rendering_server = get_rendering_server();
 
 	if (rendering_server)
 		rendering_server->remove_uid(canvas_item);
 }
 
-void RenderingItem::ready() {
+void Node2D::ready() {
 	transform = transform.IDENTITY;
 	canvas_item = get_rendering_server()->create_canvas_item();
 
 	queue_redraw();
 }
 
-RenderingServer *RenderingItem::get_rendering_server() const {
+RenderingServer *Node2D::get_rendering_server() const {
 	return get_tree() ? get_tree()->get_rendering_server() : nullptr;
 }
 
-void RenderingItem::update() {
+void Node2D::update() {
 	RenderingServer *rendering_server = get_rendering_server();
 	update_queued = false;
 
@@ -51,17 +51,17 @@ void RenderingItem::update() {
 	}
 }
 
-void RenderingItem::on_parent_changed(Item *new_parent) {
+void Node2D::on_parent_changed(Node *new_parent) {
 	RenderingServer *rendering_server = get_rendering_server();
 	if (!rendering_server || !new_parent)
 		return;
 
-	RenderingItem *rendering_item = dynamic_cast<RenderingItem*>(new_parent);
+	Node2D *rendering_item = dynamic_cast<Node2D*>(new_parent);
 	if (rendering_item)
 		rendering_server->canvas_item_set_parent(canvas_item, rendering_item->get_canvas_item());
 }
 
-void RenderingItem::_notification(const int what) {
+void Node2D::_notification(const int what) {
 	switch (what) {
 		case NOTIFICATION_READY:
 			ready();
@@ -78,54 +78,54 @@ void RenderingItem::_notification(const int what) {
 	}
 }
 
-void RenderingItem::_draw() const {
+void Node2D::_draw() const {
 }
 
-void RenderingItem::queue_redraw() {
+void Node2D::queue_redraw() {
 	if (!is_inside_tree() || update_queued)
 		return;
 
-	get_tree()->deferred_signals.connect(std::bind(&RenderingItem::update, this));
+	get_tree()->deferred_signals.connect(std::bind(&Node2D::update, this));
 	notification(NOTIFICATION_DRAW);
 }
 
-uid RenderingItem::get_canvas_item() const {
+uid Node2D::get_canvas_item() const {
 	return canvas_item;
 }
 
-void RenderingItem::set_position(const Vector2 &new_position) {
+void Node2D::set_position(const Vector2 &new_position) {
 	transform.origin = new_position;
 	queue_redraw();
 }
 
-const Vector2 &RenderingItem::get_position() const {
+const Vector2 &Node2D::get_position() const {
 	return transform.origin;
 }
 
-void RenderingItem::set_scale(const Vector2 &new_scale) {
+void Node2D::set_scale(const Vector2 &new_scale) {
 	transform.scale = new_scale;
 	queue_redraw();
 }
 
-const Vector2 &RenderingItem::get_scale() const {
+const Vector2 &Node2D::get_scale() const {
 	return transform.scale;
 }
 
-void RenderingItem::set_rotation(const double new_rotation) {
+void Node2D::set_rotation(const double new_rotation) {
 	transform.rotation = new_rotation;
 	queue_redraw();
 }
 
-double RenderingItem::get_rotation() const {
+double Node2D::get_rotation() const {
 	return transform.rotation;
 }
 
-void RenderingItem::set_global_position(const Vector2 &new_global_position) {
+void Node2D::set_global_position(const Vector2 &new_global_position) {
 	Vector2 global_position = get_global_position();
 	transform.origin = -Vector2(global_position - new_global_position);
 }
 
-Vector2 RenderingItem::get_global_position() const {
+Vector2 Node2D::get_global_position() const {
 	RenderingServer *rendering_server = get_rendering_server();
 
 	if (rendering_server)
@@ -133,12 +133,12 @@ Vector2 RenderingItem::get_global_position() const {
 	return transform.origin;
 }
 
-void RenderingItem::set_global_scale(const Vector2 &new_global_scale) {
+void Node2D::set_global_scale(const Vector2 &new_global_scale) {
 	Vector2 global_scale = get_global_scale();
 	transform.scale = -Vector2(global_scale - new_global_scale);
 }
 
-Vector2 RenderingItem::get_global_scale() const {
+Vector2 Node2D::get_global_scale() const {
 	RenderingServer *rendering_server = get_rendering_server();
 
 	if (rendering_server)
@@ -146,12 +146,12 @@ Vector2 RenderingItem::get_global_scale() const {
 	return transform.scale;
 }
 
-void RenderingItem::set_global_rotation(const double new_global_rotation) {
+void Node2D::set_global_rotation(const double new_global_rotation) {
 	double global_rotation = get_global_rotation();
 	transform.rotation = -(global_rotation - new_global_rotation);
 }
 
-double RenderingItem::get_global_rotation() const {
+double Node2D::get_global_rotation() const {
 	RenderingServer *rendering_server = get_rendering_server();
 
 	if (rendering_server)
@@ -159,16 +159,16 @@ double RenderingItem::get_global_rotation() const {
 	return transform.rotation;
 }
 
-void RenderingItem::set_transform(const Transform2D &new_transform) {
+void Node2D::set_transform(const Transform2D &new_transform) {
 	transform = new_transform;
 	update();
 }
 
-const Transform2D &RenderingItem::get_transform() const {
+const Transform2D &Node2D::get_transform() const {
 	return transform;
 }
 
-void RenderingItem::set_global_transform(const Transform2D &new_global_transform) {
+void Node2D::set_global_transform(const Transform2D &new_global_transform) {
 	const Transform2D global_transform = get_global_transform();
 	Transform2D new_transform = new_global_transform;
 
@@ -178,7 +178,7 @@ void RenderingItem::set_global_transform(const Transform2D &new_global_transform
 	queue_redraw();
 }
 
-Transform2D RenderingItem::get_global_transform() const {
+Transform2D Node2D::get_global_transform() const {
 	RenderingServer *rendering_server = get_rendering_server();
 
 	if (rendering_server)
@@ -186,39 +186,39 @@ Transform2D RenderingItem::get_global_transform() const {
 	return transform;
 }
 
-void RenderingItem::set_modulate(const Color &new_modulate) {
+void Node2D::set_modulate(const Color &new_modulate) {
 	modulate = new_modulate;
 	queue_redraw();
 }
 
-const Color &RenderingItem::get_modulate() const {
+const Color &Node2D::get_modulate() const {
 	return modulate;
 }
 
-Color RenderingItem::get_absolute_modulate() const {
+Color Node2D::get_absolute_modulate() const {
 	RenderingServer *rendering_server = get_rendering_server();
 	return rendering_server ? rendering_server->canvas_item_get_global_modulate(canvas_item) : modulate;
 }
 
-void RenderingItem::set_blend_mode(const SDL_BlendMode new_blend_mode) {
+void Node2D::set_blend_mode(const SDL_BlendMode new_blend_mode) {
 	blend_mode = new_blend_mode;
 	queue_redraw();
 }
 
-SDL_BlendMode RenderingItem::get_blend_mode() const {
+SDL_BlendMode Node2D::get_blend_mode() const {
 	return blend_mode;
 }
 
-void RenderingItem::set_scale_mode(const SDL_ScaleMode scaling_mode) {
+void Node2D::set_scale_mode(const SDL_ScaleMode scaling_mode) {
 	scale_mode = scaling_mode;
 	queue_redraw();
 }
 
-SDL_ScaleMode RenderingItem::get_scale_mode() const {
+SDL_ScaleMode Node2D::get_scale_mode() const {
 	return scale_mode;
 }
 
-void RenderingItem::hide() {
+void Node2D::hide() {
 	if (!visible)
 		return;
 
@@ -228,7 +228,7 @@ void RenderingItem::hide() {
 	queue_redraw();
 }
 
-void RenderingItem::show() {
+void Node2D::show() {
 	if (visible)
 		return;
 
@@ -237,69 +237,69 @@ void RenderingItem::show() {
 	queue_redraw();
 }
 
-bool RenderingItem::is_visible() const {
+bool Node2D::is_visible() const {
 	return visible;
 }
 
-bool RenderingItem::is_visible_in_tree() const {
+bool Node2D::is_visible_in_tree() const {
 	RenderingServer *rendering_server = get_rendering_server();
 	return rendering_server ? rendering_server->canvas_item_is_globally_visible(canvas_item) : true;
 }
 
-bool RenderingItem::is_visible_inside_viewport() const {
+bool Node2D::is_visible_inside_viewport() const {
 	RenderingServer *rendering_server = get_rendering_server();
 	return rendering_server ? rendering_server->canvas_item_is_visible_inside_viewport(canvas_item) : true;
 }
 
-void RenderingItem::set_zindex(const int zindex) {
+void Node2D::set_zindex(const int zindex) {
 	this->zindex = zindex;
 }
 
-int RenderingItem::get_zindex() const {
+int Node2D::get_zindex() const {
 	return zindex;
 }
 
-int RenderingItem::get_absolute_zindex() const {
+int Node2D::get_absolute_zindex() const {
 	RenderingServer *rendering_server = get_rendering_server();
 	return rendering_server ? rendering_server->canvas_item_get_absolute_zindex(canvas_item) : 0;
 }
 
-void RenderingItem::set_zindex_relative(const bool zindex_relative) {
+void Node2D::set_zindex_relative(const bool zindex_relative) {
 	this->zindex_relative = zindex_relative;
 	update();
 }
 
-void RenderingItem::draw_texture(const std::shared_ptr<Texture2D> &texture, const Transform2D &texture_transform, const Color &modulation) const {
+void Node2D::draw_texture(const std::shared_ptr<Texture2D> &texture, const Transform2D &texture_transform, const Color &modulation) const {
 	RenderingServer *rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_texture(texture->get_uid(), canvas_item, SDL_FLIP_NONE, modulation, texture_transform);
 }
 
-void RenderingItem::draw_texture_rect(const std::shared_ptr<Texture2D> &texture, const Rect2i &region, const Transform2D &texture_transform, const Color &modulation) const {
+void Node2D::draw_texture_rect(const std::shared_ptr<Texture2D> &texture, const Rect2i &region, const Transform2D &texture_transform, const Color &modulation) const {
 	RenderingServer *rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_texture_region(texture->get_uid(), canvas_item, region, SDL_FLIP_NONE, modulation, texture_transform);
 }
 
-void RenderingItem::draw_line(const Vector2 &start, const Vector2 &end, const Color &modulation) const {
+void Node2D::draw_line(const Vector2 &start, const Vector2 &end, const Color &modulation) const {
 	RenderingServer *rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_line(canvas_item, start, end,  modulation);
 }
 
-void RenderingItem::draw_lines(const std::vector<SDL_FPoint> &points, const Color &modulation) const {
+void Node2D::draw_lines(const std::vector<SDL_FPoint> &points, const Color &modulation) const {
 	RenderingServer *rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_lines(canvas_item, points, modulation);
 }
 
-void RenderingItem::draw_rect(const Rect2 &rect, const Color &modulation) const {
+void Node2D::draw_rect(const Rect2 &rect, const Color &modulation) const {
 	RenderingServer *rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_rect(canvas_item, rect, modulation);
 }
 
-void RenderingItem::draw_rects(const std::vector<SDL_FRect> &rects, const Color &modulation) const {
+void Node2D::draw_rects(const std::vector<SDL_FRect> &rects, const Color &modulation) const {
 	RenderingServer *rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_rects(canvas_item, rects, modulation);

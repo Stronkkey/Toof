@@ -1,4 +1,4 @@
-#include <resources/texture2d.hpp>
+#include <scene/resources/texture2d.hpp>
 #include <servers/rendering_server.hpp>
 
 sdl::Vector2i sdl::Texture2D::get_size(const RenderingServer*) const {

@@ -1,12 +1,12 @@
 #pragma once
 
-#include <items/rendering_item.hpp>
+#include <scene/2d/node2d.hpp>
 
 namespace sdl {
 
 class Texture2D;
 
-class SpriteItem : public RenderingItem {
+class Sprite2D : public Node2D {
 
 private:
 	std::shared_ptr<Texture2D> texture;
@@ -23,7 +23,7 @@ private:
 	void _notification(const int what) override;
 
 public:
-	SpriteItem();
+	Sprite2D();
 
 	boost::signals2::signal<void()> texture_changed;
 

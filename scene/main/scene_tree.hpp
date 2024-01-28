@@ -9,7 +9,7 @@
 namespace sdl {
 
 struct Rect2i;
-class Item;
+class Node;
 class Window;
 class RenderingServer;
 class Viewport;
@@ -17,7 +17,7 @@ class Viewport;
 class PhysicsServer2D;
 #endif
 
-class Tree {
+class SceneTree {
 
 private:
 	bool running;
@@ -40,13 +40,13 @@ private:
 	void physics_loop();
 	#endif
 
-	std::vector<Item*> deferred_item_removal;
+	std::vector<Node*> deferred_item_removal;
 
 	Window *window = nullptr;
 	Viewport *viewport = nullptr;
 	RenderingServer *rendering_server = nullptr;
 	SDL_Event *event = nullptr;
-	Item *root = nullptr;
+	Node *root = nullptr;
 	#ifdef B2_INCLUDED
 	PhysicsServer2D *physics_server = nullptr;
 	#endif
@@ -59,8 +59,8 @@ private:
 	void physics();
 
 public:
-	Tree();
-	virtual ~Tree();
+	SceneTree();
+	virtual ~SceneTree();
 
 	boost::signals2::signal<void()> loop_frame;
 	boost::signals2::signal<void()> render_frame;
@@ -73,7 +73,7 @@ public:
 	Window *get_window() const;
 	Viewport *get_viewport() const;
 	RenderingServer *get_rendering_server() const;
-	Item *get_root() const;
+	Node *get_root() const;
 	SDL_Event *get_event() const;
 	#ifdef B2_INCLUDED
 	PhysicsServer2D *get_physics_server() const;
@@ -82,7 +82,7 @@ public:
 	void start();
 	void stop();
 
-	void queue_free(Item *item);
+	void queue_free(Node *item);
 
 	void set_frame_rate(const double new_frame_rate);
 	double get_frame_rate() const;

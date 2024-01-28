@@ -1,9 +1,9 @@
-#include <items/camera_item.hpp>
+#include <scene/2d/camera2d.hpp>
 #include <servers/rendering/viewport.hpp>
 
 using namespace sdl;
 
-CameraItem::CameraItem(): offset(),
+Camera2D::Camera2D(): offset(),
     zoom(Vector2::ONE),
     position_smoothing_speed(360),
     rotation_smoothing_speed(360),
@@ -16,7 +16,7 @@ CameraItem::CameraItem(): offset(),
 	anchor_mode(CAMERA_ITEM_ANCHOR_DRAG_CENTER) {
 }
 
-Transform2D CameraItem::_get_camera_transform() const {
+Transform2D Camera2D::_get_camera_transform() const {
 	Viewport *viewport = get_rendering_server()->get_viewport();
 
 	Vector2 final_offset = offset;
@@ -41,7 +41,7 @@ Transform2D CameraItem::_get_camera_transform() const {
 	return Transform2D(camera_rotation, -camera_position, zoom);
 }
 
-void CameraItem::step_camera(const double) {
+void Camera2D::step_camera(const double) {
 	Viewport *viewport = get_rendering_server() ? get_rendering_server()->get_viewport() : nullptr;
 
 	if (viewport) {
@@ -57,8 +57,8 @@ void CameraItem::step_camera(const double) {
 	}
 }
 
-void CameraItem::_notification(const int what) {
-	RenderingItem::_notification(what);
+void Camera2D::_notification(const int what) {
+	Node2D::_notification(what);
 
 	if (process_callback == CAMERA_ITEM_PROCESS_NONE)
 		return;
@@ -72,7 +72,7 @@ void CameraItem::_notification(const int what) {
 			step_camera(get_loop_delta_time());
 }
 
-std::optional<Transform2D> CameraItem::get_camera_transform() const {
+std::optional<Transform2D> Camera2D::get_camera_transform() const {
 	if (get_rendering_server() && get_rendering_server()->get_viewport())
 		return _get_camera_transform();
 	return std::nullopt;

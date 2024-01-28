@@ -1,46 +1,44 @@
-#include <items/item.hpp>
-#include <items/tree.hpp>
+#include <scene/main/node.hpp>
+#include <scene/main/scene_tree.hpp>
 
 #include <SDL_events.h>
 
 using namespace sdl;
 
-// There are at least ten bugs in this
-
-Item::Item(): children(),
+Node::Node(): children(),
     tree(nullptr),
     parent(),
-    name("Item"),
+    name("Node"),
     is_ready(false),
 	is_deletion_queued(false) {
 }
 
-Item::~Item() {
+Node::~Node() {
 	notification(NOTIFICATION_PREDELETE);
 
-	for (Item *child: children)
+	for (Node *child: children)
 		delete child;
 }
 
-void Item::_ready() {
+void Node::_ready() {
 }
 
-void Item::_loop(double) {
+void Node::_loop(double) {
 }
 
-void Item::_physics_process(const double) {
+void Node::_physics_process(const double) {
 }
 
-void Item::_render(double) {
+void Node::_render(double) {
 }
 
-void Item::_event(const SDL_Event*) {
+void Node::_event(const SDL_Event*) {
 }
 
-void Item::_notification(const int) {
+void Node::_notification(const int) {
 }
 
-void Item::queue_free() {
+void Node::queue_free() {
 	if (is_deletion_queued || !tree)
 		return;
 
@@ -48,11 +46,11 @@ void Item::queue_free() {
 	is_deletion_queued = true;
 }
 
-bool Item::is_queued_for_deletion() const {
+bool Node::is_queued_for_deletion() const {
 	return is_deletion_queued;
 }
 
-void Item::notification(const int what) {
+void Node::notification(const int what) {
 	_notification(what);
 	if (what == NOTIFICATION_EXIT_TREE)
 		tree_exiting();
@@ -85,23 +83,23 @@ void Item::notification(const int what) {
 	}
 }
 
-void Item::propagate_notification(const int what) {
+void Node::propagate_notification(const int what) {
 	notification(what);
 
-	for (Item *child: children)
+	for (Node *child: children)
 		child->propagate_notification(what);
 }
 
-Tree *Item::get_tree() const {
+SceneTree *Node::get_tree() const {
 	return tree;
 }
 
-bool Item::is_inside_tree() const {
+bool Node::is_inside_tree() const {
 	return tree;
 }
 
-void Item::set_tree(Tree *new_tree) {
-	Tree *old_tree = tree;
+void Node::set_tree(SceneTree *new_tree) {
+	SceneTree *old_tree = tree;
 	tree = new_tree;
 
 	if (!old_tree && tree) {
@@ -116,16 +114,16 @@ void Item::set_tree(Tree *new_tree) {
 		propagate_notification(NOTIFICATION_EXIT_TREE);
 }
 
-void Item::set_name(const std::string &new_name) {
+void Node::set_name(const std::string &new_name) {
 	name = new_name;
 	renamed(name);
 }
 
-const std::string &Item::get_name() const {
+const std::string &Node::get_name() const {
 	return name;
 }
 
-void Item::add_item(Item *new_item) {
+void Node::add_child(Node *new_item) {
 	if (new_item->parent == this)
 		return;
 
@@ -138,32 +136,32 @@ void Item::add_item(Item *new_item) {
 	new_item->notification(NOTIFICATION_PARENTED);
 }
 
-void Item::remove_item(Item* item) {
-	if (!item || item->parent != this)
+void Node::remove_child(Node* node) {
+	if (!node || node->parent != this)
 		return;
 
-	item->parent = nullptr;
-	item->set_tree(nullptr);
-	children.erase(item);
+	node->parent = nullptr;
+	node->set_tree(nullptr);
+	children.erase(node);
 }
 
-const Item::children_t &Item::get_children() const {
+const Node::children_t &Node::get_children() const {
 	return children;
 }
 
-Item *Item::get_parent() const {
+Node *Node::get_parent() const {
 	return parent;
 }
 
-double Item::get_delta_time() const {
+double Node::get_delta_time() const {
 	return tree ? tree->get_render_delta_time() : 0.0;
 }
 
-double Item::get_loop_delta_time() const {
+double Node::get_loop_delta_time() const {
 	return tree ? tree->get_loop_delta_time() : 0.0;
 }
 
-double Item::get_physics_delta_time() const {
+double Node::get_physics_delta_time() const {
 	#ifdef B2_INCLUDED
 	return tree ? tree->get_physics_delta_time() : 0.0;
 	#else
@@ -171,12 +169,12 @@ double Item::get_physics_delta_time() const {
 	#endif
 }
 
-SDL_Event *Item::get_event() const {
+SDL_Event *Node::get_event() const {
 	return tree ? tree->get_event() : nullptr;
 }
 
-void Item::remove_children() {
-	for (Item *child: children) {
+void Node::remove_children() {
+	for (Node *child: children) {
 		child->parent = nullptr;
 		child->set_tree(nullptr);
 	}

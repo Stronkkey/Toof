@@ -3,7 +3,7 @@
 #include <core/math/math_defs.hpp>
 #include <core/math/transform2d.hpp>
 #include <core/math/color.hpp>
-#include <resources/resource.hpp>
+#include <scene/resources/resource.hpp>
 
 #include <SDL_render.h>
 

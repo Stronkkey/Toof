@@ -1,12 +1,12 @@
 #pragma once
 
-#include <items/rendering_item.hpp>
+#include <scene/2d/node2d.hpp>
 
 #include <optional>
 
 namespace sdl {
 
-class CameraItem : public RenderingItem {
+class Camera2D : public Node2D {
 
 private:
 	Transform2D _get_camera_transform() const;
@@ -29,7 +29,7 @@ public:
 	};
 
 public:
-	CameraItem();
+	Camera2D();
 
 	Vector2 offset;
 	Vector2 zoom;

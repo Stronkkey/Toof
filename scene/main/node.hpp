@@ -10,15 +10,15 @@
 
 namespace sdl {
 
-class Tree;
+class SceneTree;
 
 /**
 * Base class for all scene objects.
 */
 
-class Item {
+class Node {
 
-typedef std::unordered_set<Item*> children_t;
+typedef std::unordered_set<Node*> children_t;
 
 public:
 	enum ProcessMode {
@@ -48,8 +48,8 @@ public:
 
 private:
 	children_t children;
-	Tree *tree = nullptr;
-	Item *parent;
+	SceneTree *tree = nullptr;
+	Node *parent;
 	std::string name;
 	bool is_ready, is_deletion_queued;
 
@@ -93,19 +93,19 @@ protected:
 
 	/**
 	* Called when the item is "ready".
-	* An Item is "ready" when the set_tree has been called with a valid Tree.
+	* A node is "ready" when the set_tree has been called with a valid SceneTree.
 	* This only gets called once and not on any subsequent set_tree.
 	*/
 	virtual void _ready();
 
 public:
-	Item();
+	Node();
 
 	/**
-	* Destroys the item and deletes all its children items.
+	* Destroys the node and deletes all its children items.
 	* @note the children should be heap allocated.
 	*/
-	virtual ~Item();
+	virtual ~Node();
 
 	/**
 	* Emitted when the item is ready. Called after _ready callback and follows the same rules.
@@ -164,7 +164,7 @@ public:
 	void propagate_notification(const int what);
 
 	/**
-	* Queues an Item for deletion at the end of the current frame.
+	* Queues a node for deletion at the end of the current frame.
 	* When deleted, all references to the item will become invalid.
 	* It is safe to call queue_free multiple times per frame on a item, and to free a item that is currently queued for deletion. Use is_queued_for_deletion to check whether an item will be deleted at the end of the frame.
 	* The item will only be freed after all other deferred calls are finished.
@@ -179,13 +179,13 @@ public:
 	/**
 	* @returns the tree this item belongs to or nullptr if the tree hasn't been set.
 	*/
-	Tree *get_tree() const;
+	SceneTree *get_tree() const;
 
 	/**
 	* Sets the tree for this item,
 	* calling notification with NOTIFICATION_ENTERED_TREE and NOTIFICATION_READY if the tree hasn't been set.
 	*/
-	void set_tree(Tree *new_tree);
+	void set_tree(SceneTree *new_tree);
 
 	/**
 	* @returns true if the tree property is set to a valid Tree, otherwise false.
@@ -203,16 +203,16 @@ public:
 	const std::string &get_name() const;
 
 	/**
-	* Adds the @param child_item as a child to this item. Reparenting the @param child if it already has a parent.
-	* @note the @param child_item MUST be allocated on the heap and not be deleted without calling remove_item.
+	* Adds the @param child as a child to this item. Reparenting the @param child if it already has a parent.
+	* @note the @param child MUST be allocated on the heap and not be deleted without calling remove_item.
 	*/
-	void add_item(Item *child_item);
+	void add_child(Node *child);
 
 	/**
-	* Removes the child @param item as a child from this item and sets the parent and tree property to nullptr.
+	* Removes the @param child as a child from this item and sets the parent and tree property to nullptr.
 	* Does nothing if the child does not exist or is not a parent of this item.
 	*/
-	void remove_item(Item *item);
+	void remove_child(Node *child);
 
 	/**
 	* @returns all children.
@@ -222,7 +222,7 @@ public:
 	/**
 	* @returns the parent of this item.
 	*/
-	Item *get_parent() const;
+	Node *get_parent() const;
 
 	/**
 	* Calls remove_item on all the children of this item.

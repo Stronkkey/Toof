@@ -1,9 +1,10 @@
+#include "scene/main/node.hpp"
 #include <core/math/color.hpp>
 #include <core/math/rect2.hpp>
 #include <core/math/transform2d.hpp>
 #include <core/math/vector2.hpp>
 #include <core/utility_functions.hpp>
-#include <items/item.hpp>
+#include <scene/main/node.hpp>
 
 #include <SDL_timer.h>
 
@@ -21,7 +22,6 @@ std::string UtilityFunctions::to_string(const std::any &variant) {
 	const std::type_info &type_info = variant.type();
 
 	// Ouch
-
 	if (type_info == typeid(int))
 		return std::to_string(std::any_cast<int>(variant));
 
@@ -132,8 +132,8 @@ std::string UtilityFunctions::to_string(const std::any &variant) {
 	if (type_info == typeid(Transform2D*))
 		return std::any_cast<Transform2D*>(variant)->to_string();
 
-	if (type_info == typeid(Item*))
-		return std::any_cast<Item*>(variant)->get_name() + ":<" + typeid(Item*).name() + ">";
+	if (type_info == typeid(Node*))
+		return std::any_cast<Node*>(variant)->get_name() + ":<" + typeid(Node*).name() + ">";
 
 	if (type_info == typeid(const int*))
 		return std::to_string(*std::any_cast<const int*>(variant));
@@ -186,8 +186,8 @@ std::string UtilityFunctions::to_string(const std::any &variant) {
 	if (type_info == typeid(const Transform2D*))
 		return std::any_cast<const Transform2D*>(variant)->to_string();
 
-	if (type_info == typeid(const Item*))
-		return std::any_cast<const Item*>(variant)->get_name() + ":<" + typeid(const Item*).name() + ">";
+	if (type_info == typeid(const Node*))
+		return std::any_cast<const Node*>(variant)->get_name() + ":<" + typeid(const Node*).name() + ">";
 
 	return "";
 }

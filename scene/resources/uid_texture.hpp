@@ -1,6 +1,6 @@
 #pragma once
 
-#include <resources/texture2d.hpp>
+#include <scene/resources/texture2d.hpp>
 
 namespace sdl {
 

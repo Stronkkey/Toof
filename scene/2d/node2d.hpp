@@ -1,6 +1,6 @@
 #pragma once
 
-#include <items/item.hpp>
+#include <scene/main/node.hpp>
 
 #include <core/math/transform2d.hpp>
 #include <core/math/color.hpp>
@@ -11,7 +11,7 @@ namespace sdl {
 class Texture2D;
 /** A 2D GameObject. Has a position, scale, and rotation.*/
 
-class RenderingItem : public Item {
+class Node2D : public Node {
 
 public:
 	enum {
@@ -35,7 +35,7 @@ private:
 	*/
 	void update();
 
-	void on_parent_changed(Item *new_parent);
+	void on_parent_changed(Node *new_parent);
 	void ready();
 
 protected:
@@ -51,8 +51,8 @@ protected:
 	virtual void _draw() const;
 
 public:
-	RenderingItem();
-	~RenderingItem();
+	Node2D();
+	~Node2D();
 
 	/**
 	* Queues this RenderingItem to update on the next render frame.

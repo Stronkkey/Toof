@@ -1,4 +1,4 @@
-#include <resources/uid_texture.hpp>
+#include <scene/resources/uid_texture.hpp>
 #include <servers/rendering_server.hpp>
 
 sdl::UidTexture::UidTexture() {

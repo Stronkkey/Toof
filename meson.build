@@ -9,23 +9,20 @@ project_description = 'Simple wrapper for sdl2'
 
 subdir('core')
 subdir('input')
-subdir('items')
-subdir('resources')
+subdir('scene')
 subdir('servers')
 
 project_headers = [
   core_headers,
   input_headers,
-  item_headers,
-  resources_headers,
+  scene_headers,
   servers_headers,
 ]
 
 project_source_files = [
   core_source_files,
   input_source_files,
-  item_source_files,
-  resources_source_files,
+  scene_source_files,
   servers_source_files,
 ]
 
