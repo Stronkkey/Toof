@@ -22,7 +22,7 @@ typedef std::unordered_set<Node*> children_t;
 
 public:
 	enum ProcessMode {
-		PROCESS_MODE_INHERIT /* Inherits the process mode from the item's parent. */,
+		PROCESS_MODE_INHERIT /* Inherits the process mode from the node's parent. */,
 		PROCESS_MODE_PAUSABLE /* Stops processing when the tree is paused (process when unpaused).*/,
 		PROCESS_MODE_WHEN_PAUSED /* Only process when the tree is paused (don't process when unpaused).*/,
 		PROCESS_MODE_ALWAYS /* Always process regardless of if the tree is paused or not.*/,
@@ -30,20 +30,20 @@ public:
 	};
 
 	enum {
-		NOTIFICATION_READY = 1000 /* Notification received when the item is ready. @see _ready.*/,
+		NOTIFICATION_READY = 1000 /* Notification received when the node is ready. @see _ready.*/,
 		NOTIFICATION_EVENT /* Notification received when an event has been process. @see _event.*/,
 		NOTIFICATION_RENDER /* Notification received each render step. @see _render.*/,
 		NOTIFICATION_LOOP /* Notification received each loop step. @see _loop.*/,
 		NOTIFICATION_PHYSICS_PROCESS /* Notification received each physics step. @see _physics_process.*/,
-		NOTIFICATION_ENTER_TREE /* Notification received when the item enters the tree*/,
-		NOTIFICATION_EXIT_TREE /* Notification received when the item is removed from the tree.*/,
-		NOTIFICATION_PAUSED /* Notification received when the processing of this item has been paused.*/,
-		NOTIFICATION_UNPAUSED /* Notification received when the processing of this item has been unpaused.*/,
+		NOTIFICATION_ENTER_TREE /* Notification received when the node enters the tree*/,
+		NOTIFICATION_EXIT_TREE /* Notification received when the node is removed from the tree.*/,
+		NOTIFICATION_PAUSED /* Notification received when the processing of this node has been paused.*/,
+		NOTIFICATION_UNPAUSED /* Notification received when the processing of this node has been unpaused.*/,
 		NOTIFICATION_PARENTED /* Notification received when the parent is set. Note: This doesn't mean the parent is valid.*/,
-		NOTIFICATION_DISABLED /* Notification received when the item is disabled. @see PROCESS_MODE_DISABLED.*/,
-		NOTIFICATION_ENABLED /* Notification received when the item is enabled after being disabled. @see PROCESS_MODE_DISABLED.*/,
+		NOTIFICATION_DISABLED /* Notification received when the node is disabled. @see PROCESS_MODE_DISABLED.*/,
+		NOTIFICATION_ENABLED /* Notification received when the node is enabled after being disabled. @see PROCESS_MODE_DISABLED.*/,
 		NOTIFICATION_CLOSE_REQUEST /* Notification received when the window is about to be closed.*/,
-		NOTIFICATION_PREDELETE /* Notification received before the Item is deleted with free.*/
+		NOTIFICATION_PREDELETE /* Notification received before the Node is deleted with free.*/
 	};
 
 private:
@@ -55,7 +55,7 @@ private:
 
 protected:
 	/**
-	* Called when the item receives a notification by notification.
+	* Called when the node receives a notification by notification.
 	* \param what The notification. Can be compared to any integer constant.
 	*/
 	virtual void _notification(const int what);
@@ -92,7 +92,7 @@ protected:
 	virtual void _physics_process(const double delta);
 
 	/**
-	* Called when the item is "ready".
+	* Called when the node is "ready".
 	* A node is "ready" when the set_tree has been called with a valid SceneTree.
 	* This only gets called once and not on any subsequent set_tree.
 	*/
@@ -102,23 +102,23 @@ public:
 	Node();
 
 	/**
-	* Destroys the node and deletes all its children items.
+	* Destroys the node and deletes all its child nodes.
 	* @note the children should be heap allocated.
 	*/
 	virtual ~Node();
 
 	/**
-	* Emitted when the item is ready. Called after _ready callback and follows the same rules.
+	* Emitted when the node is ready. Called after _ready callback and follows the same rules.
 	*/
 	boost::signals2::signal<void()> ready;
 
 	/**
-	* Emitted when the item is renamed.
+	* Emitted when the node is renamed.
 	*/
 	boost::signals2::signal<void(const std::string &name)> renamed;
 
 	/**
-	* Emitted when the item enters the tree.
+	* Emitted when the node enters the tree.
 	* This signal is emitted before the related NOTIFICATION_ENTER_TREE notification.
 	*/
 	boost::signals2::signal<void()> tree_entering;
@@ -154,7 +154,7 @@ public:
 	double get_physics_delta_time() const;
 
 	/**
-	* Sends the given @param what notification to the item, calling _notification with @param what.
+	* Sends the given @param what notification to the node, calling _notification with @param what.
 	*/
 	void notification(const int what);
 
@@ -165,24 +165,24 @@ public:
 
 	/**
 	* Queues a node for deletion at the end of the current frame.
-	* When deleted, all references to the item will become invalid.
-	* It is safe to call queue_free multiple times per frame on a item, and to free a item that is currently queued for deletion. Use is_queued_for_deletion to check whether an item will be deleted at the end of the frame.
-	* The item will only be freed after all other deferred calls are finished.
+	* When deleted, all references to the node will become invalid.
+	* It is safe to call queue_free multiple times per frame on a node, and to free a node that is currently queued for deletion. Use is_queued_for_deletion to check whether an node will be deleted at the end of the frame.
+	* The node will only be freed after all other deferred calls are finished.
 	*/
 	void queue_free();
 
 	/**
-	* @returns true if the item is queued for deletion.
+	* @returns true if the node is queued for deletion.
 	*/
 	bool is_queued_for_deletion() const;
 
 	/**
-	* @returns the tree this item belongs to or nullptr if the tree hasn't been set.
+	* @returns the tree this node belongs to or nullptr if the tree hasn't been set.
 	*/
 	SceneTree *get_tree() const;
 
 	/**
-	* Sets the tree for this item,
+	* Sets the tree for this node,
 	* calling notification with NOTIFICATION_ENTERED_TREE and NOTIFICATION_READY if the tree hasn't been set.
 	*/
 	void set_tree(SceneTree *new_tree);
@@ -193,24 +193,24 @@ public:
 	bool is_inside_tree() const;
 
 	/**
-	* Sets the name of the item.
+	* Sets the name of the node.
 	*/
 	void set_name(const std::string &new_name);
 
 	/**
-	* @returns the name of the item.
+	* @returns the name of the node.
 	*/
 	const std::string &get_name() const;
 
 	/**
-	* Adds the @param child as a child to this item. Reparenting the @param child if it already has a parent.
-	* @note the @param child MUST be allocated on the heap and not be deleted without calling remove_item.
+	* Adds the @param child as a child to this node. Reparenting the @param child if it already has a parent.
+	* @note the @param child MUST be allocated on the heap and not be deleted without calling remove_node.
 	*/
 	void add_child(Node *child);
 
 	/**
-	* Removes the @param child as a child from this item and sets the parent and tree property to nullptr.
-	* Does nothing if the child does not exist or is not a parent of this item.
+	* Removes the @param child as a child from this node and sets the parent and tree property to nullptr.
+	* Does nothing if the child does not exist or is not a parent of this node.
 	*/
 	void remove_child(Node *child);
 
@@ -220,12 +220,12 @@ public:
 	const children_t &get_children() const;
 
 	/**
-	* @returns the parent of this item.
+	* @returns the parent of this node.
 	*/
 	Node *get_parent() const;
 
 	/**
-	* Calls remove_item on all the children of this item.
+	* Calls remove_node on all the children of this node.
 	*/
 	void remove_children();
 };
