@@ -2,6 +2,8 @@
 
 #include <core/math/math_defs.hpp>
 
+#include <any>
+#include <initializer_list>
 #include <string>
 
 namespace sdl {
@@ -14,14 +16,30 @@ namespace UtilityFunctions {
 real_t get_passed_time();
 
 /**
-* Prints the @param string to the standard output.
+* @returns the @param variant converted to a string in the best possible way.
 */
-void print(const std::string &string = "");
+[[nodiscard]] std::string to_string(const std::any &variant);
 
 /**
-* Prints the @param string to the standard error output.
+* Converts @param variant into a string in the best way possible and prints it to the standard output.
 */
-void print_err(const std::string &string = "");
+void print(const std::any &variant = "");
+
+/**
+* Converts one or more arguments of any type into a string in the best way possible and prints it to the standard output.
+*/
+void print(const std::initializer_list<std::any> &variants);
+
+
+/**
+* Converts @param variant into a string in the best way possible and prints it to the error output.
+*/
+void print_err(const std::any &variant = "");
+
+/**
+* Converts one or more arguments of any type into a string in the best way possible and prints it to the error output.
+*/
+void print_err(const std::initializer_list<std::any> &variants);
 
 }
 
