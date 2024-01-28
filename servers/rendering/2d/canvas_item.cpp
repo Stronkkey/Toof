@@ -3,59 +3,79 @@
 
 using namespace sdl;
 
-Transform2D CanvasItem::get_global_transform() const {
+void CanvasItem::set_global_transform() {
 	if (parent.expired())
-		return transform;
-	Transform2D absolute_transform = transform;
+		return;
+
+	global_transform = transform;
 	std::shared_ptr<CanvasItem> parent_canvas_item = parent.lock();
 
 	while (parent_canvas_item) {
-		absolute_transform *= parent_canvas_item->transform;
+		global_transform *= parent_canvas_item->transform;
 		parent_canvas_item = parent_canvas_item->parent.lock();
 	}
-
-	return absolute_transform;
 }
 
-Color CanvasItem::get_absolute_modulate() const {
+void CanvasItem::set_global_modulate() {
 	if (parent.expired())
-		return modulate;
-	Color absolute_modulate = modulate;
+		return;
+
+	global_modulate = modulate;
 	std::shared_ptr<CanvasItem> parent_canvas_item = parent.lock();
 
 	while (parent_canvas_item) {
-		absolute_modulate *= parent_canvas_item->modulate;
+		global_modulate *= parent_canvas_item->modulate;
 		parent_canvas_item = parent_canvas_item->parent.lock();
 	}
-
-	return absolute_modulate;
 }
 
-bool CanvasItem::is_visible() const {
+void CanvasItem::set_global_visible() {
 	if (parent.expired())
-		return visible;
+		return;
+
+	global_visible = visible;
 	std::shared_ptr<CanvasItem> parent_canvas_item = parent.lock();
 
-	while (parent_canvas_item) {
-		if (!parent_canvas_item->visible)
-			return false;
-
+	while (parent_canvas_item && global_visible) {
+		global_visible = parent_canvas_item->visible;
 		parent_canvas_item = parent_canvas_item->parent.lock();
 	}
-
-	return true;
 }
 
-int CanvasItem::get_zindex() const {
-	if (parent.expired() || !zindex_relative)
-		return zindex;
-	std::shared_ptr<CanvasItem> parent_canvas_item = parent.lock();
-	int absolute_zindex = zindex;
+void CanvasItem::set_global_zindex() {
+	if (parent.expired())
+		return;
 
-	while (parent_canvas_item) {
-		absolute_zindex += parent_canvas_item->zindex;
-		parent_canvas_item = parent_canvas_item->parent.lock();
+	if (!zindex_relative) {
+		global_zindex = zindex;
+		return;
 	}
 
-	return absolute_zindex;
+	std::shared_ptr<CanvasItem> parent_canvas_item = parent.lock();
+	global_zindex = zindex;
+
+	while (parent_canvas_item) {
+		global_zindex += parent_canvas_item->zindex;
+		parent_canvas_item = parent_canvas_item->parent.lock();
+	}
+}
+
+const Transform2D &CanvasItem::get_global_transform() {
+	set_global_transform();
+	return global_transform;
+}
+
+const Color &CanvasItem::get_global_modulate() {
+	set_global_modulate();
+	return global_modulate;
+}
+
+bool CanvasItem::is_globally_visible() {
+	set_global_visible();
+	return global_visible;
+}
+
+int CanvasItem::get_global_zindex() {
+	set_global_zindex();
+	return global_zindex;
 }

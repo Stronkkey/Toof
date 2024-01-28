@@ -13,11 +13,10 @@ namespace sdl {
 struct DrawingItem;
 
 struct CanvasItem {
-	Transform2D transform = Transform2D::IDENTITY;
-	Color modulate = Color::WHITE;
-	bool visible = true;
-	bool zindex_relative = true;
-	int zindex = 0;
+	Transform2D transform, global_transform = Transform2D::IDENTITY;
+	Color modulate, global_modulate = Color::WHITE;
+	bool visible, zindex_relative, global_visible = true;
+	int zindex, global_zindex = 0;
 
 	SDL_BlendMode blend_mode = SDL_BLENDMODE_BLEND;
 	SDL_ScaleMode scale_mode = SDL_ScaleModeLinear;
@@ -25,10 +24,15 @@ struct CanvasItem {
 	std::weak_ptr<CanvasItem> parent;
 	std::vector<std::shared_ptr<DrawingItem>> drawing_items;
 
-	Transform2D get_global_transform() const;
-	Color get_absolute_modulate() const;
-	bool is_visible() const;
-	int get_zindex() const;
+	void set_global_transform();
+	void set_global_modulate();
+	void set_global_visible();
+	void set_global_zindex();
+
+	const Transform2D &get_global_transform();
+	const Color &get_global_modulate();
+	bool is_globally_visible();
+	int get_global_zindex();
 };
 
 }
