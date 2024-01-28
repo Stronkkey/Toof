@@ -49,6 +49,9 @@ std::string UtilityFunctions::to_string(const std::any &variant) {
 	if (type_info == typeid(unsigned long long))
 		return std::to_string(std::any_cast<unsigned long long>(variant));
 
+	if (type_info == typeid(bool))
+		return std::any_cast<bool>(variant) ? "true" : "false";
+
 	if (type_info == typeid(std::string))
 		return std::any_cast<std::string>(variant);
 
@@ -101,6 +104,9 @@ std::string UtilityFunctions::to_string(const std::any &variant) {
 
 	if (type_info == typeid(unsigned long long*))
 		return std::to_string(*std::any_cast<unsigned long long*>(variant));
+
+	if (type_info == typeid(bool*))
+		return *std::any_cast<bool*>(variant) ? "true" : "false";
 
 	if (type_info == typeid(std::string*))
 		return *std::any_cast<std::string*>(variant);
