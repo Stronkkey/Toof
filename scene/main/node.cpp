@@ -16,8 +16,18 @@ Node::Node(): children(),
 Node::~Node() {
 	notification(NOTIFICATION_PREDELETE);
 
-	for (Node *child: children)
-		delete child;
+	for (const auto &iterator: children)
+		delete iterator.second;
+}
+
+void Node::_add_child_nocheck(Node *new_item) {
+	children.insert({&new_item->name, new_item});
+	new_item->parent = this;
+
+	if (tree)
+		new_item->set_tree(tree);
+
+	new_item->notification(NOTIFICATION_PARENTED);
 }
 
 void Node::_ready() {
@@ -86,8 +96,8 @@ void Node::notification(const int what) {
 void Node::propagate_notification(const int what) {
 	notification(what);
 
-	for (Node *child: children)
-		child->propagate_notification(what);
+	for (const auto &iterator: children)
+		iterator.second->propagate_notification(what);
 }
 
 SceneTree *Node::get_tree() const {
@@ -114,6 +124,13 @@ void Node::set_tree(SceneTree *new_tree) {
 		propagate_notification(NOTIFICATION_EXIT_TREE);
 }
 
+void Node::add_child(Node *child) {
+	if (!child || child->parent == this)
+		return;
+	
+	_add_child_nocheck(child);
+}
+
 void Node::set_name(const std::string &new_name) {
 	name = new_name;
 	renamed(name);
@@ -123,26 +140,13 @@ const std::string &Node::get_name() const {
 	return name;
 }
 
-void Node::add_child(Node *new_item) {
-	if (new_item->parent == this)
-		return;
-
-	children.insert(new_item);
-	new_item->parent = this;
-
-	if (tree)
-		new_item->set_tree(tree);
-
-	new_item->notification(NOTIFICATION_PARENTED);
-}
-
 void Node::remove_child(Node* node) {
 	if (!node || node->parent != this)
 		return;
 
 	node->parent = nullptr;
 	node->set_tree(nullptr);
-	children.erase(node);
+	children.erase(&node->name);
 }
 
 const Node::children_t &Node::get_children() const {
@@ -174,9 +178,9 @@ SDL_Event *Node::get_event() const {
 }
 
 void Node::remove_children() {
-	for (Node *child: children) {
-		child->parent = nullptr;
-		child->set_tree(nullptr);
+	for (const auto &iterator: children) {
+		iterator.second->parent = nullptr;
+		iterator.second->set_tree(nullptr);
 	}
 	children.clear();
 }

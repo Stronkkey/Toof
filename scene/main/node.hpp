@@ -18,7 +18,7 @@ class SceneTree;
 
 class Node {
 
-typedef std::unordered_set<Node*> children_t;
+typedef std::unordered_map<std::string*, Node*> children_t;
 
 public:
 	enum ProcessMode {
@@ -52,6 +52,8 @@ private:
 	Node *parent;
 	std::string name;
 	bool is_ready, is_deletion_queued;
+
+	void _add_child_nocheck(Node *node);
 
 protected:
 	/**
