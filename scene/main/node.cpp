@@ -127,7 +127,7 @@ void Node::set_tree(SceneTree *new_tree) {
 void Node::add_child(Node *child) {
 	if (!child || child->parent == this)
 		return;
-	
+
 	_add_child_nocheck(child);
 }
 
@@ -155,6 +155,12 @@ const Node::children_t &Node::get_children() const {
 
 Node *Node::get_parent() const {
 	return parent;
+}
+
+Node *Node::get_node(std::string *name) const {
+	auto iterator = children.find(name);
+
+	return iterator == children.end() ? nullptr : iterator->second;
 }
 
 double Node::get_delta_time() const {

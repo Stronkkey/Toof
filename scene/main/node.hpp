@@ -227,6 +227,12 @@ public:
 	Node *get_parent() const;
 
 	/**
+	* @returns the node with the given name, nullptr otherwise.
+	* @param name the node's name
+	*/
+	Node *get_node(std::string *name) const;
+
+	/**
 	* Calls remove_node on all the children of this node.
 	*/
 	void remove_children();
