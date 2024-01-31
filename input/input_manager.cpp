@@ -35,7 +35,8 @@ InputManager::KeyInputEvent InputManager::_get_event_info(const SDL_Event *event
 			key_input_event.same = event->key.keysym.scancode == input.scan_code;
 
 		key_input_event.strength = key_input_event.same && key_input_event.holding ? 1.0f : 0.0f;
-	}
+	} else
+		key_input_event.failed = true;
 
 	return key_input_event;
 }
@@ -130,7 +131,7 @@ bool InputManager::input_is_action_pressed(const std::string &map_name, const SD
 
 	for (InputManager::Input input: iterator->second) {
 		InputManager::KeyInputEvent key_input_event = _get_event_info(event, input);
-		if (key_input_event.same && key_input_event.holding)
+		if (!key_input_event.failed && key_input_event.same && key_input_event.holding)
 			return true;
 	}
 
@@ -144,7 +145,7 @@ bool InputManager::input_is_action_just_pressed(const std::string &map_name, con
 
 	for (InputManager::Input input: iterator->second) {
 		InputManager::KeyInputEvent key_input_event = _get_event_info(event, input);
-		if (key_input_event.same && key_input_event.holding && key_input_event.repeat != 0)
+		if (!key_input_event.failed && key_input_event.same && key_input_event.holding && key_input_event.repeat != 0)
 			return true;
 	}
 
@@ -158,7 +159,7 @@ bool InputManager::input_is_action_released(const std::string &map_name, const S
 
 	for (InputManager::Input input: iterator->second) {
 		InputManager::KeyInputEvent key_input_event = _get_event_info(event, input);
-		if (key_input_event.same && !key_input_event.holding && key_input_event.repeat != 0)
+		if (!key_input_event.failed && key_input_event.same && !key_input_event.holding && key_input_event.repeat != 0)
 			return true;
 	}
 
