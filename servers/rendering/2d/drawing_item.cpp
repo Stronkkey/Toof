@@ -101,7 +101,7 @@ void RectsDrawingItem::_draw(const Viewport *viewport) {
 	SDL_SetRenderDrawColor(viewport->get_renderer(), modulate.r, modulate.g, modulate.b, modulate.a);
 	SDL_SetRenderDrawBlendMode(viewport->get_renderer(), canvas_item->blend_mode);
 
-	for (const SDL_FRect &rectangle: rectangles) {
+	for (const auto &rectangle: rectangles) {
 		SDL_FRect frect = rectangle;
 
 		frect.x = std::floor(frect.x + global_transform.origin.x);
@@ -117,7 +117,7 @@ Rect2 RectsDrawingItem::_get_draw_rect() const {
 	const Transform2D &global_transform = canvas_item.lock()->get_global_transform();
 	Rect2 final_rect = Rect2();
 
-	for (const SDL_FRect &frect: rectangles)
+	for (const auto &frect: rectangles)
 		final_rect = final_rect.merge(Rect2(frect));
 
 	final_rect.x += global_transform.origin.x;
@@ -182,7 +182,7 @@ Rect2 LinesDrawingItem::_get_draw_rect() const {
 
 	const Transform2D &global_transform = canvas_item.lock()->get_global_transform();
 
-	for (const SDL_FPoint &point: points)
+	for (const auto &point: points)
 		rect.expand_to(point);
 
 	rect.x += global_transform.origin.x;

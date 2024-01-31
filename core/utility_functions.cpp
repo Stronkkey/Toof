@@ -197,7 +197,7 @@ void UtilityFunctions::print(const std::any &variant) {
 }
 
 void UtilityFunctions::print(const std::initializer_list<std::any> &variants) {
-	for (const std::any &element: variants)
+	for (const auto &element: variants)
 		std::cout << to_string(element);
 	std::cout << "\n";
 }
@@ -207,7 +207,7 @@ void UtilityFunctions::print_err(const std::any &variant) {
 }
 
 void UtilityFunctions::print_err(const std::initializer_list<std::any> &variants) {
-	for (const std::any &element: variants)
+	for (const auto &element: variants)
 		std::cerr << to_string(element);
 	std::cerr << "\n";
 }

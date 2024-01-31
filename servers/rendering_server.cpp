@@ -136,7 +136,7 @@ void RenderingServer::render_canvas_items() {
 
 	std::sort(sorted_canvas_items.begin(), sorted_canvas_items.end(), &comparison_function);
 
-	for (const std::shared_ptr<CanvasItem> &canvas_item: sorted_canvas_items)
+	for (const auto &canvas_item: sorted_canvas_items)
 		render_canvas_item(canvas_item);
 }
 

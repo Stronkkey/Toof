@@ -84,7 +84,7 @@ float InputManager::_get_input_map_strength(const std::string &map_name, const S
 		return 0.0f;
 
 	float strongest_input = 0.0f;
-	for (InputManager::Input input: iterator->second) {
+	for (const auto &input: iterator->second) {
 		float input_strength = _get_input_strength(event, input);
 		if (input_strength > strongest_input)
 			strongest_input = input_strength;
@@ -129,7 +129,7 @@ bool InputManager::input_is_action_pressed(const std::string &map_name, const SD
 	if (iterator == mapped_inputs.end())
 		return false;
 
-	for (InputManager::Input input: iterator->second) {
+	for (const auto &input: iterator->second) {
 		InputManager::KeyInputEvent key_input_event = _get_event_info(event, input);
 		if (!key_input_event.failed && key_input_event.same && key_input_event.holding)
 			return true;
@@ -143,7 +143,7 @@ bool InputManager::input_is_action_just_pressed(const std::string &map_name, con
 	if (iterator == mapped_inputs.end())
 		return false;
 
-	for (InputManager::Input input: iterator->second) {
+	for (const auto &input: iterator->second) {
 		InputManager::KeyInputEvent key_input_event = _get_event_info(event, input);
 		if (!key_input_event.failed && key_input_event.same && key_input_event.holding && key_input_event.repeat != 0)
 			return true;
@@ -157,7 +157,7 @@ bool InputManager::input_is_action_released(const std::string &map_name, const S
 	if (iterator == mapped_inputs.end())
 		return false;
 
-	for (InputManager::Input input: iterator->second) {
+	for (const auto &input: iterator->second) {
 		InputManager::KeyInputEvent key_input_event = _get_event_info(event, input);
 		if (!key_input_event.failed && key_input_event.same && !key_input_event.holding && key_input_event.repeat != 0)
 			return true;
@@ -195,7 +195,7 @@ bool InputManager::input_is_action_pressed_or_released(const std::string &map_na
 	if (iterator == mapped_inputs.end())
 		return false;
 
-	for (InputManager::Input input: iterator->second) {
+	for (const auto &input: iterator->second) {
 		InputManager::KeyInputEvent key_input_event = _get_event_info(event, input);
 		if (key_input_event.same)
 			return true;
