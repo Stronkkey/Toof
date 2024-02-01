@@ -57,6 +57,32 @@ private:
 	static float _get_input_map_strength(const std::string &map_name, const SDL_Event *event);
 
 public:
+	enum EventInputType {
+		EVENT_INPUT_TYPE_NONE = 0,
+		EVENT_INPUT_TYPE_AUDIO_DEVICE,
+		EVENT_INPUT_TYPE_CONTROLLER_AXIS,
+		EVENT_INPUT_TYPE_CONTROLLER_BUTTON,
+		EVENT_INPUT_TYPE_CONTROLLER_DEVICE,
+		EVENT_INPUT_TYPE_DOLLAR_GESTURE,
+		EVENT_INPUT_TYPE_DROP,
+		EVENT_INPUT_TYPE_TOUCH_FINGER,
+		EVENT_INPUT_TYPE_KEYBOARD,
+		EVENT_INPUT_TYPE_JOY_AXIS,
+		EVENT_INPUT_TYPE_JOY_BALL,
+		EVENT_INPUT_TYPE_JOY_HAT,
+		EVENT_INPUT_TYPE_JOY_BUTTON,
+		EVENT_INPUT_TYPE_JOY_DEVICE,
+		EVENT_INPUT_TYPE_MOUSE_MOTION,
+		EVENT_INPUT_TYPE_MOUSE_BUTTON,
+		EVENT_INPUT_TYPE_MOUSE_WHEEL,
+		EVENT_INPUT_TYPE_MULTI_GESTURE,
+		EVENT_INPUT_TYPE_QUIT,
+		EVENT_INPUT_TYPE_SYSWM,
+		EVENT_INPUT_TYPE_TEXT_EDITING,
+		EVENT_INPUT_TYPE_TEXT_INPUT,
+		EVENT_INPUT_TYPE_USER,
+		EVENT_INPUT_TYPE_WINDOW,
+	};
 
 	static void set_input_map(const std::string &map_name, std::vector<Input> &inputs);
 
@@ -88,6 +114,7 @@ public:
 	    const SDL_Event *event);
 
 	static bool input_is_action_pressed_or_released(const std::string &map_name, const SDL_Event *event);
+	static EventInputType get_event_type(const SDL_Event *event);
 };
 
 }
