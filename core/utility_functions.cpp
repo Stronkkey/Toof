@@ -12,6 +12,9 @@
 
 using namespace sdl;
 
+const char white_space = ' ';
+const char* end_line = "\n";
+
 real_t UtilityFunctions::get_passed_time() {
 	real_t time = SDL_GetTicks64();
 	time *= 0.001;
@@ -193,21 +196,44 @@ std::string UtilityFunctions::to_string(const std::any &variant) {
 }
 
 void UtilityFunctions::print(const std::any &variant) {
-	std::cout << to_string(variant) + "\n";
+	std::cout << to_string(variant) + end_line;
 }
 
 void UtilityFunctions::print(const std::initializer_list<std::any> &variants) {
 	for (const auto &element: variants)
 		std::cout << to_string(element);
-	std::cout << "\n";
+	std::cout << end_line;
 }
 
 void UtilityFunctions::print_err(const std::any &variant) {
-	std::cerr << to_string(variant) + "\n";
+	std::cerr << to_string(variant) << end_line;
 }
 
 void UtilityFunctions::print_err(const std::initializer_list<std::any> &variants) {
 	for (const auto &element: variants)
 		std::cerr << to_string(element);
-	std::cerr << "\n";
+	std::cerr << end_line;
+}
+
+void UtilityFunctions::prints(const std::any &variant) {
+	std::cout << to_string(variant) << end_line;
+}
+
+void UtilityFunctions::prints(const std::initializer_list<std::any> &variants) {
+	for (const auto &element: variants) {
+		std::cout << to_string(element) << white_space;
+	}
+	std::cout << end_line;
+}
+
+void UtilityFunctions::prints_err(const std::any &variant) {
+	std::cerr << to_string(variant) << end_line;
+}
+
+void UtilityFunctions::prints_err(const std::initializer_list<std::any> &variants) {
+	for (const auto &element: variants) {
+		std::cerr << to_string(element);
+		std::cerr << white_space;
+	}
+	std::cerr << end_line;
 }

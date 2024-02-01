@@ -41,6 +41,26 @@ void print_err(const std::any &variant = "");
 */
 void print_err(const std::initializer_list<std::any> &variants);
 
+/**
+* Acts identical to print.
+*/
+void prints(const std::any &variant = "");
+
+/**
+* Prints one or more arguments to the console with a space between each argument to the standard output.
+*/
+void prints(const std::initializer_list<std::any> &variants);
+
+/**
+* Acts identical to print_err.
+*/
+void prints_err(const std::any &variant = "");
+
+/**
+* Prints one or more arguments to the console with a space between each argument to the error output.
+*/
+void prints_err(const std::initializer_list<std::any> &variants);
+
 }
 
 }
