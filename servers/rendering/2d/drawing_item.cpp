@@ -1,5 +1,3 @@
-#include "core/math/transform2d.hpp"
-#include <algorithm>
 #include <servers/rendering/2d/canvas_item.hpp>
 #include <servers/rendering/2d/drawing_item.hpp>
 #include <servers/rendering/viewport.hpp>
@@ -52,7 +50,7 @@ void TextureDrawingItem::_draw(const Viewport *viewport) {
 	const Rect2i source_region = use_region ? src_region : Rect2i(Vector2::ZERO, texture->size);
 	const double rotation = global_transform.rotation + transform.rotation;
 	Rect2 final_draw_rect = _get_draw_rect() * viewport->get_canvas_transform();
-	final_draw_rect.floored();
+	final_draw_rect.rounded();
 
 	SDL_Rect final_source_region = source_region.to_sdl_rect();
 	SDL_FRect final_destination = final_draw_rect.to_sdl_frect();
@@ -73,10 +71,10 @@ void RectDrawingItem::_draw(const Viewport *viewport) {
 	SDL_Renderer *renderer = viewport->get_renderer();
 	SDL_FRect rect = rectangle;
 
-	rect.x = std::floor(rect.x + global_transform.origin.x);
-	rect.y = std::floor(rect.y + global_transform.origin.y);
-	rect.w = std::floor(rect.w * global_transform.scale.x);
-	rect.h = std::floor(rect.h * global_transform.scale.y);
+	rect.x = std::round(rect.x + global_transform.origin.x);
+	rect.y = std::round(rect.y + global_transform.origin.y);
+	rect.w = std::round(rect.w * global_transform.scale.x);
+	rect.h = std::round(rect.h * global_transform.scale.y);
 
 	SDL_SetRenderDrawColor(renderer, modulate.r, modulate.g, modulate.b, modulate.a);
 	SDL_SetRenderDrawBlendMode(renderer, canvas_item->blend_mode);
@@ -104,10 +102,10 @@ void RectsDrawingItem::_draw(const Viewport *viewport) {
 	for (const auto &rectangle: rectangles) {
 		SDL_FRect frect = rectangle;
 
-		frect.x = std::floor(frect.x + global_transform.origin.x);
-		frect.y = std::floor(frect.y + global_transform.origin.y);
-		frect.w = std::floor(frect.w * global_transform.scale.x);
-		frect.h = std::floor(frect.h * global_transform.scale.y);
+		frect.x = std::round(frect.x + global_transform.origin.x);
+		frect.y = std::round(frect.y + global_transform.origin.y);
+		frect.w = std::round(frect.w * global_transform.scale.x);
+		frect.h = std::round(frect.h * global_transform.scale.y);
 
 		SDL_RenderFillRectF(renderer, &frect);
 	}
@@ -165,9 +163,6 @@ void LinesDrawingItem::_draw(const Viewport *viewport) {
 	SDL_SetRenderDrawBlendMode(renderer, canvas_item->blend_mode);
 
 	for (size_t i = 0; i < points_size; i++) {
-		if (i + 1 >= points_size)
-			break;
-
 		float x_1 = std::round(points[i].x + global_transform.origin.x);
 		float y_1 = std::round(points[i].y + global_transform.origin.y);
 		float x_2 = std::round(points[i + 1].x + global_transform.scale.x);
