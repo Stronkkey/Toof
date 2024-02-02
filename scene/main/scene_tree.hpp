@@ -21,14 +21,11 @@ class SceneTree {
 
 private:
 	bool running;
-	double fixed_frame_rate;
-	double frame_rate;
-	double render_delta_time;
-	double loop_delta_time;
+	double loop_frame_rate, loop_delta_time, loop_speed_scale, loop_time_scale;
+	double render_frame_rate, render_delta_time, render_speed_scale, render_time_scale;
 
 	#ifdef B2_INCLUDED
-	double physics_frame_rate;
-	double physics_delta_time;
+	double physics_frame_rate, physics_delta_time, physics_speed_scale, physics_time_scale;
 	#endif
 
 	double wait_for(const double time_seconds) const;
@@ -47,6 +44,7 @@ private:
 	RenderingServer *rendering_server = nullptr;
 	SDL_Event *event = nullptr;
 	Node *root = nullptr;
+
 	#ifdef B2_INCLUDED
 	PhysicsServer2D *physics_server = nullptr;
 	#endif
@@ -75,6 +73,7 @@ public:
 	RenderingServer *get_rendering_server() const;
 	Node *get_root() const;
 	SDL_Event *get_event() const;
+
 	#ifdef B2_INCLUDED
 	PhysicsServer2D *get_physics_server() const;
 	#endif
@@ -84,11 +83,23 @@ public:
 
 	void queue_free(Node *item);
 
-	void set_frame_rate(const double new_frame_rate);
-	double get_frame_rate() const;
+	void set_render_frame_rate(const double new_render_frame_rate);
+	double get_render_frame_rate() const;
 
-	void set_fixed_frame_rate(const double new_fixed_frame_rate);
-	double get_fixed_frame_rate() const;
+	void set_loop_frame_rate(const double new_loop_frame_rate);
+	double get_loop_frame_rate() const;
+
+	void set_render_speed_scale(const double new_render_speed_scale);
+	double get_render_speed_scale() const;
+
+	void set_loop_speed_scale(const double new_loop_speed_scale);
+	double get_loop_speed_scale() const;
+
+	void set_render_time_scale(const double new_render_time_scale);
+	double get_render_time_scale() const;
+
+	void set_loop_time_scale(const double new_loop_time_scale);
+	double get_loop_time_scale() const;
 
 	double get_render_delta_time() const;
 	double get_loop_delta_time() const;
@@ -96,6 +107,13 @@ public:
 	#ifdef B2_INCLUDED
 	void set_physics_frame_rate(const double new_physics_frame_rate);
 	double get_physics_frame_rate() const;
+
+	void set_physics_speed_scale(const double new_physics_speed_scale);
+	double get_physics_speed_scale() const;
+
+	void set_physics_time_scale(const double new_physics_time_scale);
+	double get_physics_time_scale() const;
+
 	double get_physics_delta_time() const;
 	#endif
 
