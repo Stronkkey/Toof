@@ -10,10 +10,10 @@ Camera2D::Camera2D(): offset(),
     ignore_rotation(true),
     position_smoothing_enabled(false),
     rotation_smoothing_enabled(false),
-	fix_x(false),
-	fix_y(false),
-	process_callback(CAMERA_ITEM_PROCESS_RENDER),
-	anchor_mode(CAMERA_ITEM_ANCHOR_DRAG_CENTER) {
+    fix_x(false),
+    fix_y(false),
+    process_callback(CAMERA_ITEM_PROCESS_RENDER),
+    anchor_mode(CAMERA_ITEM_ANCHOR_DRAG_CENTER) {
 }
 
 Transform2D Camera2D::_get_camera_transform() const {
@@ -45,7 +45,7 @@ void Camera2D::step_camera(const double) {
 	Viewport *viewport = get_rendering_server() ? get_rendering_server()->get_viewport() : nullptr;
 
 	if (viewport) {
-		const Transform2D canvas_transform = viewport->get_canvas_transform();
+		const Transform2D &canvas_transform = viewport->get_canvas_transform();
 		Transform2D camera_transform = _get_camera_transform();
 
 		if (fix_x)
