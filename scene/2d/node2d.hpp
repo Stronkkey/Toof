@@ -118,7 +118,7 @@ public:
 	/**
 	* @returns the global position of this node2d.
 	*/
-	Vector2 get_global_position() const;
+	const Vector2 get_global_position() const;
 
 	/**
 	* Sets the global scale for this node2d to @param new_global_scale.
@@ -128,7 +128,7 @@ public:
 	/**
 	* @returns the global scale of this node2d.
 	*/
-	Vector2 get_global_scale() const;
+	const Vector2 get_global_scale() const;
 
 	/**
 	* Sets the global rotation (in degrees) for this node2d to @param new_global_rotation.
@@ -158,7 +158,7 @@ public:
 	/**
 	* @returns the global transform (position, scale, and rotation) of this node2d.
 	*/
-	Transform2D get_global_transform() const;
+	const Transform2D get_global_transform() const;
 
 	/**
 	* Sets the modulate (tint) for this node2d, relative to the parent.
@@ -173,7 +173,7 @@ public:
 	/**
 	* @returns the global modulation (tint) of this node2d.
 	*/
-	Color get_absolute_modulate() const;
+	const Color get_absolute_modulate() const;
 
 	/**
 	* Sets the blending mode for this node2d to @param new_blend_mode that is used for future draw operations.

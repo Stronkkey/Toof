@@ -123,14 +123,11 @@ double Node2D::get_rotation() const {
 void Node2D::set_global_position(const Vector2 &new_global_position) {
 	Vector2 global_position = get_global_position();
 	transform.origin = -Vector2(global_position - new_global_position);
+	queue_redraw();
 }
 
-Vector2 Node2D::get_global_position() const {
-	RenderingServer *rendering_server = get_rendering_server();
-
-	if (rendering_server)
-		return rendering_server->canvas_item_get_global_transform(canvas_item).origin;
-	return transform.origin;
+const Vector2 Node2D::get_global_position() const {
+	return get_global_transform().origin;
 }
 
 void Node2D::set_global_scale(const Vector2 &new_global_scale) {
@@ -138,12 +135,8 @@ void Node2D::set_global_scale(const Vector2 &new_global_scale) {
 	transform.scale = -Vector2(global_scale - new_global_scale);
 }
 
-Vector2 Node2D::get_global_scale() const {
-	RenderingServer *rendering_server = get_rendering_server();
-
-	if (rendering_server)
-		return rendering_server->canvas_item_get_global_transform(canvas_item).scale;
-	return transform.scale;
+const Vector2 Node2D::get_global_scale() const {
+	return get_global_transform().scale;
 }
 
 void Node2D::set_global_rotation(const double new_global_rotation) {
@@ -152,11 +145,7 @@ void Node2D::set_global_rotation(const double new_global_rotation) {
 }
 
 double Node2D::get_global_rotation() const {
-	RenderingServer *rendering_server = get_rendering_server();
-
-	if (rendering_server)
-		return rendering_server->canvas_item_get_global_transform(canvas_item).rotation;
-	return transform.rotation;
+	return get_global_transform().rotation;
 }
 
 void Node2D::set_transform(const Transform2D &new_transform) {
@@ -178,11 +167,14 @@ void Node2D::set_global_transform(const Transform2D &new_global_transform) {
 	queue_redraw();
 }
 
-Transform2D Node2D::get_global_transform() const {
+const Transform2D Node2D::get_global_transform() const {
 	RenderingServer *rendering_server = get_rendering_server();
 
-	if (rendering_server)
-		return rendering_server->canvas_item_get_global_transform(canvas_item);
+	if (rendering_server) {
+		const std::optional<const Transform2D> global_transform = rendering_server->canvas_item_get_global_transform(canvas_item);
+		return global_transform.has_value() ? global_transform.value() : transform;
+	}
+	
 	return transform;
 }
 
@@ -195,9 +187,15 @@ const Color &Node2D::get_modulate() const {
 	return modulate;
 }
 
-Color Node2D::get_absolute_modulate() const {
+const Color Node2D::get_absolute_modulate() const {
 	RenderingServer *rendering_server = get_rendering_server();
-	return rendering_server ? rendering_server->canvas_item_get_global_modulate(canvas_item) : modulate;
+
+	if (rendering_server) {
+		const std::optional<const Color> absolute_modulate = rendering_server->canvas_item_get_global_modulate(canvas_item);
+		return absolute_modulate.has_value() ? absolute_modulate.value() : modulate;
+	}
+
+	return modulate;
 }
 
 void Node2D::set_blend_mode(const SDL_BlendMode new_blend_mode) {
@@ -243,12 +241,24 @@ bool Node2D::is_visible() const {
 
 bool Node2D::is_visible_in_tree() const {
 	RenderingServer *rendering_server = get_rendering_server();
-	return rendering_server ? rendering_server->canvas_item_is_globally_visible(canvas_item) : true;
+
+	if (rendering_server) {
+		const std::optional<bool> is_visible = rendering_server->canvas_item_is_globally_visible(canvas_item);
+		return is_visible.has_value() ? is_visible.value() : visible;
+	}
+
+	return visible;
 }
 
 bool Node2D::is_visible_inside_viewport() const {
 	RenderingServer *rendering_server = get_rendering_server();
-	return rendering_server ? rendering_server->canvas_item_is_visible_inside_viewport(canvas_item) : true;
+
+	if (rendering_server) {
+		const std::optional<bool> is_visible = rendering_server->canvas_item_is_visible_inside_viewport(canvas_item);
+		return is_visible.has_value() ? is_visible.value() : visible;
+	}
+
+	return visible;
 }
 
 void Node2D::set_zindex(const int zindex) {
@@ -261,7 +271,12 @@ int Node2D::get_zindex() const {
 
 int Node2D::get_absolute_zindex() const {
 	RenderingServer *rendering_server = get_rendering_server();
-	return rendering_server ? rendering_server->canvas_item_get_absolute_zindex(canvas_item) : 0;
+	if (rendering_server) {
+		const std::optional<int> global_zindex = rendering_server->canvas_item_get_absolute_zindex(canvas_item);
+		return global_zindex.has_value() ? global_zindex.value() : 0;
+	}
+
+	return 0;
 }
 
 void Node2D::set_zindex_relative(const bool zindex_relative) {

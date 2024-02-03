@@ -7,8 +7,9 @@
 #include <SDL_render.h>
 
 #include <memory>
-#include <vector>
+#include <optional>
 #include <unordered_map>
+#include <vector>
 
 namespace sdl {
 
@@ -26,9 +27,7 @@ private:
 	std::unordered_map<uid, std::shared_ptr<CanvasItem>> canvas_items;
 	Color background_color;
 	Vector2 viewport_offset;
-
-	uid create_new_uid();
-	uid index;
+	uid uid_index;
 
 	void render_canvas_item(const std::shared_ptr<CanvasItem> &canvas_item);
 	void render_canvas_items();
@@ -44,6 +43,7 @@ private:
 public:
 	struct TextureInfo {
 		Vector2i size;
+		bool valid; // Valid is here to prevent bumping up the size to 40 bytes
 		uint32_t format;
 		SDL_Texture *texture;
 	};
@@ -58,14 +58,14 @@ public:
 	Viewport *get_viewport() const;
 	SDL_Renderer *get_renderer() const;
 
-	uint_t load_texture_from_path(const std::string &path);
-	uint_t create_canvas_item();
+	std::optional<uid> load_texture_from_path(const std::string &path);
+	uid create_canvas_item();
 
 	void set_default_background_color(const Color &new_background_color);
 	const Color &get_default_background_color() const;
 	Vector2i get_screen_size() const;
 
-	TextureInfo get_texture_info_from_uid(const uid texture_uid) const;
+	std::unique_ptr<TextureInfo> get_texture_info_from_uid(const uid texture_uid) const;
 
 	void canvas_item_add_texture(const uid texture_uid,
 	    const uid canvas_item_uid,
@@ -90,26 +90,29 @@ public:
 	void canvas_item_set_blend_mode(const uid canvas_item_uid, const SDL_BlendMode blend_mode);
 	void canvas_item_set_scale_mode(const uid canvas_item_uid, const SDL_ScaleMode scale_mode);
 	void canvas_item_clear(const uid canvas_item_uid);
+	void canvas_item_set_visible(const uid canvas_item_uid, const bool visible);
 	void canvas_item_set_zindex(const uid canvas_item_uid, const int zindex);
 	void canvas_item_set_zindex_relative(const uid canvas_item_uid, const bool zindex_relative);
 
-	const Transform2D &canvas_item_get_transform(const uint_t canvas_item_uid) const;
-	Transform2D canvas_item_get_global_transform(const uid canvas_item_uid) const;
+	bool canvas_item_uid_exists(const uid canvas_item_uid) const;
+	bool texture_uid_exists(const uid canvas_item_uid) const;
 
-	const Color &canvas_item_get_modulate(const uid canvas_item_uid) const;
-	Color canvas_item_get_global_modulate(const uid canvas_item_uid) const;
+	const std::optional<const Transform2D> canvas_item_get_transform(const uid canvas_item_uid) const;
+	const std::optional<const Transform2D> canvas_item_get_global_transform(const uid canvas_item_uid) const;
 
-	bool canvas_item_is_visible(const uid canvas_item_uid) const;
-	void canvas_item_set_visible(const uid canvas_item_uid, const bool visible);
-	bool canvas_item_is_globally_visible(const uid canvas_item_uid) const;
-	bool canvas_item_is_visible_inside_viewport(const uid canvas_item_uid) const;
+	const std::optional<const Color> canvas_item_get_modulate(const uid canvas_item_uid) const;
+	const std::optional<const Color> canvas_item_get_global_modulate(const uid canvas_item_uid) const;
 
-	SDL_BlendMode canvas_item_get_blend_mode(const uid canvas_item_uid) const;
-	SDL_ScaleMode canvas_item_get_scale_mode(const uid canvas_item_uid) const;
+	const std::optional<bool> canvas_item_is_visible(const uid canvas_item_uid) const;
+	const std::optional<bool> canvas_item_is_globally_visible(const uid canvas_item_uid) const;
+	const std::optional<bool> canvas_item_is_visible_inside_viewport(const uid canvas_item_uid) const;
 
-	int canvas_item_get_zindex(const uid canvas_item_uid) const;
-	int canvas_item_get_absolute_zindex(const uid canvas_item_uid) const;
-	bool canvas_item_is_zindex_relative(const uid canvas_item_uid) const;
+	const std::optional<SDL_BlendMode> canvas_item_get_blend_mode(const uid canvas_item_uid) const;
+	const std::optional<SDL_ScaleMode> canvas_item_get_scale_mode(const uid canvas_item_uid) const;
+
+	const std::optional<int> canvas_item_get_zindex(const uid canvas_item_uid) const;
+	const std::optional<int> canvas_item_get_absolute_zindex(const uid canvas_item_uid) const;
+	const std::optional<bool> canvas_item_is_zindex_relative(const uid canvas_item_uid) const;
 };
 
 }

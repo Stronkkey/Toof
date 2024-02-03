@@ -16,7 +16,7 @@ RenderingServer::RenderingServer(Viewport *viewport): viewport(viewport),
     canvas_items(),
     background_color(Color(77, 77, 77, 255)),
     viewport_offset(sdl::Vector2::ZERO),
-    index(1) {
+    uid_index(1) {
 }
 
 RenderingServer::~RenderingServer() {
@@ -70,12 +70,6 @@ std::shared_ptr<CanvasItem> RenderingServer::get_canvas_item_from_uid(const uid 
 
 void RenderingServer::remove_uid(const uid destroying_uid) {
 	destroy_uid(destroying_uid);
-}
-
-uid RenderingServer::create_new_uid() {
-	uid new_uid = index;
-	index++;
-	return new_uid;
 }
 
 void RenderingServer::destroy_texture(std::shared_ptr<Texture> &texture) {
@@ -140,31 +134,33 @@ void RenderingServer::render_canvas_items() {
 		render_canvas_item(canvas_item);
 }
 
-RenderingServer::TextureInfo RenderingServer::get_texture_info_from_uid(const uid texture_uid) const {
+std::unique_ptr<RenderingServer::TextureInfo> RenderingServer::get_texture_info_from_uid(const uid texture_uid) const {
 	auto iterator = textures.find(texture_uid);
-	TextureInfo texture_info;
+	auto texture_info = std::make_unique<TextureInfo>();
+	texture_info->valid = false;
 
 	if (iterator == textures.end())
 		return texture_info;
 
-	texture_info.size = iterator->second->size;
-	texture_info.format = iterator->second->format;
-	texture_info.texture = iterator->second->texture_reference;
+	texture_info->size = iterator->second->size;
+	texture_info->format = iterator->second->format;
+	texture_info->texture = iterator->second->texture_reference;
+	texture_info->valid = true;
 	return texture_info;
 }
 
-uid RenderingServer::load_texture_from_path(const std::string &path) {
+std::optional<uid> RenderingServer::load_texture_from_path(const std::string &path) {
 	SDL_Texture *texture = IMG_LoadTexture(viewport->get_renderer(), path.c_str());
 
 	if (texture == NULL)
-		return uid();
+		return std::nullopt;
 
-	uid new_uid = create_new_uid();
+	uid new_uid = uid_index++;
 	auto new_texture = std::make_shared<Texture>();
 
 	new_texture->texture_reference = texture;
-	int width = 0;
-	int height = 0;
+	int width;
+	int height;
 	SDL_QueryTexture(texture, &new_texture->format, NULL, &width, &height);
 
 	new_texture->size = Vector2i(width, height);
@@ -174,7 +170,7 @@ uid RenderingServer::load_texture_from_path(const std::string &path) {
 }
 
 uid RenderingServer::create_canvas_item() {
-	uid new_uid = create_new_uid();
+	uid new_uid = uid_index++;
 	auto canvas_item = std::make_shared<CanvasItem>();
 
 	canvas_items.insert({new_uid, canvas_item});
@@ -336,6 +332,13 @@ void RenderingServer::canvas_item_clear(const uid canvas_item_uid) {
 		canvas_item->drawing_items.clear();
 }
 
+void RenderingServer::canvas_item_set_visible(const uid canvas_item_uid, const bool visible) {
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+
+	if (canvas_item)
+		canvas_item->visible = visible;
+}
+
 void RenderingServer::canvas_item_set_zindex(const uid canvas_item_uid, const int zindex) {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
@@ -350,53 +353,69 @@ void RenderingServer::canvas_item_set_zindex_relative(const uid canvas_item_uid,
 		canvas_item->zindex_relative = zindex_relative;
 }
 
-const Transform2D &RenderingServer::canvas_item_get_transform(const uid canvas_item_uid) const {
-	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-
-	return canvas_item ? canvas_item->transform : Transform2D::IDENTITY;
+bool RenderingServer::canvas_item_uid_exists(const uid canvas_item_uid) const {
+	return canvas_items.find(canvas_item_uid) != canvas_items.end();
 }
 
-Transform2D RenderingServer::canvas_item_get_global_transform(const uid canvas_item_uid) const {
-	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-
-	return canvas_item ? canvas_item->get_global_transform() : Transform2D::IDENTITY;
+bool RenderingServer::texture_uid_exists(const uid texture_uid) const {
+	return textures.find(texture_uid) != textures.end();
 }
 
-const Color &RenderingServer::canvas_item_get_modulate(const uid canvas_item_uid) const {
-	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-
-	return canvas_item ? canvas_item->modulate : Color::WHITE;
-}
-
-Color RenderingServer::canvas_item_get_global_modulate(const uid canvas_item_uid) const {
-	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-
-	return canvas_item ? canvas_item->get_global_modulate() : Color::WHITE;
-}
-
-bool RenderingServer::canvas_item_is_visible(const uid canvas_item_uid) const {
-	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-
-	return canvas_item ? canvas_item->visible : true;
-}
-
-void RenderingServer::canvas_item_set_visible(const uid canvas_item_uid, const bool visible) {
+const std::optional<const Transform2D> RenderingServer::canvas_item_get_transform(const uid canvas_item_uid) const {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
-		canvas_item->visible = visible;
+		return canvas_item->transform;
+	return std::nullopt;
 }
 
-bool RenderingServer::canvas_item_is_globally_visible(const uid canvas_item_uid) const {
+const std::optional<const Transform2D> RenderingServer::canvas_item_get_global_transform(const uid canvas_item_uid) const {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
-	return canvas_item ? canvas_item->is_globally_visible() : true;
+	if (canvas_item)
+		return canvas_item->get_global_transform();
+	return std::nullopt;
 }
 
-bool RenderingServer::canvas_item_is_visible_inside_viewport(const uid canvas_item_uid) const {
+const std::optional<const Color> RenderingServer::canvas_item_get_modulate(const uid canvas_item_uid) const {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
-	if (!canvas_item || !canvas_item->is_globally_visible() || canvas_item->drawing_items.empty())
+	if (canvas_item)
+		return canvas_item->modulate;
+	return std::nullopt;
+}
+
+const std::optional<const Color> RenderingServer::canvas_item_get_global_modulate(const uid canvas_item_uid) const {
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+
+	if (canvas_item)
+		return canvas_item->get_global_modulate();
+	return std::nullopt;
+}
+
+const std::optional<bool> RenderingServer::canvas_item_is_visible(const uid canvas_item_uid) const {
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+
+	if (canvas_item)
+		return canvas_item->visible;
+	return std::nullopt;
+}
+
+const std::optional<bool> RenderingServer::canvas_item_is_globally_visible(const uid canvas_item_uid) const {
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+
+	if (canvas_item)
+		return canvas_item->is_globally_visible();
+	return std::nullopt;
+}
+
+const std::optional<bool> RenderingServer::canvas_item_is_visible_inside_viewport(const uid canvas_item_uid) const {
+	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+
+	if (!canvas_item)
+		return std::nullopt;
+
+	if (!canvas_item->is_globally_visible() || canvas_item->drawing_items.empty())
 		return false;
 
 	const Rect2i screen_rect = Rect2i(Vector2::ZERO, get_screen_size());
@@ -415,32 +434,42 @@ bool RenderingServer::canvas_item_is_visible_inside_viewport(const uid canvas_it
 	return is_visible;
 }
 
-SDL_BlendMode RenderingServer::canvas_item_get_blend_mode(const uid canvas_item_uid) const {
+const std::optional<SDL_BlendMode> RenderingServer::canvas_item_get_blend_mode(const uid canvas_item_uid) const {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
-	return canvas_item ? canvas_item->blend_mode : SDL_BLENDMODE_BLEND;
+	if (canvas_item)
+		return canvas_item->blend_mode;
+	return std::nullopt;
 }
 
-SDL_ScaleMode RenderingServer::canvas_item_get_scale_mode(const uid canvas_item_uid) const {
+const std::optional<SDL_ScaleMode> RenderingServer::canvas_item_get_scale_mode(const uid canvas_item_uid) const {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
-	return canvas_item ? canvas_item->scale_mode : SDL_ScaleModeLinear;
+	if (canvas_item)
+		return canvas_item->scale_mode;
+	return std::nullopt;
 }
 
-int RenderingServer::canvas_item_get_zindex(const uid canvas_item_uid) const {
+const std::optional<int> RenderingServer::canvas_item_get_zindex(const uid canvas_item_uid) const {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
-	return canvas_item ? canvas_item->zindex : 0;
+	if (canvas_item)
+		return canvas_item->zindex;
+	return std::nullopt;
 }
 
-int RenderingServer::canvas_item_get_absolute_zindex(const uid canvas_item_uid) const {
+const std::optional<int> RenderingServer::canvas_item_get_absolute_zindex(const uid canvas_item_uid) const {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
-	return canvas_item ? canvas_item->get_global_zindex() : 0;
+	if (canvas_item)
+		return canvas_item->get_global_zindex();
+	return std::nullopt;
 }
 
-bool RenderingServer::canvas_item_is_zindex_relative(const uid canvas_item_uid) const {
+const std::optional<bool> RenderingServer::canvas_item_is_zindex_relative(const uid canvas_item_uid) const {
 	std::shared_ptr<CanvasItem> canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
-	return canvas_item ? canvas_item->zindex_relative : false;
+	if (canvas_item)
+		return canvas_item->zindex_relative;
+	return std::nullopt;
 }
