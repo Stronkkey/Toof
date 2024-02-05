@@ -26,6 +26,8 @@ private:
 		bool same;
 		float strength;
 		uint8_t repeat;
+
+		constexpr KeyInputEvent(): failed(false), holding(false), same(false), strength(0.0f), repeat(0) {}
 	};
 
 	struct Input {
@@ -36,7 +38,8 @@ private:
 			SDL_Scancode scan_code;
 		};
 
-		bool operator==(const Input &right) const;
+		constexpr Input(): key_input_type(KEY_INPUT_TYPE_NONE), scan_code(SDL_SCANCODE_UNKNOWN) {}
+		constexpr bool operator==(const Input &right) const;
 	};
 
 private:
@@ -45,15 +48,15 @@ private:
 
 	static std::unordered_map<std::string, std::vector<Input>> mapped_inputs;
 
-	static KeyInputEvent _get_event_info(const SDL_Event *event, const Input &input);
+	constexpr static KeyInputEvent _get_event_info(const SDL_Event *event, const Input &input);
 
-	static Input _get_input_from_key(const SDL_KeyCode key_code);
-	static Input _get_input_from_key(const SDL_Scancode scancode);
+	constexpr static Input _get_input_from_key(const SDL_KeyCode key_code);
+	constexpr static Input _get_input_from_key(const SDL_Scancode scancode);
  
 	static void _add_input_to_map(const std::string &map_name, const Input &input);
 	static void _remove_input_from_map(const std::string &map_name, const Input &input);
 
-	static float _get_input_strength(const SDL_Event *event, const Input &input);
+	constexpr static float _get_input_strength(const SDL_Event *event, const Input &input);
 	static float _get_input_map_strength(const std::string &map_name, const SDL_Event *event);
 
 public:
@@ -114,7 +117,134 @@ public:
 	    const SDL_Event *event);
 
 	static bool input_is_action_pressed_or_released(const std::string &map_name, const SDL_Event *event);
-	static EventInputType get_event_type(const SDL_Event *event);
+	constexpr static EventInputType get_event_type(const SDL_Event *event);
 };
+
+
+constexpr bool InputManager::Input::operator==(const InputManager::Input &right) const {
+	switch (key_input_type) {
+		case KEY_INPUT_TYPE_KEYSYM:
+			return key_sym == right.key_sym;
+		case KEY_INPUT_TYPE_SCANCODE:
+			return scan_code == right.scan_code;
+		default:
+			return false;
+	}
+}
+
+constexpr InputManager::KeyInputEvent InputManager::_get_event_info(const SDL_Event *event, const InputManager::Input &input) {
+	InputManager::KeyInputEvent key_input_event;
+	key_input_event.failed = false;
+
+	bool is_key_event = event->type == SDL_KEYDOWN || event->type == SDL_KEYUP;
+	if (is_key_event) {
+		key_input_event.repeat = event->key.repeat;
+		key_input_event.holding = event->type == SDL_KEYDOWN;
+
+		if (input.key_input_type == KEY_INPUT_TYPE_KEYSYM)
+			key_input_event.same = event->key.keysym.sym == input.key_sym;
+		else if (input.key_input_type == KEY_INPUT_TYPE_SCANCODE)
+			key_input_event.same = event->key.keysym.scancode == input.scan_code;
+
+		key_input_event.strength = key_input_event.same && key_input_event.holding ? 1.0f : 0.0f;
+	} else
+		key_input_event.failed = true;
+
+	return key_input_event;
+}
+
+constexpr InputManager::Input InputManager::_get_input_from_key(const SDL_KeyCode key_code) {
+	InputManager::Input input;
+	input.key_input_type = KEY_INPUT_TYPE_KEYSYM;
+	input.key_sym = key_code;
+	return input;
+}
+
+constexpr InputManager::Input InputManager::_get_input_from_key(const SDL_Scancode scancode) {
+	InputManager::Input input;
+	input.key_input_type = KEY_INPUT_TYPE_SCANCODE;
+	input.scan_code = scancode;
+	return input;
+}
+
+constexpr InputManager::EventInputType InputManager::get_event_type(const SDL_Event *event) {
+	switch (event->type) {
+		case SDL_AUDIODEVICEADDED:
+			return EVENT_INPUT_TYPE_AUDIO_DEVICE;
+		case SDL_AUDIODEVICEREMOVED:
+			return EVENT_INPUT_TYPE_AUDIO_DEVICE;
+		case SDL_CONTROLLERAXISMOTION:
+			return EVENT_INPUT_TYPE_CONTROLLER_AXIS;
+		case SDL_CONTROLLERBUTTONDOWN:
+			return EVENT_INPUT_TYPE_CONTROLLER_BUTTON;
+		case SDL_CONTROLLERBUTTONUP:
+			return EVENT_INPUT_TYPE_CONTROLLER_BUTTON;
+		case SDL_CONTROLLERDEVICEADDED:
+			return EVENT_INPUT_TYPE_CONTROLLER_DEVICE;
+		case SDL_CONTROLLERDEVICEREMOVED:
+			return EVENT_INPUT_TYPE_CONTROLLER_DEVICE;
+		case SDL_CONTROLLERDEVICEREMAPPED:
+			return EVENT_INPUT_TYPE_CONTROLLER_DEVICE;
+		case SDL_DOLLARGESTURE:
+			return EVENT_INPUT_TYPE_DOLLAR_GESTURE;
+		case SDL_DOLLARRECORD:
+			return EVENT_INPUT_TYPE_DOLLAR_GESTURE;
+		case SDL_DROPFILE:
+			return EVENT_INPUT_TYPE_DROP;
+		case SDL_DROPTEXT:
+			return EVENT_INPUT_TYPE_DROP;
+		case SDL_DROPBEGIN:
+			return EVENT_INPUT_TYPE_DROP;
+		case SDL_DROPCOMPLETE:
+			return EVENT_INPUT_TYPE_DROP;
+		case SDL_FINGERMOTION:
+			return EVENT_INPUT_TYPE_TOUCH_FINGER;
+		case SDL_FINGERDOWN:
+			return EVENT_INPUT_TYPE_TOUCH_FINGER;
+		case SDL_FINGERUP:
+			return EVENT_INPUT_TYPE_TOUCH_FINGER;
+		case SDL_KEYDOWN:
+			return EVENT_INPUT_TYPE_KEYBOARD;
+		case SDL_KEYUP:
+			return EVENT_INPUT_TYPE_KEYBOARD;
+		case SDL_JOYAXISMOTION:
+			return EVENT_INPUT_TYPE_JOY_AXIS;
+		case SDL_JOYBALLMOTION:
+			return EVENT_INPUT_TYPE_JOY_BALL;
+		case SDL_JOYHATMOTION:
+			return EVENT_INPUT_TYPE_JOY_HAT;
+		case SDL_JOYBUTTONDOWN:
+			return EVENT_INPUT_TYPE_JOY_BUTTON;
+		case SDL_JOYBUTTONUP:
+			return EVENT_INPUT_TYPE_JOY_BUTTON;
+		case SDL_JOYDEVICEADDED:
+			return EVENT_INPUT_TYPE_JOY_DEVICE;
+		case SDL_JOYDEVICEREMOVED:
+			return EVENT_INPUT_TYPE_JOY_DEVICE;
+		case SDL_MOUSEMOTION:
+			return EVENT_INPUT_TYPE_MOUSE_MOTION;
+		case SDL_MOUSEBUTTONDOWN:
+			return EVENT_INPUT_TYPE_MOUSE_BUTTON;
+		case SDL_MOUSEBUTTONUP:
+			return EVENT_INPUT_TYPE_MOUSE_BUTTON;
+		case SDL_MOUSEWHEEL:
+			return EVENT_INPUT_TYPE_MOUSE_WHEEL;
+		case SDL_MULTIGESTURE:
+			return EVENT_INPUT_TYPE_MULTI_GESTURE;
+		case SDL_QUIT:
+			return EVENT_INPUT_TYPE_QUIT;
+		case SDL_SYSWMEVENT:
+			return EVENT_INPUT_TYPE_SYSWM;
+		case SDL_TEXTEDITING:
+			return EVENT_INPUT_TYPE_TEXT_EDITING;
+		case SDL_TEXTINPUT:
+			return EVENT_INPUT_TYPE_TEXT_INPUT;
+		case SDL_USEREVENT:
+			return EVENT_INPUT_TYPE_USER;
+		case SDL_WINDOWEVENT:
+			return EVENT_INPUT_TYPE_WINDOW;
+	}
+	return EVENT_INPUT_TYPE_NONE;
+}
 
 }

@@ -3,18 +3,6 @@
 #include <core/math/transform2d.hpp>
 #include <core/math/rect2.hpp>
 
-sdl::real_t sdl::Math::radians_to_degrees(const real_t rotation_radians) {
-	return rotation_radians * DEGREES_RADIAN_SCALAR;
-}
-
-sdl::real_t sdl::Math::degrees_to_radians(const real_t rotation_degrees) {
-	return rotation_degrees / DEGREES_RADIAN_SCALAR;
-}
-
-bool sdl::Math::is_equal_approx(const real_t left, const real_t right) {
-	return left >= (right - CMP_EPSILON) && left <= (right + CMP_EPSILON);
-}
-
 bool sdl::Math::is_equal_approx(const Vector2 &left, const Vector2 &right) {
 	return is_equal_approx(left.x, right.x) && is_equal_approx(left.y, right.y);
 }
@@ -25,10 +13,6 @@ bool sdl::Math::is_equal_approx(const Rect2 &left, const Rect2 &right) {
 
 bool sdl::Math::is_equal_approx(const Transform2D &left, const Transform2D &right) {
 	return is_equal_approx(left.origin, right.origin) && is_equal_approx(left.rotation, right.rotation) && is_equal_approx(left.scale, right.scale);
-}
-
-bool sdl::Math::is_zero_approx(const real_t number) {
-	return number >= (0.0 - CMP_EPSILON) && number <= (0.0 + CMP_EPSILON);
 }
 
 bool sdl::Math::is_zero_approx(const Vector2 &vector2) {

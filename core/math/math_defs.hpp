@@ -27,28 +27,34 @@ typedef uint_t uid;
 namespace Math {
 
 // An EPSILON constant. Which can be used to compare 2 floating point numbers.
-const real_t CMP_EPSILON = 0.0000000001;
+constexpr const real_t CMP_EPSILON = 0.0000000001;
 // A PI constant (3.141592). A ration of circle's circumference to its diameter and amount of radians in half turn.
-const real_t PI = 3.1415926535897;
+constexpr const real_t PI = 3.1415926535897;
 // A TAU constant (6.283185). An equivalent of PI * 2 and amount of radians in full turn.
-const real_t TAU = PI * 2.0;
+constexpr const real_t TAU = PI * 2.0;
 // The ratio between one degree and one radian.
-const real_t DEGREES_RADIAN_SCALAR = 180.0 / PI;
+constexpr const real_t DEGREES_RADIAN_SCALAR = 180.0 / PI;
 
 /**
 * @returns the @param rotation_degrees converted to degrees rotation. @see also DEGREES_RADIAN_SCALAR.
 */
-real_t radians_to_degrees(const real_t rotation_radians);
+constexpr real_t radians_to_degrees(const real_t rotation_radians) {
+	return rotation_radians * DEGREES_RADIAN_SCALAR;
+}
 
 /**
 * @returns the @param rotation_degrees converted to radians rotation. @see also DEGREES_RADIAN_SCALAR.
 */
-real_t degrees_to_radians(const real_t rotation_degrees);
+constexpr real_t degrees_to_radians(const real_t rotation_degrees) {
+	return rotation_degrees / DEGREES_RADIAN_SCALAR;
+}
 
 /**
 * @returns true if @param left approximately equals @param right; 
 */
-bool is_equal_approx(const real_t left, const real_t right);
+constexpr bool is_equal_approx(const real_t left, const real_t right) {
+	return left >= (right - CMP_EPSILON) && left <= (right + CMP_EPSILON);
+}
 
 /**
 * @returns true if @param left approximately equals @param right; 
@@ -68,7 +74,9 @@ bool is_equal_approx(const Transform2D &left, const Transform2D &right);
 /**
 * @returns true if @param number is approximately equal to 0. 
 */
-bool is_zero_approx(const real_t number);
+constexpr bool is_zero_approx(const real_t number) {
+	return number >= (0.0 - CMP_EPSILON) && number <= (0.0 + CMP_EPSILON);
+}
 
 /**
 * @returns true if the components of @param transform2d approximately equal to 0. 

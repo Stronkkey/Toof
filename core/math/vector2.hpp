@@ -14,65 +14,66 @@ namespace sdl {
 struct Vector2i;
 
 struct Vector2 {
-	real_t x;
-	real_t y;
-
-	Vector2();
-	Vector2(const real_t new_x, const real_t new_y);
-	Vector2(const Vector2 &vector2);
-	Vector2(const Vector2i &vector2i);
-	Vector2(const SDL_FPoint &fpoint);
-	Vector2(const SDL_Point &point);
+	constexpr Vector2();
+	constexpr Vector2(const real_t new_x, const real_t new_y);
+	constexpr Vector2(const Vector2 &vector2);
+	constexpr Vector2(const Vector2i &vector2i);
+	constexpr Vector2(const SDL_FPoint &fpoint);
+	constexpr Vector2(const SDL_Point &point);
+	
 	#ifdef B2_INCLUDED
 	Vector2(const b2Vec2 &b2_vec2);
 	#endif
 
-	void operator=(const Vector2 &right);
-	bool operator==(const Vector2 &right) const;
-	bool operator!=(const Vector2 &right) const;
+	real_t x;
+	real_t y;
 
-	bool operator<(const Vector2 &right) const;
-	bool operator<=(const Vector2 &right) const;
-	bool operator>(const Vector2 &right) const;
-	bool operator>=(const Vector2 &right) const;
+	constexpr void operator=(const Vector2 &right);
+	constexpr bool operator==(const Vector2 &right) const;
+	constexpr bool operator!=(const Vector2 &right) const;
 
-	Vector2 operator+(const Vector2 &right) const;
-	Vector2 operator-(const Vector2 &right) const;
+	constexpr bool operator<(const Vector2 &right) const;
+	constexpr bool operator<=(const Vector2 &right) const;
+	constexpr bool operator>(const Vector2 &right) const;
+	constexpr bool operator>=(const Vector2 &right) const;
 
-	Vector2 operator*(const Vector2 &right) const;
-	Vector2 operator*(const real_t right) const;
+	constexpr Vector2 operator+(const Vector2 &right) const;
+	constexpr Vector2 operator-(const Vector2 &right) const;
 
-	Vector2 operator/(const Vector2 &right) const;
-	Vector2 operator/(const real_t right) const;
+	constexpr Vector2 operator*(const Vector2 &right) const;
+	constexpr Vector2 operator*(const real_t right) const;
 
-	void operator+=(const Vector2 &right);
-	void operator-=(const Vector2 &right);
+	constexpr Vector2 operator/(const Vector2 &right) const;
+	constexpr Vector2 operator/(const real_t right) const;
 
-	void operator*=(const Vector2 &right);
-	void operator*=(const real_t right);
+	constexpr void operator+=(const Vector2 &right);
+	constexpr void operator-=(const Vector2 &right);
 
-	void operator/=(const Vector2 &right);
-	void operator/=(const real_t right);
+	constexpr void operator*=(const Vector2 &right);
+	constexpr void operator*=(const real_t right);
 
-	real_t operator[](const int index) const;
-	Vector2 operator-() const;
-	Vector2 operator+() const;
+	constexpr void operator/=(const Vector2 &right);
+	constexpr void operator/=(const real_t right);
 
-	void normalize();
-	void rounded();
-	void floored();
-	void ceiled();
+	constexpr real_t operator[](const int index) const;
+	constexpr Vector2 operator-() const;
+	constexpr Vector2 operator+() const;
 
-	real_t length() const;
-	real_t length_squared() const;
+	constexpr void normalize();
+	constexpr void rounded();
+	constexpr void floored();
+	constexpr void ceiled();
 
-	[[nodiscard]] Vector2 round() const;
-	[[nodiscard]] Vector2 floor() const;
-	[[nodiscard]] Vector2 ceil() const;
-	[[nodiscard]] Vector2 normalized() const;
-	[[nodiscard]] Vector2 move_toward(const Vector2 &to, const real_t delta) const;
-	[[nodiscard]] real_t distance_to_squared(const Vector2 &to) const;
-	[[nodiscard]] real_t distance_to(const Vector2 &to) const;
+	constexpr real_t length() const;
+	constexpr real_t length_squared() const;
+
+	[[nodiscard]] constexpr Vector2 round() const;
+	[[nodiscard]] constexpr Vector2 floor() const;
+	[[nodiscard]] constexpr Vector2 ceil() const;
+	[[nodiscard]] constexpr Vector2 normalized() const;
+	[[nodiscard]] constexpr Vector2 move_toward(const Vector2 &to, const real_t delta) const;
+	[[nodiscard]] constexpr real_t distance_to_squared(const Vector2 &to) const;
+	[[nodiscard]] constexpr real_t distance_to(const Vector2 &to) const;
 	[[nodiscard]] std::string to_string() const;
 	[[nodiscard]] SDL_FPoint to_sdl_fpoint() const;
 	[[nodiscard]] SDL_Point to_sdl_point() const;
@@ -90,46 +91,46 @@ struct Vector2 {
 };
 
 struct Vector2i {
+	constexpr Vector2i();
+	constexpr Vector2i(const int_t new_x, const int_t new_y);
+	constexpr Vector2i(const Vector2 &vector2);
+	constexpr Vector2i(const Vector2i &vector2i);
+	constexpr Vector2i(const SDL_FPoint &fpoint);
+	constexpr Vector2i(const SDL_Point &point);
+
 	int_t x;
 	int_t y;
 
-	Vector2i();
-	Vector2i(const int_t new_x, const int_t new_y);
-	Vector2i(const Vector2 &vector2);
-	Vector2i(const Vector2i &vector2i);
-	Vector2i(const SDL_FPoint &fpoint);
-	Vector2i(const SDL_Point &point);
+	constexpr void operator=(const Vector2i &right);
+	constexpr bool operator==(const Vector2i &right) const;
+	constexpr bool operator!=(const Vector2i &right) const;
 
-	void operator=(const Vector2i &right);
-	bool operator==(const Vector2i &right) const;
-	bool operator!=(const Vector2i &right) const;
+	constexpr bool operator<(const Vector2i &right) const;
+	constexpr bool operator<=(const Vector2i &right) const;
+	constexpr bool operator>(const Vector2i &right) const;
+	constexpr bool operator>=(const Vector2i &right) const;
 
-	bool operator<(const Vector2i &right) const;
-	bool operator<=(const Vector2i &right) const;
-	bool operator>(const Vector2i &right) const;
-	bool operator>=(const Vector2i &right) const;
+	constexpr Vector2i operator+(const Vector2i &right) const;
+	constexpr Vector2i operator-(const Vector2i &right) const;
 
-	Vector2i operator+(const Vector2i &right) const;
-	Vector2i operator-(const Vector2i &right) const;
+	constexpr Vector2i operator*(const Vector2i &right) const;
+	constexpr Vector2i operator*(const int_t right) const;
 
-	Vector2i operator*(const Vector2i &right) const;
-	Vector2i operator*(const int_t right) const;
+	constexpr Vector2i operator/(const Vector2 &right) const;
+	constexpr Vector2i operator/(const int_t right) const;
 
-	Vector2i operator/(const Vector2 &right) const;
-	Vector2i operator/(const int_t right) const;
+	constexpr void operator+=(const Vector2i &right);
+	constexpr void operator-=(const Vector2i &right);
 
-	void operator+=(const Vector2i &right);
-	void operator-=(const Vector2i &right);
+	constexpr void operator*=(const Vector2i &right);
+	constexpr void operator*=(const int_t right);
 
-	void operator*=(const Vector2i &right);
-	void operator*=(const int_t right);
+	constexpr void operator/=(const Vector2i &right);
+	constexpr void operator/=(const int_t right);
 
-	void operator/=(const Vector2i &right);
-	void operator/=(const int_t right);
-
-	int_t operator[](const int index) const;
-	Vector2i operator-() const;
-	Vector2i operator+() const;
+	constexpr int_t operator[](const int index) const;
+	constexpr Vector2i operator-() const;
+	constexpr Vector2i operator+() const;
 
 	[[nodiscard]] std::string to_string() const;
 	[[nodiscard]] SDL_FPoint to_sdl_fpoint() const;
@@ -142,5 +143,314 @@ struct Vector2i {
 	static const Vector2i UP;
 	static const Vector2i DOWN;
 };
+
+
+constexpr Vector2::Vector2(const real_t new_x, const real_t new_y): x(new_x), y(new_y) {
+}
+
+constexpr Vector2::Vector2(): x(0), y(0) {
+}
+
+constexpr Vector2::Vector2(const Vector2 &vector2): x(vector2.x), y(vector2.y) {
+}
+
+constexpr Vector2::Vector2(const Vector2i &vector2i): x(vector2i.x), y(vector2i.y) {
+}
+
+constexpr Vector2::Vector2(const SDL_FPoint &fpoint): x(fpoint.x), y(fpoint.y) {
+}
+
+constexpr Vector2::Vector2(const SDL_Point &point): x(point.x), y(point.y) {
+}
+
+constexpr void Vector2::operator=(const Vector2 &right) {
+	x = right.x;
+	y = right.y;
+}
+
+constexpr bool Vector2::operator==(const Vector2 &right) const {
+	return x == right.x && y == right.y;
+}
+
+constexpr bool Vector2::operator!=(const Vector2 &right) const {
+	return x != right.x || y != right.y;
+}
+
+constexpr bool Vector2::operator<(const Vector2 &right) const {
+	return x < right.x && y < right.y;
+}
+
+constexpr bool Vector2::operator<=(const Vector2 &right) const {
+	return x <= right.x && y <= right.y;
+}
+
+constexpr bool Vector2::operator>(const Vector2 &right) const {
+	return x > right.x && y > right.y;
+}
+
+constexpr bool Vector2::operator>=(const Vector2 &right) const {
+	return x >= right.x && y >= right.y;
+}
+
+constexpr Vector2 Vector2::operator+(const Vector2 &right) const {
+	return Vector2(x + right.x, y + right.y);
+}
+
+constexpr Vector2 Vector2::operator-(const Vector2 &right) const {
+	return Vector2(x - right.x, y - right.y);
+}
+
+constexpr Vector2 Vector2::operator*(const Vector2 &right) const {
+	return Vector2(x * right.x, y * right.y);
+}
+
+constexpr Vector2 Vector2::operator*(const real_t right) const {
+	return Vector2(x * right, y * right);
+}
+
+constexpr Vector2 Vector2::operator/(const Vector2 &right) const {
+	return Vector2(x / right.x, y / right.y);
+}
+
+constexpr Vector2 Vector2::operator/(const real_t right) const {
+	return Vector2(x / right, y / right);
+}
+
+constexpr void Vector2::operator+=(const Vector2 &right) {
+	x += right.x;
+	y += right.y;
+}
+
+constexpr void Vector2::operator-=(const Vector2 &right) {
+ x -= right.x;
+ y -= right.y;
+}
+
+constexpr void Vector2::operator*=(const Vector2 &right) {
+	x *= right.x;
+	y *= right.y;
+}
+
+constexpr void Vector2::operator*=(const real_t right) {
+	x *= right;
+	y *= right;
+}
+
+constexpr void Vector2::operator/=(const Vector2 &right) {
+	x /= right.x;
+	y /= right.y;
+}
+
+constexpr void Vector2::operator/=(const real_t right) {
+	x /= right;
+	y /= right;
+}
+
+constexpr real_t Vector2::operator[](const int index) const {
+	if (index == 0)
+		return x;
+	else if (index == 1)
+		return y;
+	return 0.0;
+}
+
+constexpr Vector2 Vector2::operator+() const {
+	return Vector2(+x, +y);
+}
+
+constexpr Vector2 Vector2::operator-() const {
+	return Vector2(-x, -y);
+}
+
+constexpr void Vector2::normalize() {
+	real_t length = (x * x) + (y * y);
+	if (length != 0.0) {
+		length = std::sqrt(length);
+		x /= length;
+		y /= length;
+	}
+}
+
+constexpr void Vector2::rounded() {
+	x = std::round(x);
+	y = std::round(y);
+}
+
+constexpr void Vector2::floored() {
+	x = std::floor(x);
+	y = std::floor(y);
+}
+
+constexpr void Vector2::ceiled() {
+	x = std::ceil(x);
+	y = std::ceil(y);
+}
+
+constexpr Vector2 Vector2::move_toward(const Vector2 &to, const real_t delta) const {
+	Vector2 vector = *this;
+	Vector2 from_vector = to - vector;
+	real_t length = from_vector.length();
+	return length <= delta ? to : vector + from_vector / length * delta;
+}
+
+constexpr real_t Vector2::distance_to(const Vector2 &to) const {
+	return std::sqrt((x - to.x) * (x - to.x) + (y - to.y) * (y - to.y));
+}
+
+constexpr real_t Vector2::distance_to_squared(const Vector2 &to) const {
+	return ((x - to.x) * (x - to.x) + (y - to.y) * (y - to.y));
+}
+
+constexpr real_t Vector2::length() const {
+	return std::sqrt(x * x + y * y);
+}
+
+constexpr real_t Vector2::length_squared() const {
+	return x * x + y * y;
+}
+
+constexpr Vector2 Vector2::normalized() const {
+	Vector2 vector = *this;
+	vector.normalize();
+	return vector;
+}
+
+constexpr Vector2 Vector2::ceil() const {
+	Vector2 vector = *this;
+	vector.ceiled();
+	return vector;
+}
+
+constexpr Vector2 Vector2::round() const {
+	Vector2 vector = *this;
+	vector.rounded();
+	return vector;
+}
+
+constexpr Vector2 Vector2::floor() const {
+	Vector2 vector = *this;
+	vector.floored();
+	return vector;
+}
+
+// Vector2i //
+
+
+constexpr Vector2i::Vector2i(const int_t new_x, const int_t new_y): x(new_x), y(new_y) {
+}
+
+constexpr Vector2i::Vector2i(): x(0), y(0) {
+}
+
+constexpr Vector2i::Vector2i(const Vector2 &vector2): x(vector2.x), y(vector2.y) {
+}
+
+constexpr Vector2i::Vector2i(const Vector2i &vector2i): x(vector2i.x), y(vector2i.y) {
+}
+
+constexpr Vector2i::Vector2i(const SDL_FPoint &fpoint): x(fpoint.x), y(fpoint.y) {
+}
+
+constexpr Vector2i::Vector2i(const SDL_Point &point): x(point.x), y(point.y) {
+}
+
+constexpr void Vector2i::operator=(const Vector2i &right) {
+	x = right.x;
+	y = right.y;
+}
+
+constexpr bool Vector2i::operator==(const Vector2i &right) const {
+	return x == right.x && y == right.y;
+}
+
+constexpr bool Vector2i::operator!=(const Vector2i &right) const {
+	return x != right.x && y != right.y;
+}
+
+constexpr bool Vector2i::operator<(const Vector2i &right) const {
+	return x < right.x && y < right.y;
+}
+
+constexpr bool Vector2i::operator<=(const Vector2i &right) const {
+	return x <= right.x && y <= right.y;
+}
+
+constexpr bool Vector2i::operator>(const Vector2i &right) const {
+	return x > right.x && y > right.y;
+}
+
+constexpr bool Vector2i::operator>=(const Vector2i &right) const {
+	return x >= right.x && y >= right.y;
+}
+
+constexpr Vector2i Vector2i::operator+(const Vector2i &right) const {
+	return Vector2i(x + right.x, y + right.y);
+}
+
+constexpr Vector2i Vector2i::operator-(const Vector2i &right) const {
+	return Vector2i(x - right.x, y - right.y);
+}
+
+constexpr Vector2i Vector2i::operator*(const Vector2i &right) const {
+	return Vector2i(x * right.x, y * right.y);
+}
+
+constexpr Vector2i Vector2i::operator*(const int_t right) const {
+	return Vector2i(x * right, y * right);
+}
+
+constexpr Vector2i Vector2i::operator/(const Vector2 &right) const {
+	return Vector2(x / right.x, y / right.y);
+}
+
+constexpr Vector2i Vector2i::operator/(const int_t right) const {
+	return Vector2i(x / right, y / right);
+}
+
+constexpr void Vector2i::operator+=(const Vector2i &right) {
+	x += right.x;
+	y += right.y;
+}
+
+constexpr void Vector2i::operator-=(const Vector2i &right) {
+ x -= right.x;
+ y -= right.y;
+}
+
+constexpr void Vector2i::operator*=(const Vector2i &right) {
+	x *= right.x;
+	y *= right.y;
+}
+
+constexpr void Vector2i::operator*=(const int_t right) {
+	x *= right;
+	y *= right;
+}
+
+constexpr void Vector2i::operator/=(const Vector2i &right) {
+	x /= right.x;
+	y /= right.y;
+}
+
+constexpr void Vector2i::operator/=(const int_t right) {
+	x /= right;
+	y /= right;
+}
+
+constexpr int_t Vector2i::operator[](const int index) const {
+	if (index == 0)
+		return x;
+	else if (index == 1)
+		return y;
+	return 0;
+}
+
+constexpr Vector2i Vector2i::operator+() const {
+	return Vector2i(+x, +y);
+}
+
+constexpr Vector2i Vector2i::operator-() const {
+	return Vector2i(-x, -y);
+}
 
 }

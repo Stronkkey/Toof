@@ -16,8 +16,8 @@ private:
 	std::string *string;
 
 	void set_string(const std::string &new_string);
+	constexpr void deallocate_string(std::string *string);
 	std::string *allocate_string(const std::string &string);
-	void deallocate_string(std::string *string);
 	
 public:
 	StringName();
@@ -25,7 +25,16 @@ public:
 
 	~StringName();
 
-	const std::string *get_string() const;
+	constexpr const std::string *get_string() const;
 };
+
+constexpr void sdl::StringName::deallocate_string(std::string *string) {
+	// TODO: Free string
+	(void)string;
+}
+
+constexpr const std::string *sdl::StringName::get_string() const {
+	return string;
+}
 
 }
