@@ -5,6 +5,7 @@
 #include <any>
 #include <initializer_list>
 #include <string>
+#include <vector>
 
 namespace sdl {
 
@@ -60,6 +61,11 @@ void prints_err(const std::any &variant = "");
 * Prints one or more arguments to the console with a space between each argument to the error output.
 */
 void prints_err(const std::initializer_list<std::any> &variants);
+
+/**
+* Splits the @param string using a @param delimiter and returns an array of the substrings.
+*/
+std::vector<std::string> split_string(const std::string &string, const std::string &delimiter);
 
 }
 

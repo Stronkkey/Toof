@@ -237,3 +237,16 @@ void UtilityFunctions::prints_err(const std::initializer_list<std::any> &variant
 	}
 	std::cerr << end_line;
 }
+
+std::vector<std::string> UtilityFunctions::split_string(const std::string &string, const std::string &delimiter) {
+	uint64_t pos;
+	std::string str_copy = string;
+	std::vector<std::string> strings;
+
+	while ((pos = str_copy.find(delimiter)) != std::string::npos) {
+		strings.push_back(str_copy.substr(0, pos));
+		str_copy.erase(0, pos + delimiter.length());
+	}
+
+	return strings;
+}
