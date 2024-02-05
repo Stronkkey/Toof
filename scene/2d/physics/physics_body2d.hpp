@@ -2,14 +2,14 @@
 
 #pragma once
 
-#include <resources/world2d.hpp>
-#include <items/rendering_item.hpp>
+#include <scene/resources/world2d.hpp>
+#include <scene/2d/node2d.hpp>
 
 namespace sdl {
 
 class PhysicsServer2D;
 
-class PhysicsBody2D : public RenderingItem {
+class PhysicsBody2D : public Node2D {
 private:
 	uid physics_body_rid;
 	World2D world_2d;

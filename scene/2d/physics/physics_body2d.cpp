@@ -1,7 +1,7 @@
 #ifdef B2_INCLUDED
 
-#include <items/physics/physics_body2d.hpp>
-#include <items/tree.hpp>
+#include <scene/2d/physics/physics_body2d.hpp>
+#include <scene/main/scene_tree.hpp>
 #include <servers/physics_server.hpp>
 
 void sdl::PhysicsBody2D::ready() {
@@ -9,7 +9,7 @@ void sdl::PhysicsBody2D::ready() {
 }
 
 void sdl::PhysicsBody2D::_notification(const int what) {
-	RenderingItem::_notification(what);
+	Node2D::_notification(what);
 
 	if (what == NOTIFICATION_READY)
 		ready();
