@@ -43,7 +43,8 @@ public:
 		NOTIFICATION_DISABLED /* Notification received when the node is disabled. @see PROCESS_MODE_DISABLED.*/,
 		NOTIFICATION_ENABLED /* Notification received when the node is enabled after being disabled. @see PROCESS_MODE_DISABLED.*/,
 		NOTIFICATION_CLOSE_REQUEST /* Notification received when the window is about to be closed.*/,
-		NOTIFICATION_PREDELETE /* Notification received before the Node is deleted with free.*/
+		NOTIFICATION_PREDELETE /* Notification received before the Node is deleted with free.*/,
+		NOTIFICATION_CRASH /* Notification received from the SceneTree's crash handler when the program is about to crash. Implemented on desktop platforms.*/,
 	};
 
 private:
