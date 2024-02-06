@@ -20,22 +20,31 @@ class PhysicsServer2D;
 class SceneTree {
 
 private:
+	struct Loop {
+		enum LoopType {
+			LOOP_TYPE_PROCESS,
+			LOOP_TYPE_RENDER,
+			LOOP_TYPE_PHYSICS,
+			LOOP_TYPE_NONE
+		};
+
+		double frame_rate;
+		double delta_time;
+		double speed_scale;
+		double time_scale;
+		long prev_step_time;
+		LoopType loop_type = LOOP_TYPE_NONE;
+	};
+
+private:
 	bool running;
-	double loop_frame_rate, loop_delta_time, loop_speed_scale, loop_time_scale;
-	double render_frame_rate, render_delta_time, render_speed_scale, render_time_scale;
+	std::unique_ptr<Loop> render_loop, process_loop, physics_loop;
 
-	#ifdef B2_INCLUDED
-	double physics_frame_rate, physics_delta_time, physics_speed_scale, physics_time_scale;
-	#endif
+	void _step_loop(const Loop::LoopType loop_type);
 
-	double wait_for(const double time_seconds) const;
-	void render_loop();
-	void main_loop();
-	void event_loop();
+	void _do_loop(const std::unique_ptr<Loop> &loop);
 
-	#ifdef B2_INCLUDED
-	void physics_loop();
-	#endif
+	void _main_loop();
 
 	std::vector<Node*> deferred_item_removal;
 
@@ -51,10 +60,6 @@ private:
 
 	virtual void _initialize();
 	virtual void _ended();
-	void events();
-	void loop();
-	void render();
-	void physics();
 
 public:
 	SceneTree();
@@ -63,10 +68,7 @@ public:
 	boost::signals2::signal<void()> loop_frame;
 	boost::signals2::signal<void()> render_frame;
 	boost::signals2::signal<void()> deferred_signals;
-
-	#ifdef B2_INCLUDED
 	boost::signals2::signal<void()> physics_frame;
-	#endif
 
 	Window *get_window() const;
 	Viewport *get_viewport() const;
@@ -80,6 +82,11 @@ public:
 
 	void start();
 	void stop();
+	
+	void step_render(const double delta);
+	void step_process(const double delta);
+	void step_event();
+	void step_physics(const double delta);
 
 	void queue_free(Node *item);
 
