@@ -98,10 +98,10 @@ void SceneTree::step_render(const double delta) {
 
 void SceneTree::step_process(const double delta) {
 	process_loop->delta_time = delta * process_loop->time_scale;
-	loop_frame();
+	process_frame();
 
 	if (root)
-		root->propagate_notification(Node::NOTIFICATION_LOOP);
+		root->propagate_notification(Node::NOTIFICATION_PROCESS);
 
 	deferred_signals();
 
@@ -232,11 +232,11 @@ double SceneTree::get_render_frame_rate() const {
 	return render_loop->frame_rate;
 }
 
-void SceneTree::set_loop_frame_rate(const double new_loop_frame_rate) {
-	process_loop->frame_rate = new_loop_frame_rate;
+void SceneTree::set_process_frame_rate(const double new_process_frame_rate) {
+	process_loop->frame_rate = new_process_frame_rate;
 }
 
-double SceneTree::get_loop_frame_rate() const {
+double SceneTree::get_process_frame_rate() const {
 	return process_loop->frame_rate;
 }
 
@@ -248,11 +248,11 @@ double SceneTree::get_render_speed_scale() const {
 	return render_loop->speed_scale;
 }
 
-void SceneTree::set_loop_speed_scale(const double new_loop_speed_scale) {
-	process_loop->speed_scale = new_loop_speed_scale;
+void SceneTree::set_process_speed_scale(const double new_process_speed_scale) {
+	process_loop->speed_scale = new_process_speed_scale;
 }
 
-double SceneTree::get_loop_speed_scale() const {
+double SceneTree::get_process_speed_scale() const {
 	return process_loop->speed_scale;
 }
 
@@ -264,11 +264,11 @@ double SceneTree::get_render_time_scale() const {
 	return render_loop->time_scale;
 }
 
-void SceneTree::set_loop_time_scale(const double new_loop_time_scale) {
-	process_loop->time_scale = new_loop_time_scale;
+void SceneTree::set_process_time_scale(const double new_process_time_scale) {
+	process_loop->time_scale = new_process_time_scale;
 }
 
-double SceneTree::get_loop_time_scale() const {
+double SceneTree::get_process_time_scale() const {
 	return process_loop->time_scale;
 }
 
@@ -276,7 +276,7 @@ double SceneTree::get_render_delta_time() const {
 	return render_loop->delta_time;
 }
 
-double SceneTree::get_loop_delta_time() const {
+double SceneTree::get_process_delta_time() const {
 	return process_loop->delta_time;
 }
 

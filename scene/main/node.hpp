@@ -33,7 +33,7 @@ public:
 		NOTIFICATION_READY = 1000 /* Notification received when the node is ready. @see _ready.*/,
 		NOTIFICATION_EVENT /* Notification received when an event has been process. @see _event.*/,
 		NOTIFICATION_RENDER /* Notification received each render step. @see _render.*/,
-		NOTIFICATION_LOOP /* Notification received each loop step. @see _loop.*/,
+		NOTIFICATION_PROCESS /* Notification received each process step. @see _process.*/,
 		NOTIFICATION_PHYSICS_PROCESS /* Notification received each physics step. @see _physics_process.*/,
 		NOTIFICATION_ENTER_TREE /* Notification received when the node enters the tree*/,
 		NOTIFICATION_EXIT_TREE /* Notification received when the node is removed from the tree.*/,
@@ -79,12 +79,12 @@ protected:
 	virtual void _render(double delta);
 
 	/**
-	* Called in the loop step of the tree.
-	* This usually happens every 1/fixed_frame_rate seconds
+	* Called in the process step of the tree.
+	* This usually happens every process_speed_scale/process_frame_rate seconds
 	* but can take longer if the system cannot catch up.
 	* \param delta The time from between the previous frame and the current frame. Note: This value is very close to 0 on the first frame.
 	*/
-	virtual void _loop(double delta);
+	virtual void _process(double delta);
 
 	/**
 	* Called in each physics step of the tree.
@@ -133,7 +133,7 @@ public:
 	boost::signals2::signal<void()> tree_exiting;
 
 	/**
-	* Gets the global event from the tree or nullptr if the tree is not set.
+	* @returns the global event from the tree or nullptr if the tree is not set.
 	*/
 	SDL_Event *get_event() const;
 
@@ -144,10 +144,10 @@ public:
 	double get_delta_time() const;
 
 	/**
-	* @returns the time between the previous loop step and the c urrent loop step.
+	* @returns the time between the previous process step and the current process step.
 	* @note This value is very close to 0 on the first frame.
 	*/
-	double get_loop_delta_time() const;
+	double get_process_delta_time() const;
 
 	/**
 	* @returns the time between the previous physics step and the current physics step.

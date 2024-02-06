@@ -21,7 +21,7 @@ Transform2D Camera2D::_get_camera_transform() const {
 
 	Vector2 final_offset = offset;
 	Vector2 camera_position;
-	Vector2 global_scale;
+	//Vector2 global_scale;
 	double camera_rotation = 0;
 
 	if (anchor_mode == CAMERA_ITEM_ANCHOR_DRAG_CENTER)
@@ -67,9 +67,9 @@ void Camera2D::_notification(const int what) {
 		if (process_callback == CAMERA_ITEM_PROCESS_LOOP_RENDER || process_callback == CAMERA_ITEM_PROCESS_RENDER)
 			step_camera(get_delta_time());
 
-	if (what == NOTIFICATION_LOOP)
+	if (what == NOTIFICATION_PROCESS)
 		if (process_callback == CAMERA_ITEM_PROCESS_LOOP_RENDER || process_callback == CAMERA_ITEM_PROCESS_LOOP)
-			step_camera(get_loop_delta_time());
+			step_camera(get_process_delta_time());
 }
 
 std::optional<Transform2D> Camera2D::get_camera_transform() const {

@@ -33,7 +33,7 @@ void Node::_add_child_nocheck(Node *new_item) {
 void Node::_ready() {
 }
 
-void Node::_loop(double) {
+void Node::_process(double) {
 }
 
 void Node::_physics_process(const double) {
@@ -75,8 +75,8 @@ void Node::notification(const int what) {
 		case NOTIFICATION_RENDER:
 			_render(get_delta_time());
 			break;
-		case NOTIFICATION_LOOP:
-			_loop(get_loop_delta_time());
+		case NOTIFICATION_PROCESS:
+			_process(get_process_delta_time());
 			break;
 		case NOTIFICATION_EVENT:
 			_event(get_event());
@@ -167,8 +167,8 @@ double Node::get_delta_time() const {
 	return tree ? tree->get_render_delta_time() : 0.0;
 }
 
-double Node::get_loop_delta_time() const {
-	return tree ? tree->get_loop_delta_time() : 0.0;
+double Node::get_process_delta_time() const {
+	return tree ? tree->get_process_delta_time() : 0.0;
 }
 
 double Node::get_physics_delta_time() const {

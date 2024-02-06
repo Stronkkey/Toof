@@ -65,7 +65,7 @@ public:
 	SceneTree();
 	virtual ~SceneTree();
 
-	boost::signals2::signal<void()> loop_frame;
+	boost::signals2::signal<void()> process_frame;
 	boost::signals2::signal<void()> render_frame;
 	boost::signals2::signal<void()> deferred_signals;
 	boost::signals2::signal<void()> physics_frame;
@@ -93,23 +93,23 @@ public:
 	void set_render_frame_rate(const double new_render_frame_rate);
 	double get_render_frame_rate() const;
 
-	void set_loop_frame_rate(const double new_loop_frame_rate);
-	double get_loop_frame_rate() const;
+	void set_process_frame_rate(const double new_process_frame_rate);
+	double get_process_frame_rate() const;
 
 	void set_render_speed_scale(const double new_render_speed_scale);
 	double get_render_speed_scale() const;
 
-	void set_loop_speed_scale(const double new_loop_speed_scale);
-	double get_loop_speed_scale() const;
+	void set_process_speed_scale(const double new_process_speed_scale);
+	double get_process_speed_scale() const;
 
 	void set_render_time_scale(const double new_render_time_scale);
 	double get_render_time_scale() const;
 
-	void set_loop_time_scale(const double new_loop_time_scale);
-	double get_loop_time_scale() const;
+	void set_process_time_scale(const double new_process_time_scale);
+	double get_process_time_scale() const;
 
 	double get_render_delta_time() const;
-	double get_loop_delta_time() const;
+	double get_process_delta_time() const;
 
 	#ifdef B2_INCLUDED
 	void set_physics_frame_rate(const double new_physics_frame_rate);
