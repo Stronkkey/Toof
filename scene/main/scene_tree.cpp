@@ -18,6 +18,12 @@ using namespace sdl;
 SceneTree::SceneTree() {
 	running = false;
 
+	paused = false;
+	render_paused = false;
+	process_paused = false;
+	physics_paused = false;
+	event_paused = false;
+
 	const long time = std::chrono::high_resolution_clock::now().time_since_epoch().count();
 
 	process_loop = std::make_unique<Loop>();
@@ -161,14 +167,22 @@ void SceneTree::_do_loop(const std::unique_ptr<Loop> &loop) {
 
 void SceneTree::_main_loop() {
 	while (running) {
-		while (SDL_PollEvent(event))
-			step_event();
+		if (paused)
+			return;
 
-		_do_loop(render_loop);
-		_do_loop(process_loop);
+		if (!event_paused)
+			while (SDL_PollEvent(event))
+				step_event();
+
+		if (!render_paused)
+			_do_loop(render_loop);
+
+		if (!process_paused)
+			_do_loop(process_loop);
 
 		#ifdef B2_INCLUDED
-		_do_loop(physics_loop);
+		if (!physics_paused)
+			_do_loop(physics_loop);
 		#endif
 
 		std::this_thread::yield();
@@ -197,6 +211,47 @@ void SceneTree::queue_free(Node *item) {
 	deferred_item_removal.push_back(item);
 }
 
+void SceneTree::set_paused(const bool paused) {
+	this->paused = paused;
+}
+
+bool SceneTree::is_paused() const {
+	return paused;
+}
+
+void SceneTree::set_render_paused(const bool paused) {
+	render_paused = paused;
+}
+
+bool SceneTree::is_render_paused() const {
+	return render_paused;
+}
+
+void SceneTree::set_process_paused(const bool paused) {
+	process_paused = paused;
+}
+
+bool SceneTree::is_process_paused() const {
+	return process_paused;
+}
+
+void SceneTree::set_event_paused(const bool paused) {
+	event_paused = paused;
+}
+
+bool SceneTree::is_event_paused() const {
+	return event_paused;
+}
+
+#ifdef B2_INCLUDED
+void SceneTree::set_physics_paused(const bool paused) {
+	physics_paused = paused;
+}
+
+bool SceneTree::is_physics_paused() const {
+	return physics_paused;
+}
+#endif
 
 Window *SceneTree::get_window() const {
 	return window;

@@ -37,13 +37,12 @@ private:
 	};
 
 private:
-	bool running;
+	bool running, paused, render_paused, process_paused, physics_paused, event_paused;
+
 	std::unique_ptr<Loop> render_loop, process_loop, physics_loop;
 
 	void _step_loop(const Loop::LoopType loop_type);
-
 	void _do_loop(const std::unique_ptr<Loop> &loop);
-
 	void _main_loop();
 
 	std::vector<Node*> deferred_item_removal;
@@ -89,6 +88,23 @@ public:
 	void step_physics(const double delta);
 
 	void queue_free(Node *item);
+
+	void set_paused(const bool paused);
+	bool is_paused() const;
+
+	void set_render_paused(const bool paused);
+	bool is_render_paused() const;
+
+	void set_process_paused(const bool paused);
+	bool is_process_paused() const;
+
+	void set_event_paused(const bool paused);
+	bool is_event_paused() const;
+
+	#ifdef B2_INCLUDED
+	void set_physics_paused(const bool paused);
+	bool is_physics_paused() const;
+	#endif
 
 	void set_render_frame_rate(const double new_render_frame_rate);
 	double get_render_frame_rate() const;
