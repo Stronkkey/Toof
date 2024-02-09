@@ -22,7 +22,7 @@ struct CanvasItem {
 	SDL_ScaleMode scale_mode = SDL_ScaleModeLinear;
 
 	std::weak_ptr<CanvasItem> parent;
-	std::vector<std::shared_ptr<DrawingItem>> drawing_items;
+	std::vector<std::unique_ptr<DrawingItem>> drawing_items;
 
 	void set_global_transform();
 	void set_global_modulate();

@@ -37,13 +37,12 @@ private:
 	void destroy_canvas_item_uid(const uid canvas_item_uid);
 	void destroy_uid(const uid target_uid);
 
-	std::shared_ptr<CanvasItem> get_canvas_item_from_uid(const uid canvas_item_uid) const;
-	std::shared_ptr<Texture> get_texture_from_uid(const uid texture_uid) const;
+	const std::shared_ptr<CanvasItem> &get_canvas_item_from_uid(const uid canvas_item_uid) const;
+	const std::shared_ptr<Texture> &get_texture_from_uid(const uid texture_uid) const;
 
 public:
 	struct TextureInfo {
 		Vector2i size;
-		bool valid; // Valid is here to prevent bumping up the size to 40 bytes
 		uint32_t format;
 		SDL_Texture *texture;
 	};
