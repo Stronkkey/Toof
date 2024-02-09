@@ -40,9 +40,10 @@ private:
 
 protected:
 	/**
-	* @returns the RenderingServer inside the tree or nullptr if the tree hasn't been set.
+	* @returns the RenderingServer from the tree.
+	* @note dereferencing return value is UNDEFINED if is_inside_tree returns false
 	*/
-	RenderingServer *get_rendering_server() const;
+	std::unique_ptr<RenderingServer> &get_rendering_server() const;
 
 	void _notification(const int what) override;
 	/**

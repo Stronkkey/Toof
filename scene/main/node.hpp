@@ -18,7 +18,7 @@ class SceneTree;
 
 class Node {
 
-typedef std::unordered_map<std::string*, Node*> children_t;
+typedef std::unordered_set<Node*> children_t;
 
 public:
 	enum ProcessMode {
@@ -49,11 +49,13 @@ public:
 
 private:
 	children_t children;
-	SceneTree *tree = nullptr;
+	SceneTree *tree;
 	Node *parent;
 	std::string name;
 	bool is_ready, is_deletion_queued;
 
+	void _reset_tree();
+	void _reset_parent(const bool erase_as_child = true);
 	void _add_child_nocheck(Node *node);
 
 protected:
@@ -66,9 +68,9 @@ protected:
 	/**
 	* Called each time an "event" happens.
 	* This can be keyboard input, mouse movement, window size changing, etc.
-	* @note vents are instantly processed from when they happen.
+	* @note events are instantly processed from when they happen.
 	*/
-	virtual void _event(const SDL_Event *event);
+	virtual void _event(const std::unique_ptr<SDL_Event> &event);
 
 	/**
 	* Called in the render step of the tree.
@@ -105,8 +107,7 @@ public:
 	Node();
 
 	/**
-	* Destroys the node and deletes all its child nodes.
-	* @note the children should be heap allocated.
+	* Deletes this node and removes it as a child from the parent.
 	*/
 	virtual ~Node();
 
@@ -133,9 +134,10 @@ public:
 	boost::signals2::signal<void()> tree_exiting;
 
 	/**
-	* @returns the global event from the tree or nullptr if the tree is not set.
+	* @returns the global event from the tree.
+	* @note dereferencing return value is UNDEFINED if is_inside_tree returns false
 	*/
-	SDL_Event *get_event() const;
+	const std::unique_ptr<SDL_Event> &get_event() const;
 
 	/**
 	* @returns the time between the previous render step and the current render step.
@@ -228,13 +230,7 @@ public:
 	Node *get_parent() const;
 
 	/**
-	* @returns the node with the given name, nullptr otherwise.
-	* @param name the node's name
-	*/
-	Node *get_node(std::string *name) const;
-
-	/**
-	* Calls remove_node on all the children of this node.
+	* Calls remove_child on all the children of this node.
 	*/
 	void remove_children();
 };

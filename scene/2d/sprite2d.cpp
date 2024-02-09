@@ -30,7 +30,7 @@ void Sprite2D::draw_rect_texture() const {
 }
 
 void Sprite2D::draw() const {
-	RenderingServer *rendering_server = get_rendering_server();
+	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (!rendering_server || !texture)
 		return;
 

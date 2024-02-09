@@ -3,6 +3,7 @@
 #include <servers/rendering/viewport.hpp>
 #include <servers/rendering/window.hpp>
 #include <servers/rendering_server.hpp>
+#include <input/input_map.hpp>
 
 #ifdef B2_INCLUDED
 #include <servers/physics_server.hpp>
@@ -44,12 +45,12 @@ SceneTree::SceneTree() {
 	render_loop->prev_step_time = time;
 	render_loop->loop_type = Loop::LOOP_TYPE_RENDER;
 
-	window = new Window;
-	viewport = new Viewport;
-	rendering_server = new RenderingServer(viewport);
-	root = new Node;
+	window = std::make_unique<Window>();
+	viewport = std::make_unique<Viewport>();
+	rendering_server = std::make_unique<RenderingServer>(viewport.get());
+	root = std::make_unique<Node>();
 
-	viewport->create(window);
+	viewport->create(window.get());
 	root->set_name("Root");
 	root->set_tree(this);
 
@@ -61,7 +62,7 @@ SceneTree::SceneTree() {
 	physics_loop->prev_step_time = time;
 	physics_loop->loop_type = Loop::LOOP_TYPE_PHYSICS;
 
-	physics_server = new PhysicsServer2D;
+	physics_server = std::make_unique<PhysicsServer2D>();
 	#else
 	physics_loop->prev_step_time = 1 << 30;
 	#endif
@@ -69,22 +70,6 @@ SceneTree::SceneTree() {
 
 SceneTree::~SceneTree() {
 	stop();
-	
-	if (window)
-		delete window;
-	if (viewport)
-		delete viewport;
-	if (rendering_server)
-		delete rendering_server;
-	if (event)
-		delete event;
-	if (root)
-		delete root;
-
-	#ifdef B2_INCLUDED
-	if (physics_server)
-		delete physics_server;
-	#endif
 }
 
 void SceneTree::_initialize() {
@@ -171,7 +156,7 @@ void SceneTree::_main_loop() {
 			return;
 
 		if (!event_paused)
-			while (SDL_PollEvent(event))
+			while (SDL_PollEvent(event.get()))
 				step_event();
 
 		if (!render_paused)
@@ -194,7 +179,7 @@ void SceneTree::start() {
 		return;
 
 	running = true;
-	event = new SDL_Event;
+	event = std::make_unique<SDL_Event>();
 
 	_initialize();
 	_main_loop();
@@ -253,28 +238,32 @@ bool SceneTree::is_physics_paused() const {
 }
 #endif
 
-Window *SceneTree::get_window() const {
+std::unique_ptr<Window> &SceneTree::get_window() {
 	return window;
 }
 
-Viewport *SceneTree::get_viewport() const {
+std::unique_ptr<Viewport> &SceneTree::get_viewport() {
 	return viewport;
 }
 
-RenderingServer *SceneTree::get_rendering_server() const {
+std::unique_ptr<RenderingServer> &SceneTree::get_rendering_server() {
 	return rendering_server;
 }
 
-Node *SceneTree::get_root() const {
+std::unique_ptr<Node> &SceneTree::get_root() {
 	return root;
 }
 
-SDL_Event *SceneTree::get_event() const {
+std::unique_ptr<SDL_Event> &SceneTree::get_event() {
 	return event;
 }
 
+std::unique_ptr<InputMap> &SceneTree::get_input_map() {
+	return input_map;
+}
+
 #ifdef B2_INCLUDED
-PhysicsServer2D *SceneTree::get_physics_server() const {
+std::unique_ptr<PhysicsServer2D> &SceneTree::get_physics_server() {
 	return physics_server;
 }
 #endif

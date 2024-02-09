@@ -7,7 +7,7 @@ using namespace sdl;
 
 Node::Node(): children(),
     tree(nullptr),
-    parent(),
+    parent(nullptr),
     name("Node"),
     is_ready(false),
 	is_deletion_queued(false) {
@@ -16,18 +16,35 @@ Node::Node(): children(),
 Node::~Node() {
 	notification(NOTIFICATION_PREDELETE);
 
-	for (const auto &iterator: children)
-		delete iterator.second;
+	if (parent)
+		parent->remove_child(this);
+
+	remove_children();
 }
 
-void Node::_add_child_nocheck(Node *new_item) {
-	children.insert({&new_item->name, new_item});
-	new_item->parent = this;
+void Node::_reset_tree() {
+	if (tree)
+		propagate_notification(NOTIFICATION_EXIT_TREE);
+
+	tree = nullptr;
+}
+
+void Node::_reset_parent(const bool erase_as_child) {
+	if (parent && erase_as_child)
+		parent->children.erase(this);
+
+	parent = nullptr;
+	notification(NOTIFICATION_PARENTED);
+}
+
+void Node::_add_child_nocheck(Node *new_child) {
+	children.insert(new_child);
+	new_child->parent = this;
 
 	if (tree)
-		new_item->set_tree(tree);
+		new_child->set_tree(tree);
 
-	new_item->notification(NOTIFICATION_PARENTED);
+	new_child->notification(NOTIFICATION_PARENTED);
 }
 
 void Node::_ready() {
@@ -42,7 +59,7 @@ void Node::_physics_process(const double) {
 void Node::_render(double) {
 }
 
-void Node::_event(const SDL_Event*) {
+void Node::_event(const std::unique_ptr<SDL_Event>&) {
 }
 
 void Node::_notification(const int) {
@@ -96,8 +113,8 @@ void Node::notification(const int what) {
 void Node::propagate_notification(const int what) {
 	notification(what);
 
-	for (const auto &iterator: children)
-		iterator.second->propagate_notification(what);
+	for (Node *child: children)
+		child->propagate_notification(what);
 }
 
 SceneTree *Node::get_tree() const {
@@ -141,12 +158,11 @@ const std::string &Node::get_name() const {
 }
 
 void Node::remove_child(Node* node) {
-	if (!node || node->parent != this)
+	if (node->parent != this)
 		return;
 
-	node->parent = nullptr;
-	node->set_tree(nullptr);
-	children.erase(&node->name);
+	node->_reset_parent();
+	node->_reset_tree();
 }
 
 const Node::children_t &Node::get_children() const {
@@ -155,12 +171,6 @@ const Node::children_t &Node::get_children() const {
 
 Node *Node::get_parent() const {
 	return parent;
-}
-
-Node *Node::get_node(std::string *name) const {
-	auto iterator = children.find(name);
-
-	return iterator == children.end() ? nullptr : iterator->second;
 }
 
 double Node::get_delta_time() const {
@@ -179,14 +189,19 @@ double Node::get_physics_delta_time() const {
 	#endif
 }
 
-SDL_Event *Node::get_event() const {
-	return tree ? tree->get_event() : nullptr;
+const std::unique_ptr<SDL_Event> &Node::get_event() const {
+	if (tree)
+		return tree->get_event();
+
+	std::unique_ptr<SDL_Event> _i;
+	std::unique_ptr<SDL_Event> *i = &_i;
+	return *(i);
 }
 
 void Node::remove_children() {
-	for (const auto &iterator: children) {
-		iterator.second->parent = nullptr;
-		iterator.second->set_tree(nullptr);
+	for (Node *node: children) {
+		node->_reset_parent(false);
+		node->_reset_tree();
 	}
 	children.clear();
 }

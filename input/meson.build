@@ -1,7 +1,12 @@
 input_source_files = files(
-	'input_manager.cpp',
+	'input_event.cpp',
+	'input_map.cpp',
 )
 
 input_headers = files(
-	'input_manager.hpp',
+	'event_input_type.hpp',
+	'input.hpp',
+	'input_event.hpp',
+	'input_map.hpp',
+	'input_map.hpp',
 )

@@ -15,8 +15,13 @@ void sdl::PhysicsBody2D::_notification(const int what) {
 		ready();
 }
 
-sdl::PhysicsServer2D *sdl::PhysicsBody2D::get_physics_server() const {
-	return get_tree() ? get_tree()->get_physics_server() : nullptr;
+std::unique_ptr<sdl::PhysicsServer2D> &sdl::PhysicsBody2D::get_physics_server() const {
+	if (is_inside_tree())
+		return get_tree()->get_physics_server();
+
+	std::unique_ptr<PhysicsServer2D> _p;
+	std::unique_ptr<PhysicsServer2D> *p = &_p;
+	return *p;
 }
 
 void sdl::PhysicsBody2D::add_collision_exception_with(const PhysicsBody2D*) {

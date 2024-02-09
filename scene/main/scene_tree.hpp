@@ -13,6 +13,8 @@ class Node;
 class Window;
 class RenderingServer;
 class Viewport;
+class InputMap;
+
 #ifdef B2_INCLUDED
 class PhysicsServer2D;
 #endif
@@ -47,14 +49,15 @@ private:
 
 	std::vector<Node*> deferred_item_removal;
 
-	Window *window = nullptr;
-	Viewport *viewport = nullptr;
-	RenderingServer *rendering_server = nullptr;
-	SDL_Event *event = nullptr;
-	Node *root = nullptr;
+	std::unique_ptr<Window> window;
+	std::unique_ptr<Viewport> viewport;
+	std::unique_ptr<InputMap> input_map;
+	std::unique_ptr<RenderingServer> rendering_server;
+	std::unique_ptr<SDL_Event> event;
+	std::unique_ptr<Node> root;
 
 	#ifdef B2_INCLUDED
-	PhysicsServer2D *physics_server = nullptr;
+	std::unique_ptr<PhysicsServer2D> physics_server;
 	#endif
 
 	virtual void _initialize();
@@ -69,14 +72,15 @@ public:
 	boost::signals2::signal<void()> deferred_signals;
 	boost::signals2::signal<void()> physics_frame;
 
-	Window *get_window() const;
-	Viewport *get_viewport() const;
-	RenderingServer *get_rendering_server() const;
-	Node *get_root() const;
-	SDL_Event *get_event() const;
+	std::unique_ptr<Window> &get_window();
+	std::unique_ptr<Viewport> &get_viewport();
+	std::unique_ptr<RenderingServer> &get_rendering_server();
+	std::unique_ptr<Node> &get_root();
+	std::unique_ptr<SDL_Event> &get_event();
+	std::unique_ptr<InputMap> &get_input_map();
 
 	#ifdef B2_INCLUDED
-	PhysicsServer2D *get_physics_server() const;
+	std::unique_ptr<PhysicsServer2D> &get_physics_server();
 	#endif
 
 	void start();
@@ -87,7 +91,7 @@ public:
 	void step_event();
 	void step_physics(const double delta);
 
-	void queue_free(Node *item);
+	void queue_free(Node *node);
 
 	void set_paused(const bool paused);
 	bool is_paused() const;
