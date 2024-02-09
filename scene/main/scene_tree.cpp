@@ -238,32 +238,32 @@ bool SceneTree::is_physics_paused() const {
 }
 #endif
 
-std::unique_ptr<Window> &SceneTree::get_window() {
+const std::unique_ptr<Window> &SceneTree::get_window() const {
 	return window;
 }
 
-std::unique_ptr<Viewport> &SceneTree::get_viewport() {
+const std::unique_ptr<Viewport> &SceneTree::get_viewport() const {
 	return viewport;
 }
 
-std::unique_ptr<RenderingServer> &SceneTree::get_rendering_server() {
+const std::unique_ptr<RenderingServer> &SceneTree::get_rendering_server() const {
 	return rendering_server;
 }
 
-std::unique_ptr<Node> &SceneTree::get_root() {
+const std::unique_ptr<Node> &SceneTree::get_root() const {
 	return root;
 }
 
-std::unique_ptr<SDL_Event> &SceneTree::get_event() {
+const std::unique_ptr<SDL_Event> &SceneTree::get_event() const {
 	return event;
 }
 
-std::unique_ptr<InputMap> &SceneTree::get_input_map() {
+const std::unique_ptr<InputMap> &SceneTree::get_input_map() const {
 	return input_map;
 }
 
 #ifdef B2_INCLUDED
-std::unique_ptr<PhysicsServer2D> &SceneTree::get_physics_server() {
+const std::unique_ptr<PhysicsServer2D> &SceneTree::get_physics_server() const {
 	return physics_server;
 }
 #endif

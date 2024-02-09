@@ -72,15 +72,15 @@ public:
 	boost::signals2::signal<void()> deferred_signals;
 	boost::signals2::signal<void()> physics_frame;
 
-	std::unique_ptr<Window> &get_window();
-	std::unique_ptr<Viewport> &get_viewport();
-	std::unique_ptr<RenderingServer> &get_rendering_server();
-	std::unique_ptr<Node> &get_root();
-	std::unique_ptr<SDL_Event> &get_event();
-	std::unique_ptr<InputMap> &get_input_map();
+	const std::unique_ptr<Window> &get_window() const;
+	const std::unique_ptr<Viewport> &get_viewport() const;
+	const std::unique_ptr<RenderingServer> &get_rendering_server() const;
+	const std::unique_ptr<Node> &get_root() const;
+	const std::unique_ptr<SDL_Event> &get_event() const;
+	const std::unique_ptr<InputMap> &get_input_map() const;
 
 	#ifdef B2_INCLUDED
-	std::unique_ptr<PhysicsServer2D> &get_physics_server();
+	const std::unique_ptr<PhysicsServer2D> &get_physics_server() const;
 	#endif
 
 	void start();

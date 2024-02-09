@@ -18,7 +18,7 @@ private:
 	void _notification(const int what) override;
 
 protected:
-	std::unique_ptr<PhysicsServer2D> &get_physics_server() const;
+	const std::unique_ptr<PhysicsServer2D> &get_physics_server() const;
 
 public:
 	void add_collision_exception_with(const PhysicsBody2D *physics_body2d);

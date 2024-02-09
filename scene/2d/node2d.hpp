@@ -41,9 +41,9 @@ private:
 protected:
 	/**
 	* @returns the RenderingServer from the tree.
-	* @note dereferencing return value is UNDEFINED if is_inside_tree returns false
+	* @note attempting to dereference the pointer is undefined if the node is not inside a SceneTree.
 	*/
-	std::unique_ptr<RenderingServer> &get_rendering_server() const;
+	const std::unique_ptr<RenderingServer> &get_rendering_server() const;
 
 	void _notification(const int what) override;
 	/**

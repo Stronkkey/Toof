@@ -193,8 +193,8 @@ const std::unique_ptr<SDL_Event> &Node::get_event() const {
 	if (tree)
 		return tree->get_event();
 
-	std::unique_ptr<SDL_Event> _i;
-	std::unique_ptr<SDL_Event> *i = &_i;
+	const std::unique_ptr<SDL_Event> _i;
+	const std::unique_ptr<SDL_Event> *i = &_i;
 	return *(i);
 }
 

@@ -19,7 +19,7 @@ Node2D::Node2D(): transform(Transform2D::IDENTITY),
 }
 
 Node2D::~Node2D() {
-	std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
+	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 
 	if (rendering_server)
 		rendering_server->remove_uid(canvas_item);
@@ -32,17 +32,17 @@ void Node2D::ready() {
 	queue_redraw();
 }
 
-std::unique_ptr<RenderingServer> &Node2D::get_rendering_server() const {
+const std::unique_ptr<RenderingServer> &Node2D::get_rendering_server() const {
 	if (is_inside_tree())
 		return get_tree()->get_rendering_server();
 	
-	std::unique_ptr<RenderingServer> _r;
-	std::unique_ptr<RenderingServer> *r = &_r;
+	const std::unique_ptr<RenderingServer> _r;
+	const std::unique_ptr<RenderingServer> *r = &_r;
 	return *r;
 }
 
 void Node2D::update() {
-	std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
+	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	update_queued = false;
 
 	if (rendering_server) {
@@ -57,7 +57,7 @@ void Node2D::update() {
 }
 
 void Node2D::on_parent_changed(Node *new_parent) {
-	std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
+	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (!rendering_server || !new_parent)
 		return;
 
@@ -173,7 +173,7 @@ void Node2D::set_global_transform(const Transform2D &new_global_transform) {
 }
 
 const Transform2D Node2D::get_global_transform() const {
-	std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
+	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 
 	if (rendering_server) {
 		const std::optional<const Transform2D> global_transform = rendering_server->canvas_item_get_global_transform(canvas_item);
@@ -193,7 +193,7 @@ const Color &Node2D::get_modulate() const {
 }
 
 const Color Node2D::get_absolute_modulate() const {
-	std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
+	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 
 	if (rendering_server) {
 		const std::optional<const Color> absolute_modulate = rendering_server->canvas_item_get_global_modulate(canvas_item);
@@ -245,7 +245,7 @@ bool Node2D::is_visible() const {
 }
 
 bool Node2D::is_visible_in_tree() const {
-	std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
+	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 
 	if (rendering_server) {
 		const std::optional<bool> is_visible = rendering_server->canvas_item_is_globally_visible(canvas_item);
@@ -256,7 +256,7 @@ bool Node2D::is_visible_in_tree() const {
 }
 
 bool Node2D::is_visible_inside_viewport() const {
-	std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
+	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 
 	if (rendering_server) {
 		const std::optional<bool> is_visible = rendering_server->canvas_item_is_visible_inside_viewport(canvas_item);
@@ -275,7 +275,7 @@ int Node2D::get_zindex() const {
 }
 
 int Node2D::get_absolute_zindex() const {
-	std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
+	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (rendering_server) {
 		const std::optional<int> global_zindex = rendering_server->canvas_item_get_absolute_zindex(canvas_item);
 		return global_zindex.has_value() ? global_zindex.value() : 0;
@@ -290,37 +290,37 @@ void Node2D::set_zindex_relative(const bool zindex_relative) {
 }
 
 void Node2D::draw_texture(const std::shared_ptr<Texture2D> &texture, const Transform2D &texture_transform, const Color &modulation) const {
-	std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
+	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_texture(texture->get_uid(), canvas_item, SDL_FLIP_NONE, modulation, texture_transform);
 }
 
 void Node2D::draw_texture_rect(const std::shared_ptr<Texture2D> &texture, const Rect2i &region, const Transform2D &texture_transform, const Color &modulation) const {
-	std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
+	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_texture_region(texture->get_uid(), canvas_item, region, SDL_FLIP_NONE, modulation, texture_transform);
 }
 
 void Node2D::draw_line(const Vector2 &start, const Vector2 &end, const Color &modulation) const {
-	std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
+	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_line(canvas_item, start, end,  modulation);
 }
 
 void Node2D::draw_lines(const std::vector<SDL_FPoint> &points, const Color &modulation) const {
-	std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
+	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_lines(canvas_item, points, modulation);
 }
 
 void Node2D::draw_rect(const Rect2 &rect, const Color &modulation) const {
-	std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
+	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_rect(canvas_item, rect, modulation);
 }
 
 void Node2D::draw_rects(const std::vector<SDL_FRect> &rects, const Color &modulation) const {
-	std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
+	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_rects(canvas_item, rects, modulation);
 }

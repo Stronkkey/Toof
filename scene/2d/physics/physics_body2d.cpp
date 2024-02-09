@@ -15,7 +15,7 @@ void sdl::PhysicsBody2D::_notification(const int what) {
 		ready();
 }
 
-std::unique_ptr<sdl::PhysicsServer2D> &sdl::PhysicsBody2D::get_physics_server() const {
+const std::unique_ptr<sdl::PhysicsServer2D> &sdl::PhysicsBody2D::get_physics_server() const {
 	if (is_inside_tree())
 		return get_tree()->get_physics_server();
 

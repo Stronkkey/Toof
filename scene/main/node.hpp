@@ -135,7 +135,7 @@ public:
 
 	/**
 	* @returns the global event from the tree.
-	* @note dereferencing return value is UNDEFINED if is_inside_tree returns false
+	* @note attempting to dereference the pointer is undefined if the node is not inside a SceneTree.
 	*/
 	const std::unique_ptr<SDL_Event> &get_event() const;
 
@@ -193,7 +193,7 @@ public:
 	void set_tree(SceneTree *new_tree);
 
 	/**
-	* @returns true if the tree property is set to a valid Tree, otherwise false.
+	* @returns true if the node is inside a scenetree.
 	*/
 	bool is_inside_tree() const;
 
