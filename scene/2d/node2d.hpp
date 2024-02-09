@@ -47,7 +47,7 @@ protected:
 
 	void _notification(const int what) override;
 	/**
-	* Called when the Node2D has been requested to redraw (after redraw is called or notification NOTIFICATION_DRAW is sent).
+	* Called when the Node2D has been requested to redraw (after queue_redraw is called or notification NOTIFICATION_DRAW is sent).
 	*/
 	virtual void _draw() const;
 

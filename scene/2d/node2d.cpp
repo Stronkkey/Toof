@@ -90,8 +90,9 @@ void Node2D::queue_redraw() {
 	if (!is_inside_tree() || update_queued)
 		return;
 
-	get_tree()->deferred_signals.connect(std::bind(&Node2D::update, this));
-	notification(NOTIFICATION_DRAW);
+	SceneTree *tree = get_tree();
+	tree->deferred_signals.connect(std::bind(&Node2D::update, this));
+	tree->deferred_signals.connect(std::bind(&Node::notification, this, NOTIFICATION_DRAW));
 }
 
 uid Node2D::get_canvas_item() const {
