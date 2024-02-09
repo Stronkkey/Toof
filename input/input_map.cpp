@@ -57,6 +57,10 @@ void InputMap::add_key_to_input_map(const std::string &map_name, const SDL_KeyCo
 	_add_input_to_map(map_name, _get_input_from_key(key_code));
 }
 
+void InputMap::remove_key_from_input_map(const std::string &map_name, const SDL_Scancode scan_code) {
+	_remove_input_from_map(map_name, _get_input_from_key(scan_code));
+}
+
 void InputMap::remove_key_from_input_map(const std::string &map_name, const SDL_KeyCode key_code) {
 	_remove_input_from_map(map_name, _get_input_from_key(key_code));
 }
