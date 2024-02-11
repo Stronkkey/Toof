@@ -27,23 +27,23 @@ SceneTree::SceneTree() {
 
 	const long time = std::chrono::high_resolution_clock::now().time_since_epoch().count();
 
-	process_loop = std::make_unique<Loop>();
-	physics_loop = std::make_unique<Loop>();
-	render_loop = std::make_unique<Loop>();
+	process_loop = Loop();
+	physics_loop = Loop();
+	render_loop = Loop();
 
-	process_loop->frame_rate = 60.0;
-	process_loop->delta_time = 0.0;
-	process_loop->speed_scale = 1.0;
-	process_loop->time_scale = 1.0;
-	process_loop->prev_step_time = time;
-	process_loop->loop_type = Loop::LOOP_TYPE_PROCESS;
+	process_loop.frame_rate = 60.0;
+	process_loop.delta_time = 0.0;
+	process_loop.speed_scale = 1.0;
+	process_loop.time_scale = 1.0;
+	process_loop.prev_step_time = time;
+	process_loop.loop_type = Loop::LOOP_TYPE_PROCESS;
 
-	render_loop->frame_rate = 60.0;
-	render_loop->delta_time = 0.0;
-	render_loop->speed_scale = 1.0;
-	render_loop->time_scale = 1.0;
-	render_loop->prev_step_time = time;
-	render_loop->loop_type = Loop::LOOP_TYPE_RENDER;
+	render_loop.frame_rate = 60.0;
+	render_loop.delta_time = 0.0;
+	render_loop.speed_scale = 1.0;
+	render_loop.time_scale = 1.0;
+	render_loop.prev_step_time = time;
+	render_loop.loop_type = Loop::LOOP_TYPE_RENDER;
 
 	window = std::make_unique<Window>();
 	viewport = std::make_unique<Viewport>();
@@ -55,16 +55,16 @@ SceneTree::SceneTree() {
 	root->set_tree(this);
 
 	#ifdef B2_INCLUDED
-	physics_loop->frame_rate = 60.0;
-	physics_loop->delta_time = 0.0;
-	physics_loop->speed_scale = 1.0;
-	physics_loop->time_scale = 1.0;
-	physics_loop->prev_step_time = time;
-	physics_loop->loop_type = Loop::LOOP_TYPE_PHYSICS;
+	physics_loop.frame_rate = 60.0;
+	physics_loop.delta_time = 0.0;
+	physics_loop.speed_scale = 1.0;
+	physics_loop.time_scale = 1.0;
+	physics_loop.prev_step_time = time;
+	physics_loop.loop_type = Loop::LOOP_TYPE_PHYSICS;
 
 	physics_server = std::make_unique<PhysicsServer2D>();
 	#else
-	physics_loop->prev_step_time = 1 << 30;
+	physics_loop.prev_step_time = 1 << 30;
 	#endif
 }
 
@@ -79,7 +79,7 @@ void SceneTree::_ended() {
 }
 
 void SceneTree::step_render(const double delta) {
-	render_loop->delta_time = delta * render_loop->time_scale;
+	render_loop.delta_time = delta * render_loop.time_scale;
 	render_frame();
 
 	if (root)
@@ -88,7 +88,7 @@ void SceneTree::step_render(const double delta) {
 }
 
 void SceneTree::step_process(const double delta) {
-	process_loop->delta_time = delta * process_loop->time_scale;
+	process_loop.delta_time = delta * process_loop.time_scale;
 	process_frame();
 
 	if (root)
@@ -116,25 +116,25 @@ void SceneTree::step_physics(const double delta) {
 	return;
 	#endif
 
-	physics_loop->delta_time = delta * physics_loop->time_scale;
+	physics_loop.delta_time = delta * physics_loop.time_scale;
 	physics_frame();
 
 	if (root)
 		root->propagate_notification(Node::NOTIFICATION_PREDELETE);
 
-	physics_server->tick(physics_loop->delta_time);
+	physics_server->tick(physics_loop.delta_time);
 }
 
-void SceneTree::_do_loop(const std::unique_ptr<Loop> &loop) {
+void SceneTree::_do_loop(Loop &loop) {
 	const long time_now = std::chrono::high_resolution_clock::now().time_since_epoch().count();
-	const long delta  = (time_now - loop->prev_step_time);
-	const double step_time = loop->speed_scale / loop->frame_rate;
+	const long delta  = (time_now - loop.prev_step_time);
+	const double step_time = loop.speed_scale / loop.frame_rate;
 
 	if (delta < step_time)
 		return;
 	const double true_delta = (double)delta / std::nano::den;
 
-	switch (loop->loop_type) {
+	switch (loop.loop_type) {
 		case Loop::LOOP_TYPE_RENDER:
 			step_render(true_delta);
 			break;
@@ -147,7 +147,9 @@ void SceneTree::_do_loop(const std::unique_ptr<Loop> &loop) {
 		default:
 			break;
 	}
-	loop->prev_step_time = time_now;
+
+	loop.prev_step_time = time_now;
+	loop.step_count++;
 }
 
 void SceneTree::_main_loop() {
@@ -269,59 +271,67 @@ const std::unique_ptr<PhysicsServer2D> &SceneTree::get_physics_server() const {
 #endif
 
 void SceneTree::set_render_frame_rate(const double new_render_frame_rate) {
-	render_loop->frame_rate = new_render_frame_rate;
+	render_loop.frame_rate = new_render_frame_rate;
 }
 
 double SceneTree::get_render_frame_rate() const {
-	return render_loop->frame_rate;
+	return render_loop.frame_rate;
 }
 
 void SceneTree::set_process_frame_rate(const double new_process_frame_rate) {
-	process_loop->frame_rate = new_process_frame_rate;
+	process_loop.frame_rate = new_process_frame_rate;
 }
 
 double SceneTree::get_process_frame_rate() const {
-	return process_loop->frame_rate;
+	return process_loop.frame_rate;
 }
 
 void SceneTree::set_render_speed_scale(const double new_render_speed_scale) {
-	render_loop->speed_scale = new_render_speed_scale;
+	render_loop.speed_scale = new_render_speed_scale;
 }
 
 double SceneTree::get_render_speed_scale() const {
-	return render_loop->speed_scale;
+	return render_loop.speed_scale;
 }
 
 void SceneTree::set_process_speed_scale(const double new_process_speed_scale) {
-	process_loop->speed_scale = new_process_speed_scale;
+	process_loop.speed_scale = new_process_speed_scale;
 }
 
 double SceneTree::get_process_speed_scale() const {
-	return process_loop->speed_scale;
+	return process_loop.speed_scale;
 }
 
 void SceneTree::set_render_time_scale(const double new_render_time_scale) {
-	render_loop->time_scale = new_render_time_scale;
+	render_loop.time_scale = new_render_time_scale;
 }
 
 double SceneTree::get_render_time_scale() const {
-	return render_loop->time_scale;
+	return render_loop.time_scale;
 }
 
 void SceneTree::set_process_time_scale(const double new_process_time_scale) {
-	process_loop->time_scale = new_process_time_scale;
+	process_loop.time_scale = new_process_time_scale;
 }
 
 double SceneTree::get_process_time_scale() const {
-	return process_loop->time_scale;
+	return process_loop.time_scale;
 }
 
 double SceneTree::get_render_delta_time() const {
-	return render_loop->delta_time;
+	return render_loop.delta_time;
 }
 
 double SceneTree::get_process_delta_time() const {
-	return process_loop->delta_time;
+	return process_loop.delta_time;
+}
+
+uint64_t SceneTree::get_render_step_count() const {
+	return render_loop.step_count;
+}
+
+uint64_t SceneTree::get_process_step_count() const {
+	return process_loop.step_count;
 }
 
 bool SceneTree::is_running() const {
@@ -330,30 +340,30 @@ bool SceneTree::is_running() const {
 
 #ifdef B2_INCLUDED
 void SceneTree::set_physics_frame_rate(const double new_physics_frame_rate) {
-	physics_loop->frame_rate = new_physics_frame_rate;
+	physics_loop.frame_rate = new_physics_frame_rate;
 }
 
 double SceneTree::get_physics_frame_rate() const {
-	return physics_loop->frame_rate;
+	return physics_loop.frame_rate;
 }
 
 void SceneTree::set_physics_speed_scale(const double new_physics_speed_scale) {
-	physics_loop->speed_scale = new_physics_speed_scale;
+	physics_loop.speed_scale = new_physics_speed_scale;
 }
 
 double SceneTree::get_physics_speed_scale() const {
-	return physics_loop->speed_scale;
+	return physics_loop.speed_scale;
 }
 
 void SceneTree::set_physics_time_scale(const double new_physics_time_scale) {
-	physics_loop->time_scale = new_physics_time_scale;
+	physics_loop.time_scale = new_physics_time_scale;
 }
 
 double SceneTree::get_physics_time_scale() const {
-	return physics_loop->time_scale;
+	return physics_loop.time_scale;
 }
 
 double SceneTree::get_physics_delta_time() const {
-	return physics_loop->delta_time;
+	return physics_loop.delta_time;
 }
 #endif

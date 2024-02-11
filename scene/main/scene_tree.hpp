@@ -35,16 +35,19 @@ private:
 		double speed_scale;
 		double time_scale;
 		long prev_step_time;
+		uint64_t step_count = 0;
 		LoopType loop_type = LOOP_TYPE_NONE;
 	};
 
 private:
 	bool running, paused, render_paused, process_paused, physics_paused, event_paused;
 
-	std::unique_ptr<Loop> render_loop, process_loop, physics_loop;
+	Loop render_loop;
+	Loop process_loop;
+	Loop physics_loop;
 
 	void _step_loop(const Loop::LoopType loop_type);
-	void _do_loop(const std::unique_ptr<Loop> &loop);
+	void _do_loop(Loop &loop);
 	void _main_loop();
 
 	std::vector<Node*> deferred_item_removal;
@@ -131,6 +134,9 @@ public:
 	double get_render_delta_time() const;
 	double get_process_delta_time() const;
 
+	uint64_t get_render_step_count() const;
+	uint64_t get_process_step_count() const;
+
 	#ifdef B2_INCLUDED
 	void set_physics_frame_rate(const double new_physics_frame_rate);
 	double get_physics_frame_rate() const;
@@ -142,6 +148,7 @@ public:
 	double get_physics_time_scale() const;
 
 	double get_physics_delta_time() const;
+	uint64_t get_physics_step_count() const;
 	#endif
 
 	bool is_running() const;
