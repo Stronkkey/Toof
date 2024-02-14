@@ -52,14 +52,9 @@ private:
 
 	std::unordered_map<std::string, ActionState> action_states;
 
-	bool emulate_touch_from_mouse = false;
-	bool emulate_mouse_from_touch = false;
-	bool use_input_buffering = false;
-	bool use_accumulated_input = true;
-
-	std::set<InputProxy, std::equal_to<InputProxy>> buffered_inputs;
-
 	void _update_action_cache(const std::string &action_name, ActionState &action_state);
+	void _flush_buffered_inputs();
+
 	std::unique_ptr<InputEvent> _process_keyboard_event(const SDL_Event *event);
 public:
 	Input(const uint64_t *process_frame_count = nullptr, const uint64_t *render_frame_count = nullptr);

@@ -12,8 +12,7 @@ Input::Input(const uint64_t *process_frame_count, const uint64_t *render_frame_c
             process_frame_count(process_frame_count),
             render_frame_count(render_frame_count),
             mouse_position(),
-            action_states(),
-            buffered_inputs() {
+            action_states() {
 	input_map = std::make_unique<InputMap>();
 }
 
