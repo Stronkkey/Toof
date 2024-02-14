@@ -3,7 +3,8 @@
 #include <servers/rendering/viewport.hpp>
 #include <servers/rendering/window.hpp>
 #include <servers/rendering_server.hpp>
-#include <input/input_map.hpp>
+#include <input/input.hpp>
+#include <input/input_event.hpp>
 
 #ifdef B2_INCLUDED
 #include <servers/physics_server.hpp>
@@ -49,6 +50,7 @@ SceneTree::SceneTree() {
 	viewport = std::make_unique<Viewport>();
 	rendering_server = std::make_unique<RenderingServer>(viewport.get());
 	root = std::make_unique<Node>();
+	input = std::make_unique<Input>(&process_loop.step_count, &render_loop.step_count);
 
 	viewport->create(window.get());
 	root->set_name("Root");
@@ -107,8 +109,9 @@ void SceneTree::step_event() {
 	if (event->type == SDL_QUIT)
 		stop();
 
-	if (root)
-		root->propagate_notification(Node::NOTIFICATION_EVENT);
+	std::unique_ptr<InputEvent> input_event = input->process_event(event.get());
+	if (root && input_event)
+		root->propagate_input_event(input_event);
 }
 
 void SceneTree::step_physics(const double delta) {
@@ -260,8 +263,8 @@ const std::unique_ptr<SDL_Event> &SceneTree::get_event() const {
 	return event;
 }
 
-const std::unique_ptr<InputMap> &SceneTree::get_input_map() const {
-	return input_map;
+const std::unique_ptr<Input> &SceneTree::get_input() const {
+	return input;
 }
 
 #ifdef B2_INCLUDED

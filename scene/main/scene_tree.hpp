@@ -13,7 +13,7 @@ class Node;
 class Window;
 class RenderingServer;
 class Viewport;
-class InputMap;
+class Input;
 
 #ifdef B2_INCLUDED
 class PhysicsServer2D;
@@ -54,7 +54,7 @@ private:
 
 	std::unique_ptr<Window> window;
 	std::unique_ptr<Viewport> viewport;
-	std::unique_ptr<InputMap> input_map;
+	std::unique_ptr<Input> input;
 	std::unique_ptr<RenderingServer> rendering_server;
 	std::unique_ptr<SDL_Event> event;
 	std::unique_ptr<Node> root;
@@ -80,7 +80,7 @@ public:
 	const std::unique_ptr<RenderingServer> &get_rendering_server() const;
 	const std::unique_ptr<Node> &get_root() const;
 	const std::unique_ptr<SDL_Event> &get_event() const;
-	const std::unique_ptr<InputMap> &get_input_map() const;
+	const std::unique_ptr<Input> &get_input() const;
 
 	#ifdef B2_INCLUDED
 	const std::unique_ptr<PhysicsServer2D> &get_physics_server() const;

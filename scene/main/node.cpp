@@ -1,5 +1,6 @@
 #include <scene/main/node.hpp>
 #include <scene/main/scene_tree.hpp>
+#include <input/input.hpp>
 
 #include <SDL_events.h>
 
@@ -59,7 +60,7 @@ void Node::_physics_process(const double) {
 void Node::_render(double) {
 }
 
-void Node::_event(const std::unique_ptr<SDL_Event>&) {
+void Node::_event(const std::unique_ptr<InputEvent>&) {
 }
 
 void Node::_notification(const int) {
@@ -95,9 +96,6 @@ void Node::notification(const int what) {
 		case NOTIFICATION_PROCESS:
 			_process(get_process_delta_time());
 			break;
-		case NOTIFICATION_EVENT:
-			_event(get_event());
-			break;
 		case NOTIFICATION_READY:
 			_ready();
 			ready();
@@ -119,6 +117,15 @@ void Node::propagate_notification(const int what) {
 
 SceneTree *Node::get_tree() const {
 	return tree;
+}
+
+const std::unique_ptr<Input> &Node::get_input() const {
+	if (tree)
+		return tree->get_input();
+
+	const std::unique_ptr<Input> _i;
+	const std::unique_ptr<Input> *i = &_i;
+	return *i;
 }
 
 bool Node::is_inside_tree() const {
@@ -196,6 +203,14 @@ const std::unique_ptr<SDL_Event> &Node::get_event() const {
 	const std::unique_ptr<SDL_Event> _i;
 	const std::unique_ptr<SDL_Event> *i = &_i;
 	return *(i);
+}
+
+void Node::propagate_input_event(const std::unique_ptr<InputEvent> &input_event) {
+	notification(NOTIFICATION_EVENT);
+	_event(input_event);
+
+	for (Node *node: children)
+		node->propagate_input_event(input_event);
 }
 
 void Node::remove_children() {

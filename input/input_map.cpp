@@ -5,159 +5,94 @@
 
 using namespace sdl;
 
-InputMap::InputMap(SDL_Event *event): mapped_inputs(), event(event) {
+InputMap::InputMap(): actions() {
 }
 
 InputMap::~InputMap() {
 }
 
-void InputMap::_add_input_to_map(const std::string &map_name, const InputMap::Input &input) {
-	auto iterator = mapped_inputs.find(map_name);
+void InputMap::_add_input_to_action(const std::string &action_name, InputProxy input_proxy) {
+	auto iterator = actions.find(action_name);
 
-	if (iterator != mapped_inputs.end())
-		iterator->second.push_back(input);
-	else
-		mapped_inputs.insert({map_name, {input}});
+	if (iterator != actions.end())
+		iterator->second.inputs.insert(std::move(input_proxy));
 }
 
-void InputMap::_remove_input_from_map(const std::string &map_name, const InputMap::Input &input) {
-	auto iterator = mapped_inputs.find(map_name);
+void InputMap::_remove_input_from_action(const std::string &action_name, const InputProxy &input_proxy) {
+	auto iterator = actions.find(action_name);
 
-	if (iterator != mapped_inputs.end()) {
-		auto input_iterator = std::find(iterator->second.begin(), iterator->second.end(), input);
-		if (input_iterator != iterator->second.end())
-			iterator->second.erase(input_iterator);
-	}
+	if (iterator != actions.end())
+		iterator->second.inputs.erase(input_proxy);
 }
 
-constexpr float InputMap::_get_input_strength(const InputMap::Input &input) {
-	return _get_event_info(input).strength;
+void InputMap::create_action(const std::string &action_name) {
+	const auto &iterator = actions.find(action_name);
+
+	if (iterator == actions.end())
+		actions.insert({action_name, Action()});
 }
 
-float InputMap::_get_input_map_strength(const std::string &map_name) {
-	auto iterator = mapped_inputs.find(map_name);
-	if (iterator == mapped_inputs.end())
-		return 0.0f;
-
-	float strongest_input = 0.0f;
-	for (const auto &input: iterator->second) {
-		float input_strength = _get_input_strength(input);
-		if (input_strength > strongest_input)
-			strongest_input = input_strength;
-	}
-
-	return strongest_input;
+void InputMap::add_key_to_action(const std::string &action_name, std::unique_ptr<InputEvent> input_event) {
+	_add_input_to_action(action_name, input_event);
 }
 
-void InputMap::add_key_to_input_map(const std::string &map_name, const SDL_Scancode scancode) {
-	_add_input_to_map(map_name, _get_input_from_key(scancode));
+void InputMap::remove_key_from_action(const std::string &action_name, std::unique_ptr<InputEvent> input_event) {
+	_remove_input_from_action(action_name, input_event);
 }
 
-void InputMap::add_key_to_input_map(const std::string &map_name, const SDL_KeyCode key_code) {
-	_add_input_to_map(map_name, _get_input_from_key(key_code));
+bool InputMap::has_action(const std::string &action_name) const {
+	return actions.find(action_name) != actions.end();
 }
 
-void InputMap::remove_key_from_input_map(const std::string &map_name, const SDL_Scancode scan_code) {
-	_remove_input_from_map(map_name, _get_input_from_key(scan_code));
+void InputMap::clear_action(const std::string &action_name) {
+	auto iterator = actions.find(action_name);
+
+	if (iterator != actions.end())
+		actions.erase(iterator);
 }
 
-void InputMap::remove_key_from_input_map(const std::string &map_name, const SDL_KeyCode key_code) {
-	_remove_input_from_map(map_name, _get_input_from_key(key_code));
+void InputMap::action_set_deadzone(const std::string &action_name, const float deadzone) {
+	auto iterator = actions.find(action_name);
+	if (iterator != actions.end())
+		iterator->second.deadzone = deadzone;
 }
 
-void InputMap::clear_input_map(const std::string &map_name) {
-	auto iterator = mapped_inputs.find(map_name);
-	if (iterator != mapped_inputs.end())
-		mapped_inputs.erase(iterator);
+float InputMap::action_get_deadzone(const std::string &action_name) const {
+	const auto iterator = actions.find(action_name);
+	return iterator != actions.end() ? iterator->second.deadzone : 0.0f;
 }
 
+std::vector<InputEvent> InputMap::action_get_events(const std::string &action_name) const {
+	auto iterator = actions.find(action_name);
+	if (iterator == actions.end())
+		return {};
 
-bool InputMap::is_action_pressed(const std::string &map_name, const bool allow_echo) {
-	auto iterator = mapped_inputs.find(map_name);
-	if (iterator == mapped_inputs.end())
+	std::vector<InputEvent> input_events = {};
+	for (const InputProxy &input_proxy: iterator->second.inputs)
+		input_events.push_back(*input_proxy.input_event);
+
+	return input_events;
+}
+
+bool InputMap::event_get_action_state(const InputEvent *input_event, const std::string &action_name, bool *pressed, float *strength) const {
+	auto iterator = actions.find(action_name);
+	const InputEventAction *input_event_action = dynamic_cast<const InputEventAction*>(input_event);
+	if (iterator == actions.end() || input_event_action)
 		return false;
 
-	for (const auto &input: iterator->second) {
-		InputMap::KeyInputEvent key_input_event = _get_event_info(input);
+	const bool input_pressed = input_event_action->is_pressed();
+	const float input_strength = input_pressed ? input_event_action->get_strength() : 0.0f;
 
-		if (!allow_echo && key_input_event.repeat != 0)
-			continue;
+	if (pressed)
+		*pressed = input_pressed;
 
-		if (!key_input_event.failed && key_input_event.same && key_input_event.holding)
-			return true;
-	}
+	if (strength)
+		*strength = input_strength;
 
-	return false;
+	return input_event_action->get_action_name() == action_name;
 }
 
-bool InputMap::is_action_just_pressed(const std::string &map_name, const bool allow_echo) {
-	auto iterator = mapped_inputs.find(map_name);
-	if (iterator == mapped_inputs.end())
-		return false;
 
-	for (const auto &input: iterator->second) {
-		InputMap::KeyInputEvent key_input_event = _get_event_info(input);
-
-		if (!allow_echo && key_input_event.repeat != 0)
-			continue;
-
-		if (!key_input_event.failed && key_input_event.same && key_input_event.holding && key_input_event.repeat != 0)
-			return true;
-	}
-
-	return false;
-}
-
-bool InputMap::is_action_released(const std::string &map_name, const bool allow_echo) {
-	auto iterator = mapped_inputs.find(map_name);
-	if (iterator == mapped_inputs.end())
-		return false;
-
-	for (const auto &input: iterator->second) {
-		InputMap::KeyInputEvent key_input_event = _get_event_info(input);
-
-		if (!allow_echo && key_input_event.repeat != 0)
-			continue;
-
-		if (!key_input_event.failed && key_input_event.same && !key_input_event.holding && key_input_event.repeat != 0)
-			return true;
-	}
-
-	return false;
-}
-
-float InputMap::get_input_strength(const std::string &input_map_name) {
-	return _get_input_map_strength(input_map_name);
-}
-
-float InputMap::get_input_axis(
-	    const std::string &negative_x_map,
-	    const std::string &positive_x_map) {
-	const float negative_input_strength = _get_input_map_strength(negative_x_map);
-	const float positive_input_strength = _get_input_map_strength(positive_x_map);
-	return positive_input_strength - negative_input_strength;
-}
-
-Vector2 InputMap::get_input_vector(
-	    const std::string &negative_x_map_name,
-	    const std::string &positive_x_map_name,
-	    const std::string &negative_y_map_name,
-	    const std::string &positive_y_map_name) {
-	const float x_input_axis = get_input_axis(negative_x_map_name, positive_x_map_name);
-	const float y_input_axis = get_input_axis(negative_y_map_name, positive_y_map_name);
-	return Vector2(x_input_axis, y_input_axis).normalized();
-}
-
-bool InputMap::is_action_active(const std::string &map_name) {
-	auto iterator = mapped_inputs.find(map_name);
-	if (iterator == mapped_inputs.end())
-		return false;
-
-	for (const auto &input: iterator->second) {
-		InputMap::KeyInputEvent key_input_event = _get_event_info(input);
-		if (!key_input_event.failed && key_input_event.same)
-			return true;
-	}
-
-	return false;
+bool InputMap::event_is_action(const InputEvent *input_event, const std::string &action_name) const {
+	return event_get_action_state(input_event, action_name);
 }
