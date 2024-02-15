@@ -23,27 +23,23 @@ const std::unique_ptr<sdl::InputMap> &Input::get_input_map() const {
 	return input_map;
 }
 
-void Input::_update_action_cache(const std::string &action_name, ActionState &action_state) {
-	action_state.pressed = false;
-	action_state.strength = 0.0f;
-	action_state.raw_strength = 0.0f;
+void Input::_update_action_with_proxy(const std::string &action_name, const InputProxy &input_proxy) {
+	ActionState &action_state = action_states[action_name];
 
-	size_t max_event = input_map->action_get_events(action_name).size();
-	for (const auto &iterator: action_state.device_states) {
-		const ActionState::DeviceState &device_state = iterator.second;
-		for (size_t i = 0; i < max_event; i++) {
-			action_state.pressed = action_state.pressed || device_state.pressed[i];
-			action_state.strength = std::max(action_state.strength, device_state.strength[i]);
-			action_state.raw_strength = std::max(action_state.raw_strength, device_state.raw_strength[i]);
-		}
+	action_state.pressed = input_proxy.input_event->is_pressed();
+	if (action_state.pressed) {
+		if (process_frame_count)
+			action_state.pressed_process_frame = *process_frame_count;
+
+		if (render_frame_count)
+			action_state.pressed_render_frame = *render_frame_count;
+	} else {
+		if (process_frame_count)
+			action_state.released_process_frame = *process_frame_count;
+
+		if (render_frame_count)
+			action_state.released_render_frame = *render_frame_count;
 	}
-
-	if (!action_state.api_pressed)
-		return;
-
-	action_state.pressed = true;
-	action_state.strength = std::max(action_state.strength, action_state.api_strength);
-	action_state.raw_strength = std::max(action_state.raw_strength, action_state.api_strength); // Use the strength as raw_strength for API-pressed states.
 }
 
 std::unique_ptr<InputEvent> Input::_process_keyboard_event(const SDL_Event *event) {
@@ -69,16 +65,26 @@ std::unique_ptr<InputEvent> Input::_process_keyboard_event(const SDL_Event *even
 
 std::unique_ptr<InputEvent> Input::process_event(const SDL_Event *event) {
 	EventInputType event_input_type = get_event_type(event);
+	std::unique_ptr<InputEvent> input_event;
+	//InputProxy input_proxy = InputProxy(input_event);
 
 	switch (event_input_type) {
 		case EVENT_INPUT_TYPE_KEYBOARD:
-			return _process_keyboard_event(event);
+			input_event = _process_keyboard_event(event);
 			break;
 		default:
+			input_event = std::unique_ptr<InputEvent>();
 			break;
 	}
 
-	return std::unique_ptr<InputEvent>();
+/*	for (const auto &iterator: input_map->get_actions()) {
+		if (iterator.second.count(input_proxy)) {
+			_update_action_with_proxy(iterator.first, input_proxy);
+			break;
+		}
+	}
+*/
+	return input_event;
 }
 
 bool Input::is_anything_pressed() const {
@@ -100,22 +106,22 @@ bool Input::is_physical_key_pressed(const SDL_Scancode scan_code) const {
 	return physical_keys_pressed.count(scan_code) == 1;
 }
 
-bool Input::is_action_pressed(const std::string &action_name, const bool exact) const {
+bool Input::is_action_pressed(const std::string &action_name) const {
 	if (!input_map->has_action(action_name))
 		return false;
 
 	const auto &iterator = action_states.find(action_name);
 	if (iterator == action_states.end())
 		return false;
-	return iterator->second.pressed && (exact ? iterator->second.exact : true);
+	return iterator->second.pressed;
 }
 
-bool Input::is_action_just_pressed(const std::string &action_name, const bool exact) const {
+bool Input::is_action_just_pressed(const std::string &action_name) const {
 	if (!input_map->has_action(action_name))
 		return false;
 
 	const auto &iterator = action_states.find(action_name);
-	if (iterator == action_states.end() || (exact && !iterator->second.exact))
+	if (iterator == action_states.end())
 		return false;
 
 	const ActionState &action_state = iterator->second;
@@ -126,15 +132,15 @@ bool Input::is_action_just_pressed(const std::string &action_name, const bool ex
 	else if (process_frame_count && render_frame_count)
 		return action_state.pressed_process_frame == *process_frame_count;
 
-	return action_state.pressed && (exact ? action_state.exact : true);
+	return action_state.pressed;
 }
 
-bool Input::is_action_just_released(const std::string &action_name, const bool exact) const {
+bool Input::is_action_just_released(const std::string &action_name) const {
 	if (!input_map->has_action(action_name))
 		return false;
 
 	const auto &iterator = action_states.find(action_name);
-	if (iterator == action_states.end() || (exact && !iterator->second.exact))
+	if (iterator == action_states.end())
 		return false;
 
 	const ActionState &action_state = iterator->second;
@@ -145,58 +151,29 @@ bool Input::is_action_just_released(const std::string &action_name, const bool e
 	else if (process_frame_count && render_frame_count)
 		return action_state.released_process_frame == *process_frame_count;
 
-	return !action_state.pressed && (exact ? action_state.exact : true);
+	return !action_state.pressed;
 }
 
-float Input::get_action_strength(const std::string &action_name, const bool exact) const {
+float Input::get_action_strength(const std::string &action_name) const {
 	if (!input_map->has_action(action_name))
 		return 0.0f;
 
 	const auto &iterator = action_states.find(action_name);
-	if (iterator == action_states.end() || (exact && !iterator->second.exact))
+	if (iterator == action_states.end())
 		return 0.0f;
 
 	return iterator->second.strength;
-}
-
-float Input::get_action_raw_strength(const std::string &action_name, const bool exact) const {
-	if (!input_map->has_action(action_name))
-		return 0.0f;
-
-	const auto &iterator = action_states.find(action_name);
-	if (iterator == action_states.end() || (exact && !iterator->second.exact))
-		return 0.0f;
-
-	return iterator->second.raw_strength;
 }
 
 float Input::get_axis(const std::string &negative_action_name, const std::string &positive_action_name) const {
 	return get_action_strength(positive_action_name) - get_action_strength(negative_action_name);
 }
 
-sdl::Vector2 Input::get_vector(const std::string &negative_x_action_name, const std::string &positive_x_action_name, const std::string &negative_y_action_name, const std::string &positive_y_action_name, float deadzone) const {
+sdl::Vector2 Input::get_vector(const std::string &negative_x_action_name, const std::string &positive_x_action_name, const std::string &negative_y_action_name, const std::string &positive_y_action_name) const {
 	Vector2 vector = Vector2(
-			get_action_raw_strength(positive_x_action_name) - get_action_raw_strength(negative_x_action_name),
-			get_action_raw_strength(positive_y_action_name) - get_action_raw_strength(negative_y_action_name));
-
-	if (deadzone < 0.0f) {
-		// If the deadzone isn't specified, get it from the average of the actions.
-		deadzone = 0.25 *
-				(input_map->action_get_deadzone(positive_x_action_name) +
-						input_map->action_get_deadzone(negative_x_action_name) +
-						input_map->action_get_deadzone(positive_y_action_name) +
-						input_map->action_get_deadzone(negative_y_action_name));
-	}
-
-	// Circular length limiting and deadzone.
-	float length = vector.length();
-	if (length <= deadzone) 
-		return Vector2::ZERO;
-	else if (length > 1.0f)
-		return vector / length;
-	else
-		// Inverse lerp length to map (p_deadzone, 1) to (0, 1).
-		return vector;// * (Math::inverse_lerp(p_deadzone, 1.0f, length) / length);
+	        get_action_strength(positive_x_action_name) - get_action_strength(negative_x_action_name),
+	        get_action_strength(positive_y_action_name) - get_action_strength(negative_y_action_name));
+	return vector.normalized();
 }
 
 void Input::action_press(const std::string &action_name, const float strength) {
@@ -208,14 +185,16 @@ void Input::action_press(const std::string &action_name, const float strength) {
 	if (!action_state.pressed) {
 		if (process_frame_count)
 			action_state.pressed_process_frame = *process_frame_count;
+
 		if (render_frame_count)
 			action_state.pressed_render_frame = *render_frame_count;
 	}
 
-	action_state.exact = true;
 	action_state.api_pressed = true;
 	action_state.api_strength = strength;
-	_update_action_cache(action_name, action_state);
+
+	action_state.pressed = std::max(action_state.pressed, action_state.api_pressed);
+	action_state.strength = std::max(action_state.api_strength, action_state.strength);
 }
 
 void Input::action_release(const std::string &action_name) {
@@ -226,15 +205,12 @@ void Input::action_release(const std::string &action_name) {
 
 	action_state.pressed = false;
 	action_state.strength = 0.0f;
-	action_state.raw_strength = 0.0f;
 
 	if (render_frame_count)
 		action_state.released_render_frame = *render_frame_count;
 	if (process_frame_count)
 		action_state.released_process_frame = *process_frame_count;
 
-	action_state.device_states.clear();
-	action_state.exact = true;
 	action_state.api_pressed = false;
 	action_state.api_strength = 0.0f;
 }

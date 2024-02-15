@@ -49,8 +49,8 @@ public:
 	}
 
 	bool is_action(const std::string &action_name) const;
-	bool is_action_pressed(const std::string &action_name, const bool allow_echo = false, const bool exact_match = false) const;
-	bool is_action_released(const std::string &action_name, const bool allow_echo = false, const bool exact_match = false) const;
+	bool is_action_pressed(const std::string &action_name) const;
+	bool is_action_released(const std::string &action_name) const;
 
 	void fill_with_event(const SDL_Event *event);
 	bool same_input(const InputEvent *input_event) const;

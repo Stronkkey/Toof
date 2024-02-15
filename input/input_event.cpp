@@ -10,13 +10,12 @@ bool InputEvent::is_action(const std::string &action_name) const {
 	return input ? input->get_input_map()->event_is_action(this, action_name) : false;
 }
 
-bool InputEvent::is_action_pressed(const std::string &action_name, const bool allow_echo, const bool exact_match) const {
-	(void)allow_echo;
-	return input ? input->is_action_pressed(action_name, exact_match) : false;
+bool InputEvent::is_action_pressed(const std::string &action_name) const {
+	return input ? input->is_action_pressed(action_name) : false;
 }
 
-bool InputEvent::is_action_released(const std::string &action_name, const bool allow_echo, const bool exact_match) const {
-	return !is_action_pressed(action_name, allow_echo, exact_match);
+bool InputEvent::is_action_released(const std::string &action_name) const {
+	return !is_action_pressed(action_name);
 }
 
 void InputEvent::fill_with_event(const SDL_Event *event) {
