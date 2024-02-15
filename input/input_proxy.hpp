@@ -5,13 +5,13 @@
 namespace sdl {
 
 struct InputProxy {
-	std::unique_ptr<InputEvent> input_event;
+	std::shared_ptr<InputEvent> input_event;
 
 	InputProxy() {
 		input_event = std::make_unique<InputEvent>();
 	}
 
-	InputProxy(std::unique_ptr<InputEvent> &input_event): input_event(std::move(input_event)) {
+	InputProxy(const std::shared_ptr<InputEvent> &input_event): input_event(input_event) {
 	}
 
 	bool operator==(const InputProxy &input) const {
