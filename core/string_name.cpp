@@ -1,29 +1,38 @@
 #include <core/string_name.hpp>
 
-std::unordered_set<std::string> sdl::StringName::strings = {};
+using StringName = sdl::StringName;
 
-sdl::StringName::StringName(): string(allocate_string("")) {
-	string = allocate_string("");
+std::unordered_set<StringName::string_storer> StringName::stored_strings = {};
+std::unordered_set<StringName::string_saver> StringName::strings = {};
+
+StringName::StringName(): saved_string(allocate_string("")) {
 }
 
-sdl::StringName::StringName(const std::string &string): string(allocate_string(string)) {
+StringName::StringName(const std::string &string): saved_string(allocate_string(string)) {
 }
 
-void sdl::StringName::set_string(const std::string &new_string) {
-	if (*string == new_string)
+void StringName::set_string(const std::string &new_string) {
+	if (saved_string == new_string)
 		return;
 
-	deallocate_string(string);
-	string = allocate_string(new_string);
+	saved_string = allocate_string(new_string);
 }
 
-std::string *sdl::StringName::allocate_string(const std::string &string) {
-	auto iterator = strings.find(string);
-	if (iterator != strings.end())
-		return &iterator._M_cur->_M_v();
+StringName::string_saver StringName::allocate_string(const std::string &string) {
+	auto iterator = stored_strings.find(string);
+	if (iterator != stored_strings.end())
+		return iterator._M_cur->_M_v();
 
-	return &strings.insert(string).first._M_cur->_M_v();
+	return stored_strings.insert(string).first._M_cur->_M_v();
 }
 
-sdl::StringName::~StringName() {
+StringName::~StringName() {
+}
+
+StringName::string_t StringName::get_string() const {
+	return *saved_string.stored_string.string;
+}
+
+const StringName::string_t *StringName::get_string_ptr() const {
+	return saved_string.stored_string.string.get();
 }
