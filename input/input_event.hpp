@@ -25,11 +25,10 @@ private:
 
 protected:
 	bool pressed;
-	bool canceled;
 	EventInputType type;
 
 public:
-	constexpr InputEvent(): input(nullptr), pressed(false), canceled(true), type(EVENT_INPUT_TYPE_NONE) {
+	constexpr InputEvent(): input(nullptr), pressed(false), type(EVENT_INPUT_TYPE_NONE) {
 	}
 
 	constexpr void set_input(const Input *input) {
@@ -37,13 +36,9 @@ public:
 	}
 
 	constexpr bool is_pressed() const {
-		return pressed && !canceled;
+		return pressed;
 	}
 	
-	constexpr bool is_canceled() const {
-		return canceled && !pressed;
-	}
-
 	constexpr EventInputType get_type() const {
 		return type;
 	}

@@ -26,13 +26,12 @@ bool InputEvent::same_input(const InputEvent *input_event) const {
 	if (!input_event || type != input_event->type)
 		return false;
 
-	return pressed && _same_input(input_event);
+	return _same_input(input_event);
 }
 
 bool InputEventKeyboard::_same_input(const InputEvent *input_event) const {
 	const InputEventKeyboard *input_event_keyboard = static_cast<const InputEventKeyboard*>(input_event);
-	return key_code == input_event_keyboard->key_code
-	       && scan_code == input_event_keyboard->scan_code
+	return (key_code == input_event_keyboard->key_code || scan_code == input_event_keyboard->scan_code)
 	       && modifiers == input_event_keyboard->modifiers;
 }
 
@@ -44,6 +43,7 @@ void InputEventKeyboard::_fill_with_event(const SDL_Event *event) {
 	scan_code = event->key.keysym.scancode;
 	key_code = event->key.keysym.sym;
 	time_stamp = event->key.timestamp;
+	pressed = event->type == SDL_KEYDOWN;
 }
 
 bool InputEventAction::_same_input(const InputEvent *input_event) const {
