@@ -8,7 +8,6 @@ struct InputProxy {
 	std::shared_ptr<InputEvent> input_event;
 
 	InputProxy() {
-		input_event = std::make_unique<InputEvent>();
 	}
 
 	InputProxy(const std::shared_ptr<InputEvent> &input_event): input_event(input_event) {
