@@ -72,7 +72,7 @@ protected:
 	* This can be keyboard input, mouse movement, window size changing, etc.
 	* @note events are instantly processed from when they happen.
 	*/
-	virtual void _event(const std::unique_ptr<InputEvent> &event);
+	virtual void _event(const std::shared_ptr<InputEvent> &event);
 
 	/**
 	* Called in the render step of the tree.
@@ -145,7 +145,7 @@ public:
 	* Propagates the InputEvent to all children which propagate it to their children.
 	* @param input_event the InputEvent that is propagated.
 	*/
-	void propagate_input_event(const std::unique_ptr<InputEvent> &input_event);
+	void propagate_input_event(const std::shared_ptr<InputEvent> &input_event);
 
 	/**
 	* @returns the time between the previous render step and the current render step.

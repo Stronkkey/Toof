@@ -109,7 +109,7 @@ void SceneTree::step_event() {
 	if (event->type == SDL_QUIT)
 		stop();
 
-	std::unique_ptr<InputEvent> input_event = input->process_event(event.get());
+	const std::shared_ptr<InputEvent> &input_event = input->process_event(event.get());
 	if (root && input_event)
 		root->propagate_input_event(input_event);
 }

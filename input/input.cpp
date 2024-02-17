@@ -3,6 +3,8 @@
 
 #include <algorithm>
 
+#include <core/utility_functions.hpp>
+
 using Input = sdl::Input;
 using InputEvent = sdl::InputEvent;
 
@@ -40,9 +42,11 @@ void Input::_update_action_with_proxy(const std::string &action_name, const Inpu
 		if (render_frame_count)
 			action_state.released_render_frame = *render_frame_count;
 	}
+
+	action_state.strength = action_state.pressed;
 }
 
-std::unique_ptr<InputEvent> Input::_process_keyboard_event(const SDL_Event *event) {
+std::shared_ptr<InputEvent> Input::_process_keyboard_event(const SDL_Event *event) {
 	const bool pressed = event->key.type == SDL_KEYDOWN;
 	const auto &physical_key_iterator = physical_keys_pressed.find(event->key.keysym.scancode);
 	const auto &key_iterator = keys_pressed.find(event->key.keysym.sym);
@@ -63,28 +67,30 @@ std::unique_ptr<InputEvent> Input::_process_keyboard_event(const SDL_Event *even
 	return input_event;
 }
 
-std::unique_ptr<InputEvent> Input::process_event(const SDL_Event *event) {
+std::shared_ptr<InputEvent> Input::process_event(const SDL_Event *event) {
 	EventInputType event_input_type = get_event_type(event);
-	std::unique_ptr<InputEvent> input_event;
-	//InputProxy input_proxy = InputProxy(input_event);
+	std::shared_ptr<InputEvent> input_event;
+	InputProxy input_proxy;
 
 	switch (event_input_type) {
 		case EVENT_INPUT_TYPE_KEYBOARD:
 			input_event = _process_keyboard_event(event);
 			break;
 		default:
-			input_event = std::unique_ptr<InputEvent>();
+			return std::unique_ptr<InputEvent>();
 			break;
 	}
 
-/*	for (const auto &iterator: input_map->get_actions()) {
-		if (iterator.second.count(input_proxy)) {
+	input_proxy.input_event = input_event;
+	for (const auto &iterator: input_map->get_actions())
+		if (iterator.second.inputs.count(input_proxy))
 			_update_action_with_proxy(iterator.first, input_proxy);
-			break;
-		}
-	}
-*/
+
 	return input_event;
+}
+
+const std::unordered_map<std::string, Input::ActionState> &Input::get_action_states() const {
+	return action_states;
 }
 
 bool Input::is_anything_pressed() const {
@@ -111,6 +117,8 @@ bool Input::is_action_pressed(const std::string &action_name) const {
 		return false;
 
 	const auto &iterator = action_states.find(action_name);
+	const int b = action_states.count(action_name);
+	(void)b;
 	if (iterator == action_states.end())
 		return false;
 	return iterator->second.pressed;
@@ -166,7 +174,7 @@ float Input::get_action_strength(const std::string &action_name) const {
 }
 
 float Input::get_axis(const std::string &negative_action_name, const std::string &positive_action_name) const {
-	return get_action_strength(positive_action_name) - get_action_strength(negative_action_name);
+	return get_action_strength(negative_action_name) - get_action_strength(positive_action_name);
 }
 
 sdl::Vector2 Input::get_vector(const std::string &negative_x_action_name, const std::string &positive_x_action_name, const std::string &negative_y_action_name, const std::string &positive_y_action_name) const {

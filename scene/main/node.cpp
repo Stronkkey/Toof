@@ -60,7 +60,7 @@ void Node::_physics_process(const double) {
 void Node::_render(double) {
 }
 
-void Node::_event(const std::unique_ptr<InputEvent>&) {
+void Node::_event(const std::shared_ptr<InputEvent>&) {
 }
 
 void Node::_notification(const int) {
@@ -205,7 +205,7 @@ const std::unique_ptr<SDL_Event> &Node::get_event() const {
 	return *(i);
 }
 
-void Node::propagate_input_event(const std::unique_ptr<InputEvent> &input_event) {
+void Node::propagate_input_event(const std::shared_ptr<InputEvent> &input_event) {
 	notification(NOTIFICATION_EVENT);
 	_event(input_event);
 

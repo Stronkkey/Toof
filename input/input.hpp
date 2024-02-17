@@ -43,12 +43,13 @@ private:
 	void _update_action_with_proxy(const std::string &action_name, const InputProxy &input_proxy);
 	void _flush_buffered_inputs();
 
-	std::unique_ptr<InputEvent> _process_keyboard_event(const SDL_Event *event);
+	std::shared_ptr<InputEvent> _process_keyboard_event(const SDL_Event *event);
 public:
 	Input(const uint64_t *process_frame_count = nullptr, const uint64_t *render_frame_count = nullptr);
 	~Input();
 
-	std::unique_ptr<InputEvent> process_event(const SDL_Event *event);
+	std::shared_ptr<InputEvent> process_event(const SDL_Event *event);
+	const std::unordered_map<std::string, ActionState> &get_action_states() const;
 
 	const std::unique_ptr<InputMap> &get_input_map() const;
 
