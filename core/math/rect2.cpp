@@ -6,8 +6,9 @@
 using namespace sdl;
 
 const Rect2 Rect2::EMPTY = Rect2();
+const Rect2 Rect2::ONE = Rect2(1, 1, 1, 1);
 const Rect2i Rect2i::EMPTY = Rect2i();
-
+const Rect2i Rect2i::ONE = Rect2i(1, 1, 1, 1);
 
 Rect2 Rect2::operator*(const Transform2D &right) const {
 	Rect2 rect = *this;

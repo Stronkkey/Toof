@@ -289,6 +289,7 @@ struct Rect2 {
 	[[nodiscard]] SDL_FRect to_sdl_frect() const;
 
 	static const Rect2 EMPTY;
+	static const Rect2 ONE;
 	static SDL_Rect to_sdl_rect(const Rect2 &rect2);
 	static SDL_FRect to_sdl_frect(const Rect2 &rect);
 };
@@ -358,6 +359,7 @@ struct Rect2i {
 	[[nodiscard]] SDL_FRect to_sdl_frect() const;
 
 	static const Rect2i EMPTY;
+	static const Rect2i ONE;
 	static SDL_Rect to_sdl_rect(const Rect2i &rect2i);
 	static SDL_FRect to_sdl_frect(const Rect2i &rect2i);
 };
