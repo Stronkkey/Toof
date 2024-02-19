@@ -11,6 +11,12 @@ public:
 	constexpr Angle(): angle_degrees(0.0) {
 	}
 
+	constexpr Angle(const real_t angle_degrees): angle_degrees(angle_degrees) {
+	}
+
+	constexpr Angle(const Angle &angle): angle_degrees(angle.angle_degrees) {
+	}
+
 	constexpr void set_angle_degrees(const real_t angle_degrees) {
 		this->angle_degrees = angle_degrees;
 	}
@@ -26,6 +32,60 @@ public:
 	constexpr real_t get_angle_radians() const {
 		return Math::degrees_to_radians(angle_degrees);
 	}
+
+	constexpr void operator=(const Angle &right) {
+		angle_degrees = right.angle_degrees;
+	}
+
+	constexpr bool operator==(const Angle &right) const {
+		return angle_degrees == right.angle_degrees;
+	}
+
+	constexpr bool operator!=(const Angle &right) const {
+		return angle_degrees != right.angle_degrees;
+	}
+
+	constexpr Angle operator+(const Angle &right) const {
+		return Angle(angle_degrees + right.angle_degrees);
+	}
+
+	constexpr Angle operator+() const {
+		return Angle(+angle_degrees);
+	}
+
+	constexpr void operator+=(const Angle &right) {
+		angle_degrees += right.angle_degrees;
+	}
+
+	constexpr Angle operator-(const Angle &right) const {
+		return Angle(angle_degrees - right.angle_degrees);
+	}
+
+	constexpr Angle operator-() const {
+		return Angle(-angle_degrees);
+	}
+
+	constexpr void operator-=(const Angle &right) {
+		angle_degrees -= right.angle_degrees;
+	}
+
+	constexpr Angle operator*(const Angle &right) const {
+		return Angle(angle_degrees * right.angle_degrees);
+	}
+
+	constexpr void operator*=(const Angle &right) {
+		angle_degrees *= right.angle_degrees;
+	}
+
+	constexpr Angle operator/(const Angle &right) const {
+		return Angle(angle_degrees / right.angle_degrees);
+	}
+
+	constexpr void operator/=(const Angle &right) {
+		angle_degrees /= right.angle_degrees;
+	}
+	
+	static Angle from_radians(const real_t angle_radians);
 };
 
 }
