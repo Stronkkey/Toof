@@ -240,6 +240,14 @@ constexpr void Color::operator=(const Color &right) {
 	a = right.a;
 }
 
+constexpr bool Color::operator!=(const Color &right_color) const {
+	return r != right_color.r || g != right_color.g || b != right_color.b || a != right_color.a;
+}
+
+constexpr bool Color::operator==(const Color &right_color) const {
+	return r == right_color.r && g == right_color.g && b == right_color.b && a == right_color.a;
+}
+
 constexpr Color Color::operator*(const Color &right) const {
 	Color multiplied_color = *this;
 	multiplied_color.r *= (right.r / 255);
