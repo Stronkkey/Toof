@@ -1,4 +1,5 @@
 core_math_source_files = files(
+	'angle.hpp',
 	'color.cpp',
 	'geometry2d.cpp',
 	'math_defs.cpp',

@@ -102,14 +102,14 @@ public:
 	const Vector2 &get_scale() const;
 
 	/**
-	* Sets the relative rotation (in degrees) for this node2d to @param new_rotation.
+	* Sets the relative rotation for this node2d to @param new_rotation.
 	*/
-	void set_rotation(const double new_rotation);
+	void set_rotation(const Angle new_rotation);
 
 	/**
-	* @returns the relative rotation of this node2d in degrees, relative to the parent.
+	* @returns the relative rotation of this node2d, relative to the parent.
 	*/
-	double get_rotation() const;
+	Angle get_rotation() const;
 
 	/**
 	* Sets the global position for this node2d to @param new_global_position.
@@ -132,14 +132,14 @@ public:
 	const Vector2 get_global_scale() const;
 
 	/**
-	* Sets the global rotation (in degrees) for this node2d to @param new_global_rotation.
+	* Sets the global rotation for this node2d to @param new_global_rotation.
 	*/
-	void set_global_rotation(const double new_global_rotation);
+	void set_global_rotation(const Angle new_global_rotation);
 
 	/**
-	* @returns the global rotation (in degrees) of this node2d.
+	* @returns the global rotation of this node2d.
 	*/
-	double get_global_rotation() const;
+	Angle get_global_rotation() const;
 
 	/**
 	* Sets the relative transform (position, scale, and rotation) for this node2d to @param new_transform.

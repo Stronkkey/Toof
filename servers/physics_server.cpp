@@ -183,7 +183,7 @@ std::optional<sdl::uid> sdl::PhysicsServer2D::body_get_world(const uid body_uid)
 void body_set_state_transform(const std::unique_ptr<sdl::PhysicsBody> &body, const sdl::PhysicsServer2D::body_state_variant &state_value) {
 	try {
 		const sdl::Transform2D transform = std::get<sdl::Transform2D>(state_value);
-		body->body->SetTransform(transform.origin.to_b2_vec2(), sdl::Math::degrees_to_radians(transform.rotation));
+		body->body->SetTransform(transform.origin.to_b2_vec2(), transform.rotation.get_angle_radians());
 	} catch(const std::bad_variant_access &ex) {
 	}
 }

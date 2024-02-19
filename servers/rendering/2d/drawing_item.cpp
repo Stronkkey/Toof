@@ -43,7 +43,7 @@ void TextureDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, c
 
 	const Transform2D &global_transform = canvas_item->get_global_transform() * viewport->get_canvas_transform();
 	const Rect2i source_region = use_region ? src_region : Rect2i(Vector2::ZERO, texture->size);
-	const double rotation = global_transform.rotation + transform.rotation;
+	const Angle rotation = global_transform.rotation + transform.rotation;
 	Rect2 final_draw_rect = _get_draw_rect(canvas_item) * viewport->get_canvas_transform();
 	final_draw_rect.rounded();
 
@@ -55,7 +55,7 @@ void TextureDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, c
 	if (rotation == 0.0)
 		SDL_RenderCopyF(renderer, final_texture, &final_source_region, &final_destination);
 	else
-		SDL_RenderCopyExF(renderer, final_texture, &final_source_region, &final_destination, rotation, NULL, flip);
+		SDL_RenderCopyExF(renderer, final_texture, &final_source_region, &final_destination, rotation.get_angle_degrees(), NULL, flip);
 }
 
 void RectDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, const Viewport *viewport) {

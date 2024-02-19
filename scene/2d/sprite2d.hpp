@@ -36,8 +36,8 @@ public:
 	void set_offset(const Vector2 &new_offset);
 	const Vector2 &get_offset() const;
 
-	void set_texture_rotation(const double new_rotation);
-	double get_texture_rotation() const;
+	void set_texture_rotation(const Angle new_rotation);
+	Angle get_texture_rotation() const;
 
 	void set_texture_scale(const Vector2 &new_texture_scale);
 	const Vector2 &get_texture_scale() const;

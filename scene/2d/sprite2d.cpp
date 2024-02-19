@@ -85,12 +85,12 @@ SDL_RendererFlip Sprite2D::get_flip() const {
 	return flip;
 }
 
-void Sprite2D::set_texture_rotation(const double new_rotation) {
+void Sprite2D::set_texture_rotation(const Angle new_rotation) {
 	texture_transform.rotation = new_rotation;
 	queue_redraw();
 }
 
-double Sprite2D::get_texture_rotation() const {
+Angle Sprite2D::get_texture_rotation() const {
 	return texture_transform.rotation;
 }
 

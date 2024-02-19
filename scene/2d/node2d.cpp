@@ -117,12 +117,12 @@ const Vector2 &Node2D::get_scale() const {
 	return transform.scale;
 }
 
-void Node2D::set_rotation(const double new_rotation) {
+void Node2D::set_rotation(const Angle new_rotation) {
 	transform.rotation = new_rotation;
 	queue_redraw();
 }
 
-double Node2D::get_rotation() const {
+Angle Node2D::get_rotation() const {
 	return transform.rotation;
 }
 
@@ -145,12 +145,12 @@ const Vector2 Node2D::get_global_scale() const {
 	return get_global_transform().scale;
 }
 
-void Node2D::set_global_rotation(const double new_global_rotation) {
-	double global_rotation = get_global_rotation();
+void Node2D::set_global_rotation(const Angle new_global_rotation) {
+	Angle global_rotation = get_global_rotation();
 	transform.rotation = -(global_rotation - new_global_rotation);
 }
 
-double Node2D::get_global_rotation() const {
+Angle Node2D::get_global_rotation() const {
 	return get_global_transform().rotation;
 }
 

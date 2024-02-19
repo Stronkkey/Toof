@@ -12,7 +12,7 @@ bool sdl::Math::is_equal_approx(const Rect2 &left, const Rect2 &right) {
 }
 
 bool sdl::Math::is_equal_approx(const Transform2D &left, const Transform2D &right) {
-	return is_equal_approx(left.origin, right.origin) && is_equal_approx(left.rotation, right.rotation) && is_equal_approx(left.scale, right.scale);
+	return is_equal_approx(left.origin, right.origin) && is_equal_approx(left.rotation.get_angle_degrees(), right.rotation.get_angle_degrees()) && is_equal_approx(left.scale, right.scale);
 }
 
 bool sdl::Math::is_zero_approx(const Vector2 &vector2) {
@@ -24,5 +24,5 @@ bool sdl::Math::is_zero_approx(const Rect2 &rect2) {
 }
 
 bool sdl::Math::is_zero_approx(const Transform2D &transform2d) {
-	return is_zero_approx(transform2d.rotation) && is_zero_approx(transform2d.origin) && is_zero_approx(transform2d.scale);
+	return is_zero_approx(transform2d.rotation.get_angle_degrees()) && is_zero_approx(transform2d.origin) && is_zero_approx(transform2d.scale);
 }

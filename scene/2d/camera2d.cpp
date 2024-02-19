@@ -22,7 +22,7 @@ Transform2D Camera2D::_get_camera_transform() const {
 	Vector2 final_offset = offset;
 	Vector2 camera_position;
 	//Vector2 global_scale;
-	double camera_rotation = 0;
+	Angle camera_rotation = 0;
 
 	if (anchor_mode == CAMERA_ITEM_ANCHOR_DRAG_CENTER)
 		final_offset -= (viewport->get_viewport_size() / 2);
