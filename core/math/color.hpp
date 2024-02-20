@@ -46,7 +46,7 @@ struct Color {
 	* @return a new color resulting from overlaying this color over the given color.
 	* In a painting program, you can imagine it as the over color painted over this color (including alpha).
 	*/
-	[[nodiscard]] constexpr Color blend(const Color &over) const;
+	[[nodiscard]] Color blend(const Color &over) const;
 
 	/**
 	* @return a new color resulting from making this color darker by the specified amount (ratio from 0 to 255).
@@ -208,21 +208,6 @@ constexpr Color::Color(const uint16_t red, const uint16_t green, const uint16_t 
 }
 
 constexpr Color::Color(const uint16_t red, const uint16_t green, const uint16_t blue, const uint16_t alpha): r(red), g(green), b(blue), a(alpha) {
-}
-
-constexpr Color Color::blend(const Color &over) const {
-	Color blended_color;
-	uint16_t inverted_alpha = 255 - over.a;
-	blended_color.a = a * inverted_alpha + over.a;
-
-	if (blended_color.a == 0)
-		return Color(0, 0, 0, 0);
-
-	blended_color.r = (r * a * inverted_alpha + over.r * over.a) / blended_color.a;
-	blended_color.g = (g * a * inverted_alpha + over.g * over.a) / blended_color.a;
-	blended_color.b = (b * a * inverted_alpha + over.b * over.a) / blended_color.a;
-
-	return blended_color;
 }
 
 constexpr Color Color::darkened(const float amount) const {
