@@ -11,6 +11,7 @@ subdir('core')
 subdir('input')
 subdir('scene')
 subdir('servers')
+subdir('tests')
 
 project_headers = [
   core_headers,
@@ -26,12 +27,14 @@ project_source_files = [
   servers_source_files,
 ]
 
-test_headers = [
-  project_headers,
-  'tests/test_geometry2d.hpp',
+test_source_files = [
+  project_source_files,
+  tests_source_files,
 ]
 
-project_test_files = [
+test_headers = [
+  project_headers,
+  tests_headers,
 ]
 
 project_dependencies = [
@@ -96,6 +99,13 @@ project_dep = declare_dependency(
 )
 set_variable(meson.project_name() + '_dep', project_dep)
 
+base_test_build = executable(
+  meson.project_name() + 'test',
+  test_source_files,
+  dependencies: project_dependencies,
+  install: false,
+  cpp_args: build_args
+)
 
 # Make this library usable from the system's
 # package manager.
@@ -108,4 +118,33 @@ pkg_mod.generate(
   description : project_description,
   subdirs : meson.project_name(),
   libraries : project_target,
+)
+
+test(
+  'Success',
+  base_test_build,
+  args: ['success'],
+  verbose: true
+)
+
+test(
+  'Fail',
+  base_test_build,
+  args: ['fail'],
+  verbose: true,
+  should_fail: true,
+)
+
+test(
+  'Math',
+  base_test_build,
+  args: ['math'],
+  verbose: true,
+)
+
+test(
+  'Color',
+  base_test_build,
+  args: ['color'],
+  verbose: true,
 )
