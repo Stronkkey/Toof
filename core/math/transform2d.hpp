@@ -38,7 +38,7 @@ struct Transform2D {
 	static const Transform2D IDENTITY;
 };
 
-constexpr Transform2D::Transform2D(): rotation(0.0), origin(Vector2::ZERO), scale(Vector2::ONE) {
+constexpr Transform2D::Transform2D(): rotation(0.0), origin(Vector2()), scale(Vector2()) {
 }
 
 constexpr Transform2D::Transform2D(const Angle rotation, const Vector2 &new_origin, const Vector2 &new_scale): rotation(rotation), origin(new_origin), scale(new_scale) {
