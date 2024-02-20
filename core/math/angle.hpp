@@ -26,7 +26,7 @@ public:
 	}
 
 	constexpr real_t get_angle_degrees() const {
-		return Math::radians_to_degrees(angle_degrees);
+		return angle_degrees;
 	}
 
 	constexpr real_t get_angle_radians() const {
