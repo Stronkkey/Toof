@@ -22,10 +22,7 @@ Window::Window() : window_title("SDL Example"), window_rect(Rect2i(0, 0, 320, 24
 }
 
 Window::~Window() {
-	if (window) {
-		SDL_DestroyWindow(window);
-		window = nullptr;
-	}
+	SDL_DestroyWindow(window);
 }
 
 SDL_Window *Window::get_window() const {
