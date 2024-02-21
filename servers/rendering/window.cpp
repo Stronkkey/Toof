@@ -48,8 +48,8 @@ void Window::try_initialize() {
 	initialized = INITIALIZED;
 }
 
-void Window::fail_with_message(const std::string &message, const SDL_LogCategory category) {
-	const std::string aborting_string = " Aborting...";
+void Window::fail_with_message(const String &message, const SDL_LogCategory category) {
+	const String aborting_string = " Aborting...";
 
 	SDL_LogCritical(category, (message + aborting_string).c_str(), SDL_GetError());
 	initialized = INITILIZATION_FAILED;
@@ -71,13 +71,13 @@ const Rect2i &Window::get_window_rect() const {
 	return window_rect;
 }
 
-void Window::set_window_title(const std::string &new_title) {
+void Window::set_window_title(const String &new_title) {
 	window_title = new_title;
 	if (window)
 		SDL_SetWindowTitle(window, window_title.c_str());
 }
 
-const std::string &Window::get_window_title() const {
+const String &Window::get_window_title() const {
 	return window_title;
 }
 

@@ -34,7 +34,7 @@ public:
 	    const Color &modulate = Color::WHITE,
 	    const Transform2D &transform = Transform2D::IDENTITY) const override;
 
-	void load_from_path(const std::unique_ptr<RenderingServer> &rendering_server, const std::string &file_path);
+	void load_from_path(const std::unique_ptr<RenderingServer> &rendering_server, const String &file_path);
 };
 
 uid UidTexture::get_uid() const {

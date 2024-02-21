@@ -18,10 +18,10 @@ private:
 
 	static InitilizationStatus initialized;
 	static void try_initialize();
-	static void fail_with_message(const std::string &message,
+	static void fail_with_message(const String &message,
 	    const SDL_LogCategory category = SDL_LOG_CATEGORY_APPLICATION);
 
-	std::string window_title;
+	String window_title;
 	Rect2i window_rect;
 
 	SDL_Window *window;
@@ -35,8 +35,8 @@ public:
 	void set_window_rect(const Rect2i &window_rect);
   	const Rect2i &get_window_rect() const;
 
-	void set_window_title(const std::string &new_title);
-	const std::string &get_window_title() const;
+	void set_window_title(const String &new_title);
+	const String &get_window_title() const;
 
 	int get_refresh_rate() const;
 

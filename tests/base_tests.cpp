@@ -16,7 +16,7 @@ bool FailTest::_test() {
 	return true;
 }
 
-void Test::_test_fail(const std::string &message) {
+void Test::_test_fail(const String &message) {
 	if (message == "")
 		return;
 	print(message);

@@ -25,7 +25,7 @@ const std::unique_ptr<sdl::InputMap> &Input::get_input_map() const {
 	return input_map;
 }
 
-void Input::_update_action_with_proxy(const std::string &action_name, const InputProxy &input_proxy) {
+void Input::_update_action_with_proxy(const String &action_name, const InputProxy &input_proxy) {
 	ActionState &action_state = action_states[action_name];
 
 	action_state.pressed = input_proxy.input_event->is_pressed();
@@ -89,7 +89,7 @@ std::shared_ptr<InputEvent> Input::process_event(const SDL_Event *event) {
 	return input_event;
 }
 
-const std::unordered_map<std::string, Input::ActionState> &Input::get_action_states() const {
+const std::unordered_map<sdl::String, Input::ActionState> &Input::get_action_states() const {
 	return action_states;
 }
 
@@ -112,7 +112,7 @@ bool Input::is_physical_key_pressed(const SDL_Scancode scan_code) const {
 	return physical_keys_pressed.count(scan_code) == 1;
 }
 
-bool Input::is_action_pressed(const std::string &action_name) const {
+bool Input::is_action_pressed(const String &action_name) const {
 	if (!input_map->has_action(action_name))
 		return false;
 
@@ -124,7 +124,7 @@ bool Input::is_action_pressed(const std::string &action_name) const {
 	return iterator->second.pressed;
 }
 
-bool Input::is_action_just_pressed(const std::string &action_name) const {
+bool Input::is_action_just_pressed(const String &action_name) const {
 	if (!input_map->has_action(action_name))
 		return false;
 
@@ -143,7 +143,7 @@ bool Input::is_action_just_pressed(const std::string &action_name) const {
 	return action_state.pressed;
 }
 
-bool Input::is_action_just_released(const std::string &action_name) const {
+bool Input::is_action_just_released(const String &action_name) const {
 	if (!input_map->has_action(action_name))
 		return false;
 
@@ -162,7 +162,7 @@ bool Input::is_action_just_released(const std::string &action_name) const {
 	return !action_state.pressed;
 }
 
-float Input::get_action_strength(const std::string &action_name) const {
+float Input::get_action_strength(const String &action_name) const {
 	if (!input_map->has_action(action_name))
 		return 0.0f;
 
@@ -173,18 +173,18 @@ float Input::get_action_strength(const std::string &action_name) const {
 	return iterator->second.strength;
 }
 
-float Input::get_axis(const std::string &negative_action_name, const std::string &positive_action_name) const {
+float Input::get_axis(const String &negative_action_name, const String &positive_action_name) const {
 	return get_action_strength(negative_action_name) - get_action_strength(positive_action_name);
 }
 
-sdl::Vector2 Input::get_vector(const std::string &negative_x_action_name, const std::string &positive_x_action_name, const std::string &negative_y_action_name, const std::string &positive_y_action_name) const {
+sdl::Vector2 Input::get_vector(const String &negative_x_action_name, const String &positive_x_action_name, const String &negative_y_action_name, const String &positive_y_action_name) const {
 	Vector2 vector = Vector2(
 	        get_action_strength(positive_x_action_name) - get_action_strength(negative_x_action_name),
 	        get_action_strength(positive_y_action_name) - get_action_strength(negative_y_action_name));
 	return vector.normalized();
 }
 
-void Input::action_press(const std::string &action_name, const float strength) {
+void Input::action_press(const String &action_name, const float strength) {
 	if (!input_map->has_action(action_name))
 		return;
 
@@ -205,7 +205,7 @@ void Input::action_press(const std::string &action_name, const float strength) {
 	action_state.strength = std::max(action_state.api_strength, action_state.strength);
 }
 
-void Input::action_release(const std::string &action_name) {
+void Input::action_release(const String &action_name) {
 	if (input_map->has_action(action_name))
 		return;
 

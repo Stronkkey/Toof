@@ -38,9 +38,9 @@ private:
 		float strength = 0.0f;
 	};
 
-	std::unordered_map<std::string, ActionState> action_states;
+	std::unordered_map<String, ActionState> action_states;
 
-	void _update_action_with_proxy(const std::string &action_name, const InputProxy &input_proxy);
+	void _update_action_with_proxy(const String &action_name, const InputProxy &input_proxy);
 	void _flush_buffered_inputs();
 
 	std::shared_ptr<InputEvent> _process_keyboard_event(const SDL_Event *event);
@@ -49,7 +49,7 @@ public:
 	~Input();
 
 	std::shared_ptr<InputEvent> process_event(const SDL_Event *event);
-	const std::unordered_map<std::string, ActionState> &get_action_states() const;
+	const std::unordered_map<String, ActionState> &get_action_states() const;
 
 	const std::unique_ptr<InputMap> &get_input_map() const;
 
@@ -57,16 +57,16 @@ public:
 	bool is_key_pressed(const SDL_Keycode keycode) const;
 	bool is_physical_key_pressed(const SDL_Scancode scan_code) const;
 
-	bool is_action_pressed(const std::string &action_name) const;
-	bool is_action_just_pressed(const std::string &action_name) const;
-	bool is_action_just_released(const std::string &action_name) const;
-	float get_action_strength(const std::string &action_name) const;
+	bool is_action_pressed(const String &action_name) const;
+	bool is_action_just_pressed(const String &action_name) const;
+	bool is_action_just_released(const String &action_name) const;
+	float get_action_strength(const String &action_name) const;
 
-	float get_axis(const std::string &negative_action_name, const std::string &positive_action_name) const;
-	Vector2 get_vector(const std::string &negative_x_action_name, const std::string &positive_x_action_name, const std::string &negative_y_action_name, const std::string &positive_y_action_name) const;
+	float get_axis(const String &negative_action_name, const String &positive_action_name) const;
+	Vector2 get_vector(const String &negative_x_action_name, const String &positive_x_action_name, const String &negative_y_action_name, const String &positive_y_action_name) const;
 
-	void action_press(const std::string &action_name, const float strength = 1.0f);
-	void action_release(const std::string &action_name);
+	void action_press(const String &action_name, const float strength = 1.0f);
+	void action_release(const String &action_name);
 };
 
 }

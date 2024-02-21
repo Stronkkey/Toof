@@ -23,7 +23,7 @@ void Rect2::operator*=(const Transform2D &right) {
 	h *= right.scale.y;
 }
 
-std::string Rect2::to_string() const {
+String Rect2::to_string() const {
 	return "(" + get_position().to_string() + ", " + get_size().to_string() + ")";
 }
 
@@ -75,7 +75,7 @@ SDL_FRect Rect2::to_sdl_frect(const Rect2 &rect2) {
 }
 
 
-std::string Rect2i::to_string() const {
+String Rect2i::to_string() const {
 	return "(" + get_position().to_string() + ", " + get_size().to_string() + ")";
 }
 

@@ -21,7 +21,7 @@ real_t UtilityFunctions::get_passed_time() {
 	return time;
 }
 
-std::string UtilityFunctions::to_string(const std::any &variant) {
+String UtilityFunctions::to_string(const std::any &variant) {
 	const std::type_info &type_info = variant.type();
 
 	// Ouch
@@ -55,12 +55,12 @@ std::string UtilityFunctions::to_string(const std::any &variant) {
 	if (type_info == typeid(bool))
 		return std::any_cast<bool>(variant) ? "true" : "false";
 
-	if (type_info == typeid(std::string))
-		return std::any_cast<std::string>(variant);
+	if (type_info == typeid(String))
+		return std::any_cast<String>(variant);
 
 	if (type_info == typeid(char)) {
 		char character = std::any_cast<char>(variant);
-		return std::string(&character, 1);
+		return String(&character, 1);
 	}
 
 	if (type_info == typeid(Vector2))
@@ -111,8 +111,8 @@ std::string UtilityFunctions::to_string(const std::any &variant) {
 	if (type_info == typeid(bool*))
 		return *std::any_cast<bool*>(variant) ? "true" : "false";
 
-	if (type_info == typeid(std::string*))
-		return *std::any_cast<std::string*>(variant);
+	if (type_info == typeid(String*))
+		return *std::any_cast<String*>(variant);
 
 	if (type_info == typeid(char*))
 		return std::any_cast<char*>(variant);
@@ -165,8 +165,8 @@ std::string UtilityFunctions::to_string(const std::any &variant) {
 	if (type_info == typeid(const unsigned long long*))
 		return std::to_string(*std::any_cast<const unsigned long long*>(variant));
 
-	if (type_info == typeid(const std::string*))
-		return *std::any_cast<const std::string*>(variant);
+	if (type_info == typeid(const String*))
+		return *std::any_cast<const String*>(variant);
 
 	if (type_info == typeid(const char*))
 		return std::any_cast<const char*>(variant);
@@ -238,12 +238,12 @@ void UtilityFunctions::prints_err(const std::initializer_list<std::any> &variant
 	std::cerr << end_line;
 }
 
-std::vector<std::string> UtilityFunctions::split_string(const std::string &string, const std::string &delimiter) {
+std::vector<String> UtilityFunctions::split_string(const String &string, const String &delimiter) {
 	uint64_t pos;
-	std::string str_copy = string;
-	std::vector<std::string> strings;
+	String str_copy = string;
+	std::vector<String> strings;
 
-	while ((pos = str_copy.find(delimiter)) != std::string::npos) {
+	while ((pos = str_copy.find(delimiter)) != String::npos) {
 		strings.push_back(str_copy.substr(0, pos));
 		str_copy.erase(0, pos + delimiter.length());
 	}

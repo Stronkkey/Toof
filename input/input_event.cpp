@@ -6,15 +6,15 @@ using InputEvent = sdl::InputEvent;
 using InputEventKeyboard = sdl::InputEventKeyboard;
 using InputEventAction = sdl::InputEventAction;
 
-bool InputEvent::is_action(const std::string &action_name) const {
+bool InputEvent::is_action(const String &action_name) const {
 	return input ? input->get_input_map()->event_is_action(this, action_name) : false;
 }
 
-bool InputEvent::is_action_pressed(const std::string &action_name) const {
+bool InputEvent::is_action_pressed(const String &action_name) const {
 	return input ? input->is_action_pressed(action_name) : false;
 }
 
-bool InputEvent::is_action_released(const std::string &action_name) const {
+bool InputEvent::is_action_released(const String &action_name) const {
 	return !is_action_pressed(action_name);
 }
 

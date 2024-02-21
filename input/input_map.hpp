@@ -23,26 +23,26 @@ public:
 	};
 
 private:
-	std::unordered_map<std::string, Action> actions;
-	void _add_input_to_action(const std::string &action_name, const InputProxy &input_proxy);
-	void _remove_input_from_action(const std::string &action_name, const InputProxy &input_proxy);
+	std::unordered_map<String, Action> actions;
+	void _add_input_to_action(const String &action_name, const InputProxy &input_proxy);
+	void _remove_input_from_action(const String &action_name, const InputProxy &input_proxy);
 
 public:
 	InputMap();
 	~InputMap();
 
-	void create_action(const std::string &action_name);
-	void add_key_to_action(const std::string &action_name, const std::shared_ptr<InputEvent> &input_event);
-	void remove_key_from_action(const std::string &action_name, const std::shared_ptr<InputEvent> &input_event);
+	void create_action(const String &action_name);
+	void add_key_to_action(const String &action_name, const std::shared_ptr<InputEvent> &input_event);
+	void remove_key_from_action(const String &action_name, const std::shared_ptr<InputEvent> &input_event);
 
-	bool has_action(const std::string &action_name) const;
-	void clear_action(const std::string &action_name);
+	bool has_action(const String &action_name) const;
+	void clear_action(const String &action_name);
 
-	std::vector<InputEvent> action_get_events(const std::string &action_name) const;
-	const std::unordered_map<std::string, Action> &get_actions() const;
+	std::vector<InputEvent> action_get_events(const String &action_name) const;
+	const std::unordered_map<String, Action> &get_actions() const;
 
-	bool event_get_action_state(const InputEvent *input_event, const std::string &action_name, bool *pressed = nullptr, float *strength = nullptr) const;
-	bool event_is_action(const InputEvent *input_event, const std::string &action_name) const;
+	bool event_get_action_state(const InputEvent *input_event, const String &action_name, bool *pressed = nullptr, float *strength = nullptr) const;
+	bool event_is_action(const InputEvent *input_event, const String &action_name) const;
 };
 
 }

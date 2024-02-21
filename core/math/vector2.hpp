@@ -1,8 +1,8 @@
 #pragma once
 
+#include <core/macro_defs.hpp>
 #include <core/math/math_defs.hpp>
 
-#include <string>
 #include <SDL_rect.h>
 
 #ifdef B2_INCLUDED
@@ -74,7 +74,7 @@ struct Vector2 {
 	[[nodiscard]] constexpr Vector2 move_toward(const Vector2 &to, const real_t delta) const;
 	[[nodiscard]] constexpr real_t distance_to_squared(const Vector2 &to) const;
 	[[nodiscard]] constexpr real_t distance_to(const Vector2 &to) const;
-	[[nodiscard]] std::string to_string() const;
+	[[nodiscard]] String to_string() const;
 	[[nodiscard]] SDL_FPoint to_sdl_fpoint() const;
 	[[nodiscard]] SDL_Point to_sdl_point() const;
 
@@ -132,7 +132,7 @@ struct Vector2i {
 	constexpr Vector2i operator-() const;
 	constexpr Vector2i operator+() const;
 
-	[[nodiscard]] std::string to_string() const;
+	[[nodiscard]] String to_string() const;
 	[[nodiscard]] SDL_FPoint to_sdl_fpoint() const;
 	[[nodiscard]] SDL_Point to_sdl_point() const;
 

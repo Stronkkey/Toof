@@ -223,7 +223,7 @@ struct Rect2 {
 	/**
 	* @returns a string representation as '(x, y, w, h)'.
 	*/
-	[[nodiscard]] std::string to_string() const;
+	[[nodiscard]] String to_string() const;
 
 	/**
 	* @returns a Rect2 that encloses both this rectangle and @param right around the edges.
@@ -342,7 +342,7 @@ struct Rect2i {
 	constexpr Vector2i get_position() const;
 	constexpr Vector2i get_size() const;
 
-	[[nodiscard]] std::string to_string() const;
+	[[nodiscard]] String to_string() const;
 	[[nodiscard]] constexpr Rect2i merge(const Rect2i &right) const;
 	[[nodiscard]] Rect2i abs() const;
 	[[nodiscard]] constexpr Rect2i remove_negative_size() const;

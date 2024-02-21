@@ -1,9 +1,9 @@
 #pragma once
 
-#include <string>
+#include <core/macro_defs.hpp>
 
 #define GET_LINE_PRETTY() "file: \"" + __FILE__ + "\" on line " + std::to_string(__LINE__)
-#define CONDITION_THING(condition) std::string("Assert \"") + #condition + "\", in " + GET_LINE_PRETTY() + " failed."
+#define CONDITION_THING(condition) String("Assert \"") + #condition + "\", in " + GET_LINE_PRETTY() + " failed."
 #define TEST_CASE(condition) if (!(condition)) { _test_fail((CONDITION_THING(condition))); return false; }
 
 namespace sdl {
@@ -15,7 +15,7 @@ private:
 	virtual bool _test() = 0;
 
 protected:
-	void _test_fail(const std::string &message = "");
+	void _test_fail(const String &message = "");
 
 public:
 	bool run_test();

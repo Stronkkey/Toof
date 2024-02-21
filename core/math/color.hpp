@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include <core/macro_defs.hpp>
 #include <core/math/math_defs.hpp>
 
 #include <SDL_pixels.h>
@@ -138,7 +138,7 @@ struct Color {
 	/**
 	* @return a String reprenstation of the color "(r, g, b , a)"
 	*/
-	[[nodiscard]] std::string to_string() const;
+	[[nodiscard]] String to_string() const;
 
 
 	/**

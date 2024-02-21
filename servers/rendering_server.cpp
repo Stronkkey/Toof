@@ -156,7 +156,7 @@ std::unique_ptr<RenderingServer::TextureInfo> RenderingServer::get_texture_info_
 	return texture_info;
 }
 
-std::optional<uid> RenderingServer::load_texture_from_path(const std::string &path) {
+std::optional<uid> RenderingServer::load_texture_from_path(const String &path) {
 	SDL_Texture *texture = IMG_LoadTexture(viewport->get_renderer(), path.c_str());
 	if (texture == NULL)
 		return std::nullopt;

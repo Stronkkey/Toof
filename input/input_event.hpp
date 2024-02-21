@@ -1,11 +1,10 @@
 #pragma once
 
+#include <core/macro_defs.hpp>
 #include <input/event_input_type.hpp>
-#include <ratio>
 #include <scene/resources/resource.hpp>
 
 #include <memory>
-#include <string>
 
 namespace sdl {
 
@@ -43,9 +42,9 @@ public:
 		return type;
 	}
 
-	bool is_action(const std::string &action_name) const;
-	bool is_action_pressed(const std::string &action_name) const;
-	bool is_action_released(const std::string &action_name) const;
+	bool is_action(const String &action_name) const;
+	bool is_action_pressed(const String &action_name) const;
+	bool is_action_released(const String &action_name) const;
 
 	void fill_with_event(const SDL_Event *event);
 	bool same_input(const InputEvent *input_event) const;
@@ -102,7 +101,7 @@ public:
 // Equal to EVENT_INPUT_TYPE_USER << EVENT_INPUT_TYPE_WINDOW
 class InputEventAction : public InputEvent {
 private:
-	std::string action_name;
+	String action_name;
 	float strength;
 
 	bool _same_input(const InputEvent *input_event) const override;
@@ -115,11 +114,11 @@ public:
 		this->pressed = pressed;
 	}
 
-	void set_action_name(const std::string &action_name) {
+	void set_action_name(const String &action_name) {
 		this->action_name = action_name;
 	}
 
-	constexpr const std::string &get_action_name() const {
+	constexpr const String &get_action_name() const {
 		return action_name;
 	}
 

@@ -9,7 +9,7 @@
 using namespace sdl::Tests;
 using sdl::UtilityFunctions::print;
 
-std::unordered_map<std::string, std::unique_ptr<Test>> tests;
+std::unordered_map<sdl::String, std::unique_ptr<Test>> tests;
 
 #define PRINT_RETURN(message, return_value) { print(message); return return_value; }
 
@@ -38,7 +38,7 @@ enum TestRun {
 	TEST_RUN_UNKNOWN = 2,
 };
 
-TestRun try_test_run(const std::string &name) {
+TestRun try_test_run(const sdl::String &name) {
 	const auto &iterator = tests.find(name);
 	if (iterator != tests.end())
 		PRINT_RETURN("Running test \"" + name + "\"", (TestRun)run_test(iterator->second));

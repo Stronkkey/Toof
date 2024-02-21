@@ -57,7 +57,7 @@ public:
 	Viewport *get_viewport() const;
 	SDL_Renderer *get_renderer() const;
 
-	std::optional<uid> load_texture_from_path(const std::string &path);
+	std::optional<uid> load_texture_from_path(const String &path);
 	uid create_canvas_item();
 
 	void set_default_background_color(const Color &new_background_color);

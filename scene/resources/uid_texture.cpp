@@ -44,7 +44,7 @@ void sdl::UidTexture::draw_region(const std::unique_ptr<RenderingServer> &render
 	rendering_server->canvas_item_add_texture_region(texture_uid, canvas_item_uid, src_region, flip, modulate, transform);
 }
 
-void sdl::UidTexture::load_from_path(const std::unique_ptr<RenderingServer> &rendering_server, const std::string &file_path) {
+void sdl::UidTexture::load_from_path(const std::unique_ptr<RenderingServer> &rendering_server, const String &file_path) {
 	const std::optional<uid> text_uid = rendering_server->load_texture_from_path(file_path);
 	texture_uid = text_uid.has_value() ? text_uid.value() : 0;
 }

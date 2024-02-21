@@ -1,10 +1,10 @@
 #pragma once
 
+#include <core/macro_defs.hpp>
 #include <core/math/math_defs.hpp>
 
 #include <any>
 #include <initializer_list>
-#include <string>
 #include <vector>
 
 namespace sdl {
@@ -19,7 +19,7 @@ real_t get_passed_time();
 /**
 * @returns the @param variant converted to a string in the best possible way.
 */
-[[nodiscard]] std::string to_string(const std::any &variant);
+[[nodiscard]] String to_string(const std::any &variant);
 
 /**
 * Converts @param variant into a string in the best way possible and prints it to the standard output.
@@ -65,7 +65,7 @@ void prints_err(const std::initializer_list<std::any> &variants);
 /**
 * Splits the @param string using a @param delimiter and returns an array of the substrings.
 */
-std::vector<std::string> split_string(const std::string &string, const std::string &delimiter);
+std::vector<String> split_string(const String &string, const String &delimiter);
 
 }
 

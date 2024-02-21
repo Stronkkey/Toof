@@ -1,7 +1,8 @@
 #pragma once
 
+#include <core/macro_defs.hpp>
+
 #include <memory>
-#include <string>
 #include <unordered_set>
 
 #include <SDL_events.h>
@@ -53,7 +54,7 @@ private:
 	children_t children;
 	SceneTree *tree;
 	Node *parent;
-	std::string name;
+	String name;
 	bool is_ready, is_deletion_queued;
 
 	void _reset_tree();
@@ -121,7 +122,7 @@ public:
 	/**
 	* Emitted when the node is renamed.
 	*/
-	boost::signals2::signal<void(const std::string &name)> renamed;
+	boost::signals2::signal<void(const String &name)> renamed;
 
 	/**
 	* Emitted when the node enters the tree.
@@ -214,12 +215,12 @@ public:
 	/**
 	* Sets the name of the node.
 	*/
-	void set_name(const std::string &new_name);
+	void set_name(const String &new_name);
 
 	/**
 	* @returns the name of the node.
 	*/
-	const std::string &get_name() const;
+	const String &get_name() const;
 
 	/**
 	* Adds the @param child as a child to this node. Reparenting the @param child if it already has a parent.

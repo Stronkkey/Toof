@@ -155,12 +155,12 @@ void Node::add_child(Node *child) {
 	_add_child_nocheck(child);
 }
 
-void Node::set_name(const std::string &new_name) {
+void Node::set_name(const String &new_name) {
 	name = new_name;
 	renamed(name);
 }
 
-const std::string &Node::get_name() const {
+const String &Node::get_name() const {
 	return name;
 }
 
