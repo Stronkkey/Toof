@@ -25,22 +25,22 @@ struct Color {
 	/**
 	* The color's red component, typically on the range of 0 to 255.
 	*/
-	uint16_t r;
+	uint8_t r;
 
 	/**
 	* The color's green component, typically on the range of 0 to 255.
 	*/
-	uint16_t g;
+	uint8_t g;
 
 	/**
 	* The color's blue component, typically on the range of 0 to 255.
 	*/
-	uint16_t b;
+	uint8_t b;
 	
 	/**
 	* The color's alpha component, typically on the range of 0 to 255. A value of 0 means that the color is fully transparent. A value of 255 means that the color is fully opaque.
 	*/
-	uint16_t a;
+	uint8_t a;
 
 	/**
 	* @return a new color resulting from overlaying this color over the given color.
