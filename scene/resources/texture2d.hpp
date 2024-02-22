@@ -15,7 +15,6 @@ struct Rect2i;
 class RenderingServer;
 
 class Texture2D : public Resource {
-
 public:
 	virtual Vector2i get_size(const std::unique_ptr<RenderingServer>& = nullptr) const;
 	virtual int get_width(const std::unique_ptr<RenderingServer>& = nullptr) const;
@@ -37,7 +36,6 @@ public:
 	    const SDL_RendererFlip flip = SDL_FLIP_NONE,
 	    const Color &modulate = Color::WHITE,
 	    const Transform2D &transform = Transform2D::IDENTITY) const;
-
 };
 
 }
