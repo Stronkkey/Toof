@@ -33,7 +33,12 @@ void CanvasItem::set_global_visible() {
 	if (parent.expired())
 		return;
 
-	global_visible = visible;
+	if (!visible) {
+		global_visible = false;
+		return;
+	}
+
+	global_visible = true;
 	std::shared_ptr<CanvasItem> parent_canvas_item = parent.lock();
 
 	while (parent_canvas_item && global_visible) {
