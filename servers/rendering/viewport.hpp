@@ -23,20 +23,29 @@ private:
 
 public:
 	Viewport();
-	~Viewport();
+	~Viewport() = default;
 
 	void create(Window *from_window);
 
 	Vector2i get_viewport_size() const;
 
-	Window *get_window() const;
-	SDL_Renderer *get_renderer() const;
+	constexpr Window *get_window() const {
+		return window;
+	}
+
+	constexpr SDL_Renderer *get_renderer() const {
+		return renderer;
+	}
 
 	void set_vsync_enabled(const bool vsync_enabled);
-	bool is_vsync_enabled() const;
+	constexpr bool is_vsync_enabled() const {
+		return vsync;
+	}
 
 	void set_canvas_transform(const Transform2D &new_canvas_transform);
-	const Transform2D &get_canvas_transform() const;
+	constexpr const Transform2D &get_canvas_transform() const {
+		return canvas_transform;
+	}
 };
 
 }

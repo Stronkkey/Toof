@@ -138,7 +138,7 @@ public:
 
 	/**
 	* @returns the global event from the tree.
-	* @note attempting to dereference the pointer is undefined if the node is not inside a SceneTree.
+	* @note behavior when dereferencing pointer is undefined if the node is not inside a SceneTree.
 	*/
 	const std::unique_ptr<SDL_Event> &get_event() const;
 
@@ -188,16 +188,20 @@ public:
 	/**
 	* @returns true if the node is queued for deletion.
 	*/
-	bool is_queued_for_deletion() const;
+	constexpr bool is_queued_for_deletion() const {
+		return is_deletion_queued;
+	}
 
 	/**
 	* @returns the tree this node belongs to or nullptr if the tree hasn't been set.
 	*/
-	SceneTree *get_tree() const;
+	constexpr SceneTree *get_tree() const {
+		return tree;
+	}
 
 	/**
 	* @returns the Input class from the tree.
-	* @note dereferencing pointer is undefined behavior if the node is not inside a SceneTree.
+	* @note dereferencing pointer results in undefined behavior if the node is not inside a SceneTree.
 	*/
 	const std::unique_ptr<Input> &get_input() const;
 
@@ -220,7 +224,9 @@ public:
 	/**
 	* @returns the name of the node.
 	*/
-	const String &get_name() const;
+	constexpr const String &get_name() const {
+		return name;
+	}
 
 	/**
 	* Adds the @param child as a child to this node. Reparenting the @param child if it already has a parent.
@@ -237,12 +243,16 @@ public:
 	/**
 	* @returns all children.
 	*/
-	const children_t &get_children() const;
+	constexpr const children_t &get_children() const {
+		return children;
+	}
 
 	/**
 	* @returns the parent of this node.
 	*/
-	Node *get_parent() const;
+	constexpr Node *get_parent() const {
+		return parent;
+	}
 
 	/**
 	* Calls remove_child on all the children of this node.

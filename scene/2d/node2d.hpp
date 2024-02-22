@@ -33,15 +33,15 @@ private:
 	/**
 	* Syncs the transform, modulate, blend_mode, scale_mode, zindex, and visible property with the RenderingServer.
 	*/
-	void update();
+	void _update();
 
-	void on_parent_changed(Node *new_parent);
+	void _on_parent_changed(Node *new_parent);
 	void ready();
 
 protected:
 	/**
 	* @returns the RenderingServer from the tree.
-	* @note attempting to dereference the pointer is undefined if the node is not inside a SceneTree.
+	* @note dereferencing pointer results in undefined behavior if the node is not inside a SceneTree.
 	*/
 	const std::unique_ptr<RenderingServer> &get_rendering_server() const;
 
@@ -79,17 +79,21 @@ public:
 	/**
 	* @returns the CanvasItem uid used by the RenderingServer for this item.
 	*/
-	uid get_canvas_item() const;
+	constexpr uid get_canvas_item() const {
+		return canvas_item;
+	}
 
 	/**
-	* Sets the relative position for this node2d to @param new_position.
+	* Sets the relative position for this node2d to @param position.
 	*/
-	void set_position(const Vector2 &new_position);
+	void set_position(const Vector2 &position);
 
 	/**
 	* @returns the position of this node2d, relative to the parent.
 	*/
-	const Vector2 &get_position() const;
+	constexpr const Vector2 &get_position() const {
+		return transform.origin;
+	}
 
 	/**
 	* Sets the relative scale for this node2d to @param new_scale.
@@ -99,7 +103,9 @@ public:
 	/**
 	* @returns the scale of this node2d, relative to the parent.
 	*/
-	const Vector2 &get_scale() const;
+	constexpr const Vector2 &get_scale() const {
+		return transform.scale;
+	}
 
 	/**
 	* Sets the relative rotation for this node2d to @param new_rotation.
@@ -109,7 +115,9 @@ public:
 	/**
 	* @returns the relative rotation of this node2d, relative to the parent.
 	*/
-	Angle get_rotation() const;
+	constexpr Angle get_rotation() const {
+		return transform.rotation;
+	}
 
 	/**
 	* Sets the global position for this node2d to @param new_global_position.
@@ -215,7 +223,9 @@ public:
 	* @see also is_visible_in_tree.
 	* @note this only takes into account this node2d's visiblity.
 	*/
-	bool is_visible() const;
+	constexpr bool is_visible() const {
+		return visible;
+	}
 
 	/**
 	* @returns true if the node2d and its parent are visible, otherwise false.
@@ -238,7 +248,9 @@ public:
 	* @returns the zindex of this node2d.
 	* @see also RenderingServer::canvas_item_get_zindex.
 	*/
-	int get_zindex() const;
+	constexpr int get_zindex() const {
+		return zindex;
+	}
 
 	/**
 	* @returns the zindex of this item including its parents if zindex relative is on.
@@ -256,7 +268,9 @@ public:
 	* @returns true if zindex is relative.
 	* @see also RenderingServer::canvas_item_is_zindex_relative.
 	*/
-	bool get_zindex_relative() const;
+	constexpr bool get_zindex_relative() const {
+		return zindex_relative;
+	}
 
 	/**
 	* Draws the @param texture on this node2d using the RenderingServer.

@@ -7,7 +7,6 @@ namespace sdl {
 class Texture2D;
 
 class Sprite2D : public Node2D {
-
 private:
 	std::shared_ptr<Texture2D> texture;
 
@@ -16,40 +15,55 @@ private:
 	SDL_RendererFlip flip;
 	bool centered;
 
-	Transform2D get_placement_texture_transform() const;
-	void draw_texture() const;
-	void draw_rect_texture() const;
-	void draw() const;
+	Transform2D _get_placement_texture_transform() const;
+	void _draw_full_texture() const;
+	void _draw_rect_texture() const;
+	void _draw_texture() const;
 	void _notification(const int what) override;
-
 public:
 	Sprite2D();
 
 	boost::signals2::signal<void()> texture_changed;
 
 	void set_texture(const std::shared_ptr<Texture2D> &new_texture);
-	const std::shared_ptr<Texture2D> &get_texture() const;
+	constexpr const std::shared_ptr<Texture2D> &get_texture() const {
+		return texture;
+	}
 
 	void set_texture_region(const Rect2i &new_texture_region);
-	const Rect2i &get_texture_region() const;
+	constexpr const Rect2i &get_texture_region() const {
+		return texture_region;
+	}
 
 	void set_offset(const Vector2 &new_offset);
-	const Vector2 &get_offset() const;
+	constexpr const Vector2 &get_offset() const {
+		return texture_transform.origin;
+	}
 
 	void set_texture_rotation(const Angle new_rotation);
-	Angle get_texture_rotation() const;
+	constexpr Angle get_texture_rotation() const {
+		return texture_transform.rotation;
+	}
 
 	void set_texture_scale(const Vector2 &new_texture_scale);
-	const Vector2 &get_texture_scale() const;
+	constexpr const Vector2 &get_texture_scale() const {
+		return texture_transform.scale;
+	}
 
 	void set_texture_transform(const Transform2D &new_texture_transform);
-	const Transform2D &get_texture_transform() const;
+	constexpr const Transform2D &get_texture_transform() const {
+		return texture_transform;
+	}
 
 	void set_flip(const SDL_RendererFlip new_flip);
-	SDL_RendererFlip get_flip() const;
+	constexpr SDL_RendererFlip get_flip() const {
+		return flip;
+	}
 
 	void set_centered(const bool new_centered);
-	bool is_centered() const;
+	constexpr bool is_centered() const {
+		return centered;
+	}
 };
 
 }

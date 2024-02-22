@@ -54,14 +54,20 @@ public:
 	void render();
 	void remove_uid(const uid destroying_uid);
 
-	Viewport *get_viewport() const;
-	SDL_Renderer *get_renderer() const;
+	constexpr Viewport *get_viewport() const {
+		return viewport;
+	}
 
 	std::optional<uid> load_texture_from_path(const String &path);
 	uid create_canvas_item();
 
-	void set_default_background_color(const Color &new_background_color);
-	const Color &get_default_background_color() const;
+	void set_default_background_color(const Color &new_background_color) {
+		background_color = new_background_color;
+	}
+
+	const Color &get_default_background_color() const {
+		return background_color;
+	}
 	Vector2i get_screen_size() const;
 
 	std::unique_ptr<TextureInfo> get_texture_info_from_uid(const uid texture_uid) const;

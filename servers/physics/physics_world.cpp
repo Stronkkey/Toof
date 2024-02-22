@@ -10,10 +10,6 @@ sdl::PhysicsWorld2D::PhysicsWorld2D(const Vector2 &gravity, const int32_t veloci
 	this->position_iterations = position_iterations;
 }
 
-std::unique_ptr<b2World> &sdl::PhysicsWorld2D::get_world() {
-	return b2_world;
-}
-
 void sdl::PhysicsWorld2D::step(const double delta) const {
 	b2_world->Step(delta, velocity_iterations, position_iterations);
 }

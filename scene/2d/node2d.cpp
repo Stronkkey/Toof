@@ -7,15 +7,16 @@
 
 using namespace sdl;
 
-Node2D::Node2D(): transform(Transform2D::IDENTITY),
+Node2D::Node2D():
+    transform(Transform2D::IDENTITY),
     canvas_item(0),
     modulate(Color::WHITE),
     blend_mode(SDL_BLENDMODE_BLEND),
-	scale_mode(SDL_ScaleModeLinear),
+    scale_mode(SDL_ScaleModeLinear),
     visible(true),
-	zindex_relative(true),
-	update_queued(false),
-	zindex(0) {
+    zindex_relative(true),
+    update_queued(false),
+    zindex(0) {
 }
 
 Node2D::~Node2D() {
@@ -36,12 +37,11 @@ const std::unique_ptr<RenderingServer> &Node2D::get_rendering_server() const {
 	if (is_inside_tree())
 		return get_tree()->get_rendering_server();
 	
-	const std::unique_ptr<RenderingServer> _r;
-	const std::unique_ptr<RenderingServer> *r = &_r;
+	const std::unique_ptr<RenderingServer> _r, *r = &_r;
 	return *r;
 }
 
-void Node2D::update() {
+void Node2D::_update() {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	update_queued = false;
 
@@ -56,7 +56,7 @@ void Node2D::update() {
 	}
 }
 
-void Node2D::on_parent_changed(Node *new_parent) {
+void Node2D::_on_parent_changed(Node *new_parent) {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (!rendering_server || !new_parent)
 		return;
@@ -76,7 +76,7 @@ void Node2D::_notification(const int what) {
 			_draw();
 			break;
 		case NOTIFICATION_PARENTED:
-			on_parent_changed(get_parent());
+			_on_parent_changed(get_parent());
 			break;
 		default:
 			break;
@@ -91,12 +91,8 @@ void Node2D::queue_redraw() {
 		return;
 
 	SceneTree *tree = get_tree();
-	tree->deferred_signals.connect(std::bind(&Node2D::update, this));
+	tree->deferred_signals.connect(std::bind(&Node2D::_update, this));
 	tree->deferred_signals.connect(std::bind(&Node::notification, this, NOTIFICATION_DRAW));
-}
-
-uid Node2D::get_canvas_item() const {
-	return canvas_item;
 }
 
 void Node2D::set_position(const Vector2 &new_position) {
@@ -104,26 +100,14 @@ void Node2D::set_position(const Vector2 &new_position) {
 	queue_redraw();
 }
 
-const Vector2 &Node2D::get_position() const {
-	return transform.origin;
-}
-
 void Node2D::set_scale(const Vector2 &new_scale) {
 	transform.scale = new_scale;
 	queue_redraw();
 }
 
-const Vector2 &Node2D::get_scale() const {
-	return transform.scale;
-}
-
 void Node2D::set_rotation(const Angle new_rotation) {
 	transform.rotation = new_rotation;
 	queue_redraw();
-}
-
-Angle Node2D::get_rotation() const {
-	return transform.rotation;
 }
 
 void Node2D::set_global_position(const Vector2 &new_global_position) {
@@ -139,6 +123,7 @@ const Vector2 Node2D::get_global_position() const {
 void Node2D::set_global_scale(const Vector2 &new_global_scale) {
 	Vector2 global_scale = get_global_scale();
 	transform.scale = -Vector2(global_scale - new_global_scale);
+	queue_redraw();
 }
 
 const Vector2 Node2D::get_global_scale() const {
@@ -156,7 +141,7 @@ Angle Node2D::get_global_rotation() const {
 
 void Node2D::set_transform(const Transform2D &new_transform) {
 	transform = new_transform;
-	update();
+	queue_redraw();
 }
 
 const Transform2D &Node2D::get_transform() const {
@@ -241,10 +226,6 @@ void Node2D::show() {
 	queue_redraw();
 }
 
-bool Node2D::is_visible() const {
-	return visible;
-}
-
 bool Node2D::is_visible_in_tree() const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 
@@ -269,10 +250,7 @@ bool Node2D::is_visible_inside_viewport() const {
 
 void Node2D::set_zindex(const int zindex) {
 	this->zindex = zindex;
-}
-
-int Node2D::get_zindex() const {
-	return zindex;
+	queue_redraw();
 }
 
 int Node2D::get_absolute_zindex() const {
@@ -287,7 +265,7 @@ int Node2D::get_absolute_zindex() const {
 
 void Node2D::set_zindex_relative(const bool zindex_relative) {
 	this->zindex_relative = zindex_relative;
-	update();
+	queue_redraw();
 }
 
 void Node2D::draw_texture(const std::shared_ptr<Texture2D> &texture, const Transform2D &texture_transform, const Color &modulation) const {

@@ -11,7 +11,7 @@ Sprite2D::Sprite2D(): texture(nullptr),
     centered(true) {
 }
 
-Transform2D Sprite2D::get_placement_texture_transform() const {
+Transform2D Sprite2D::_get_placement_texture_transform() const {
 	Transform2D placement_texture_transform = texture_transform;
 	if (centered) {
 		const Vector2 texture_size = texture->get_size(get_rendering_server());
@@ -21,31 +21,31 @@ Transform2D Sprite2D::get_placement_texture_transform() const {
 	return placement_texture_transform;
 }
 
-void Sprite2D::draw_texture() const {
-	texture->draw(get_rendering_server(), texture->get_uid(), get_canvas_item(), flip, Color::WHITE, get_placement_texture_transform());
+void Sprite2D::_draw_full_texture() const {
+	texture->draw(get_rendering_server(), texture->get_uid(), get_canvas_item(), flip, Color::WHITE, _get_placement_texture_transform());
 }
 
-void Sprite2D::draw_rect_texture() const {
-	texture->draw_region(get_rendering_server(), texture->get_uid(), get_canvas_item(), texture_region, flip, Color::WHITE, get_placement_texture_transform());
+void Sprite2D::_draw_rect_texture() const {
+	texture->draw_region(get_rendering_server(), texture->get_uid(), get_canvas_item(), texture_region, flip, Color::WHITE, _get_placement_texture_transform());
 }
 
-void Sprite2D::draw() const {
+void Sprite2D::_draw_texture() const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (!rendering_server || !texture)
 		return;
 
 	rendering_server->canvas_item_clear(get_canvas_item());
 	if (texture_region == Rect2i::EMPTY)
-		draw_texture();
+		_draw_full_texture();
 	else
-		draw_rect_texture();
+		_draw_rect_texture();
 }
 
 void Sprite2D::_notification(const int what) {
 	Node2D::_notification(what);
 
 	if (what == NOTIFICATION_DRAW)
-		draw();
+		_draw_texture();
 }
 
 void Sprite2D::set_texture(const std::shared_ptr<Texture2D> &new_texture) {
@@ -54,17 +54,9 @@ void Sprite2D::set_texture(const std::shared_ptr<Texture2D> &new_texture) {
 	queue_redraw();
 }
 
-const std::shared_ptr<Texture2D> &Sprite2D::get_texture() const {
-	return texture;
-}
-
 void Sprite2D::set_texture_region(const Rect2i &new_texture_region) {
 	texture_region = new_texture_region;
 	queue_redraw();
-}
-
-const Rect2i &Sprite2D::get_texture_region() const {
-	return texture_region;
 }
 
 void Sprite2D::set_offset(const Vector2 &new_offset) {
@@ -72,17 +64,9 @@ void Sprite2D::set_offset(const Vector2 &new_offset) {
 	queue_redraw();
 }
 
-const Vector2 &Sprite2D::get_offset() const {
-	return texture_transform.origin;
-}
-
 void Sprite2D::set_flip(const SDL_RendererFlip new_flip) {
 	flip = new_flip;
 	queue_redraw();
-}
-
-SDL_RendererFlip Sprite2D::get_flip() const {
-	return flip;
 }
 
 void Sprite2D::set_texture_rotation(const Angle new_rotation) {
@@ -90,17 +74,9 @@ void Sprite2D::set_texture_rotation(const Angle new_rotation) {
 	queue_redraw();
 }
 
-Angle Sprite2D::get_texture_rotation() const {
-	return texture_transform.rotation;
-}
-
 void Sprite2D::set_texture_scale(const Vector2 &new_texture_scale) {
 	texture_transform.scale = new_texture_scale;
 	queue_redraw();
-}
-
-const Vector2 &Sprite2D::get_texture_scale() const {
-	return texture_transform.scale;
 }
 
 void Sprite2D::set_texture_transform(const Transform2D &new_texture_transform) {
@@ -111,8 +87,4 @@ void Sprite2D::set_texture_transform(const Transform2D &new_texture_transform) {
 void Sprite2D::set_centered(const bool new_centered) {
 	centered = new_centered;
 	queue_redraw();
-}
-
-bool Sprite2D::is_centered() const {
-	return centered;
 }

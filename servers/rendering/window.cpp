@@ -25,10 +25,6 @@ Window::~Window() {
 	SDL_DestroyWindow(window);
 }
 
-SDL_Window *Window::get_window() const {
-	return window;
-}
-
 void Window::try_initialize() {
 	if (initialized != NOT_INITIALIZED)
 		return;
@@ -67,22 +63,14 @@ void Window::set_window_rect(const Rect2i &window_rect) {
 	}
 }
 
-const Rect2i &Window::get_window_rect() const {
-	return window_rect;
-}
-
 void Window::set_window_title(const String &new_title) {
 	window_title = new_title;
 	if (window)
 		SDL_SetWindowTitle(window, window_title.c_str());
 }
 
-const String &Window::get_window_title() const {
-	return window_title;
-}
-
 int Window::get_refresh_rate() const {
-  int display_index = SDL_GetWindowDisplayIndex(window);
+  const int display_index = SDL_GetWindowDisplayIndex(window);
   SDL_DisplayMode mode;
   SDL_GetDisplayMode(display_index, 0, &mode);
   return mode.refresh_rate;

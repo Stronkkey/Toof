@@ -28,14 +28,6 @@ RenderingServer::~RenderingServer() {
 	canvas_items.clear();
 }
 
-void RenderingServer::set_default_background_color(const Color &new_background_color) {
-	background_color = new_background_color;
-}
-
-const Color &RenderingServer::get_default_background_color() const {
-	return background_color;
-}
-
 Vector2i RenderingServer::get_screen_size() const {
 	return viewport->get_viewport_size();
 }
@@ -49,21 +41,12 @@ void RenderingServer::render() {
 	SDL_RenderPresent(renderer);
 }
 
-Viewport *RenderingServer::get_viewport() const {
-	return viewport;
-}
-
-SDL_Renderer *RenderingServer::get_renderer() const {
-	return viewport->get_renderer();
-}
-
 const std::shared_ptr<Texture> &RenderingServer::get_texture_from_uid(const uid texture_uid) const {
 	auto iterator = textures.find(texture_uid);
 	if (iterator != textures.end())
 		return iterator->second;
 
-	const std::shared_ptr<Texture> _t;
-	const std::shared_ptr<Texture> *t = &_t;
+	const std::shared_ptr<Texture> _t, *t = &_t;
 	return *t;
 }
 

@@ -18,8 +18,7 @@ private:
 
 	static InitilizationStatus initialized;
 	static void try_initialize();
-	static void fail_with_message(const String &message,
-	    const SDL_LogCategory category = SDL_LOG_CATEGORY_APPLICATION);
+	static void fail_with_message(const String &message, const SDL_LogCategory category = SDL_LOG_CATEGORY_APPLICATION);
 
 	String window_title;
 	Rect2i window_rect;
@@ -30,13 +29,19 @@ public:
 	Window();
 	~Window();
 
-	SDL_Window *get_window() const;
+	constexpr SDL_Window *get_window() const {
+		return window;
+	}
 
 	void set_window_rect(const Rect2i &window_rect);
-  	const Rect2i &get_window_rect() const;
+  	constexpr const Rect2i &get_window_rect() const {
+		return window_rect;
+	}
 
 	void set_window_title(const String &new_title);
-	const String &get_window_title() const;
+	constexpr const String &get_window_title() const {
+		return window_title;
+	}
 
 	int get_refresh_rate() const;
 

@@ -74,10 +74,6 @@ void Node::queue_free() {
 	is_deletion_queued = true;
 }
 
-bool Node::is_queued_for_deletion() const {
-	return is_deletion_queued;
-}
-
 void Node::notification(const int what) {
 	_notification(what);
 	if (what == NOTIFICATION_EXIT_TREE)
@@ -113,10 +109,6 @@ void Node::propagate_notification(const int what) {
 
 	for (Node *child: children)
 		child->propagate_notification(what);
-}
-
-SceneTree *Node::get_tree() const {
-	return tree;
 }
 
 const std::unique_ptr<Input> &Node::get_input() const {
@@ -160,24 +152,12 @@ void Node::set_name(const String &new_name) {
 	renamed(name);
 }
 
-const String &Node::get_name() const {
-	return name;
-}
-
 void Node::remove_child(Node* node) {
 	if (node->parent != this)
 		return;
 
 	node->_reset_parent();
 	node->_reset_tree();
-}
-
-const Node::children_t &Node::get_children() const {
-	return children;
-}
-
-Node *Node::get_parent() const {
-	return parent;
 }
 
 double Node::get_delta_time() const {
@@ -200,8 +180,7 @@ const std::unique_ptr<SDL_Event> &Node::get_event() const {
 	if (tree)
 		return tree->get_event();
 
-	const std::unique_ptr<SDL_Event> _i;
-	const std::unique_ptr<SDL_Event> *i = &_i;
+	const std::unique_ptr<SDL_Event> _i, *i = &_i;
 	return *(i);
 }
 

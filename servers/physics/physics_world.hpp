@@ -18,7 +18,9 @@ public:
 	int32_t position_iterations = 2;
 
 	PhysicsWorld2D(const Vector2 &gravity = Vector2::ZERO, const int32_t velocity_iterations = 6, const int32_t position_iterations = 2);
-	std::unique_ptr<b2World> &get_world();
+	constexpr const std::unique_ptr<b2World> &get_world() {
+		return b2_world;
+	}
 
 	void step(const double delta) const;
 };

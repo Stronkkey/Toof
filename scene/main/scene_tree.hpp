@@ -2,8 +2,6 @@
 
 #include <SDL_events.h>
 
-#include <string>
-
 #include <boost/signals2.hpp>
 
 namespace sdl {
@@ -75,15 +73,34 @@ public:
 	boost::signals2::signal<void()> deferred_signals;
 	boost::signals2::signal<void()> physics_frame;
 
-	const std::unique_ptr<Window> &get_window() const;
-	const std::unique_ptr<Viewport> &get_viewport() const;
-	const std::unique_ptr<RenderingServer> &get_rendering_server() const;
-	const std::unique_ptr<Node> &get_root() const;
-	const std::unique_ptr<SDL_Event> &get_event() const;
-	const std::unique_ptr<Input> &get_input() const;
+	constexpr const std::unique_ptr<Window> &get_window() const {
+		return window;
+	}
+
+	constexpr const std::unique_ptr<Viewport> &get_viewport() const {
+		return viewport;
+	}
+
+	constexpr const std::unique_ptr<RenderingServer> &get_rendering_server() const {
+		return rendering_server;
+	}
+
+	constexpr const std::unique_ptr<Node> &get_root() const {
+		return root;
+	}
+
+	constexpr const std::unique_ptr<SDL_Event> &get_event() const {
+		return event;
+	}
+
+	constexpr const std::unique_ptr<Input> &get_input() const {
+		return input;
+	}
 
 	#ifdef B2_INCLUDED
-	const std::unique_ptr<PhysicsServer2D> &get_physics_server() const;
+	constexpr const std::unique_ptr<PhysicsServer2D> &get_physics_server() const {
+		return physics_server;
+	}
 	#endif
 
 	void start();
@@ -96,62 +113,149 @@ public:
 
 	void queue_free(Node *node);
 
-	void set_paused(const bool paused);
-	bool is_paused() const;
+	constexpr void set_paused(const bool paused) {
+		this->paused = paused;
+	}
 
-	void set_render_paused(const bool paused);
-	bool is_render_paused() const;
+	constexpr bool is_paused() const {
+		return paused;
+	}
 
-	void set_process_paused(const bool paused);
-	bool is_process_paused() const;
+	constexpr void set_render_paused(const bool paused) {
+		render_paused = paused;
+	}
 
-	void set_event_paused(const bool paused);
-	bool is_event_paused() const;
+	constexpr bool is_render_paused() const {
+		return render_paused;
+	}
 
-	#ifdef B2_INCLUDED
-	void set_physics_paused(const bool paused);
-	bool is_physics_paused() const;
-	#endif
+	constexpr void set_process_paused(const bool paused) {
+		process_paused = paused;
+	}
 
-	void set_render_frame_rate(const double new_render_frame_rate);
-	double get_render_frame_rate() const;
+	constexpr bool is_process_paused() const {
+		return process_paused;
+	}
 
-	void set_process_frame_rate(const double new_process_frame_rate);
-	double get_process_frame_rate() const;
+	constexpr void set_event_paused(const bool paused) {
+		event_paused = paused;
+	}
 
-	void set_render_speed_scale(const double new_render_speed_scale);
-	double get_render_speed_scale() const;
-
-	void set_process_speed_scale(const double new_process_speed_scale);
-	double get_process_speed_scale() const;
-
-	void set_render_time_scale(const double new_render_time_scale);
-	double get_render_time_scale() const;
-
-	void set_process_time_scale(const double new_process_time_scale);
-	double get_process_time_scale() const;
-
-	double get_render_delta_time() const;
-	double get_process_delta_time() const;
-
-	uint64_t get_render_step_count() const;
-	uint64_t get_process_step_count() const;
+	constexpr bool is_event_paused() const {
+		return event_paused;
+	}
 
 	#ifdef B2_INCLUDED
-	void set_physics_frame_rate(const double new_physics_frame_rate);
-	double get_physics_frame_rate() const;
+	constexpr void set_physics_paused(const bool paused) {
+		physics_paused = paused;
+	}
 
-	void set_physics_speed_scale(const double new_physics_speed_scale);
-	double get_physics_speed_scale() const;
-
-	void set_physics_time_scale(const double new_physics_time_scale);
-	double get_physics_time_scale() const;
-
-	double get_physics_delta_time() const;
-	uint64_t get_physics_step_count() const;
+	constexpr bool is_physics_paused() const {
+		return physics_paused;
+	}
 	#endif
 
-	bool is_running() const;
+	constexpr void set_render_frame_rate(const double new_render_frame_rate) {
+		render_loop.frame_rate = new_render_frame_rate;
+	}
+
+	constexpr double get_render_frame_rate() const {
+		return render_loop.frame_rate;
+	}
+
+	constexpr void set_process_frame_rate(const double new_process_frame_rate) {
+		process_loop.frame_rate = new_process_frame_rate;
+	}
+
+	constexpr double get_process_frame_rate() const {
+		return process_loop.frame_rate;
+	}
+
+	constexpr void set_render_speed_scale(const double new_render_speed_scale) {
+		render_loop.speed_scale = new_render_speed_scale;
+	}
+
+	constexpr double get_render_speed_scale() const {
+		return render_loop.speed_scale;
+	}
+
+	constexpr void set_process_speed_scale(const double new_process_speed_scale) {
+		process_loop.speed_scale = new_process_speed_scale;
+	}
+
+	constexpr double get_process_speed_scale() const {
+		return process_loop.speed_scale;
+	}
+
+	constexpr void set_render_time_scale(const double new_render_time_scale) {
+		render_loop.time_scale = new_render_time_scale;
+	}
+
+	constexpr double get_render_time_scale() const {
+		return render_loop.time_scale;
+	}
+
+	constexpr void set_process_time_scale(const double new_process_time_scale) {
+		process_loop.time_scale = new_process_time_scale;
+	}
+
+	constexpr double get_process_time_scale() const {
+		return process_loop.time_scale;
+	}
+
+	constexpr double get_render_delta_time() const {
+		return render_loop.delta_time;
+	}
+
+	constexpr double get_process_delta_time() const {
+		return process_loop.delta_time;
+	}
+
+	constexpr uint64_t get_render_step_count() const {
+		return render_loop.step_count;
+	}
+
+	constexpr uint64_t get_process_step_count() const {
+		return process_loop.step_count;
+	}
+
+	#ifdef B2_INCLUDED
+	constexpr void set_physics_frame_rate(const double new_physics_frame_rate) {
+		physics_loop.frame_rate = new_physics_frame_rate;
+	}
+
+	constexpr double get_physics_frame_rate() const {
+		return physics_loop.frame_rate;
+	}
+
+	constexpr void set_physics_speed_scale(const double new_physics_speed_scale) {
+		physics_loop.speed_scale = new_physics_speed_scale;
+	}
+
+	constexpr double get_physics_speed_scale() const {
+		return physics_loop.speed_scale;
+	}
+
+	constexpr void set_physics_time_scale(const double new_physics_time_scale) {
+		physics_loop.time_scale = new_physics_time_scale;
+	}
+
+	constexpr double get_physics_time_scale() const {
+		return physics_loop.time_scale;
+	}
+
+	constexpr double get_physics_delta_time() const {
+		return physics_loop.delta_time;
+	}
+
+	constexpr uint64_t get_physics_step_count() const {
+		return physics_loop.step_count;
+	}
+	#endif
+
+	constexpr bool is_running() const {
+		return running;
+	}
 };
 
 }
