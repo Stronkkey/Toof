@@ -3,19 +3,6 @@
 
 using namespace sdl;
 
-Camera2D::Camera2D(): offset(),
-    zoom(Vector2::ONE),
-    position_smoothing_speed(360),
-    rotation_smoothing_speed(360),
-    ignore_rotation(true),
-    position_smoothing_enabled(false),
-    rotation_smoothing_enabled(false),
-    fix_x(false),
-    fix_y(false),
-    process_callback(CAMERA_ITEM_PROCESS_RENDER),
-    anchor_mode(CAMERA_ITEM_ANCHOR_DRAG_CENTER) {
-}
-
 Transform2D Camera2D::_get_camera_transform() const {
 	Viewport *viewport = get_rendering_server()->get_viewport();
 
@@ -41,7 +28,19 @@ Transform2D Camera2D::_get_camera_transform() const {
 	return Transform2D(camera_rotation, -camera_position, zoom);
 }
 
-void Camera2D::step_camera(const double) {
+bool Camera2D::_can_process(const int what) const {
+	if (what == NOTIFICATION_RENDER)
+		if (process_callback == CAMERA_ITEM_PROCESS_LOOP_RENDER || process_callback == CAMERA_ITEM_PROCESS_RENDER)
+			return true;
+
+	if (what == NOTIFICATION_PROCESS)
+		if (process_callback == CAMERA_ITEM_PROCESS_LOOP_RENDER || process_callback == CAMERA_ITEM_PROCESS_LOOP)
+			return true;
+
+	return false;
+}
+
+void Camera2D::_step_camera(const double) {
 	Viewport *viewport = get_rendering_server() ? get_rendering_server()->get_viewport() : nullptr;
 
 	if (viewport) {
@@ -63,13 +62,8 @@ void Camera2D::_notification(const int what) {
 	if (process_callback == CAMERA_ITEM_PROCESS_NONE)
 		return;
 
-	if (what == NOTIFICATION_RENDER)
-		if (process_callback == CAMERA_ITEM_PROCESS_LOOP_RENDER || process_callback == CAMERA_ITEM_PROCESS_RENDER)
-			step_camera(get_delta_time());
-
-	if (what == NOTIFICATION_PROCESS)
-		if (process_callback == CAMERA_ITEM_PROCESS_LOOP_RENDER || process_callback == CAMERA_ITEM_PROCESS_LOOP)
-			step_camera(get_process_delta_time());
+	if (_can_process(what))
+		_step_camera(what == NOTIFICATION_RENDER ? get_delta_time() : get_process_delta_time());
 }
 
 std::optional<Transform2D> Camera2D::get_camera_transform() const {
