@@ -25,8 +25,8 @@ String UtilityFunctions::to_string(const std::any &variant) {
 	const std::type_info &type_info = variant.type();
 
 	// Ouch
-	if (type_info == typeid(int))
-		return std::to_string(std::any_cast<int>(variant));
+	if (type_info == typeid(short))
+		return std::to_string(std::any_cast<short>(variant));
 
 	if (type_info == typeid(long))
 		return std::to_string(std::any_cast<long>(variant));
@@ -43,8 +43,8 @@ String UtilityFunctions::to_string(const std::any &variant) {
 	if (type_info == typeid(long double))
 		return std::to_string(std::any_cast<long double>(variant));
 
-	if (type_info == typeid(unsigned int))
-		return std::to_string(std::any_cast<unsigned int>(variant));
+	if (type_info == typeid(unsigned short))
+		return std::to_string(std::any_cast<unsigned short>(variant));
 
 	if (type_info == typeid(unsigned long))
 		return std::to_string(std::any_cast<unsigned long>(variant));
@@ -81,8 +81,8 @@ String UtilityFunctions::to_string(const std::any &variant) {
 	if (type_info == typeid(Transform2D))
 		return std::any_cast<Transform2D>(variant).to_string();
 
-	if (type_info == typeid(int*))
-		return std::to_string(*std::any_cast<int*>(variant));
+	if (type_info == typeid(short*))
+		return std::to_string(*std::any_cast<short*>(variant));
 
 	if (type_info == typeid(long*))
 		return std::to_string(*std::any_cast<long*>(variant));
@@ -99,8 +99,8 @@ String UtilityFunctions::to_string(const std::any &variant) {
 	if (type_info == typeid(long double*))
 		return std::to_string(*std::any_cast<long double*>(variant));
 
-	if (type_info == typeid(unsigned int*))
-		return std::to_string(*std::any_cast<unsigned int*>(variant));
+	if (type_info == typeid(unsigned short*))
+		return std::to_string(*std::any_cast<unsigned short*>(variant));
 
 	if (type_info == typeid(unsigned long*))
 		return std::to_string(*std::any_cast<unsigned long*>(variant));
@@ -138,8 +138,8 @@ String UtilityFunctions::to_string(const std::any &variant) {
 	if (type_info == typeid(Node*))
 		return std::any_cast<Node*>(variant)->get_name() + ":<" + typeid(Node*).name() + ">";
 
-	if (type_info == typeid(const int*))
-		return std::to_string(*std::any_cast<const int*>(variant));
+	if (type_info == typeid(const short*))
+		return std::to_string(*std::any_cast<const short*>(variant));
 
 	if (type_info == typeid(const long*))
 		return std::to_string(*std::any_cast<const long*>(variant));
@@ -156,8 +156,8 @@ String UtilityFunctions::to_string(const std::any &variant) {
 	if (type_info == typeid(const long double*))
 		return std::to_string(*std::any_cast<const long double*>(variant));
 
-	if (type_info == typeid(const unsigned int*))
-		return std::to_string(*std::any_cast<const unsigned int*>(variant));
+	if (type_info == typeid(const unsigned short*))
+		return std::to_string(*std::any_cast<const unsigned short*>(variant));
 
 	if (type_info == typeid(const unsigned long*))
 		return std::to_string(*std::any_cast<const unsigned long*>(variant));
