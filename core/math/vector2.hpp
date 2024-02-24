@@ -63,6 +63,7 @@ struct Vector2 {
 	constexpr void rounded();
 	constexpr void floored();
 	constexpr void ceiled();
+	constexpr void lerp_to(const Vector2 &to, const real_t weight);
 
 	constexpr real_t length() const;
 	constexpr real_t length_squared() const;
@@ -74,6 +75,7 @@ struct Vector2 {
 	[[nodiscard]] constexpr Vector2 move_toward(const Vector2 &to, const real_t delta) const;
 	[[nodiscard]] constexpr real_t distance_to_squared(const Vector2 &to) const;
 	[[nodiscard]] constexpr real_t distance_to(const Vector2 &to) const;
+	[[nodiscard]] constexpr Vector2 lerp(const Vector2 &to, const real_t weight) const;
 	[[nodiscard]] String to_string() const;
 	[[nodiscard]] SDL_FPoint to_sdl_fpoint() const;
 	[[nodiscard]] SDL_Point to_sdl_point() const;
@@ -286,6 +288,11 @@ constexpr void Vector2::ceiled() {
 	y = std::ceil(y);
 }
 
+constexpr void Vector2::lerp_to(const Vector2 &to, const real_t weight) {
+	x = Math::lerp(x, to.x, weight);
+	y = Math::lerp(y, to.y, weight);
+}
+
 constexpr Vector2 Vector2::move_toward(const Vector2 &to, const real_t delta) const {
 	Vector2 vector = *this;
 	Vector2 from_vector = to - vector;
@@ -295,6 +302,13 @@ constexpr Vector2 Vector2::move_toward(const Vector2 &to, const real_t delta) co
 
 constexpr real_t Vector2::distance_to(const Vector2 &to) const {
 	return std::sqrt((x - to.x) * (x - to.x) + (y - to.y) * (y - to.y));
+}
+
+constexpr Vector2 Vector2::lerp(const Vector2 &to, const real_t weight) const {
+	Vector2 vector;
+	vector.x = Math::lerp(x, to.x, weight);
+	vector.y = Math::lerp(y, to.y, weight);
+	return vector;
 }
 
 constexpr real_t Vector2::distance_to_squared(const Vector2 &to) const {
