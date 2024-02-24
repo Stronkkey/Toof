@@ -67,6 +67,9 @@ void prints_err(const std::initializer_list<std::any> &variants);
 */
 std::vector<String> split_string(const String &string, const String &delimiter);
 
+#define PRINT_LINE(...) ::sdl::UtilityFunctions::print({__VA_ARGS__});
+#define PRINTS_LINE(...) ::sdl::UtilityFunctions::prints({__VA_ARGS__});
+
 }
 
 }
