@@ -1,9 +1,11 @@
 #pragma once
 
-#include <core/macro_defs.hpp>
+#include <core/string.hpp>
 #include <core/math/math_defs.hpp>
 
 #include <SDL_rect.h>
+
+#include <algorithm>
 
 #ifdef B2_INCLUDED
 struct b2Vec2;
@@ -59,11 +61,14 @@ struct Vector2 {
 	constexpr Vector2 operator-() const;
 	constexpr Vector2 operator+() const;
 
+	operator String() const;
+
 	constexpr void normalize();
 	constexpr void rounded();
 	constexpr void floored();
 	constexpr void ceiled();
 	constexpr void lerp_to(const Vector2 &to, const real_t weight);
+	constexpr void clamped(const Vector2 &lower, const Vector2 &higher);
 
 	constexpr real_t length() const;
 	constexpr real_t length_squared() const;
@@ -76,6 +81,7 @@ struct Vector2 {
 	[[nodiscard]] constexpr real_t distance_to_squared(const Vector2 &to) const;
 	[[nodiscard]] constexpr real_t distance_to(const Vector2 &to) const;
 	[[nodiscard]] constexpr Vector2 lerp(const Vector2 &to, const real_t weight) const;
+	[[nodiscard]] constexpr Vector2 clamp(const Vector2 &lower, const Vector2 &higher) const;
 	[[nodiscard]] String to_string() const;
 	[[nodiscard]] SDL_FPoint to_sdl_fpoint() const;
 	[[nodiscard]] SDL_Point to_sdl_point() const;
@@ -293,6 +299,11 @@ constexpr void Vector2::lerp_to(const Vector2 &to, const real_t weight) {
 	y = Math::lerp(y, to.y, weight);
 }
 
+constexpr void Vector2::clamped(const Vector2 &lower, const Vector2 &higher) {
+	x = std::clamp(x, lower.x, higher.x);
+	y = std::clamp(y, lower.y, higher.y);
+}
+
 constexpr Vector2 Vector2::move_toward(const Vector2 &to, const real_t delta) const {
 	Vector2 vector = *this;
 	Vector2 from_vector = to - vector;
@@ -308,6 +319,13 @@ constexpr Vector2 Vector2::lerp(const Vector2 &to, const real_t weight) const {
 	Vector2 vector;
 	vector.x = Math::lerp(x, to.x, weight);
 	vector.y = Math::lerp(y, to.y, weight);
+	return vector;
+}
+
+constexpr Vector2 Vector2::clamp(const Vector2 &lower, const Vector2 &higher) const {
+	Vector2 vector;
+	vector.x = std::clamp(x, lower.x, higher.x);
+	vector.y = std::clamp(y, lower.y, higher.y);
 	return vector;
 }
 

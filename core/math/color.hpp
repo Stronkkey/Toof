@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/macro_defs.hpp>
+#include <core/string.hpp>
 #include <core/math/math_defs.hpp>
 
 #include <SDL_pixels.h>
