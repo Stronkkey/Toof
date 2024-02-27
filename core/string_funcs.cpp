@@ -89,9 +89,8 @@ size_t StringFuncs::get_occurences_in_string(const StringView &string_view, cons
 	size_t occurences = 0;
 	size_t found_characters = String::npos;
 
-	char character = string_view[0];
 	for (size_t pos = 0; pos < string_length; pos++) {
-		character = string_view[pos];
+		char character = string_view[pos];
 
 		if (found_characters == String::npos && character == characters.front()) {
 			found_characters = 1;
