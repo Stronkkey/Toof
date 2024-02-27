@@ -40,7 +40,7 @@ private:
 
 	std::unordered_map<String, ActionState> action_states;
 
-	void _update_action_with_proxy(const String &action_name, const InputProxy &input_proxy);
+	void _update_action_with_event(const String &action_name, const std::shared_ptr<InputEvent> &input_event);
 	void _flush_buffered_inputs();
 
 	std::shared_ptr<InputEvent> _process_keyboard_event(const SDL_Event *event);

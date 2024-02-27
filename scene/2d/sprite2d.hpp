@@ -22,6 +22,7 @@ private:
 	void _notification(const int what) override;
 public:
 	Sprite2D();
+	~Sprite2D() = default;
 
 	boost::signals2::signal<void()> texture_changed;
 

@@ -6,7 +6,7 @@ using namespace sdl;
 
 Sprite2D::Sprite2D(): texture(nullptr),
     texture_region(),
-    texture_transform(),
+    texture_transform(Transform2D::IDENTITY),
     flip(SDL_FLIP_NONE),
     centered(true) {
 }

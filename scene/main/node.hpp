@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/string.hpp>
+#include <core/string_def.hpp>
 
 #include <memory>
 #include <unordered_set>

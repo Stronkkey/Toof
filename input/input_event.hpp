@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/macro_defs.hpp>
+#include <core/string_def.hpp>
 #include <input/event_input_type.hpp>
 #include <scene/resources/resource.hpp>
 

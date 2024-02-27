@@ -8,37 +8,55 @@ namespace sdl {
 
 class Camera2D : public Node2D {
 public:
-	enum CameraItemProcessCallback {
-		CAMERA_ITEM_PROCESS_LOOP,
-		CAMERA_ITEM_PROCESS_RENDER,
-		CAMERA_ITEM_PROCESS_LOOP_RENDER,
-		CAMERA_ITEM_PROCESS_NONE
+	enum Camera2DProcessCallback {
+		CAMERA2D_PROCESS_LOOP,
+		CAMERA2D_PROCESS_RENDER,
 	};
 
-	enum CameraItemAnchorMode {
-		CAMERA_ITEM_ANCHOR_FIXED_TOP_LEFT,
-		CAMERA_ITEM_ANCHOR_DRAG_CENTER
+	enum Camera2DAnchorMode {
+		CAMERA2D_ANCHOR_FIXED_TOP_LEFT,
+		CAMERA2D_ANCHOR_DRAG_CENTER
 	};
 private:
-	Transform2D _get_camera_transform() const;
-	bool _can_process(const int what) const;
-	void _step_camera(const double what);
+	Vector2 _get_target_scale() const;
+	Vector2 _get_target_position() const;
+	Angle _get_target_rotation() const;
+	Transform2D _get_target_transform() const;
+	Vector2i _get_viewport_size() const;
+	Transform2D _get_canvas_transform() const;
+	Vector2 _get_camera_position() const;
+	void _step_camera() const;
+	void _limit_vector(Vector2 &vector) const;
 	void _notification(const int what) override;
 
 	Vector2 offset;
 	Vector2 zoom;
 	real_t position_smoothing_speed;
 	real_t rotation_smoothing_speed;
+	real_t drag_bottom_margin;
+	real_t drag_left_margin;
+	real_t drag_right_margin;
+	real_t drag_top_margin;
+	real_t drag_vertical_offset;
+	real_t drag_horizontal_offset;
+	real_t limit_bottom;
+	real_t limit_left;
+	real_t limit_right;
+	real_t limit_top;
+	bool enabled;
+	bool limit_smoothed;
+	bool drag_horizontal_enabled;
+	bool drag_vertical_enabled;
 	bool ignore_rotation;
 	bool position_smoothing_enabled;
 	bool rotation_smoothing_enabled;
 	bool fix_x;
 	bool fix_y;
 	
-	CameraItemProcessCallback process_callback;
-	CameraItemAnchorMode anchor_mode;
+	Camera2DProcessCallback process_callback;
+	Camera2DAnchorMode anchor_mode;
 public:
-	Camera2D() = default;
+	Camera2D();
 	~Camera2D() = default;
 
 	constexpr void set_offset(const Vector2 &offset) {
@@ -71,6 +89,118 @@ public:
 
 	constexpr real_t get_rotation_smoothing_speed() const {
 		return rotation_smoothing_speed;
+	}
+
+	constexpr void set_drag_bottom_margin(const real_t drag_bottom_margin) {
+		this->drag_bottom_margin = drag_bottom_margin;
+	}
+
+	constexpr real_t get_drag_bottom_margin() const {
+		return drag_bottom_margin;
+	}
+
+	constexpr void set_drag_left_margin(const real_t drag_left_margin) {
+		this->drag_left_margin = drag_left_margin;
+	}
+
+	constexpr real_t get_drag_left_margin() const {
+		return drag_left_margin;
+	}
+
+	constexpr void set_drag_right_margin(const real_t drag_right_margin) {
+		this->drag_right_margin = drag_right_margin;
+	}
+
+	constexpr real_t get_drag_right_margin() const {
+		return drag_right_margin;
+	}
+
+	constexpr void set_drag_top_margin(const real_t drag_top_margin) {
+		this->drag_top_margin = drag_top_margin;
+	}
+
+	constexpr real_t get_drag_top_margin() const {
+		return drag_top_margin;
+	}
+
+	constexpr void set_drag_vertical_offset(const real_t drag_vertical_offset) {
+		this->drag_vertical_offset = drag_vertical_offset;
+	}
+
+	constexpr real_t get_drag_vertical_offset() const {
+		return drag_vertical_offset;
+	}
+
+	constexpr void set_drag_horizontal_offset(const real_t drag_horizontal_offset) {
+		this->drag_horizontal_offset = drag_horizontal_offset;
+	}
+
+	constexpr real_t get_drag_horizontal_offset() const {
+		return drag_horizontal_offset;
+	}
+
+	constexpr void set_limit_bottom(const real_t limit_bottom) {
+		this->limit_bottom = limit_bottom;
+	}
+
+	constexpr real_t get_limit_bottom() const {
+		return limit_bottom;
+	}
+
+	constexpr void set_limit_left(const real_t limit_left) {
+		this->limit_left = limit_left;
+	}
+
+	constexpr real_t get_limit_left() const {
+		return limit_left;
+	}
+
+	constexpr void set_limit_right(const real_t limit_right) {
+		this->limit_right = limit_right;
+	}
+
+	constexpr real_t get_limit_right() const {
+		return limit_right;
+	}
+
+	constexpr void set_limit_top(const real_t limit_top) {
+		this->limit_top = limit_top;
+	}
+
+	constexpr real_t get_limit_top() const {
+		return limit_top;
+	}
+
+	constexpr void set_enabled(const bool enabled) {
+		this->enabled = enabled;
+	}
+
+	constexpr bool is_enabled() const {
+		return enabled;
+	}
+
+	constexpr void set_limit_smoothed(const bool limit_smoothed) {
+		this->limit_smoothed = limit_smoothed;
+	}
+
+	constexpr bool get_limit_smoothed() const {
+		return limit_smoothed;
+	}
+
+	constexpr void set_drag_horizontal_enabled(const bool drag_horizontal_enabled) {
+		this->drag_horizontal_enabled = drag_horizontal_enabled;
+	}
+
+	constexpr bool get_drag_horizontal_enabled() const {
+		return drag_horizontal_enabled;
+	}
+
+	constexpr void set_drag_vertical_enabled(const bool drag_vertical_enabled) {
+		this->drag_vertical_enabled = drag_vertical_enabled;
+	}
+
+	constexpr bool get_drag_vertical_enabled() const {
+		return drag_vertical_enabled;
 	}
 
 	constexpr void set_ignore_rotation(const bool ignore_rotation) {
@@ -113,23 +243,25 @@ public:
 		return fix_y;
 	}
 
-	constexpr void set_process_callback(const CameraItemProcessCallback process_callback) {
+	constexpr void set_process_callback(const Camera2DProcessCallback process_callback) {
 		this->process_callback = process_callback;
 	}
 
-	constexpr CameraItemProcessCallback get_process_callback() const {
+	constexpr Camera2DProcessCallback get_process_callback() const {
 		return process_callback;
 	}
 
-	constexpr void set_anchor_mode(const CameraItemAnchorMode anchor_mode) {
+	constexpr void set_anchor_mode(const Camera2DAnchorMode anchor_mode) {
 		this->anchor_mode = anchor_mode;
 	}
 
-	constexpr CameraItemAnchorMode get_anchor_mode() const {
+	constexpr Camera2DAnchorMode get_anchor_mode() const {
 		return anchor_mode;
 	}
 
-	std::optional<Transform2D> get_camera_transform() const;
+	Transform2D get_target_transform() const;
+	void align() const;
+	Vector2 get_screen_center_position() const;
 };
 
 }

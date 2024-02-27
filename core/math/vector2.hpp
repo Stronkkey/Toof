@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/string.hpp>
+#include <core/string_def.hpp>
 #include <core/math/math_defs.hpp>
 
 #include <SDL_rect.h>

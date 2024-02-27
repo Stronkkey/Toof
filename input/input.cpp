@@ -25,10 +25,10 @@ const std::unique_ptr<sdl::InputMap> &Input::get_input_map() const {
 	return input_map;
 }
 
-void Input::_update_action_with_proxy(const String &action_name, const InputProxy &input_proxy) {
+void Input::_update_action_with_event(const String &action_name, const std::shared_ptr<InputEvent> &input_event) {
 	ActionState &action_state = action_states[action_name];
 
-	action_state.pressed = input_proxy.input_event->is_pressed();
+	action_state.pressed = input_event->is_pressed();
 	if (action_state.pressed) {
 		if (process_frame_count)
 			action_state.pressed_process_frame = *process_frame_count;
@@ -70,21 +70,19 @@ std::shared_ptr<InputEvent> Input::_process_keyboard_event(const SDL_Event *even
 std::shared_ptr<InputEvent> Input::process_event(const SDL_Event *event) {
 	EventInputType event_input_type = get_event_type(event);
 	std::shared_ptr<InputEvent> input_event;
-	InputProxy input_proxy;
 
 	switch (event_input_type) {
 		case EVENT_INPUT_TYPE_KEYBOARD:
 			input_event = _process_keyboard_event(event);
 			break;
 		default:
-			return std::unique_ptr<InputEvent>();
+			return std::shared_ptr<InputEvent>();
 			break;
 	}
 
-	input_proxy.input_event = input_event;
 	for (const auto &iterator: input_map->get_actions())
-		if (iterator.second.inputs.count(input_proxy))
-			_update_action_with_proxy(iterator.first, input_proxy);
+		if (iterator.second.inputs.count(input_event))
+			_update_action_with_event(iterator.first, input_event);
 
 	return input_event;
 }

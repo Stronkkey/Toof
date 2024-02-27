@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/macro_defs.hpp>
+#include <core/string_def.hpp>
 
 #define GET_LINE_PRETTY() "file: \"" + __FILE__ + "\" on line " + std::to_string(__LINE__)
 #define CONDITION_THING(condition) String("Assert \"") + #condition + "\", in " + GET_LINE_PRETTY() + " failed."

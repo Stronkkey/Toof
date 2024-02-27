@@ -11,7 +11,7 @@ using sdl::UtilityFunctions::print;
 
 std::unordered_map<sdl::String, std::unique_ptr<Test>> tests;
 
-#define PRINT_RETURN(message, return_value) { print(message); return return_value; }
+#define PRINT_RETURN(message, return_value) { PRINT_LINE(message); return return_value; }
 
 void create_tests() {
 	tests.insert({"success", std::make_unique<SuccessTest>()});
