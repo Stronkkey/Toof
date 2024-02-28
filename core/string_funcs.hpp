@@ -184,32 +184,53 @@ template<class T, class... Args>
 * @returns a formatted stirng.
 */
 template<class... Args>
-[[nodiscard]] inline String vformat(const String &string, const Args&... args) {
+[[nodiscard]] inline String vformat(const StringView &string_view, const Args&... args) {
+	if (string_view.empty())
+		return "";
+
 	constexpr const size_t arg_count = sizeof...(Args);
-	constexpr const char format_str[] = "{}";
-	constexpr const size_t format_str_length = sizeof(format_str) - 1;
+	const size_t string_length = string_view.length();
+	const String &format_str = "{}";
+	const size_t format_str_length = format_str.length();
 	const std::array<String, arg_count> &array = to_string_array(args...);
 
-	uint64_t pos;
-	size_t i = 0;
-	String str = string;
-	std::vector<String> strings;
+	String str = String();
+	size_t found_characters = String::npos;
+	size_t occurence_count = 0;
+	size_t last_occurence = 0;
 
-	while ((pos = str.find("{}")) != String::npos) {
-		strings.push_back(str.substr(0, pos));
+	// String finding algorithm with O(n) time complexity. Doing this takes less iterations than using StringFuncs::split_string and iterating over that array.
+	for (size_t pos = 0; pos < string_length; pos++) {
+		char character = string_view[pos];
 
-		if (i < arg_count) {
-			strings.push_back(array[i]);
-			i++;
+		if (occurence_count >= array.size())
+			break;
+
+		if (found_characters == String::npos && character == format_str.front()) {
+			found_characters = 1;
+			continue;
 		}
 
-		str.erase(0, pos + format_str_length);
-	}
+		if (found_characters == String::npos)
+			continue;
 
-	strings.push_back(str);
-	str.clear();
-	for (const auto &string: strings)
-		str += string;
+		if (character == format_str.at(found_characters))
+			found_characters++;
+		else {
+		 	found_characters = String::npos;
+			continue;
+		}
+
+		if (found_characters < format_str_length)
+			continue;
+		
+		str += string_view.substr(last_occurence, pos - 1 - last_occurence);
+		str += to_string(array.at(occurence_count));
+		occurence_count++;
+		last_occurence = pos + 1;
+		found_characters = String::npos;
+	}
+	str += string_view.substr(last_occurence, string_length - last_occurence);
 
 	return str;
 }
