@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/string_funcs.hpp"
 #include <core/math/vector2.hpp>
 
 namespace sdl {
@@ -190,6 +191,8 @@ struct Rect2 {
 	*/
 	constexpr Rect2 operator+() const;
 
+	[[nodiscard]] operator String() const;
+
 	/**
 	* Rounds each component of this rect.
 	*/
@@ -221,7 +224,7 @@ struct Rect2 {
 	[[nodiscard]] constexpr Rect2 ceil() const;
 
 	/**
-	* @returns a string representation as '(x, y, w, h)'.
+	* @returns a string representation as '((x, y), (w, h))'.
 	*/
 	[[nodiscard]] String to_string() const;
 
@@ -357,6 +360,8 @@ struct Rect2i {
 
 	[[nodiscard]] SDL_Rect to_sdl_rect() const;
 	[[nodiscard]] SDL_FRect to_sdl_frect() const;
+
+	[[nodiscard]] operator String() const;
 
 	static const Rect2i EMPTY;
 	static const Rect2i ONE;

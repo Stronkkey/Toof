@@ -32,6 +32,8 @@ struct Transform2D {
 	#endif
 	[[nodiscard]] String to_string() const;
 
+	[[nodiscard]] operator String() const;
+
 	constexpr void operator=(const Transform2D &right);
 	constexpr void operator*=(const Transform2D &right);
 

@@ -130,6 +130,8 @@ struct Color {
 	*/
 	constexpr void operator/=(const float right);
 
+	[[nodiscard]] operator String() const;
+
 	/**
 	* @return an SDL_Color with the same r, b, g, and a value as this color.
 	*/

@@ -1,5 +1,6 @@
 #include <core/math/transform2d.hpp>
 #include <core/math/rect2.hpp>
+#include <core/string_funcs.hpp>
 
 #include <algorithm>
 
@@ -24,7 +25,11 @@ void Rect2::operator*=(const Transform2D &right) {
 }
 
 String Rect2::to_string() const {
-	return "(" + get_position().to_string() + ", " + get_size().to_string() + ")";
+	return vformat("(({}, {}), ({}, {}))", x, y, w, h);
+}
+
+Rect2::operator String() const {
+	return vformat("(({}, {}), ({}, {}))", x, y, w, h);
 }
 
 Rect2 Rect2::abs() const {
@@ -76,8 +81,13 @@ SDL_FRect Rect2::to_sdl_frect(const Rect2 &rect2) {
 
 
 String Rect2i::to_string() const {
-	return "(" + get_position().to_string() + ", " + get_size().to_string() + ")";
+	return vformat("(({}, {}), ({}, {}))", x, y, w, h);
 }
+
+Rect2i::operator String() const {
+	return vformat("(({}, {}), ({}, {}))", x, y, w, h);
+}
+
 
 Rect2i Rect2i::abs() const {
 	Rect2i rect = Rect2i{};

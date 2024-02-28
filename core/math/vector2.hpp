@@ -61,7 +61,7 @@ struct Vector2 {
 	constexpr Vector2 operator-() const;
 	constexpr Vector2 operator+() const;
 
-	operator String() const;
+	[[nodiscard]] operator String() const;
 
 	constexpr void normalize();
 	constexpr void rounded();

@@ -1,6 +1,6 @@
-#include "core/math/math_defs.hpp"
 #include <box2d/b2_math.h>
 #include <core/math/transform2d.hpp>
+#include <core/string_funcs.hpp>
 
 using namespace sdl;
 
@@ -16,5 +16,9 @@ b2Transform Transform2D::to_b2_transform() const {
 #endif
 
 String Transform2D::to_string() const {
-	return "[Scale: " + scale.to_string() + ", Origin: " + origin.to_string() + ", Rotation: " + std::to_string(rotation.get_angle_degrees()) + " degrees" + "]";
+	return vformat("[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]", scale.x, scale.y, origin.x, origin.y, rotation.to_string());
+}
+
+Transform2D::operator String() const {
+	return vformat("[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]", scale.x, scale.y, origin.x, origin.y, rotation.to_string());
 }

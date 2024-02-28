@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core/math/math_defs.hpp>
+#include <core/string_def.hpp>
 
 namespace sdl {
 
@@ -86,6 +87,9 @@ public:
 	}
 	
 	static Angle from_radians(const real_t angle_radians);
+	
+	[[nodiscard]] String to_string() const;
+	[[nodiscard]] operator String() const;
 };
 
 }

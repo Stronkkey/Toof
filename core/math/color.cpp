@@ -1,4 +1,5 @@
 #include <core/math/color.hpp>
+#include <core/string_funcs.hpp>
 
 using namespace sdl;
 
@@ -34,5 +35,5 @@ SDL_Color Color::to_sdl_color() const {
 }
 
 String Color::to_string() const {
-	return "(" + std::to_string(r) + ", " + std::to_string(g) + ", " + std::to_string(b) + ", " + std::to_string(a) + ")";
+	return vformat("({}, {}, {}, {})", r, g, b, a);
 }
