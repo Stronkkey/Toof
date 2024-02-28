@@ -6,8 +6,6 @@
 #include <SDL_timer.h>
 
 #include <iostream>
-#include <typeinfo>
-#include <vector>
 
 namespace sdl {
 
@@ -27,7 +25,7 @@ inline double get_passed_time() {
 */
 template<class... Args>
 inline void print(const Args&... variants) {
-	std::cout << StringFuncs::to_string(variants...) << '\n';
+	std::cout << to_string(variants...) << '\n';
 }
 
 /**
@@ -35,7 +33,7 @@ inline void print(const Args&... variants) {
 */
 template<class... Args>
 inline void print_err(const Args&... variants) {
-	std::cerr << StringFuncs::to_string(variants...) << '\n';
+	std::cerr << to_string(variants...) << '\n';
 }
 
 
@@ -44,7 +42,7 @@ inline void print_err(const Args&... variants) {
 */
 template<class... Args>
 inline void prints(const Args&... variants) {
-	std::cout << StringFuncs::to_strings(variants...) << '\n';
+	std::cout << to_strings(variants...) << '\n';
 }
 
 /**
@@ -52,7 +50,7 @@ inline void prints(const Args&... variants) {
 */
 template<class... Args>
 inline void prints_err(const Args&... variants) {
-	std::cerr << StringFuncs::to_strings(variants...) << '\n';
+	std::cerr << to_strings(variants...) << '\n';
 }
 
 #define PRINT_LINE(...) ::sdl::UtilityFunctions::print(__VA_ARGS__);

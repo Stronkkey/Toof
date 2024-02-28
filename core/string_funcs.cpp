@@ -2,67 +2,67 @@
 
 using namespace sdl;
 
-[[nodiscard]] String StringFuncs::to_string(const uint8_t number) {
+[[nodiscard]] String sdl::to_string(const uint8_t number) {
 	return std::to_string(number);
 }
 
-[[nodiscard]] String StringFuncs::to_string(const int8_t number) {
+[[nodiscard]] String sdl::to_string(const int8_t number) {
 	return std::to_string(number);
 }
 
-[[nodiscard]] String StringFuncs::to_string(const uint16_t number) {
+[[nodiscard]] String sdl::to_string(const uint16_t number) {
 	return std::to_string(number);
 }
 
-[[nodiscard]] String StringFuncs::to_string(const int16_t number) {
+[[nodiscard]] String sdl::to_string(const int16_t number) {
 	return std::to_string(number);
 }
 
-[[nodiscard]] String StringFuncs::to_string(const uint32_t number) {
+[[nodiscard]] String sdl::to_string(const uint32_t number) {
 	return std::to_string(number);
 }
 
-[[nodiscard]] String StringFuncs::to_string(const int32_t number) {
+[[nodiscard]] String sdl::to_string(const int32_t number) {
 	return std::to_string(number);
 }
 
-[[nodiscard]] String StringFuncs::to_string(const uint64_t number) {
+[[nodiscard]] String sdl::to_string(const uint64_t number) {
 	return std::to_string(number);
 }
 
-[[nodiscard]] String StringFuncs::to_string(const int64_t number) {
+[[nodiscard]] String sdl::to_string(const int64_t number) {
 	return std::to_string(number);
 }
 
-[[nodiscard]] String StringFuncs::to_string(const float number) {
+[[nodiscard]] String sdl::to_string(const float number) {
 	return std::to_string(number);
 }
 
-[[nodiscard]] String StringFuncs::to_string(const double number) {
+[[nodiscard]] String sdl::to_string(const double number) {
 	return std::to_string(number);
 }
 
-[[nodiscard]] String StringFuncs::to_string(const long double number) {
+[[nodiscard]] String sdl::to_string(const long double number) {
 	return std::to_string(number);
 }
 
-[[nodiscard]] String StringFuncs::to_string(const bool boolean) {
+[[nodiscard]] String sdl::to_string(const bool boolean) {
 	return boolean ? "true" : "false";
 }
 
-[[nodiscard]] String StringFuncs::to_string(const char *string) {
+[[nodiscard]] String sdl::to_string(const char *string) {
 	return String(string);
 }
 
-[[nodiscard]] String StringFuncs::to_string(const String &string) {
+[[nodiscard]] String sdl::to_string(const String &string) {
 	return String(string);
 }
 
-[[nodiscard]] String StringFuncs::to_string(const char character) {
+[[nodiscard]] String sdl::to_string(const char character) {
 	return String(&character, 1);
 }
 
-std::vector<String> StringFuncs::split_string(const StringView &string_view, const String &delimiter) {
+std::vector<String> sdl::split_string(const StringView &string_view, const String &delimiter) {
 	uint64_t pos = 0;
 	std::vector<String> strings;
 	(void)pos;
@@ -78,7 +78,7 @@ std::vector<String> StringFuncs::split_string(const StringView &string_view, con
 	return strings;
 }
 
-size_t StringFuncs::get_occurences_in_string(const StringView &string_view, const StringView &characters) {
+size_t sdl::get_occurences_in_string(const StringView &string_view, const StringView &characters) {
 	const size_t characters_length = characters.length();
 	const size_t string_length = string_view.length();
 	if (characters.empty())

@@ -10,8 +10,6 @@
 
 namespace sdl {
 
-namespace StringFuncs {
-
 /**
 * @returns the @param number converted to a string using std::to_string.
 */
@@ -233,8 +231,6 @@ template<class... Args>
 	str += string_view.substr(last_occurence, string_length - last_occurence);
 
 	return str;
-}
-
 }
 
 }
