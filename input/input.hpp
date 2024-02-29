@@ -24,7 +24,7 @@ private:
 	std::unordered_set<SDL_Scancode> physical_keys_pressed;
 	std::unique_ptr<InputMap> input_map;
 	const uint64_t *process_frame_count, *render_frame_count;
-	Vector2 mouse_position;
+	Vector2f mouse_position;
 
 	struct ActionState {
 		uint64_t pressed_render_frame = -1;
@@ -63,7 +63,7 @@ public:
 	float get_action_strength(const String &action_name) const;
 
 	float get_axis(const String &negative_action_name, const String &positive_action_name) const;
-	Vector2 get_vector(const String &negative_x_action_name, const String &positive_x_action_name, const String &negative_y_action_name, const String &positive_y_action_name) const;
+	Vector2f get_vector(const String &negative_x_action_name, const String &positive_x_action_name, const String &negative_y_action_name, const String &positive_y_action_name) const;
 
 	void action_press(const String &action_name, const float strength = 1.0f);
 	void action_release(const String &action_name);

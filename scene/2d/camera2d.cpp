@@ -6,7 +6,7 @@
 using namespace sdl;
 
 Camera2D::Camera2D(): offset(),
-    zoom(Vector2(1, 1)),
+    zoom(Vector2f(1, 1)),
     position_smoothing_speed(10.0),
     rotation_smoothing_speed(10.0),
     drag_bottom_margin(0.2),
@@ -32,12 +32,12 @@ Camera2D::Camera2D(): offset(),
     anchor_mode(CAMERA2D_ANCHOR_DRAG_CENTER) {
 }
 
-Vector2 Camera2D::_get_target_scale() const {
+Vector2f Camera2D::_get_target_scale() const {
 	return zoom;
 }
 
-Vector2 Camera2D::_get_target_position() const {
-	Vector2 target_position;
+Vector2f Camera2D::_get_target_position() const {
+	Vector2f target_position;
 
 	if (position_smoothing_enabled) {
 		real_t c = position_smoothing_speed * (process_callback == CAMERA2D_PROCESS_LOOP ? get_process_delta_time() : get_delta_time());
@@ -81,10 +81,10 @@ Transform2D Camera2D::_get_canvas_transform() const {
 	return viewport ? viewport->get_canvas_transform() : Transform2D();
 }
 
-Vector2 Camera2D::_get_camera_position() const {
+Vector2f Camera2D::_get_camera_position() const {
 	const Viewport *viewport = get_rendering_server() ? get_rendering_server()->get_viewport() : nullptr;
 
-	Vector2 camera_position = viewport ? viewport->get_canvas_transform().origin : Vector2();
+	Vector2f camera_position = viewport ? viewport->get_canvas_transform().origin : Vector2f();
 	if (viewport && anchor_mode == CAMERA2D_ANCHOR_DRAG_CENTER)
 		camera_position -= (viewport->get_viewport_size() / 2.0);
 
@@ -107,7 +107,7 @@ void Camera2D::_step_camera() const {
 	}
 }
 
-void Camera2D::_limit_vector(Vector2 &vector) const {
+void Camera2D::_limit_vector(Vector2f &vector) const {
 	vector.x = std::min(std::max(limit_left, vector.x), limit_right);
 	vector.y = std::min(std::max(limit_bottom, vector.y), limit_top);
 }
@@ -136,6 +136,6 @@ void Camera2D::align() const {
 		viewport->set_canvas_transform(transform);
 }
 
-Vector2 Camera2D::get_screen_center_position() const {
+Vector2f Camera2D::get_screen_center_position() const {
 	return _get_target_position();
 }

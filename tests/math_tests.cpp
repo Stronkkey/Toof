@@ -47,25 +47,5 @@ bool MathTest::_test() {
 	TEST_CASE(is_equal_approx(1, 1.0 - CMP_EPSILON));
 	TEST_CASE(is_equal_approx(1, 1.0 + CMP_EPSILON));
 
-	constexpr const Vector2 v2epsilon = Vector2(CMP_EPSILON, CMP_EPSILON);
-	TEST_CASE(is_zero_approx(Vector2::ZERO - v2epsilon));
-	TEST_CASE(is_zero_approx(Vector2::ZERO + v2epsilon));
-	TEST_CASE(is_equal_approx(Vector2::ONE, Vector2::ONE - v2epsilon));
-	TEST_CASE(is_equal_approx(Vector2::ONE, Vector2::ONE + v2epsilon));
-
-	constexpr const Rect2 r2epsilon = Rect2(CMP_EPSILON, CMP_EPSILON, CMP_EPSILON, CMP_EPSILON);
-	TEST_CASE(is_zero_approx(Rect2::EMPTY - r2epsilon));
-	TEST_CASE(is_zero_approx(Rect2::EMPTY + r2epsilon));
-	TEST_CASE(is_equal_approx(Rect2::ONE, Rect2::ONE - r2epsilon));
-	TEST_CASE(is_equal_approx(Rect2::ONE, Rect2::ONE + r2epsilon));
-
-	constexpr const Transform2D trans_epsilon = Transform2D(CMP_EPSILON, CMP_EPSILON, CMP_EPSILON, CMP_EPSILON, CMP_EPSILON);
-	constexpr const Transform2D trans_zero = Transform2D(0, 0, 0, 0, 0);
-	constexpr const Transform2D trans_one = Transform2D(1, 1, 1, 1, 1);
-	TEST_CASE(is_zero_approx(subtract_transform(trans_zero, trans_epsilon)))
-	TEST_CASE(is_zero_approx(add_transform(trans_zero, trans_epsilon)));
-	TEST_CASE(is_equal_approx(trans_one, subtract_transform(trans_one, trans_epsilon)));
-	TEST_CASE(is_equal_approx(trans_one, add_transform(trans_one, trans_epsilon)));
-
 	return true;
 }

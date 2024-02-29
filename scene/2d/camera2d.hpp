@@ -18,19 +18,19 @@ public:
 		CAMERA2D_ANCHOR_DRAG_CENTER
 	};
 private:
-	Vector2 _get_target_scale() const;
-	Vector2 _get_target_position() const;
+	Vector2f _get_target_scale() const;
+	Vector2f _get_target_position() const;
 	Angle _get_target_rotation() const;
 	Transform2D _get_target_transform() const;
 	Vector2i _get_viewport_size() const;
 	Transform2D _get_canvas_transform() const;
-	Vector2 _get_camera_position() const;
+	Vector2f _get_camera_position() const;
 	void _step_camera() const;
-	void _limit_vector(Vector2 &vector) const;
+	void _limit_vector(Vector2f &vector) const;
 	void _notification(const int what) override;
 
-	Vector2 offset;
-	Vector2 zoom;
+	Vector2f offset;
+	Vector2f zoom;
 	real_t position_smoothing_speed;
 	real_t rotation_smoothing_speed;
 	real_t drag_bottom_margin;
@@ -59,19 +59,19 @@ public:
 	Camera2D();
 	~Camera2D() = default;
 
-	constexpr void set_offset(const Vector2 &offset) {
+	constexpr void set_offset(const Vector2f &offset) {
 		this->offset = offset;
 	}
 
-	constexpr const Vector2 &get_offset() const {
+	constexpr const Vector2f &get_offset() const {
 		return offset;
 	}
 
-	constexpr void set_zoom(const Vector2 &zoom) {
+	constexpr void set_zoom(const Vector2f &zoom) {
 		this->zoom = zoom;
 	}
 
-	constexpr const Vector2 &get_zoom() const {
+	constexpr const Vector2f &get_zoom() const {
 		return zoom;
 	}
 
@@ -261,7 +261,7 @@ public:
 
 	Transform2D get_target_transform() const;
 	void align() const;
-	Vector2 get_screen_center_position() const;
+	Vector2f get_screen_center_position() const;
 };
 
 }

@@ -22,7 +22,7 @@ private:
 	std::unordered_map<uid, std::unique_ptr<PhysicsWorld2D>> worlds;
 	std::unordered_map<uid, std::unique_ptr<PhysicsBody>> bodies;
 	std::unordered_map<uid, std::unique_ptr<PhysicsShape>> shapes;
-	Vector2 gravity;
+	Vector2f gravity;
 
 	uid uid_index;
 	b2BodyDef default_body_definition;
@@ -48,14 +48,14 @@ public:
 	void remove_uid(const uid destroy_uid);
 	void tick(const double delta);
 
-	void set_gravity(const Vector2 &new_gravity);
-	const Vector2 &get_gravity() const;
+	void set_gravity(const Vector2f &new_gravity);
+	const Vector2f &get_gravity() const;
 
 	uid create_world();
 	uid body_create();
 
-	void world_set_gravity(const uid world_uid, const Vector2 &new_world_gravity);
-	std::optional<Vector2> world_get_gravity(const uid world_uid) const;
+	void world_set_gravity(const uid world_uid, const Vector2f &new_world_gravity);
+	std::optional<Vector2f> world_get_gravity(const uid world_uid) const;
 	void world_set_velocity_iterations(const uid world_uid, const int32_t velocity_iterations);
 	std::optional<int32_t> world_get_velocity_iterations(const uid world_uid) const;
 	void world_set_position_iterations(const uid world_uid, const int32_t position_iterations);

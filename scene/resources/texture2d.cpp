@@ -2,7 +2,7 @@
 #include <servers/rendering_server.hpp>
 
 sdl::Vector2i sdl::Texture2D::get_size(const std::unique_ptr<RenderingServer>&) const {
-    return Vector2i::ZERO;
+    return Vector2i();
 }
 
 int sdl::Texture2D::get_width(const std::unique_ptr<RenderingServer> &rendering_server) const {

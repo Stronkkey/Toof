@@ -26,7 +26,7 @@ private:
 	std::unordered_map<uid, std::shared_ptr<Texture>> textures;
 	std::unordered_map<uid, std::shared_ptr<CanvasItem>> canvas_items;
 	Color background_color;
-	Vector2 viewport_offset;
+	Vector2f viewport_offset;
 	uid uid_index;
 
 	void render_canvas_item(const std::shared_ptr<CanvasItem> &canvas_item);
@@ -84,7 +84,7 @@ public:
 	    const SDL_RendererFlip flip = SDL_FLIP_NONE,
 	    const Color &modulate = Color::WHITE,
 	    const Transform2D &transform = Transform2D::IDENTITY);
-	void canvas_item_add_line(const uid canvas_item_uid, const Vector2 &start, const Vector2 &end, const Color &modulate = Color::WHITE);
+	void canvas_item_add_line(const uid canvas_item_uid, const Vector2f &start, const Vector2f &end, const Color &modulate = Color::WHITE);
 	void canvas_item_add_lines(const uid canvas_item_uid, const std::vector<SDL_FPoint> &points, const Color &modulate = Color::WHITE);
 	void canvas_item_add_rect(const uid canvas_item_uid, const Rect2 &rect, const Color &modulate = Color::WHITE);
 	void canvas_item_add_rects(const uid canvas_item_uid, const std::vector<SDL_FRect> &rectangles, const Color &modulate = Color::WHITE);

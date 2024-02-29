@@ -13,7 +13,7 @@ sdl::Vector2i sdl::UidTexture::get_size(const std::unique_ptr<RenderingServer> &
 	if (rendering_server)
 		texture_info = rendering_server->get_texture_info_from_uid(texture_uid);
 	
-	return texture_info ? texture_info->size : Vector2i::ZERO;
+	return texture_info ? texture_info->size : Vector2i();
 }
 
 SDL_Texture *sdl::UidTexture::get_texture(const std::unique_ptr<RenderingServer> &rendering_server) const {

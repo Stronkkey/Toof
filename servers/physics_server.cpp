@@ -95,14 +95,14 @@ void sdl::PhysicsServer2D::remove_uid(const uid remove_uid) {
 	destroy_uid(remove_uid);
 }
 
-void sdl::PhysicsServer2D::set_gravity(const Vector2 &new_gravity) {
+void sdl::PhysicsServer2D::set_gravity(const Vector2f &new_gravity) {
 	gravity = new_gravity;
 
 	for (const auto &iterator: worlds)
 		iterator.second->get_world()->SetGravity(new_gravity.to_b2_vec2());
 }
 
-const sdl::Vector2 &sdl::PhysicsServer2D::get_gravity() const {
+const sdl::Vector2f &sdl::PhysicsServer2D::get_gravity() const {
 	return gravity;
 }
 
@@ -118,13 +118,13 @@ sdl::uid sdl::PhysicsServer2D::body_create() {
 	return assigned_uid;
 }
 
-void sdl::PhysicsServer2D::world_set_gravity(const uid world_uid, const Vector2 &new_world_gravity) {
+void sdl::PhysicsServer2D::world_set_gravity(const uid world_uid, const Vector2f &new_world_gravity) {
 	auto iterator = worlds.find(world_uid);
 	if (iterator != worlds.end())
 		iterator->second->get_world()->SetGravity(new_world_gravity.to_b2_vec2());
 }
 
-std::optional<sdl::Vector2> sdl::PhysicsServer2D::world_get_gravity(const uid world_uid) const {
+std::optional<sdl::Vector2f> sdl::PhysicsServer2D::world_get_gravity(const uid world_uid) const {
 	auto iterator = worlds.find(world_uid);
 
 	if (iterator != worlds.end())

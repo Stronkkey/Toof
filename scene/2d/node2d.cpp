@@ -95,12 +95,12 @@ void Node2D::queue_redraw() {
 	tree->deferred_signals.connect(std::bind(&Node::notification, this, NOTIFICATION_DRAW));
 }
 
-void Node2D::set_position(const Vector2 &new_position) {
+void Node2D::set_position(const Vector2f &new_position) {
 	transform.origin = new_position;
 	queue_redraw();
 }
 
-void Node2D::set_scale(const Vector2 &new_scale) {
+void Node2D::set_scale(const Vector2f &new_scale) {
 	transform.scale = new_scale;
 	queue_redraw();
 }
@@ -110,23 +110,23 @@ void Node2D::set_rotation(const Angle new_rotation) {
 	queue_redraw();
 }
 
-void Node2D::set_global_position(const Vector2 &new_global_position) {
+void Node2D::set_global_position(const Vector2f &new_global_position) {
 	Vector2 global_position = get_global_position();
 	transform.origin = -Vector2(global_position - new_global_position);
 	queue_redraw();
 }
 
-const Vector2 Node2D::get_global_position() const {
+const Vector2f Node2D::get_global_position() const {
 	return get_global_transform().origin;
 }
 
-void Node2D::set_global_scale(const Vector2 &new_global_scale) {
+void Node2D::set_global_scale(const Vector2f &new_global_scale) {
 	Vector2 global_scale = get_global_scale();
 	transform.scale = -Vector2(global_scale - new_global_scale);
 	queue_redraw();
 }
 
-const Vector2 Node2D::get_global_scale() const {
+const Vector2f Node2D::get_global_scale() const {
 	return get_global_transform().scale;
 }
 
@@ -280,7 +280,7 @@ void Node2D::draw_texture_rect(const std::shared_ptr<Texture2D> &texture, const 
 		rendering_server->canvas_item_add_texture_region(texture->get_uid(), canvas_item, region, SDL_FLIP_NONE, modulation, texture_transform);
 }
 
-void Node2D::draw_line(const Vector2 &start, const Vector2 &end, const Color &modulation) const {
+void Node2D::draw_line(const Vector2f &start, const Vector2f &end, const Color &modulation) const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_line(canvas_item, start, end,  modulation);

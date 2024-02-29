@@ -11,7 +11,7 @@ namespace sdl {
 
 struct Transform2D {
 	constexpr Transform2D();
-	constexpr Transform2D(const Angle rotation, const Vector2 &new_origin, const Vector2 &new_scale);
+	constexpr Transform2D(const Angle rotation, const Vector2f &new_origin, const Vector2f &new_scale);
 	constexpr Transform2D(const Angle rotation, const real_t origin_x, const real_t origin_y, const real_t scale_x, const real_t scale_y);
 	constexpr Transform2D(const Transform2D &transform2d);
 	#ifdef B2_INCLUDED
@@ -19,8 +19,8 @@ struct Transform2D {
 	#endif
 
 	Angle rotation;
-	Vector2 origin;
-	Vector2 scale;
+	Vector2f origin;
+	Vector2f scale;
 
 	constexpr bool operator==(const Transform2D &right) const;
 	constexpr bool operator!() const;
@@ -43,7 +43,7 @@ struct Transform2D {
 constexpr Transform2D::Transform2D(): rotation(0.0), origin(), scale() {
 }
 
-constexpr Transform2D::Transform2D(const Angle rotation, const Vector2 &new_origin, const Vector2 &new_scale): rotation(rotation), origin(new_origin), scale(new_scale) {
+constexpr Transform2D::Transform2D(const Angle rotation, const Vector2f &new_origin, const Vector2f &new_scale): rotation(rotation), origin(new_origin), scale(new_scale) {
 }
 
 constexpr Transform2D::Transform2D(const Angle rotation, const real_t origin_x, const real_t origin_y, const real_t scale_x, const real_t scale_y):
@@ -60,7 +60,7 @@ constexpr bool Transform2D::operator==(const Transform2D &right) const {
 }
 
 constexpr bool Transform2D::operator!() const {
-	return origin == Vector2::ZERO || rotation == 0.0;
+	return origin == Vector2f() || rotation == 0.0;
 }
 
 constexpr Transform2D Transform2D::operator*(const Transform2D &right) const {

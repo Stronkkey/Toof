@@ -86,24 +86,24 @@ public:
 	/**
 	* Sets the relative position for this node2d to @param position.
 	*/
-	void set_position(const Vector2 &position);
+	void set_position(const Vector2f &position);
 
 	/**
 	* @returns the position of this node2d, relative to the parent.
 	*/
-	constexpr const Vector2 &get_position() const {
+	constexpr const Vector2f &get_position() const {
 		return transform.origin;
 	}
 
 	/**
 	* Sets the relative scale for this node2d to @param new_scale.
 	*/
-	void set_scale(const Vector2 &new_scale);
+	void set_scale(const Vector2f &new_scale);
 
 	/**
 	* @returns the scale of this node2d, relative to the parent.
 	*/
-	constexpr const Vector2 &get_scale() const {
+	constexpr const Vector2f &get_scale() const {
 		return transform.scale;
 	}
 
@@ -122,22 +122,22 @@ public:
 	/**
 	* Sets the global position for this node2d to @param new_global_position.
 	*/
-	void set_global_position(const Vector2 &new_global_position);
+	void set_global_position(const Vector2f &new_global_position);
 
 	/**
 	* @returns the global position of this node2d.
 	*/
-	const Vector2 get_global_position() const;
+	const Vector2f get_global_position() const;
 
 	/**
 	* Sets the global scale for this node2d to @param new_global_scale.
 	*/
-	void set_global_scale(const Vector2 &new_global_scale);
+	void set_global_scale(const Vector2f &new_global_scale);
 
 	/**
 	* @returns the global scale of this node2d.
 	*/
-	const Vector2 get_global_scale() const;
+	const Vector2f get_global_scale() const;
 
 	/**
 	* Sets the global rotation for this node2d to @param new_global_rotation.
@@ -288,7 +288,7 @@ public:
 	* Draws a colored line beginning from @param start to @param end with the color @param modulation using the RenderingServer.
 	* @see also RenderingServer::canvas_item_add_line.
 	*/
-	void draw_line(const Vector2 &start, const Vector2 &end, const Color &modulation = Color::WHITE) const;
+	void draw_line(const Vector2f &start, const Vector2f &end, const Color &modulation = Color::WHITE) const;
 
 	/**
 	* Draws multiple lines with the color @param modulation using the RenderingServer.

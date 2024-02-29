@@ -13,8 +13,6 @@
 
 namespace sdl {
 
-struct Vector2;
-
 class InputMap {
 
 public:

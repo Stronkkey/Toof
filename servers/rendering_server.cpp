@@ -14,7 +14,7 @@ RenderingServer::RenderingServer(Viewport *viewport): viewport(viewport),
     textures(),
     canvas_items(),
     background_color(Color(77, 77, 77, 255)),
-    viewport_offset(sdl::Vector2::ZERO),
+    viewport_offset(sdl::Vector2f()),
     uid_index(1) {
 }
 
@@ -100,7 +100,7 @@ void RenderingServer::render_canvas_item(const std::shared_ptr<CanvasItem> &canv
 	if (!canvas_item->is_globally_visible() || canvas_item->drawing_items.empty())
 		return;
 
-	const Rect2i screen_rect = Rect2i(Vector2::ZERO, get_screen_size());
+	const Rect2i screen_rect = Rect2i(Vector2i(), get_screen_size());
 	const Transform2D canvas_transform = viewport->get_canvas_transform();
 
 	for (const auto &drawing_item: canvas_item->drawing_items) {
@@ -210,7 +210,7 @@ void RenderingServer::canvas_item_add_texture_region(const uid texture_uid,
 	canvas_item->drawing_items.push_back(std::move(texture_rect_drawing_item));
 }
 
-void RenderingServer::canvas_item_add_line(const uid canvas_item_uid, const Vector2 &start, const Vector2 &end, const Color &modulate) {
+void RenderingServer::canvas_item_add_line(const uid canvas_item_uid, const Vector2f &start, const Vector2f &end, const Color &modulate) {
 	const std::shared_ptr<CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (!canvas_item)
@@ -401,7 +401,7 @@ const std::optional<bool> RenderingServer::canvas_item_is_visible_inside_viewpor
 	if (!canvas_item->is_globally_visible() || canvas_item->drawing_items.empty())
 		return false;
 
-	const Rect2i screen_rect = Rect2i(Vector2::ZERO, get_screen_size());
+	const Rect2i screen_rect = Rect2i(Vector2i(), get_screen_size());
 	const Transform2D &canvas_transform = viewport->get_canvas_transform();
 	bool is_visible = true;
 

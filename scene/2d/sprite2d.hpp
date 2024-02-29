@@ -36,8 +36,8 @@ public:
 		return texture_region;
 	}
 
-	void set_offset(const Vector2 &new_offset);
-	constexpr const Vector2 &get_offset() const {
+	void set_offset(const Vector2f &new_offset);
+	constexpr const Vector2f &get_offset() const {
 		return texture_transform.origin;
 	}
 
@@ -46,8 +46,8 @@ public:
 		return texture_transform.rotation;
 	}
 
-	void set_texture_scale(const Vector2 &new_texture_scale);
-	constexpr const Vector2 &get_texture_scale() const {
+	void set_texture_scale(const Vector2f &new_texture_scale);
+	constexpr const Vector2f &get_texture_scale() const {
 		return texture_transform.scale;
 	}
 

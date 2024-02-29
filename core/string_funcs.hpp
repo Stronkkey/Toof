@@ -10,6 +10,13 @@
 
 namespace sdl {
 
+struct Angle;
+struct Color;
+struct Rect2;
+struct Transform2D;
+template<class>
+struct gVector2;
+
 /**
 * @returns the @param number converted to a string using std::to_string.
 */
@@ -85,6 +92,13 @@ namespace sdl {
 */
 [[nodiscard]] String to_string(const char character);
 
+[[nodiscard]] String to_string(const Angle angle);
+[[nodiscard]] String to_string(const Color &color);
+[[nodiscard]] String to_string(const Rect2 &rect2);
+[[nodiscard]] String to_string(const Transform2D &transform2d);
+template<class T>
+[[nodiscard]] String to_string(const gVector2<T> &gvector2);
+
 template<class T>
 [[nodiscard]] constexpr bool is_string_type() {
 	constexpr const auto &type_info = typeid(T);
@@ -140,15 +154,15 @@ template<class T, class... Args>
 }
 
 template<size_t _size, class T>
-inline void _add_str(std::array<String, _size> &arr, size_t i, const T &t) {
+inline void __add_str__(std::array<String, _size> &arr, size_t i, const T &t) {
 	if (i < _size)
 		arr[i] = to_string(t);
 }
 
 template<size_t _size, class T, class... Args>
-inline void _add_str(std::array<String, _size> &arr, size_t i, const T &t, const Args&... args) {
-	_add_str(arr, i, t);
-	_add_str(arr, i + 1, args...);
+inline void __add_str__(std::array<String, _size> &arr, size_t i, const T &t, const Args&... args) {
+	__add_str__(arr, i, t);
+	__add_str__(arr, i + 1, args...);
 }
 
 /**
@@ -158,7 +172,7 @@ template<class... Args>
 [[nodiscard]] inline std::array<String, sizeof...(Args)> to_string_array(const Args&... args) {
 	constexpr const size_t arg_count = sizeof...(Args);
 	std::array<String, arg_count> arr;
-	_add_str(arr, 0, args...);
+	__add_str__(arr, 0, args...);
 	return arr;
 }
 

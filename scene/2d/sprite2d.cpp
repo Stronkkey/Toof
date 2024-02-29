@@ -14,7 +14,7 @@ Sprite2D::Sprite2D(): texture(nullptr),
 Transform2D Sprite2D::_get_placement_texture_transform() const {
 	Transform2D placement_texture_transform = texture_transform;
 	if (centered) {
-		const Vector2 texture_size = texture->get_size(get_rendering_server());
+		const Vector2f texture_size = texture->get_size(get_rendering_server());
 		placement_texture_transform.origin -= (texture_size / 2) * texture_transform.scale;
 	}
 
@@ -59,7 +59,7 @@ void Sprite2D::set_texture_region(const Rect2i &new_texture_region) {
 	queue_redraw();
 }
 
-void Sprite2D::set_offset(const Vector2 &new_offset) {
+void Sprite2D::set_offset(const Vector2f &new_offset) {
 	texture_transform.origin = new_offset;
 	queue_redraw();
 }
@@ -74,7 +74,7 @@ void Sprite2D::set_texture_rotation(const Angle new_rotation) {
 	queue_redraw();
 }
 
-void Sprite2D::set_texture_scale(const Vector2 &new_texture_scale) {
+void Sprite2D::set_texture_scale(const Vector2f &new_texture_scale) {
 	texture_transform.scale = new_texture_scale;
 	queue_redraw();
 }

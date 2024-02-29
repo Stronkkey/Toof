@@ -22,7 +22,7 @@ namespace sdl {
 
 namespace Physics {
 
-const Vector2 default_gravity = Vector2(DEFAULT_GRAVITY_X, DEFAULT_GRAVITY_Y);
+const Vector2f default_gravity = Vector2f(DEFAULT_GRAVITY_X, DEFAULT_GRAVITY_Y);
 const std::ratio px_to_meter_ratio = std::ratio<1, PHYSICS_PX_METER_RATIO>();
 #ifdef B2_INCLUDED
 const bool physics_enabled = true;

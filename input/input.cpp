@@ -175,8 +175,8 @@ float Input::get_axis(const String &negative_action_name, const String &positive
 	return get_action_strength(negative_action_name) - get_action_strength(positive_action_name);
 }
 
-sdl::Vector2 Input::get_vector(const String &negative_x_action_name, const String &positive_x_action_name, const String &negative_y_action_name, const String &positive_y_action_name) const {
-	Vector2 vector = Vector2(
+sdl::Vector2f Input::get_vector(const String &negative_x_action_name, const String &positive_x_action_name, const String &negative_y_action_name, const String &positive_y_action_name) const {
+	Vector2f vector = Vector2f(
 	        get_action_strength(positive_x_action_name) - get_action_strength(negative_x_action_name),
 	        get_action_strength(positive_y_action_name) - get_action_strength(negative_y_action_name));
 	return vector.normalized();

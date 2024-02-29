@@ -42,7 +42,7 @@ void TextureDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, c
 	SDL_SetTextureScaleMode(texture->texture_reference, canvas_item->scale_mode);
 
 	const Transform2D &global_transform = canvas_item->get_global_transform() * viewport->get_canvas_transform();
-	const Rect2i source_region = use_region ? src_region : Rect2i(Vector2::ZERO, texture->size);
+	const Rect2i source_region = use_region ? src_region : Rect2i(Vector2i(), texture->size);
 	const Angle rotation = global_transform.rotation + transform.rotation;
 	Rect2 final_draw_rect = _get_draw_rect(canvas_item) * viewport->get_canvas_transform();
 	final_draw_rect.rounded();
@@ -131,7 +131,7 @@ void LineDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, cons
 
 Rect2 LineDrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
 	const Transform2D &global_transform = canvas_item->get_global_transform();
-	return Rect2(Vector2(start_point) + global_transform.origin, end_point).remove_negative_size().round();
+	return Rect2(Vector2f(start_point) + global_transform.origin, end_point).remove_negative_size().round();
 }
 
 void LinesDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, const Viewport *viewport) {

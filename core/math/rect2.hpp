@@ -1,6 +1,5 @@
 #pragma once
 
-#include "core/string_funcs.hpp"
 #include <core/math/vector2.hpp>
 
 namespace sdl {
@@ -20,7 +19,7 @@ struct Rect2 {
 	/** 
 	* Constructs a Rect2 by @param position and @param size.
 	*/
-	constexpr Rect2(const Vector2 &position, const Vector2 &size);
+	constexpr Rect2(const Vector2f &position, const Vector2f &size);
 
 	/**
 	* Constructs a Rect2 by setting its x and y values to @param position_x and @param position_y and w and h values to @param size_x and @param size_y.
@@ -246,22 +245,22 @@ struct Rect2 {
 	/**
 	* @returns a copy of this rectangle expanded to align the edges with the given @param to point, if necessary.
 	*/
-	[[nodiscard]] constexpr Rect2 expand(const Vector2 &to) const;
+	[[nodiscard]] constexpr Rect2 expand(const Vector2f &to) const;
 
 	/**
 	* @returns a vector2 with the x and y properties set to this rectangles x and y properties.
 	*/
-	constexpr Vector2 get_position() const;
+	constexpr Vector2f get_position() const;
 
 	/**
 	* @returns a vector2 with the x and y properties set to this rectangles w and h properties.
 	*/
-	constexpr Vector2 get_size() const;
+	constexpr Vector2f get_size() const;
 
 	/**
 	* @returns true if @param point is inside this rect.
 	*/
-	constexpr bool has_point(const Vector2 &point) const;
+	constexpr bool has_point(const Vector2f &point) const;
 
 	/**
 	* @returns true if the width and height of this rect is higher or equal to 0.
@@ -276,17 +275,17 @@ struct Rect2 {
 	/**
 	* Aligns the edges of this rect with the edges with the given @param to point, if necessary.
 	*/
-	constexpr void expand_to(const Vector2 &to);
+	constexpr void expand_to(const Vector2f &to);
 
 	/**
 	* Sets the x and y properties to that of @param new_position x and y values.
 	*/
-	constexpr void set_position(const Vector2 &new_position);
+	constexpr void set_position(const Vector2f &new_position);
 
 	/**
 	* Sets the w and h properties to that of @param new_size x and y values.
 	*/
-	constexpr void set_size(const Vector2 &new_size);
+	constexpr void set_size(const Vector2f &new_size);
 
 	[[nodiscard]] SDL_Rect to_sdl_rect() const;
 	[[nodiscard]] SDL_FRect to_sdl_frect() const;
@@ -372,7 +371,7 @@ struct Rect2i {
 constexpr Rect2::Rect2(): x(0), y(0), w(0), h(0) {
 }
 
-constexpr Rect2::Rect2(const Vector2 &position, const Vector2 &size): x(position.x), y(position.y), w(size.x), h(size.y) {
+constexpr Rect2::Rect2(const Vector2f &position, const Vector2f &size): x(position.x), y(position.y), w(size.x), h(size.y) {
 }
 
 constexpr Rect2::Rect2(const real_t position_x, const real_t position_y, const real_t size_x, const real_t size_y): x(position_x), y(position_y), w(size_x), h(size_y) {
@@ -549,15 +548,15 @@ constexpr Rect2 Rect2::ceil() const {
 	return rect;
 }
 
-constexpr Vector2 Rect2::get_position() const {
-	return Vector2(x, y);
+constexpr Vector2f Rect2::get_position() const {
+	return Vector2f(x, y);
 }
 
-constexpr Vector2 Rect2::get_size() const {
-	return Vector2(w, h);
+constexpr Vector2f Rect2::get_size() const {
+	return Vector2f(w, h);
 }
 
-constexpr bool Rect2::has_point(const Vector2 &point) const {
+constexpr bool Rect2::has_point(const Vector2f &point) const {
 	if (point.x < x)
 		return false;
 	if (point.y < y)
@@ -634,13 +633,13 @@ constexpr Rect2 Rect2::remove_negative_size() const {
 	return rect;
 }
 
-constexpr Rect2 Rect2::expand(const Vector2 &to) const {
+constexpr Rect2 Rect2::expand(const Vector2f &to) const {
 	Rect2 rect = *this;
 	rect.expand_to(to);
 	return rect;
 }
 
-constexpr void Rect2::expand_to(const Vector2 &to) {
+constexpr void Rect2::expand_to(const Vector2f &to) {
 	real_t begin_x = x;
 	real_t begin_y = y;
 	real_t end_x = x + w;
@@ -664,12 +663,12 @@ constexpr void Rect2::expand_to(const Vector2 &to) {
 	h = end_y - begin_y;
 }
 
-constexpr void Rect2::set_position(const Vector2 &new_position) {
+constexpr void Rect2::set_position(const Vector2f &new_position) {
 	x = new_position.x;
 	y = new_position.y;
 }
 
-constexpr void Rect2::set_size(const Vector2 &new_size) {
+constexpr void Rect2::set_size(const Vector2f &new_size) {
 	x = new_size.x;
 	y = new_size.y;
 }
