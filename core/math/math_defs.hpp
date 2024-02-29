@@ -4,10 +4,6 @@
 
 namespace sdl {
 
-struct Vector2;
-struct Rect2;
-struct Transform2D;
-
 #ifdef REAL_T_IS_DOUBLE
 typedef double real_t;
 #else
@@ -78,21 +74,6 @@ constexpr bool is_equal_approx(const float left, const float right) {
 }
 
 /**
-* @returns true if @param left approximately equals @param right; 
-*/
-bool is_equal_approx(const Vector2 &left, const Vector2 &right);
-
-/**
-* @returns true if @param left approximately equals @param right; 
-*/
-bool is_equal_approx(const Rect2 &left, const Rect2 &right);
-
-/**
-* @returns true if @param left approximately equals @param right; 
-*/
-bool is_equal_approx(const Transform2D &left, const Transform2D &right);
-
-/**
 * @returns true if @param number is approximately equal to 0. 
 */
 constexpr bool is_zero_approx(const double number) {
@@ -105,21 +86,6 @@ constexpr bool is_zero_approx(const double number) {
 constexpr bool is_zero_approx(const float number) {
 	return number >= (0.0 - (float)CMP_EPSILON) && number <= (0.0 + (float)CMP_EPSILON);
 }
-
-/**
-* @returns true if the components of @param transform2d approximately equal to 0. 
-*/
-bool is_zero_approx(const Vector2 &vector2);
-
-/**
-* @returns true if the components of @param rect2 approximately equal to 0. 
-*/
-bool is_zero_approx(const Rect2 &rect2);
-
-/**
-* @returns true if the components of @param transform2d approximately equal to 0. 
-*/
-bool is_zero_approx(const Transform2D &transform2d);
 
 constexpr double lerp(const double from, const double to, const double weight) {
 	return from + (to - from) * weight;
