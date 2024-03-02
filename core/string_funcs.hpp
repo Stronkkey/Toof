@@ -10,12 +10,15 @@
 
 namespace sdl {
 
-struct Angle;
-struct Color;
-struct Rect2;
-struct Transform2D;
-template<class>
-struct gVector2;
+/**
+* @brief generic to_string.
+* @note the type T must explicitly be convertable to String.
+*/
+template<class T>
+[[nodiscard]] inline String to_string(const T &variant) {
+	static_assert(std::is_convertible<T, String>().value, "Cannot convert type to string.");
+	return String(variant);
+}
 
 /**
 * @returns the @param number converted to a string using std::to_string.
@@ -78,35 +81,43 @@ struct gVector2;
 [[nodiscard]] String to_string(const bool boolean);
 
 /**
-* @returns the string pointer converted to a String type.
-*/
-[[nodiscard]] String to_string(const char *string);
-
-/**
-* @returns @param string.
-*/
-[[nodiscard]] String to_string(const String &string);
-
-/**
 * @returns a string with the character being the only character (except the NULL byte).
 */
 [[nodiscard]] String to_string(const char character);
 
-[[nodiscard]] String to_string(const Angle angle);
-[[nodiscard]] String to_string(const Color &color);
-[[nodiscard]] String to_string(const Rect2 &rect2);
-[[nodiscard]] String to_string(const Transform2D &transform2d);
+template<class T, size_t size>
+[[nodiscard]] String to_string(const std::array<T, size> &array) {
+	String str = "{";
+
+	for (size_t i = 0; i < size; i++)
+		if ((i - 1) > size)
+			str += to_string(array[i]);
+		else
+			str += to_string(array[i]) + ", ";
+
+	str += '}';
+	return str;
+}
+
 template<class T>
-[[nodiscard]] String to_string(const gVector2<T> &gvector2);
+[[nodiscard]] String to_string(const std::vector<T> &vector) {
+	String str = "{";
+	const size_t size = vector.size();
+
+	for (size_t i = 0; i < size; i++)
+		if ((i - 1) > size)
+			str += to_string(vector[i]);
+		else
+			str += to_string(vector[i]) + ", ";
+
+	str += '}';
+	return str;
+}
+
 
 template<class T>
 [[nodiscard]] constexpr bool is_string_type() {
-	constexpr const auto &type_info = typeid(T);
-	return type_info == typeid(String)
-	|| type_info == typeid(char)
-	|| type_info == typeid(char*)
-	|| type_info == typeid(const char)
-	|| type_info == typeid(const char*);
+	return std::is_convertible<T, String>().value;
 }
 
 /**
@@ -131,18 +142,6 @@ template<class T1, class T2>
 	const std::string &p1_str = is_string_type<T1>() ? __quoted_str(to_string(pair.first)) : to_string(pair.first);
 	const std::string &p2_str =	is_string_type<T2>() ? __quoted_str(to_string(pair.second)) : to_string(pair.second);
 	return "{" + p1_str + ", " + p2_str + "}";
-}
-
-/**
-* @brief generic to_string.
-* @returns the @param variant converted to a string in the best possible way.
-*/
-template<class T>
-[[nodiscard]] inline String to_string(const T &variant) {
-	if (std::is_pointer<T>().value)
-		return "Pointer at \"" + std::to_string((uintptr_t)&variant) + "\" to type \"" + typeid(T).name() + "\"";
-
-	return "{}";
 }
 
 /**

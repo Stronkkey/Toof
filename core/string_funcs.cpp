@@ -50,14 +50,6 @@ using namespace sdl;
 	return boolean ? "true" : "false";
 }
 
-[[nodiscard]] String sdl::to_string(const char *string) {
-	return String(string);
-}
-
-[[nodiscard]] String sdl::to_string(const String &string) {
-	return String(string);
-}
-
 [[nodiscard]] String sdl::to_string(const char character) {
 	return String(&character, 1);
 }
