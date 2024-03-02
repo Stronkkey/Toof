@@ -21,10 +21,10 @@ enum DrawingItemType {
 
 struct DrawingItem {
 	void draw(const std::shared_ptr<CanvasItem> &canvas_item, const Viewport *viewport);
-	Rect2 get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const;
+	Rect2f get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const;
 
 	virtual void _draw(const std::shared_ptr<CanvasItem> &canvas_item, const Viewport *viewport);
-	virtual Rect2 _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const;
+	virtual Rect2f _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const;
 };
 
 struct TextureDrawingItem: public DrawingItem {
@@ -37,7 +37,7 @@ struct TextureDrawingItem: public DrawingItem {
 	Transform2D transform;
 
 	void _draw(const std::shared_ptr<CanvasItem> &canvas_item, const Viewport *viewport) override;
-	Rect2 _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const override;
+	Rect2f _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const override;
 };
 
 struct RectDrawingItem: public DrawingItem {
@@ -46,7 +46,7 @@ struct RectDrawingItem: public DrawingItem {
 
 	void _draw(const std::shared_ptr<CanvasItem> &canvas_item,const Viewport *viewport) override;
 
-	Rect2 _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const override;
+	Rect2f _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const override;
 };
 
 struct RectsDrawingItem: public DrawingItem {
@@ -55,7 +55,7 @@ struct RectsDrawingItem: public DrawingItem {
 
 	void _draw(const std::shared_ptr<CanvasItem> &canvas_item,const Viewport *viewport) override;
 	
-	Rect2 _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const override;
+	Rect2f _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const override;
 };
 
 struct LineDrawingItem: public DrawingItem {
@@ -65,7 +65,7 @@ struct LineDrawingItem: public DrawingItem {
 
 	void _draw(const std::shared_ptr<CanvasItem> &canvas_item,const Viewport *viewport) override;
 
-	Rect2 _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const override;
+	Rect2f _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const override;
 };
 
 struct LinesDrawingItem: public DrawingItem {
@@ -74,7 +74,7 @@ struct LinesDrawingItem: public DrawingItem {
 
 	void _draw(const std::shared_ptr<CanvasItem> &canvas_item,const Viewport *viewport) override;
 	
-	Rect2 _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const override;
+	Rect2f _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const override;
 };
 
 }

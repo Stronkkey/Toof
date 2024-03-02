@@ -7,7 +7,9 @@
 
 namespace sdl {
 
+template<class>
 struct Rect2;
+typedef Rect2<real_t> Rect2f;
 
 namespace Geometry2D {
 
@@ -61,7 +63,7 @@ constexpr bool is_direction_intersecting_direction(const Vector2f &dir_a, const 
 * @param circle_radius describes the radius of the circle.
 * @param circle_position describes the position of the circle.
 */
-bool rect_intersects_circle(const Rect2 &rect, const real_t circle_radius, const Vector2f &circle_position);
+bool rect_intersects_circle(const Rect2f &rect, const real_t circle_radius, const Vector2f &circle_position);
 
 /**
 * @returns a Vector (in global position) that represents the @param point rotated by @param rotation_degrees.

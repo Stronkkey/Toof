@@ -292,7 +292,7 @@ void Node2D::draw_lines(const std::vector<SDL_FPoint> &points, const Color &modu
 		rendering_server->canvas_item_add_lines(canvas_item, points, modulation);
 }
 
-void Node2D::draw_rect(const Rect2 &rect, const Color &modulation) const {
+void Node2D::draw_rect(const Rect2f &rect, const Color &modulation) const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_rect(canvas_item, rect, modulation);

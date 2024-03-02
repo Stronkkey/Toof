@@ -1,7 +1,7 @@
 #include <core/math/geometry2d.hpp>
 #include <core/math/rect2.hpp>
 
-bool sdl::Geometry2D::rect_intersects_circle(const Rect2 &rect, const real_t circle_radius, const Vector2f &circle_position) {
+bool sdl::Geometry2D::rect_intersects_circle(const Rect2f &rect, const real_t circle_radius, const Vector2f &circle_position) {
 	const real_t circle_radius_squared = circle_radius * circle_radius;
 	const bool position_intersection = circle_position.distance_to_squared(rect.get_position()) <= circle_radius_squared;
 	const bool size_intersection = circle_position.distance_to_squared(rect.get_position() + rect.get_size()) <= circle_radius_squared;

@@ -9,18 +9,18 @@ void DrawingItem::draw(const std::shared_ptr<CanvasItem> &canvas_item, const Vie
 	_draw(canvas_item, viewport);
 }
 
-Rect2 DrawingItem::get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
+Rect2f DrawingItem::get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
 	return _get_draw_rect(canvas_item);
 }
 
 void DrawingItem::_draw(const std::shared_ptr<CanvasItem>&, const Viewport*) {
 }
 
-Rect2 DrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem>&) const {
-	return Rect2::EMPTY;
+Rect2f DrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem>&) const {
+	return Rect2f();
 }
 
-Rect2 TextureDrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
+Rect2f TextureDrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
 	const Transform2D &global_transform = canvas_item->get_global_transform();
 	const Vector2 position = global_transform.origin + transform.origin;
 	const Vector2 size = global_transform.scale * transform.scale * (use_region ? src_region.get_size() : texture.lock()->size);
@@ -44,7 +44,7 @@ void TextureDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, c
 	const Transform2D &global_transform = canvas_item->get_global_transform() * viewport->get_canvas_transform();
 	const Rect2i source_region = use_region ? src_region : Rect2i(Vector2i(), texture->size);
 	const Angle rotation = global_transform.rotation + transform.rotation;
-	Rect2 final_draw_rect = _get_draw_rect(canvas_item) * viewport->get_canvas_transform();
+	Rect2f final_draw_rect = rect2f_add_transform(_get_draw_rect(canvas_item), viewport->get_canvas_transform());
 	final_draw_rect.rounded();
 
 	SDL_Rect final_source_region = source_region.to_sdl_rect();
@@ -74,8 +74,8 @@ void RectDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, cons
 	SDL_RenderFillRectF(renderer, &rect);
 }
 
-Rect2 RectDrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
-	return Rect2(rectangle) * canvas_item->get_global_transform();
+Rect2f RectDrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
+	return rect2f_add_transform(rectangle, canvas_item->get_global_transform());
 }
 
 void RectsDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, const Viewport *viewport) {
@@ -100,12 +100,12 @@ void RectsDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, con
 	}
 }
 
-Rect2 RectsDrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
+Rect2f RectsDrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
 	const Transform2D &global_transform = canvas_item->get_global_transform();
-	Rect2 final_rect = Rect2();
+	Rect2f final_rect = Rect2f();
 
 	for (const auto &frect: rectangles)
-		final_rect = final_rect.merge(Rect2(frect));
+		final_rect = final_rect.merge(Rect2f(frect));
 
 	final_rect.x += global_transform.origin.x;
 	final_rect.y += global_transform.origin.y;
@@ -129,9 +129,9 @@ void LineDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, cons
 	SDL_RenderDrawLineF(renderer, x_1, y_1, x_2, y_2);
 }
 
-Rect2 LineDrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
+Rect2f LineDrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
 	const Transform2D &global_transform = canvas_item->get_global_transform();
-	return Rect2(Vector2f(start_point) + global_transform.origin, end_point).remove_negative_size().round();
+	return Rect2f(Vector2f(start_point) + global_transform.origin, end_point).remove_negative_size().round();
 }
 
 void LinesDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, const Viewport *viewport) {
@@ -155,8 +155,8 @@ void LinesDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, con
 	}
 }
 
-Rect2 LinesDrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
-	Rect2 rect = Rect2();
+Rect2f LinesDrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
+	Rect2f rect = Rect2f();
 
 	const Transform2D &global_transform = canvas_item->get_global_transform();
 

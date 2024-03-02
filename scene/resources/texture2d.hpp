@@ -11,7 +11,9 @@
 
 namespace sdl {
 
-struct Rect2i;
+template<class>
+struct Rect2;
+typedef Rect2<int_t> Rect2i;
 class RenderingServer;
 
 class Texture2D : public Resource {

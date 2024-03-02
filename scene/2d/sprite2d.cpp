@@ -35,7 +35,7 @@ void Sprite2D::_draw_texture() const {
 		return;
 
 	rendering_server->canvas_item_clear(get_canvas_item());
-	if (texture_region == Rect2i::EMPTY)
+	if (texture_region == Rect2i())
 		_draw_full_texture();
 	else
 		_draw_rect_texture();

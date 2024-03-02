@@ -104,7 +104,7 @@ void RenderingServer::render_canvas_item(const std::shared_ptr<CanvasItem> &canv
 	const Transform2D canvas_transform = viewport->get_canvas_transform();
 
 	for (const auto &drawing_item: canvas_item->drawing_items) {
-		bool inside_viewport = screen_rect.intersects(drawing_item->get_draw_rect(canvas_item) * canvas_transform);
+		bool inside_viewport = screen_rect.intersects(rect2f_add_transform(drawing_item->get_draw_rect(canvas_item), canvas_transform));
 
 		if (inside_viewport)
 			drawing_item->draw(canvas_item, viewport);
@@ -239,7 +239,7 @@ void RenderingServer::canvas_item_add_lines(const uid canvas_item_uid, const std
 	canvas_item->drawing_items.push_back(std::move(lines_drawing_item));
 }
 
-void RenderingServer::canvas_item_add_rect(const uid canvas_item_uid, const Rect2 &rect, const Color &modulate) {
+void RenderingServer::canvas_item_add_rect(const uid canvas_item_uid, const Rect2f &rect, const Color &modulate) {
 	const std::shared_ptr<CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (!canvas_item || !rect.has_area())
@@ -406,7 +406,7 @@ const std::optional<bool> RenderingServer::canvas_item_is_visible_inside_viewpor
 	bool is_visible = true;
 
 	for (const auto &drawing_item: canvas_item->drawing_items) {
-		bool inside_viewport = screen_rect.intersects(drawing_item->get_draw_rect(canvas_item) * canvas_transform);
+		bool inside_viewport = screen_rect.intersects(rect2f_add_transform(drawing_item->get_draw_rect(canvas_item), canvas_transform));
 
 		if (!inside_viewport) {
 			is_visible = false;

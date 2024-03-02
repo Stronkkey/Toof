@@ -16,7 +16,9 @@ namespace sdl {
 struct Texture;
 struct CanvasItem;
 struct Transform2D;
-struct Rect2i;
+template<class>
+struct Rect2;
+typedef Rect2<real_t> Rect2f;
 class Viewport;
 
 class RenderingServer {
@@ -86,7 +88,7 @@ public:
 	    const Transform2D &transform = Transform2D::IDENTITY);
 	void canvas_item_add_line(const uid canvas_item_uid, const Vector2f &start, const Vector2f &end, const Color &modulate = Color::WHITE);
 	void canvas_item_add_lines(const uid canvas_item_uid, const std::vector<SDL_FPoint> &points, const Color &modulate = Color::WHITE);
-	void canvas_item_add_rect(const uid canvas_item_uid, const Rect2 &rect, const Color &modulate = Color::WHITE);
+	void canvas_item_add_rect(const uid canvas_item_uid, const Rect2f &rect, const Color &modulate = Color::WHITE);
 	void canvas_item_add_rects(const uid canvas_item_uid, const std::vector<SDL_FRect> &rectangles, const Color &modulate = Color::WHITE);
 
 	void canvas_item_set_transform(const uid canvas_item_uid, const Transform2D &new_transform);

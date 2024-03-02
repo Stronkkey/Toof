@@ -2,8 +2,8 @@ core_math_source_files = files(
 	'angle.cpp',
 	'color.cpp',
 	'geometry2d.cpp',
-	'rect2.cpp',
 	'transform2d.cpp',
+	'rect2.cpp'
 )
 
 core_math_headers = files(

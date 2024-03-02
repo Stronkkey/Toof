@@ -6,7 +6,8 @@
 
 namespace sdl {
 
-struct Rect2i;
+template<class>
+struct Rect2;
 class Node;
 class Window;
 class RenderingServer;

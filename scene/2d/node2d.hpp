@@ -300,7 +300,7 @@ public:
 	* Draws a colored rectangle that is inside @param rect with color @param modulation.
 	* @see also RenderingServer::canvas_item_add_rect.
 	*/
-	void draw_rect(const Rect2 &rect, const Color &modulation = Color::WHITE) const;
+	void draw_rect(const Rect2f &rect, const Color &modulation = Color::WHITE) const;
 
 	/**
 	* Draws multipled rectangle with the color @param modulation using the RenderingServer.
