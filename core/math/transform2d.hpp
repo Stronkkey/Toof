@@ -12,7 +12,7 @@ namespace sdl {
 struct Transform2D {
 	constexpr Transform2D();
 	constexpr Transform2D(const Angle rotation, const Vector2f &new_origin, const Vector2f &new_scale);
-	constexpr Transform2D(const Angle rotation, const real_t origin_x, const real_t origin_y, const real_t scale_x, const real_t scale_y);
+	constexpr Transform2D(const Angle rotation, const real origin_x, const real origin_y, const real scale_x, const real scale_y);
 	constexpr Transform2D(const Transform2D &transform2d);
 	#ifdef B2_INCLUDED
 	Transform2D(const b2Transform &b2_transform);
@@ -46,7 +46,7 @@ constexpr Transform2D::Transform2D(): rotation(0.0), origin(), scale() {
 constexpr Transform2D::Transform2D(const Angle rotation, const Vector2f &new_origin, const Vector2f &new_scale): rotation(rotation), origin(new_origin), scale(new_scale) {
 }
 
-constexpr Transform2D::Transform2D(const Angle rotation, const real_t origin_x, const real_t origin_y, const real_t scale_x, const real_t scale_y):
+constexpr Transform2D::Transform2D(const Angle rotation, const real origin_x, const real origin_y, const real scale_x, const real scale_y):
     rotation(rotation),
     origin(Vector2(origin_x, origin_y)),
     scale(Vector2(scale_x, scale_y)) {

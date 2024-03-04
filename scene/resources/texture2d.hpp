@@ -13,7 +13,7 @@ namespace sdl {
 
 template<class>
 struct Rect2;
-typedef Rect2<int_t> Rect2i;
+typedef Rect2<integer> Rect2i;
 class RenderingServer;
 
 class Texture2D : public Resource {

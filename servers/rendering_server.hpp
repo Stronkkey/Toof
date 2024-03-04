@@ -18,7 +18,7 @@ struct CanvasItem;
 struct Transform2D;
 template<class>
 struct Rect2;
-typedef Rect2<real_t> Rect2f;
+typedef Rect2<real> Rect2f;
 class Viewport;
 
 class RenderingServer {

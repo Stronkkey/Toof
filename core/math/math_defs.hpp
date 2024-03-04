@@ -5,20 +5,20 @@
 namespace sdl {
 
 #ifdef REAL_T_IS_DOUBLE
-typedef double real_t;
+typedef double real;
 #else
-typedef float real_t;
+typedef float real;
 #endif
 
 #ifdef INT_IS_64BIT
-typedef int64_t int_t;
-typedef uint64_t uint_t;
+typedef int64_t natural;
+typedef uint64_t integer;
 #else
-typedef int32_t int_t;
-typedef uint32_t uint_t;
+typedef int32_t natural;
+typedef uint32_t untarual;
 #endif
 
-typedef uint_t uid;
+typedef integer uid;
 
 namespace Math {
 

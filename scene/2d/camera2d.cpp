@@ -40,7 +40,7 @@ Vector2f Camera2D::_get_target_position() const {
 	Vector2f target_position;
 
 	if (position_smoothing_enabled) {
-		real_t c = position_smoothing_speed * (process_callback == CAMERA2D_PROCESS_LOOP ? get_process_delta_time() : get_delta_time());
+		real c = position_smoothing_speed * (process_callback == CAMERA2D_PROCESS_LOOP ? get_process_delta_time() : get_delta_time());
 		target_position = std::min(_get_camera_position().lerp(get_global_position(), c), get_global_position());
 	} else
 		target_position = get_global_position();

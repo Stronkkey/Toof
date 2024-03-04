@@ -9,7 +9,7 @@ namespace sdl {
 
 template<class>
 struct Rect2;
-typedef Rect2<real_t> Rect2f;
+typedef Rect2<real> Rect2f;
 
 namespace Geometry2D {
 
@@ -18,7 +18,7 @@ namespace Geometry2D {
 * @param circle_radius describes the radius of the circle.
 * @param circle_position describes the position of the circle.
 */
-constexpr bool is_point_inside_circle(const real_t circle_radius, const Vector2f &point, const Vector2f &circle_position = Vector2f(1, 1)) {
+constexpr bool is_point_inside_circle(const real circle_radius, const Vector2f &point, const Vector2f &circle_position = Vector2f(1, 1)) {
 	return point.distance_to_squared(circle_position) <= circle_radius * circle_radius;
 }
 
@@ -29,7 +29,7 @@ constexpr bool is_point_inside_circle(const real_t circle_radius, const Vector2f
 * @param right_circle_radius describes the radius of the right circle.
 * @param right_circle_position describes the position of the right circle.
 */
-constexpr bool are_circles_intersecting(const real_t left_circle_radius, const Vector2f &left_circle_position, const real_t right_circle_radius, const Vector2f &right_circle_position) {
+constexpr bool are_circles_intersecting(const real left_circle_radius, const Vector2f &left_circle_position, const real right_circle_radius, const Vector2f &right_circle_position) {
 	return left_circle_position.distance_to_squared(right_circle_position) <= (left_circle_radius * left_circle_radius) + (right_circle_radius * right_circle_radius);
 }
 
@@ -41,12 +41,12 @@ constexpr bool are_circles_intersecting(const real_t left_circle_radius, const V
 constexpr std::optional<Vector2f> line_intersects_line(const Vector2f &from_a, const Vector2f &dir_a, const Vector2f &from_b, const Vector2f &dir_b) {
 	// See http://paulbourke.net/geometry/pointlineplane/
 
-	const real_t denom = dir_b.y * dir_a.x - dir_b.x * dir_a.y;
+	const real denom = dir_b.y * dir_a.x - dir_b.x * dir_a.y;
 	if (Math::is_zero_approx(denom))
 		return std::nullopt;
 
 	const Vector2f v = from_a - from_b;
-	const real_t t = (dir_b.x * v.y - dir_b.y * v.x) / denom;
+	const real t = (dir_b.x * v.y - dir_b.y * v.x) / denom;
 	return std::optional<Vector2f>(from_a + (dir_a * t));
 }
 
@@ -54,7 +54,7 @@ constexpr std::optional<Vector2f> line_intersects_line(const Vector2f &from_a, c
 * @returns true if the directions @param dir_a and @param dir_b intersect.
 */
 constexpr bool is_direction_intersecting_direction(const Vector2f &dir_a, const Vector2f &dir_b) {
-	const real_t denom = dir_b.y * dir_a.x - dir_b.x * dir_a.y;
+	const real denom = dir_b.y * dir_a.x - dir_b.x * dir_a.y;
 	return !Math::is_zero_approx(denom);
 }
 
@@ -63,7 +63,7 @@ constexpr bool is_direction_intersecting_direction(const Vector2f &dir_a, const 
 * @param circle_radius describes the radius of the circle.
 * @param circle_position describes the position of the circle.
 */
-bool rect_intersects_circle(const Rect2f &rect, const real_t circle_radius, const Vector2f &circle_position);
+bool rect_intersects_circle(const Rect2f &rect, const real circle_radius, const Vector2f &circle_position);
 
 /**
 * @returns a Vector (in global position) that represents the @param point rotated by @param rotation_degrees.

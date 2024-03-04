@@ -31,18 +31,18 @@ private:
 
 	Vector2f offset;
 	Vector2f zoom;
-	real_t position_smoothing_speed;
-	real_t rotation_smoothing_speed;
-	real_t drag_bottom_margin;
-	real_t drag_left_margin;
-	real_t drag_right_margin;
-	real_t drag_top_margin;
-	real_t drag_vertical_offset;
-	real_t drag_horizontal_offset;
-	real_t limit_bottom;
-	real_t limit_left;
-	real_t limit_right;
-	real_t limit_top;
+	real position_smoothing_speed;
+	real rotation_smoothing_speed;
+	real drag_bottom_margin;
+	real drag_left_margin;
+	real drag_right_margin;
+	real drag_top_margin;
+	real drag_vertical_offset;
+	real drag_horizontal_offset;
+	real limit_bottom;
+	real limit_left;
+	real limit_right;
+	real limit_top;
 	bool enabled;
 	bool limit_smoothed;
 	bool drag_horizontal_enabled;
@@ -75,99 +75,99 @@ public:
 		return zoom;
 	}
 
-	constexpr void set_position_smoothing_speed(const real_t position_smoothing_speed) {
+	constexpr void set_position_smoothing_speed(const real position_smoothing_speed) {
 		this->position_smoothing_speed = position_smoothing_speed;
 	}
 
-	constexpr real_t get_position_smoothing_speed() const {
+	constexpr real get_position_smoothing_speed() const {
 		return position_smoothing_speed;
 	}
 
-	constexpr void set_rotation_smoothing_speed(const real_t rotation_smoothing_speed) {
+	constexpr void set_rotation_smoothing_speed(const real rotation_smoothing_speed) {
 		this->rotation_smoothing_speed = rotation_smoothing_speed;
 	}
 
-	constexpr real_t get_rotation_smoothing_speed() const {
+	constexpr real get_rotation_smoothing_speed() const {
 		return rotation_smoothing_speed;
 	}
 
-	constexpr void set_drag_bottom_margin(const real_t drag_bottom_margin) {
+	constexpr void set_drag_bottom_margin(const real drag_bottom_margin) {
 		this->drag_bottom_margin = drag_bottom_margin;
 	}
 
-	constexpr real_t get_drag_bottom_margin() const {
+	constexpr real get_drag_bottom_margin() const {
 		return drag_bottom_margin;
 	}
 
-	constexpr void set_drag_left_margin(const real_t drag_left_margin) {
+	constexpr void set_drag_left_margin(const real drag_left_margin) {
 		this->drag_left_margin = drag_left_margin;
 	}
 
-	constexpr real_t get_drag_left_margin() const {
+	constexpr real get_drag_left_margin() const {
 		return drag_left_margin;
 	}
 
-	constexpr void set_drag_right_margin(const real_t drag_right_margin) {
+	constexpr void set_drag_right_margin(const real drag_right_margin) {
 		this->drag_right_margin = drag_right_margin;
 	}
 
-	constexpr real_t get_drag_right_margin() const {
+	constexpr real get_drag_right_margin() const {
 		return drag_right_margin;
 	}
 
-	constexpr void set_drag_top_margin(const real_t drag_top_margin) {
+	constexpr void set_drag_top_margin(const real drag_top_margin) {
 		this->drag_top_margin = drag_top_margin;
 	}
 
-	constexpr real_t get_drag_top_margin() const {
+	constexpr real get_drag_top_margin() const {
 		return drag_top_margin;
 	}
 
-	constexpr void set_drag_vertical_offset(const real_t drag_vertical_offset) {
+	constexpr void set_drag_vertical_offset(const real drag_vertical_offset) {
 		this->drag_vertical_offset = drag_vertical_offset;
 	}
 
-	constexpr real_t get_drag_vertical_offset() const {
+	constexpr real get_drag_vertical_offset() const {
 		return drag_vertical_offset;
 	}
 
-	constexpr void set_drag_horizontal_offset(const real_t drag_horizontal_offset) {
+	constexpr void set_drag_horizontal_offset(const real drag_horizontal_offset) {
 		this->drag_horizontal_offset = drag_horizontal_offset;
 	}
 
-	constexpr real_t get_drag_horizontal_offset() const {
+	constexpr real get_drag_horizontal_offset() const {
 		return drag_horizontal_offset;
 	}
 
-	constexpr void set_limit_bottom(const real_t limit_bottom) {
+	constexpr void set_limit_bottom(const real limit_bottom) {
 		this->limit_bottom = limit_bottom;
 	}
 
-	constexpr real_t get_limit_bottom() const {
+	constexpr real get_limit_bottom() const {
 		return limit_bottom;
 	}
 
-	constexpr void set_limit_left(const real_t limit_left) {
+	constexpr void set_limit_left(const real limit_left) {
 		this->limit_left = limit_left;
 	}
 
-	constexpr real_t get_limit_left() const {
+	constexpr real get_limit_left() const {
 		return limit_left;
 	}
 
-	constexpr void set_limit_right(const real_t limit_right) {
+	constexpr void set_limit_right(const real limit_right) {
 		this->limit_right = limit_right;
 	}
 
-	constexpr real_t get_limit_right() const {
+	constexpr real get_limit_right() const {
 		return limit_right;
 	}
 
-	constexpr void set_limit_top(const real_t limit_top) {
+	constexpr void set_limit_top(const real limit_top) {
 		this->limit_top = limit_top;
 	}
 
-	constexpr real_t get_limit_top() const {
+	constexpr real get_limit_top() const {
 		return limit_top;
 	}
 

@@ -214,11 +214,11 @@ struct Vector2 {
 		return length <= delta ? to : vector + from_vector / length * delta;
 	}
 
-	[[nodiscard]] constexpr real_t distance_to_squared(const Vector2<T> &to) const {
+	[[nodiscard]] constexpr real distance_to_squared(const Vector2<T> &to) const {
 		return (x - to.x) * (x - to.x) + (y - to.y) * (y - to.y);
 	}
 
-	[[nodiscard]] constexpr real_t distance_to(const Vector2<T> &to) const {
+	[[nodiscard]] constexpr real distance_to(const Vector2<T> &to) const {
 		return std::sqrt((x - to.x) * (x - to.x) + (y - to.y) * (y - to.y));
 	}
 
@@ -254,8 +254,8 @@ struct Vector2 {
 	#endif
 };
 
-typedef Vector2<real_t> Vector2f;
-typedef Vector2<int_t> Vector2i;
+typedef Vector2<real> Vector2f;
+typedef Vector2<integer> Vector2i;
 
 
 }
