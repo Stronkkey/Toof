@@ -1,265 +1,180 @@
 #include <core/string_name.hpp>
 
-#include <stdexcept>
-
 using String = sdl::String;
 using StringName = sdl::StringName;
 
 std::unordered_set<StringName::__String_Storer__> StringName::stored_strings = {};
-std::unordered_set<StringName::__String_Saver__> StringName::strings = {};
 
-StringName::StringName(): saved_string(allocate_string("")) {
+StringName::StringName(): saved_string(_allocate_string("")) {
+	saved_string.increment();
 }
 
-StringName::StringName(const_reference string): saved_string(allocate_string(string)) {
+StringName::StringName(const CharT *string): saved_string(_allocate_string(string)) {
+	saved_string.increment();
+}
+
+StringName::StringName(const_reference string): saved_string(_allocate_string(string)) {
+	saved_string.increment();
 }
 
 StringName::~StringName() {
+	_reset();
 }
 
-const StringName::CharT &StringName::operator[](const size_type index) const {
-	return (*saved_string)[index];
-}
-
-const StringName::CharT &StringName::at(const size_type index) const {
-	return saved_string->at(index);
-}
-
-void StringName::set_string(const_reference new_string) {
-	if (saved_string == new_string)
+void StringName::_set_string(const_reference string, const bool copy) {
+	if (saved_string == string)
 		return;
 
-	saved_string = allocate_string(new_string);
+	_reset();
+	saved_string = _allocate_string(string, copy);
+	saved_string.increment();
 }
 
-StringName::__String_Saver__ StringName::allocate_string(const_reference string) const {
-	auto iterator = stored_strings.find(string);
+void StringName::_set_string(const CharT *string, const bool copy) {
+	if ((get_string()) == string)
+		return;
+
+	_reset();
+	saved_string = _allocate_string(string, copy);
+	saved_string.increment();
+}
+
+void StringName::_reset() {
+	if (!saved_string.stored_string)
+		return;
+
+	if (saved_string.is_used())
+		saved_string.decrement();
+
+	if (!saved_string.is_used()) {
+		if (saved_string.stored_string->string)
+			delete saved_string.stored_string->string;
+		stored_strings.erase(*saved_string.stored_string);
+	}
+}
+
+const StringName::__String_Storer__ *StringName::_allocate_str(const CharT *string, const bool copy) const {
+	__String_Storer__ storer = string;
+
+	auto iterator = stored_strings.find(storer);
 	if (iterator != stored_strings.end())
-		return iterator._M_cur->_M_v();
+		return &*iterator;
 
-	return stored_strings.insert(string).first._M_cur->_M_v();
+	if (copy) {
+		const StringView::size_type str_size = storer.view.size();
+		char *str_copy = new char[str_size];
+
+		storer.view.copy(str_copy, str_size);
+		str_copy[str_size] = '\0';
+		storer = str_copy;
+	}
+
+	return &*stored_strings.insert(storer).first;
 }
 
-StringName::const_reference StringName::get_string() const {
-	return *saved_string;
+const StringName::__String_Storer__ *StringName::_allocate_str(const_reference string, const bool copy) const {
+	__String_Storer__ storer;
+	storer.string = string.data();
+	storer.uses = 0;
+	storer.view = string;
+
+	auto iterator = stored_strings.find(storer);
+	if (iterator != stored_strings.end())
+		return &*iterator;
+
+	if (copy) {
+		const StringView::size_type str_size = storer.view.size();
+		char *str_copy = new char[str_size];
+
+		storer.view.copy(str_copy, str_size);
+		str_copy[str_size] = '\0';
+		storer = str_copy;
+	}
+
+	return &*stored_strings.insert(storer).first;
 }
 
-const String *StringName::get_string_ptr() const {
-	return saved_string.stored_string.string.get();
+const StringName::__String_Storer__ *StringName::_allocate_string(const_reference string, const bool copy) const {
+	return _allocate_str(string, copy);
+}
+
+const StringName::__String_Storer__ *StringName::_allocate_string(const CharT *string, const bool copy) const {
+	return _allocate_str(string, copy);
+}
+
+std::pair<const char*, size_t> _concat_string(StringName::const_reference view1, StringName::const_reference view2) {
+	const size_t str_size = view1.size() + view2.size() + 1;
+	char *string = new char[str_size];
+	
+	size_t i = 0;
+
+	for (const StringName::CharT &character: view1) {
+		string[i] = character;
+		i++;
+	}
+
+	for (const StringName::CharT &character: view2) {
+		string[i] = character;
+		i++;
+	}
+
+	string[str_size - 1] = '\0';
+
+	return {string, str_size};
 }
 
 StringName::operator String() const {
-	return *saved_string;
-}
-
-const StringName::CharT &StringName::front() const {
-	return saved_string->front();
-}
-
-const StringName::CharT &StringName::back() const {
-	return saved_string->back();
-}
-
-const StringName::CharT *StringName::data() const {
-	return saved_string->data();
-}
-
-StringName::size_type StringName::size() const {
-	return saved_string->size();
-}
-
-StringName::size_type StringName::length() const {
-	return saved_string->length();
-}
-
-StringName::size_type StringName::max_size() const {
-	return saved_string->max_size();
-}
-
-bool StringName::empty() const {
-	return saved_string->empty();
+	return String(get_string());
 }
 
 void StringName::remove_prefix(const size_type n) {
-	value_type str = *saved_string;
-	if (n <= str.size())
-		str.resize(str.size() - n);
-	saved_string = allocate_string(std::move(str));
+	value_type str = get_string();
+	str.remove_prefix(n);
+	_set_string(std::move(str));
 }
 
 void StringName::remove_suffix(const size_type n) {
-	value_type str = *saved_string;
-	if (n <= str.size())
-		str.erase(0, n);
-	saved_string = allocate_string(std::move(str));
+	value_type str = get_string();
+	str.remove_suffix(n);
+	_set_string(std::move(str));
 }
 
-void StringName::swap(StringName &string_name) {
-	__String_Saver__ temp = std::move(saved_string);
-	saved_string = std::move(string_name.saved_string);
-	string_name.saved_string = std::move(temp);
-}
-
-StringName::size_type StringName::copy(CharT *dest, const size_type count, const size_type pos) const {
-	const size_type final_size = std::min(count, saved_string->size() - pos);
-	if (pos > saved_string->size())
-		throw std::out_of_range("terminate called after throwing an instance of 'std::out_of_range'");
-	
-	traits_type::copy(dest, saved_string->data() + pos, final_size);
-	return final_size;
+StringName::size_type StringName::copy(CharT *dest, const size_type pos, const size_type count) const {
+	return saved_string->copy(dest, count, pos);
 }
 
 StringName StringName::substr(const size_type pos, const size_type count) const {
 	return saved_string->substr(pos, count);
 }
 
-int StringName::compare(const StringName &string_name) const {
-	return saved_string->compare(*string_name.saved_string);
-}
-
-StringName::size_type StringName::find(const StringName &string_name, const size_type pos) const {
-	return saved_string->find(*string_name.saved_string, pos);
-}
-
-StringName::size_type StringName::find(const CharT character, const size_type pos) const {
-	return saved_string->find(character, pos);
-}
-
-StringName::size_type StringName::find(const CharT *string, const size_type pos, const size_type count) const {
-	return saved_string->find(string, pos, count);
-}
-
-StringName::size_type StringName::find(const CharT *string, const size_type pos) const {
-	return saved_string->find(string, pos);
-}
-
-StringName::size_type StringName::rfind(const StringName &string_name, const size_type pos) const {
-	return saved_string->rfind(*string_name.saved_string, pos);
-}
-
-StringName::size_type StringName::rfind(const CharT character, const size_type pos) const {
-	return saved_string->rfind(character, pos);
-}
-
-StringName::size_type StringName::rfind(const CharT *string, const size_type pos, const size_type count) const {
-	return saved_string->rfind(string, pos, count);
-}
-
-StringName::size_type StringName::rfind(const CharT *string, const size_type pos) const {
-	return saved_string->rfind(string, pos);
-}
-
-StringName::size_type StringName::find_first_of(const StringName &string_name, const size_type pos) const {
-	return saved_string->find_first_of(*string_name.saved_string, pos);
-}
-
-StringName::size_type StringName::find_first_of(const CharT character, const size_type pos) const {
-	return saved_string->find_first_of(character, pos);
-}
-
-StringName::size_type StringName::find_first_of(const CharT *string, const size_type pos, const size_type count) const {
-	return saved_string->find_first_of(string, pos, count);
-}
-
-StringName::size_type StringName::find_first_of(const CharT *string, const size_type pos) const {
-	return saved_string->find_first_of(string, pos);
-}
-
-StringName::size_type StringName::find_last_of(const StringName &string_name, const size_type pos) const {
-	return saved_string->find_last_of(*string_name.saved_string, pos);
-}
-
-StringName::size_type StringName::find_last_of(const CharT character, const size_type pos) const {
-	return saved_string->find_last_of(character, pos);
-}
-
-StringName::size_type StringName::find_last_of(const CharT *string, const size_type pos, const size_type count) const {
-	return saved_string->find_last_of(string, pos, count);
-}
-
-StringName::size_type StringName::find_last_of(const CharT *string, const size_type pos) const {
-	return saved_string->find_last_of(string, pos);
-}
-
-StringName::size_type StringName::find_first_not_of(const StringName &string_name, const size_type pos) const {
-	return saved_string->find_first_not_of(*string_name.saved_string, pos);
-}
-
-StringName::size_type StringName::find_first_not_of(const CharT character, const size_type pos) const {
-	return saved_string->find_first_not_of(character, pos);
-}
-
-StringName::size_type StringName::find_first_not_of(const CharT *string, const size_type pos, const size_type count) const {
-	return saved_string->find_first_not_of(string, pos, count);
-}
-
-StringName::size_type StringName::find_first_not_of(const CharT *string, const size_type pos) const {
-	return saved_string->find_first_not_of(string, pos);
-}
-
-StringName::size_type StringName::find_last_not_of(const StringName &string_name, const size_type pos) const {
-	return saved_string->find_last_not_of(*string_name.saved_string, pos);
-}
-
-StringName::size_type StringName::find_last_not_of(const CharT character, const size_type pos) const {
-	return saved_string->find_last_not_of(character, pos);
-}
-
-StringName::size_type StringName::find_last_not_of(const CharT *string, const size_type pos, const size_type count) const {
-	return saved_string->find_last_not_of(string, pos, count);
-}
-
-StringName::size_type StringName::find_last_not_of(const CharT *string, const size_type pos) const {
-	return saved_string->find_last_not_of(string, pos);
-}
-
-void StringName::operator=(const StringName &string_name) {
-	saved_string = string_name.saved_string;
-}
-
 void StringName::operator=(const_reference string) {
-	saved_string = allocate_string(string);
+	_set_string(string);
 }
 
 void StringName::operator+=(const_reference string) {
-	saved_string = allocate_string(*saved_string + string);
+	const auto &pair = _concat_string(get_string(), string);
+	_set_string(pair.first, false);
 }
 
 void StringName::operator+=(const StringName &string_name) {
-	saved_string = allocate_string(*saved_string + *string_name.saved_string);
+	const auto &pair = _concat_string(get_string(), string_name.get_string());
+	_set_string(pair.first, false);
 }
 
 StringName StringName::operator+(const_reference string) const {
-	return StringName(*saved_string + string);
+	StringName string_name;
+	const auto &pair = _concat_string(get_string(), string);
+	string_name._set_string(pair.first, false);
+	return string_name;
 }
 
 StringName StringName::operator+(const StringName &string_name) const {
-	return StringName(*saved_string.stored_string.string + *string_name.saved_string.stored_string.string);
+	StringName string_name_v;
+	const auto &pair = _concat_string(get_string(), *string_name.saved_string);
+	string_name_v._set_string(pair.first, false);
+	return string_name_v;
 }
 
-bool StringName::operator==(const StringName &right) const {
-	return (*saved_string == *right.saved_string);
-}
-
-bool StringName::operator!=(const StringName &right) const {
-	return (*saved_string != *right.saved_string);
-}
-
-bool StringName::operator<(const StringName &right) const {
-	return (*saved_string < *right.saved_string);
-}
-
-bool StringName::operator>(const StringName &right) const {
-	return (*saved_string > *right.saved_string);
-}
-
-bool StringName::operator<=(const StringName &right) const {
-	return (*saved_string <= *right.saved_string);
-}
-bool StringName::operator>=(const StringName &right) const {
-	return (*saved_string >= *right.saved_string);
-}
-	
 StringName::__os_type__ &operator<<(StringName::__os_type__ &left, const StringName &right) {
 	return (left << right.get_string());
 }

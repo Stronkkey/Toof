@@ -9,59 +9,74 @@ namespace sdl {
 
 class StringName {
 public:
-	using traits_type = String::traits_type;
-	using value_type = String;
+	using value_type = StringView;
+	using traits_type = value_type::traits_type;
 	using pointer = value_type*;
 	using const_pointer = const value_type*;
 	using reference = value_type&;
 	using const_reference = const value_type&;
-	using CharT = String::value_type;
+	using CharT = value_type::value_type;
 	using size_type = std::size_t;
 	using difference_type = std::ptrdiff_t;
 
 public:
 	struct __String_Storer__ {
-		std::shared_ptr<String> string;
+		const CharT *string;
+		StringView view;
+		mutable size_type uses;
 
-		__String_Storer__() = default;
-		__String_Storer__(const_reference string) {
-			this->string = std::make_shared<String>(string);
+		constexpr __String_Storer__(): string(), view(), uses(0) {
 		}
 
-		bool operator==(const __String_Storer__ &string_storer) const {
-			return *string == *string_storer.string;
+		constexpr __String_Storer__(const CharT *string): string(string), view(this->string), uses(0) {
+		}
+
+		constexpr bool operator==(const __String_Storer__ &string_storer) const {
+			return view == string_storer.view;
 		}
 	};
 
 	struct __String_Saver__ {
-		__String_Storer__ stored_string;
+		const __String_Storer__ *stored_string;
 
-		__String_Saver__() = default;
-		__String_Saver__(const __String_Storer__ &string_storer): stored_string(string_storer) {
+		constexpr __String_Saver__(): stored_string(nullptr) {
 		}
 
-		bool operator==(const __String_Storer__ &string_saver) const {
-			return stored_string.string.get() == string_saver.string.get();
+		constexpr __String_Saver__(const __String_Storer__ *string_storer): stored_string(string_storer) {
 		}
 
-		const_pointer operator->() const {
-			return stored_string.string.get();
+		constexpr size_type get_use_count() const {
+			return stored_string->uses;
 		}
 
-		pointer operator->() {
-			return stored_string.string.get();
+		constexpr bool is_used() const {
+			return stored_string->uses > 0;
 		}
 
-		const_reference operator*() const {
-			return *stored_string.string;
+		constexpr void decrement() {
+			if (stored_string)
+				--stored_string->uses;
 		}
 
-		reference operator*() {
-			return *stored_string.string;
+		constexpr void increment() {
+			if (stored_string)
+				++stored_string->uses;
 		}
 
-		bool operator==(const_reference string) const {
-			return *this->stored_string.string == string;
+		constexpr bool operator==(const __String_Storer__ &string_saver) const {
+			return stored_string->string == string_saver.string;
+		}
+
+		constexpr const_reference operator*() const {
+			return stored_string->view;
+		}
+
+		constexpr const_pointer operator->() const {
+			return &stored_string->view;
+		}
+
+		constexpr bool operator==(const_reference string) const {
+			return StringView(stored_string->string) == string;
 		}
 	};
 
@@ -125,121 +140,264 @@ public:
 
 private:
 	static std::unordered_set<__String_Storer__> stored_strings;
-	static std::unordered_set<__String_Saver__> strings;
 	__String_Saver__ saved_string;
 
-	void set_string(const_reference new_string);
-	__String_Saver__ allocate_string(const_reference string) const;
-	
+	void _set_string(const_reference string, const bool copy = true);
+	void _set_string(const CharT *string, const bool copy = true);
+	void _reset();
+	const __String_Storer__ *_allocate_str(const CharT *string, const bool copy = true) const;
+	const __String_Storer__ *_allocate_str(const_reference string, const bool copy = true) const;
+	const __String_Storer__ *_allocate_string(const CharT *string, const bool copy = true) const;
+	const __String_Storer__ *_allocate_string(const_reference string, const bool copy = true) const;
 public:
 	StringName();
+	StringName(const CharT *string);
 	StringName(const_reference string);
+
+	constexpr StringName(const StringName &string_name) {
+		saved_string = string_name.saved_string;
+		saved_string.increment();
+	}
+
+	constexpr StringName(StringName &&string_name) {
+		saved_string = string_name.saved_string;
+	}
 
 	~StringName();
 
-		inline iterator begin() const noexcept {
-		return saved_string.stored_string.string->data();
+	inline iterator begin() const noexcept {
+		return saved_string->begin();
 	}
 
 	inline const_iterator cbegin() const noexcept {
-		return saved_string->data();
+		return saved_string->cbegin();
 	}
 
 	inline iterator end() const noexcept {
-		return (saved_string->data() + saved_string->size());
+		return saved_string->end();
 	}
 
 	inline const_iterator cend() const noexcept {
-		return (saved_string->data() + saved_string->size());
+		return saved_string->cend();
 	}
 
 	inline reverse_iterator rbegin() const noexcept {
-		return reverse_iterator(iterator(&saved_string->back() + 1));
+		return saved_string->rbegin();
 	}
 
 	inline const_reverse_iterator crbegin() const noexcept {
-		return const_reverse_iterator(iterator(&saved_string->back() + 1));
+		return saved_string->crbegin();
 	}
 
 	inline reverse_iterator rend() const noexcept {
-		return reverse_iterator(iterator(saved_string->data()));
+		return saved_string->rend();
 	}
 
 	inline const_reverse_iterator crend() const noexcept {
-		return const_reverse_iterator(iterator(saved_string->data()));
+		return saved_string->crend();
 	}
 
-	const CharT &operator[](const size_type index) const;
-	const CharT &at(const size_type index) const;
+	constexpr const CharT &operator[](const size_type index) const {
+		return (*saved_string)[index];
+	}
+
+	constexpr const CharT &at(const size_type index) const {
+		return saved_string->at(index);
+	}
 
 	operator String() const;
 
-	[[nodiscard]] const_reference get_string() const;
-	[[nodiscard]] const_pointer get_string_ptr() const;
+	[[nodiscard]] constexpr const_reference get_string() const {
+		return saved_string.stored_string->view;
+	}
 
-	[[nodiscard]] const CharT &front() const;
-	[[nodiscard]] const CharT &back() const;
-	[[nodiscard]] const CharT *data() const;
+	[[nodiscard]] constexpr const CharT *get_string_ptr() const {
+		return saved_string.stored_string ? saved_string.stored_string->string : nullptr;
+	}
 
-	[[nodiscard]] size_type size() const;
-	[[nodiscard]] size_type length() const;
-	[[nodiscard]] size_type max_size() const;
-	[[nodiscard]] bool empty() const;
+	[[nodiscard]] constexpr const CharT &front() const {
+		return saved_string->front();
+	}
+
+	[[nodiscard]] constexpr const CharT &back() const {
+		return saved_string->back();
+	}
+
+	[[nodiscard]] constexpr const CharT *data() const {
+		return saved_string->data();
+	}
+
+	[[nodiscard]] constexpr size_type size() const {
+		return saved_string->size();
+	}
+
+	[[nodiscard]] constexpr size_type length() const {
+		return saved_string->length();
+	}
+
+	[[nodiscard]] constexpr size_type max_size() const {
+		return saved_string->max_size();
+	}
+
+	[[nodiscard]] constexpr bool empty() const {
+		return saved_string->empty();
+	}
 
 	void remove_prefix(const size_type n);
 	void remove_suffix(const size_type n);
-	void swap(StringName &string_name);
+
+	constexpr void swap(StringName &string_name) {
+		__String_Saver__ temp = std::move(saved_string);
+		saved_string = std::move(string_name.saved_string);
+		string_name.saved_string = std::move(temp);
+	}
 
 	size_type copy(CharT *dest, const size_type count, const size_type pos = 0) const;
-	StringName substr(const size_type pos = 0, const size_type count = npos) const;
-	int compare(const StringName &string_name) const;
 
-	size_type find(const StringName &string_name, const size_type pos = 0) const;
-	size_type find(const CharT character, const size_type pos = 0) const;
-	size_type find(const CharT *string, const size_type pos, const size_type count) const;
-	size_type find(const CharT *string, const size_type pos = 0) const;
+	[[nodiscard]] StringName substr(const size_type pos = 0, const size_type count = npos) const;
 
-	size_type rfind(const StringName &string_name, const size_type pos = npos) const;
-	size_type rfind(const CharT character, const size_type pos = npos) const;
-	size_type rfind(const CharT *string, const size_type pos, const size_type count) const;
-	size_type rfind(const CharT *string, const size_type pos = npos) const;
+	[[nodiscard]] constexpr int compare(const StringName &string_name) const {
+		return saved_string->compare(*string_name.saved_string);
+	}
 
-	size_type find_first_of(const StringName &string_name, const size_type pos = 0) const;
-	size_type find_first_of(const CharT character, const size_type pos = 0) const;
-	size_type find_first_of(const CharT *string, const size_type pos, const size_type count) const;
-	size_type find_first_of(const CharT *string, const size_type pos = 0) const;
+	[[nodiscard]] constexpr size_type find(const StringName &string_name, const size_type pos = 0) const {
+		return saved_string->find(*string_name.saved_string, pos);
+	}
 
-	size_type find_last_of(const StringName &string_name, const size_type pos = npos) const;
-	size_type find_last_of(const CharT character, const size_type pos = npos) const;
-	size_type find_last_of(const CharT *string, const size_type pos, const size_type count) const;
-	size_type find_last_of(const CharT *string, const size_type pos = npos) const;
+	[[nodiscard]] constexpr size_type find(const CharT character, const size_type pos = 0) const {
+		return saved_string->find(character, pos);
+	}
 
-	size_type find_first_not_of(const StringName &string_name, const size_type pos = 0) const;
-	size_type find_first_not_of(const CharT character, const size_type pos = 0) const;
-	size_type find_first_not_of(const CharT *string, const size_type pos, const size_type count) const;
-	size_type find_first_not_of(const CharT *string, const size_type pos = 0) const;
+	[[nodiscard]] constexpr size_type find(const CharT *string, const size_type pos, const size_type count) const {
+		return saved_string->find(string, pos, count);
+	}
 
-	size_type find_last_not_of(const StringName &string_name, const size_type pos = npos) const;
-	size_type find_last_not_of(const CharT character, const size_type pos = npos) const;
-	size_type find_last_not_of(const CharT *string, const size_type pos, const size_type count) const;
-	size_type find_last_not_of(const CharT *string, const size_type pos = npos) const;
+	[[nodiscard]] constexpr size_type find(const CharT *string, const size_type pos = 0) const {
+		return saved_string->find(string, pos);
+	}
 
-	void operator=(const StringName &string_name);
+	[[nodiscard]] constexpr size_type rfind(const StringName &string_name, const size_type pos = npos) const {
+		return saved_string->rfind(*string_name.saved_string, pos);
+	}
+
+	[[nodiscard]] constexpr size_type rfind(const CharT character, const size_type pos = npos) const {
+		return saved_string->rfind(character, pos);
+	}
+
+	[[nodiscard]] constexpr size_type rfind(const CharT *string, const size_type pos, const size_type count) const {
+		return saved_string->rfind(string, pos, count);
+	}
+
+	[[nodiscard]] constexpr size_type rfind(const CharT *string, const size_type pos = npos) const {
+		return saved_string->rfind(string, pos);
+	}
+
+	[[nodiscard]] constexpr size_type find_first_of(const StringName &string_name, const size_type pos = 0) const {
+		return saved_string->find_first_of(*string_name.saved_string, pos);
+	}
+
+	[[nodiscard]] constexpr size_type find_first_of(const CharT character, const size_type pos = 0) const {
+		return saved_string->find_first_of(character, pos);
+	}
+
+	[[nodiscard]] constexpr size_type find_first_of(const CharT *string, const size_type pos, const size_type count) const {
+		return saved_string->find_first_of(string, pos, count);
+	}
+
+	[[nodiscard]] constexpr size_type find_first_of(const CharT *string, const size_type pos = 0) const {
+		return saved_string->find_first_of(string, pos);
+	}
+
+	[[nodiscard]] constexpr size_type find_last_of(const StringName &string_name, const size_type pos = npos) const {
+		return saved_string->find_last_of(*string_name.saved_string, pos);
+	}
+
+	[[nodiscard]] constexpr size_type find_last_of(const CharT character, const size_type pos = npos) const {
+		return saved_string->find_last_of(character, pos);
+	}
+
+	[[nodiscard]] constexpr size_type find_last_of(const CharT *string, const size_type pos, const size_type count) const {
+		return saved_string->find_last_of(string, pos, count);
+	}
+
+	[[nodiscard]] constexpr size_type find_last_of(const CharT *string, const size_type pos = npos) const {
+		return saved_string->find_last_of(string, pos);
+	}
+
+	[[nodiscard]] constexpr size_type find_first_not_of(const StringName &string_name, const size_type pos = 0) const {
+		return saved_string->find_first_not_of(*string_name.saved_string, pos);
+	}
+
+	[[nodiscard]] constexpr size_type find_first_not_of(const CharT character, const size_type pos = 0) const {
+		return saved_string->find_first_not_of(character, pos);
+	}
+
+	[[nodiscard]] constexpr size_type find_first_not_of(const CharT *string, const size_type pos, const size_type count) const {
+		return saved_string->find_first_not_of(string, pos, count);
+	}
+
+	[[nodiscard]] constexpr size_type find_first_not_of(const CharT *string, const size_type pos = 0) const {
+		return saved_string->find_first_not_of(string, pos);
+	}
+
+	[[nodiscard]] constexpr size_type find_last_not_of(const StringName &string_name, const size_type pos = npos) const {
+		return saved_string->find_last_not_of(*string_name.saved_string, pos);
+	}
+
+	[[nodiscard]] constexpr size_type find_last_not_of(const CharT character, const size_type pos = npos) const {
+		return saved_string->find_last_not_of(character, pos);
+	}
+
+	[[nodiscard]] constexpr size_type find_last_not_of(const CharT *string, const size_type pos, const size_type count) const {
+		return saved_string->find_last_not_of(string, pos, count);
+	}
+
+	[[nodiscard]] constexpr size_type find_last_not_of(const CharT *string, const size_type pos = npos) const {
+		return saved_string->find_last_not_of(string, pos);
+	}
+
+	constexpr void operator=(const StringName &string_name) {
+		saved_string = string_name.saved_string;
+		saved_string.increment();
+	}
+
+	constexpr void operator=(StringName &&string_name) {
+		saved_string = string_name.saved_string;
+		saved_string.increment();
+	}
+
 	void operator=(const_reference string);
 
 	void operator+=(const_reference string);
 	void operator+=(const StringName &string_name);
 
-	StringName operator+(const_reference string) const;
-	StringName operator+(const StringName &string_name) const;
+	[[nodiscard]] StringName operator+(const_reference string) const;
+	[[nodiscard]] StringName operator+(const StringName &string_name) const;
 
-	bool operator==(const StringName &right) const;
-	bool operator!=(const StringName &right) const;
-	bool operator<(const StringName &right) const;
-	bool operator>(const StringName &right) const;
-	bool operator<=(const StringName &right) const;
-	bool operator>=(const StringName &right) const;
-	
+	[[nodiscard]] constexpr bool operator==(const StringName &right) const {
+		return (*saved_string) == (*right.saved_string);
+	}
+
+	[[nodiscard]] constexpr bool operator!=(const StringName &right) const {
+		return (*saved_string) != (*right.saved_string);
+	}
+
+	[[nodiscard]] constexpr bool operator<(const StringName &right) const {
+		return (*saved_string) < (*right.saved_string);
+	}
+
+	[[nodiscard]] constexpr bool operator>(const StringName &right) const {
+		return (*saved_string) > (*right.saved_string);
+	}
+
+	[[nodiscard]] constexpr bool operator<=(const StringName &right) const {
+		return (*saved_string) <= (*right.saved_string);
+	}
+
+	[[nodiscard]] constexpr bool operator>=(const StringName &right) const {
+		return (*saved_string) >= (*right.saved_string);
+	}
+
 	typedef std::basic_ostream<String::value_type, String::traits_type> __os_type__;
 	friend __os_type__ &operator<<(__os_type__ &left, const StringName &right);
 };
@@ -251,26 +409,25 @@ inline StringName operator""_sn(const char *string, const size_t length) {
 }
 
 }
-
 }
 
 template<>
 struct std::hash<sdl::StringName::__String_Storer__> {
 	size_t operator()(const sdl::StringName::__String_Storer__ &string_storer) const noexcept {
-		return hash<sdl::String>()(*string_storer.string);
+		return hash<sdl::StringView>()(string_storer.view);
 	}
 };
 
 template<>
 struct std::hash<sdl::StringName::__String_Saver__> {
 	size_t operator()(const sdl::StringName::__String_Saver__ &string_saver) const noexcept {
-		return hash<sdl::String>()(*string_saver.stored_string.string);
+		return hash<sdl::StringView>()(*string_saver);
 	}
 };
 
 template<>
 struct std::hash<sdl::StringName> {
 	size_t operator()(const sdl::StringName &string_name) const noexcept {
-		return hash<sdl::String>()(string_name.get_string());
+		return hash<sdl::StringView>()(string_name.get_string());
 	}
 };
