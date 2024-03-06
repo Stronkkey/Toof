@@ -139,8 +139,8 @@ template<class T>
 */
 template<class T1, class T2>
 [[nodiscard]] inline String to_string(const std::pair<T1, T2> &pair) {
-	const std::string &p1_str = is_string_type<T1>() ? __quoted_str(to_string(pair.first)) : to_string(pair.first);
-	const std::string &p2_str =	is_string_type<T2>() ? __quoted_str(to_string(pair.second)) : to_string(pair.second);
+	const String &p1_str = is_string_type<T1>() ? __quoted_str(to_string(pair.first)) : to_string(pair.first);
+	const String &p2_str =	is_string_type<T2>() ? __quoted_str(to_string(pair.second)) : to_string(pair.second);
 	return "{" + p1_str + ", " + p2_str + "}";
 }
 
