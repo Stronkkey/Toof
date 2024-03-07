@@ -82,7 +82,7 @@ public:
 
 	struct ConstIterator {
     	using iterator_category = std::bidirectional_iterator_tag;
-		using value_type = char;
+		using value_type = StringName::CharT;
 		using difference_type = std::ptrdiff_t;
 		using reference = const value_type&;
 		using pointer = const value_type*;
@@ -103,9 +103,7 @@ public:
 		}
 
 		constexpr ConstIterator operator++(int) {
-			ConstIterator tmp = *this;
-			++(*this);
-			return tmp;
+			return ptr++;
 		}
 
 		constexpr ConstIterator &operator--() {
@@ -114,16 +112,14 @@ public:
 		}
 
 		constexpr ConstIterator operator--(int) {
-			ConstIterator tmp = *this;
-			--(*this);
-			return tmp;
+			return --ptr;
 		}
 
-		friend bool operator==(const ConstIterator &left, const ConstIterator &right) {
+		constexpr friend bool operator==(const ConstIterator &left, const ConstIterator &right) {
 			return left.ptr == right.ptr;
 		}
 
-		friend bool operator!=(const ConstIterator &left, const ConstIterator &right) {
+		constexpr friend bool operator!=(const ConstIterator &left, const ConstIterator &right) {
 			return left.ptr != right.ptr;
 		}
 
@@ -165,35 +161,35 @@ public:
 
 	~StringName();
 
-	inline iterator begin() const noexcept {
+	constexpr iterator begin() const noexcept {
 		return saved_string->begin();
 	}
 
-	inline const_iterator cbegin() const noexcept {
+	constexpr const_iterator cbegin() const noexcept {
 		return saved_string->cbegin();
 	}
 
-	inline iterator end() const noexcept {
+	constexpr iterator end() const noexcept {
 		return saved_string->end();
 	}
 
-	inline const_iterator cend() const noexcept {
+	constexpr const_iterator cend() const noexcept {
 		return saved_string->cend();
 	}
 
-	inline reverse_iterator rbegin() const noexcept {
+	constexpr reverse_iterator rbegin() const noexcept {
 		return saved_string->rbegin();
 	}
 
-	inline const_reverse_iterator crbegin() const noexcept {
+	constexpr const_reverse_iterator crbegin() const noexcept {
 		return saved_string->crbegin();
 	}
 
-	inline reverse_iterator rend() const noexcept {
+	constexpr reverse_iterator rend() const noexcept {
 		return saved_string->rend();
 	}
 
-	inline const_reverse_iterator crend() const noexcept {
+	constexpr const_reverse_iterator crend() const noexcept {
 		return saved_string->crend();
 	}
 
