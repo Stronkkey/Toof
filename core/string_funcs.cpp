@@ -54,19 +54,45 @@ using namespace sdl;
 	return String(&character, 1);
 }
 
-std::vector<String> sdl::split_string(const StringView &string_view, const String &delimiter) {
-	uint64_t pos = 0;
+std::vector<String> sdl::split_string(const StringView &string_view, const StringView &delimiter) {
+	const size_t string_length = string_view.length();
+	const size_t characters_length = delimiter.length();
 	std::vector<String> strings;
-	(void)pos;
-	(void)string_view;
-	(void)delimiter;
-/**
-	while (pos != String::npos) {
-		strings.push_back(str_copy.substr(0, pos));
-		str_copy.erase(0, pos + delimiter.length());
-		pos = str_copy.find(delimiter);
+	size_t last_occurence = 0;
+	size_t found_characters = StringView::npos;
+
+	if (delimiter.empty()) {
+		for (const auto &iterator: string_view)
+			strings.push_back(String(&iterator, 1));
+		return strings;
 	}
-**/
+
+	for (size_t pos = 0; pos < string_length; pos++) {
+		char character = string_view[pos];
+
+		if (found_characters == StringView::npos && character == delimiter.front()) {
+			found_characters = 1;
+			continue;
+		}
+
+		if (found_characters == StringView::npos)
+			continue;
+
+		if (characters_length < found_characters && character == delimiter.at(found_characters))
+			found_characters++;
+		else if (characters_length > 1) {
+		 	found_characters = StringView::npos;
+			continue;
+		}
+
+		if (found_characters >= characters_length) {
+			strings.push_back(String(string_view.substr(last_occurence, pos)));
+			found_characters = String::npos;
+			last_occurence = pos;
+		}
+	}
+	strings.push_back(String(string_view.substr(last_occurence, string_length - last_occurence)));
+
 	return strings;
 }
 
