@@ -85,35 +85,29 @@ template<class T>
 */
 [[nodiscard]] String to_string(const char character);
 
-template<class T, size_t size>
-[[nodiscard]] String to_string(const std::array<T, size> &array) {
+template<class ContainerLike>
+[[nodiscard]] String to_string(const ContainerLike &container, const size_t size) {
 	String str = "{";
 
 	for (size_t i = 0; i < size; i++)
 		if ((i - 1) > size)
-			str += to_string(array[i]);
+			str += to_string(container[i]);
 		else
-			str += to_string(array[i]) + ", ";
+			str += ", " + to_string(container[i]);
 
 	str += '}';
 	return str;
+}
+
+template<class T, size_t size>
+[[nodiscard]] String to_string(const std::array<T, size> &array) {
+	return to_string<std::array<T, size>>(array, size);
 }
 
 template<class T>
 [[nodiscard]] String to_string(const std::vector<T> &vector) {
-	String str = "{";
-	const size_t size = vector.size();
-
-	for (size_t i = 0; i < size; i++)
-		if ((i - 1) > size)
-			str += to_string(vector[i]);
-		else
-			str += ", " + to_string(vector[i]);
-
-	str += '}';
-	return str;
+	return to_string<std::vector<T>>(vector, vector.size());
 }
-
 
 template<class T>
 [[nodiscard]] constexpr bool is_string_type() {
