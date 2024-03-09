@@ -3,8 +3,6 @@
 
 #include <algorithm>
 
-#include <core/utility_functions.hpp>
-
 using Input = sdl::Input;
 using InputEvent = sdl::InputEvent;
 

@@ -1,8 +1,6 @@
 #include <scene/2d/camera2d.hpp>
 #include <servers/rendering/viewport.hpp>
 
-#include <core/utility_functions.hpp>
-
 using namespace sdl;
 
 Camera2D::Camera2D(): offset(),
