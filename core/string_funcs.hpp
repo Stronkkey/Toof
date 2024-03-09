@@ -108,7 +108,7 @@ template<class T>
 		if ((i - 1) > size)
 			str += to_string(vector[i]);
 		else
-			str += to_string(vector[i]) + ", ";
+			str += ", " + to_string(vector[i]);
 
 	str += '}';
 	return str;
@@ -123,7 +123,7 @@ template<class T>
 /**
 * Splits the @param string using a @param delimiter and returns an array of the substrings.
 */
-[[nodiscard]] std::vector<String> split_string(const StringView &string_view, const String &delimiter);
+[[nodiscard]] std::vector<String> split_string(const StringView &string_view, const StringView &delimiter);
 
 /**
 * @returns the amount of occurences of @param characters in the @param string_view.
