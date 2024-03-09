@@ -8,11 +8,11 @@ namespace sdl {
 class Angle {
 private:
 	real angle_degrees;
+
+	explicit constexpr Angle(const real angle_degrees): angle_degrees(angle_degrees) {
+	}
 public:
 	constexpr Angle(): angle_degrees(0.0) {
-	}
-
-	constexpr Angle(const real angle_degrees): angle_degrees(angle_degrees) {
 	}
 
 	constexpr Angle(const Angle &angle): angle_degrees(angle.angle_degrees) {
@@ -32,6 +32,10 @@ public:
 
 	constexpr real get_angle_radians() const {
 		return Math::degrees_to_radians(angle_degrees);
+	}
+
+	constexpr bool is_zero_angle() const {
+		return angle_degrees == 0.0;
 	}
 
 	constexpr void operator=(const Angle &right) {
@@ -86,8 +90,14 @@ public:
 		angle_degrees /= right.angle_degrees;
 	}
 	
-	static Angle from_radians(const real angle_radians);
-	
+	static constexpr Angle from_degrees(const real angle_degrees) {
+		return Angle(angle_degrees);
+	}
+
+	static constexpr Angle from_radians(const real angle_radians) {
+		return Angle(Math::radians_to_degrees(angle_radians));
+	}
+
 	[[nodiscard]] String to_string() const;
 	[[nodiscard]] operator String() const;
 };
