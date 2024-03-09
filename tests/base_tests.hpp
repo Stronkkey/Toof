@@ -21,10 +21,10 @@ public:
 	bool run_test();
 };
 
-#define OVERRIDE_TEST(test_name) class test_name : public Test { private: bool _test() override; };
+#define __OVERRIDE_TEST__(test_name) class test_name : public Test { private: bool _test() override; };
 
-OVERRIDE_TEST(SuccessTest);
-OVERRIDE_TEST(FailTest);
+__OVERRIDE_TEST__(SuccessTest);
+__OVERRIDE_TEST__(FailTest);
 
 }
 }
