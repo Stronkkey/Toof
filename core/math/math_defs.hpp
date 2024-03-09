@@ -11,8 +11,8 @@ typedef float real;
 #endif
 
 #ifdef INT_IS_64BIT
-typedef int64_t natural;
-typedef uint64_t integer;
+typedef uint64_t natural;
+typedef int64_t integer;
 #else
 typedef int32_t natural;
 typedef uint32_t untarual;
