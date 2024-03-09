@@ -20,6 +20,22 @@ inline double get_passed_time() {
 	return time;
 }
 
+inline void print() {
+	std::cout << '\n';
+}
+
+inline void print_err() {
+	std::cerr << '\n';
+}
+
+inline void prints() {
+	std::cout << '\n';
+}
+
+inline void prints_err() {
+	std::cerr << '\n';
+}
+
 /**
 * Converts one or more arguments of any type into a string in the best way possible and prints it to the standard output.
 */
