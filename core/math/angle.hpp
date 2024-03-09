@@ -98,7 +98,6 @@ public:
 		return Angle(Math::radians_to_degrees(angle_radians));
 	}
 
-	[[nodiscard]] String to_string() const;
 	[[nodiscard]] operator String() const;
 };
 

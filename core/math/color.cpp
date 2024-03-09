@@ -33,7 +33,3 @@ SDL_Color Color::to_sdl_color() const {
 	color.g = g;
 	return color;
 }
-
-String Color::to_string() const {
-	return vformat("({}, {}, {}, {})", r, g, b, a);
-}

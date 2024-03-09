@@ -323,9 +323,6 @@ struct Vector2 {
 		return Vector2<T>(std::clamp(x, lower.x, higher.x), std::clamp(y, lower.y, higher.y));
 	}
 
-	[[nodiscard]] String to_string() const {
-		return vformat("({}, {})", x, y);
-	}
 	[[nodiscard]] inline SDL_FPoint to_sdl_fpoint() const {
 		SDL_FPoint fpoint;
 		fpoint.x = (float)x;

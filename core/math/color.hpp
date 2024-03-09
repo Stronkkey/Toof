@@ -130,18 +130,15 @@ struct Color {
 	*/
 	constexpr void operator/=(const float right);
 
+	/**
+	* @return a String reprenstation of the color "(r, g, b , a)"
+	*/
 	[[nodiscard]] operator String() const;
 
 	/**
 	* @return an SDL_Color with the same r, b, g, and a value as this color.
 	*/
 	[[nodiscard]] SDL_Color to_sdl_color() const;
-
-	/**
-	* @return a String reprenstation of the color "(r, g, b , a)"
-	*/
-	[[nodiscard]] String to_string() const;
-
 
 	/**
 	* @return the same value as if the + was not there.

@@ -264,6 +264,9 @@ struct Rect2 {
 		return Rect2<T>(x, y, w, h);
 	}
 
+	/**
+	* @returns a string representation as '[P: (x, y), S: (w, h)].
+	*/
 	[[nodiscard]] operator String() const {
 		return vformat("[P: ({}, {}), S: ({}, {})]", x, y, w, h);
 	}
@@ -317,13 +320,6 @@ struct Rect2 {
 	*/
 	[[nodiscard]] constexpr Rect2<T> ceil() const {
 		return Rect2<T>(std::ceil(x), std::ceil(y), std::ceil(w), std::ceil(h));
-	}
-
-	/**
-	* @returns a string representation as '[P: (x, y), S: (w, h)].
-	*/
-	[[nodiscard]] String to_string() const {
-		return vformat("[P: ({}, {}), S: ({}, {})]", x, y, w, h);
 	}
 
 	/**

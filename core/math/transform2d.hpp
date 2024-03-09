@@ -30,7 +30,6 @@ struct Transform2D {
 	#ifdef B2_INCLUDED
 	[[nodiscard]] b2Transform to_b2_transform() const;
 	#endif
-	[[nodiscard]] String to_string() const;
 
 	[[nodiscard]] operator String() const;
 	[[nodiscard]] constexpr operator bool() const {

@@ -16,10 +16,6 @@ b2Transform Transform2D::to_b2_transform() const {
 }
 #endif
 
-String Transform2D::to_string() const {
-	return vformat("[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]", scale.x, scale.y, origin.x, origin.y, rotation.to_string());
-}
-
 Transform2D::operator String() const {
-	return vformat("[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]", scale.x, scale.y, origin.x, origin.y, rotation.to_string());
+	return vformat("[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]", scale.x, scale.y, origin.x, origin.y, rotation);
 }
