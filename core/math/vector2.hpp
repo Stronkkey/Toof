@@ -47,11 +47,27 @@ struct Vector2 {
 		y = right.y;
 	}
 
+	template<class T2>
+	constexpr void operator=(const Vector2<T2> &right) {
+		x = right.x;
+		y = right.y;
+	}
+
 	constexpr bool operator==(const Vector2<T> &right) const {
 		return x == right.x && y == right.y;
 	}
 
+	template<class T2>
+	constexpr bool operator==(const Vector2<T2> &right) const {
+		return x == right.x && y == right.y;
+	}
+
 	constexpr bool operator!=(const Vector2<T> &right) const {
+		return x != right.x || y != right.y;
+	}
+
+	template<class T2>
+	constexpr bool operator!=(const Vector2<T2> &right) const {
 		return x != right.x || y != right.y;
 	}
 
@@ -63,7 +79,17 @@ struct Vector2 {
 		return x <= right.x && y <= right.y;
 	}
 
+	template<class T2>
+	constexpr bool operator<=(const Vector2<T2> &right) const {
+		return x <= right.x && y <= right.y;
+	}
+
 	constexpr bool operator>(const Vector2<T> &right) const {
+		return x > right.x && y > right.y;
+	}
+
+	template<class T2>
+	constexpr bool operator>(const Vector2<T2> &right) const {
 		return x > right.x && y > right.y;
 	}
 
@@ -71,7 +97,17 @@ struct Vector2 {
 		return x >= right.x && y >= right.y;
 	}
 
+	template<class T2>
+	constexpr bool operator>=(const Vector2<T2> &right) const {
+		return x >= right.x && y >= right.y;
+	}
+
 	constexpr Vector2<T> operator+(const Vector2<T> &right) const {
+		return Vector2<T>(x + right.x, y + right.y);
+	}
+
+	template<class T2>
+	constexpr Vector2<T> operator+(const Vector2<T2> &right) const {
 		return Vector2<T>(x + right.x, y + right.y);
 	}
 
@@ -79,7 +115,17 @@ struct Vector2 {
 		return Vector2<T>(x - right.x, y - right.y);
 	}
 
+	template<class T2>
+	constexpr Vector2<T> operator-(const Vector2<T2> &right) const {
+		return Vector2<T>(x - right.x, y - right.y);
+	}
+
 	constexpr Vector2<T> operator*(const Vector2<T> &right) const {
+		return Vector2<T>(x * right.x, y * right.y);
+	}
+
+	template<class T2>
+	constexpr Vector2<T> operator*(const Vector2<T2> &right) const {
 		return Vector2<T>(x * right.x, y * right.y);
 	}
 
@@ -87,11 +133,26 @@ struct Vector2 {
 		return Vector2<T>(x * right, y * right);
 	}
 
+	template<class T2>
+	constexpr Vector2<T> operator*(const T2 right) const {
+		return Vector2<T>(x * right, y * right);
+	}
+
 	constexpr Vector2<T> operator/(const Vector2<T> &right) const {
 		return Vector2<T>(x / right.x, y / right.y);
 	}
 
+	template<class T2>
+	constexpr Vector2<T> operator/(const Vector2<T2> &right) const {
+		return Vector2<T>(x / right.x, y / right.y);
+	}
+
 	constexpr Vector2<T> operator/(const T right) const {
+		return Vector2<T>(x / right, y / right);
+	}
+
+	template<class T2>
+	constexpr Vector2<T> operator/(const T2 right) const {
 		return Vector2<T>(x / right, y / right);
 	}
 
@@ -100,7 +161,19 @@ struct Vector2 {
 		y += right.y;
 	}
 
+	template<class T2>
+	constexpr void operator+=(const Vector2<T2> &right) {
+		x += right.x;
+		y += right.y;
+	}
+
 	constexpr void operator-=(const Vector2<T> &right) {
+		x -= right.x;
+		y -= right.y;
+	}
+
+	template<class T2>
+	constexpr void operator-=(const Vector2<T2> &right) {
 		x -= right.x;
 		y -= right.y;
 	}
@@ -115,12 +188,24 @@ struct Vector2 {
 		y *= right;
 	}
 
+	template<class T2>
+	constexpr void operator*=(const T2 right) {
+		x *= right;
+		y *= right;
+	}
+
 	constexpr void operator/=(const Vector2<T> &right) {
 		x /= right.x;
 		y /= right.y;
 	}
 
 	constexpr void operator/=(const T right) {
+		x /= right;
+		y /= right;
+	}
+
+	template<class T2>
+	constexpr void operator/=(const T2 right) {
 		x /= right;
 		y /= right;
 	}
@@ -146,6 +231,14 @@ struct Vector2 {
 
 	[[nodiscard]] operator String() const {
 		return vformat("({}, {})", x, y);
+	}
+
+	[[nodiscard]] constexpr operator bool() const {
+		return x && y;
+	}
+
+	[[nodiscard]] constexpr bool operator!() const {
+		return !x || !y;
 	}
 
 	constexpr void normalize() {
@@ -256,6 +349,5 @@ struct Vector2 {
 
 typedef Vector2<real> Vector2f;
 typedef Vector2<integer> Vector2i;
-
 
 }

@@ -15,7 +15,7 @@ Transform2D Sprite2D::_get_placement_texture_transform() const {
 	Transform2D placement_texture_transform = texture_transform;
 	if (centered) {
 		const Vector2f texture_size = texture->get_size(get_rendering_server());
-		placement_texture_transform.origin -= (texture_size / 2) * texture_transform.scale;
+		placement_texture_transform.origin -= ((texture_size / 2.0) * texture_transform.scale);
 	}
 
 	return placement_texture_transform;

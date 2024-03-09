@@ -4,10 +4,11 @@
 
 using namespace sdl;
 
-const Transform2D Transform2D::IDENTITY = Transform2D(0, 0, 0, 1, 1);
+const Transform2D Transform2D::IDENTITY = Transform2D(Angle(), 0, 0, 0, 0);
 
 #ifdef B2_INCLUDED
-Transform2D::Transform2D(const b2Transform &b2_transform): rotation(Math::radians_to_degrees(b2_transform.q.GetAngle())), origin(b2_transform.p), scale(Vector2(1, 1)) {
+
+Transform2D::Transform2D(const b2Transform &b2_transform): rotation(Angle::from_radians(b2_transform.q.GetAngle())), origin(b2_transform.p), scale(Vector2(1, 1)) {
 }
 
 b2Transform Transform2D::to_b2_transform() const {

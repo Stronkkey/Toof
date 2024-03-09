@@ -44,7 +44,7 @@ Vector2f Camera2D::_get_target_position() const {
 		target_position = get_global_position();
 
 	if (anchor_mode == CAMERA2D_ANCHOR_DRAG_CENTER)
-		target_position -= (_get_viewport_size() / 2.0);
+		target_position -= (_get_viewport_size() / 2);
 
 	if (!position_smoothing_enabled)
 		_limit_vector(target_position);
@@ -56,7 +56,7 @@ Angle Camera2D::_get_target_rotation() const {
 	Angle target_rotation;
 
 	if (ignore_rotation)
-		target_rotation = 0.0;
+		target_rotation = Angle();
 	else
 	 	target_rotation = get_global_rotation();
 
@@ -84,7 +84,7 @@ Vector2f Camera2D::_get_camera_position() const {
 
 	Vector2f camera_position = viewport ? viewport->get_canvas_transform().origin : Vector2f();
 	if (viewport && anchor_mode == CAMERA2D_ANCHOR_DRAG_CENTER)
-		camera_position -= (viewport->get_viewport_size() / 2.0);
+		camera_position -= (viewport->get_viewport_size() / (unsigned long)2.0);
 
 	return -camera_position;
 }

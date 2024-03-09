@@ -33,6 +33,9 @@ struct Transform2D {
 	[[nodiscard]] String to_string() const;
 
 	[[nodiscard]] operator String() const;
+	[[nodiscard]] constexpr operator bool() const {
+		return true;
+	}
 
 	constexpr void operator=(const Transform2D &right);
 	constexpr void operator*=(const Transform2D &right);
@@ -40,7 +43,7 @@ struct Transform2D {
 	static const Transform2D IDENTITY;
 };
 
-constexpr Transform2D::Transform2D(): rotation(0.0), origin(), scale() {
+constexpr Transform2D::Transform2D(): rotation(Angle()), origin(), scale() {
 }
 
 constexpr Transform2D::Transform2D(const Angle rotation, const Vector2f &new_origin, const Vector2f &new_scale): rotation(rotation), origin(new_origin), scale(new_scale) {
@@ -60,7 +63,7 @@ constexpr bool Transform2D::operator==(const Transform2D &right) const {
 }
 
 constexpr bool Transform2D::operator!() const {
-	return origin == Vector2f() || rotation == 0.0;
+	return origin || rotation.get_angle_degrees();
 }
 
 constexpr Transform2D Transform2D::operator*(const Transform2D &right) const {

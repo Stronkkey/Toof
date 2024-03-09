@@ -52,7 +52,7 @@ void TextureDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, c
 	SDL_Renderer *renderer = viewport->get_renderer();
 	SDL_Texture *final_texture = texture->texture_reference;
 
-	if (rotation == 0.0)
+	if (rotation.is_zero_angle())
 		SDL_RenderCopyF(renderer, final_texture, &final_source_region, &final_destination);
 	else
 		SDL_RenderCopyExF(renderer, final_texture, &final_source_region, &final_destination, rotation.get_angle_degrees(), NULL, flip);
