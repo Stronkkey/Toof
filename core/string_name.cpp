@@ -45,10 +45,11 @@ void StringName::_reset() {
 
 	if (saved_string.is_used())
 		saved_string.decrement();
+	else
+		return;
 
 	if (!saved_string.is_used()) {
-		if (saved_string.stored_string->string)
-			delete saved_string.stored_string->string;
+		saved_string.delete_stored_string();
 		stored_strings.erase(*saved_string.stored_string);
 	}
 }

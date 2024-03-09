@@ -63,6 +63,11 @@ public:
 				++stored_string->uses;
 		}
 
+		constexpr void delete_stored_string() {
+			if (stored_string && stored_string->string)
+				delete stored_string->string;
+		}
+
 		constexpr bool operator==(const __String_Storer__ &string_saver) const {
 			return stored_string->string == string_saver.string;
 		}
@@ -202,6 +207,9 @@ public:
 	}
 
 	operator String() const;
+	constexpr operator StringView() const {
+		return StringView(saved_string.stored_string->string);
+	}
 
 	[[nodiscard]] constexpr const_reference get_string() const {
 		return saved_string.stored_string->view;
