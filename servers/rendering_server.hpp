@@ -15,7 +15,6 @@ namespace sdl {
 
 struct Texture;
 struct CanvasItem;
-struct Transform2D;
 template<class>
 struct Rect2;
 typedef Rect2<real> Rect2f;
@@ -28,7 +27,6 @@ private:
 	std::unordered_map<uid, std::shared_ptr<Texture>> textures;
 	std::unordered_map<uid, std::shared_ptr<CanvasItem>> canvas_items;
 	Color background_color;
-	Vector2f viewport_offset;
 	uid uid_index;
 
 	void render_canvas_item(const std::shared_ptr<CanvasItem> &canvas_item);
@@ -63,29 +61,21 @@ public:
 	std::optional<uid> load_texture_from_path(const String &path);
 	uid create_canvas_item();
 
-	void set_default_background_color(const Color &new_background_color) {
+	constexpr void set_default_background_color(const Color &new_background_color) {
 		background_color = new_background_color;
 	}
 
-	const Color &get_default_background_color() const {
+	constexpr const Color &get_default_background_color() const {
 		return background_color;
 	}
+
 	Vector2i get_screen_size() const;
 
-	std::unique_ptr<TextureInfo> get_texture_info_from_uid(const uid texture_uid) const;
+	std::optional<TextureInfo> get_texture_info_from_uid(const uid texture_uid) const;
 
-	void canvas_item_add_texture(const uid texture_uid,
-	    const uid canvas_item_uid,
-	    const SDL_RendererFlip flip = SDL_FLIP_NONE,
-	    const Color &modulate = Color::WHITE,
-	    const Transform2D &transform = Transform2D::IDENTITY);
+	void canvas_item_add_texture(const uid canvas_item_uid, const uid texture_uid, const SDL_RendererFlip flip = SDL_FLIP_NONE, const Color &modulate = Color::WHITE, const Transform2D &transform = Transform2D::IDENTITY);
+	void canvas_item_add_texture_region(const uid canvas_item_uid, const uid texture_uid, const Rect2i &src_region, const SDL_RendererFlip flip = SDL_FLIP_NONE, const Color &modulate = Color::WHITE, const Transform2D &transform = Transform2D::IDENTITY);
 
-	void canvas_item_add_texture_region(const uid texture_uid,
-	    const uid canvas_item_uid,
-	    const Rect2i &src_region,
-	    const SDL_RendererFlip flip = SDL_FLIP_NONE,
-	    const Color &modulate = Color::WHITE,
-	    const Transform2D &transform = Transform2D::IDENTITY);
 	void canvas_item_add_line(const uid canvas_item_uid, const Vector2f &start, const Vector2f &end, const Color &modulate = Color::WHITE);
 	void canvas_item_add_lines(const uid canvas_item_uid, const std::vector<SDL_FPoint> &points, const Color &modulate = Color::WHITE);
 	void canvas_item_add_rect(const uid canvas_item_uid, const Rect2f &rect, const Color &modulate = Color::WHITE);

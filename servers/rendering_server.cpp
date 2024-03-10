@@ -14,7 +14,6 @@ RenderingServer::RenderingServer(Viewport *viewport): viewport(viewport),
     textures(),
     canvas_items(),
     background_color(Color(77, 77, 77, 255)),
-    viewport_offset(sdl::Vector2f()),
     uid_index(1) {
 }
 
@@ -126,16 +125,16 @@ void RenderingServer::render_canvas_items() {
 		render_canvas_item(canvas_item);
 }
 
-std::unique_ptr<RenderingServer::TextureInfo> RenderingServer::get_texture_info_from_uid(const uid texture_uid) const {
+std::optional<RenderingServer::TextureInfo> RenderingServer::get_texture_info_from_uid(const uid texture_uid) const {
 	const std::shared_ptr<Texture> &texture = get_texture_from_uid(texture_uid);
-	auto texture_info = std::make_unique<TextureInfo>();
+	TextureInfo texture_info;
 
 	if (!texture)
-		return std::unique_ptr<TextureInfo>();
+		return texture_info;
 
-	texture_info->size = texture->size;
-	texture_info->format = texture->format;
-	texture_info->texture = texture->texture_reference;
+	texture_info.size = texture->size;
+	texture_info.format = texture->format;
+	texture_info.texture = texture->texture_reference;
 	return texture_info;
 }
 
@@ -166,11 +165,7 @@ uid RenderingServer::create_canvas_item() {
 	return new_uid;
 }
 
-void RenderingServer::canvas_item_add_texture(const uid texture_uid,
-                                              const uid canvas_item_uid,
-                                              const SDL_RendererFlip flip,
-                                              const Color &modulate,
-                                              const Transform2D &transform) {
+void RenderingServer::canvas_item_add_texture(const uid canvas_item_uid, const uid texture_uid, const SDL_RendererFlip flip, const Color &modulate, const Transform2D &transform) {
 	const std::shared_ptr<CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 	const std::shared_ptr<Texture> &texture = get_texture_from_uid(texture_uid);
 
@@ -187,12 +182,7 @@ void RenderingServer::canvas_item_add_texture(const uid texture_uid,
 	canvas_item->drawing_items.push_back(std::move(texture_drawing_item));
 }
 
-void RenderingServer::canvas_item_add_texture_region(const uid texture_uid,
-                                                     const uid canvas_item_uid,
-                                                     const Rect2i &src_region,
-                                                     const SDL_RendererFlip flip,
-                                                     const Color &modulate,
-                                                     const Transform2D &transform) {
+void RenderingServer::canvas_item_add_texture_region(const uid canvas_item_uid, const uid texture_uid,const Rect2i &src_region, const SDL_RendererFlip flip, const Color &modulate, const Transform2D &transform) {
 	const std::shared_ptr<Texture> &texture = get_texture_from_uid(texture_uid);
 	const std::shared_ptr<CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
