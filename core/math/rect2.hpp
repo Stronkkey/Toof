@@ -504,6 +504,14 @@ struct Rect2 {
 		rect.h = (float)h;
 		return rect;
 	}
+
+	[[nodiscard]] constexpr bool is_zero_approx() const {
+		return Math::is_zero_approx(x) && Math::is_zero_approx(y) && Math::is_zero_approx(w) && Math::is_zero_approx(h);
+	}
+
+	[[nodiscard]] constexpr bool is_equal_approx(const Rect2<T> &rect2) const {
+		return Math::is_equal_approx(x, rect2.x) && Math::is_equal_approx(y, rect2.y) && Math::is_equal_approx(w, rect2.w) && Math::is_equal_approx(h, rect2.h);
+	}
 };
 
 typedef Rect2<real> Rect2f;

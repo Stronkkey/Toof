@@ -238,7 +238,7 @@ struct Vector2 {
 	}
 
 	[[nodiscard]] constexpr bool operator!() const {
-		return !x || !y;
+		return !x && !y;
 	}
 
 	constexpr void normalize() {
@@ -328,6 +328,14 @@ struct Vector2 {
 		fpoint.x = (float)x;
 		fpoint.y = (float)y;
 		return fpoint;
+	}
+
+	[[nodiscard]] constexpr bool is_zero_approx() const {
+		return Math::is_zero_approx(x) && Math::is_zero_approx(y);
+	}
+
+	[[nodiscard]] constexpr bool is_equal_approx(const Vector2<T> &right) const {
+		return Math::is_equal_approx(x, right.x) && Math::is_equal_approx(y, right.y);
 	}
 
 	[[nodiscard]] SDL_Point to_sdl_point() const {
