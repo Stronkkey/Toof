@@ -10,6 +10,10 @@ const Color Color::RED = Color(255, 0, 0, 255);
 const Color Color::GREEN = Color(0, 255, 0, 255);
 const Color Color::BLUE = Color(0, 0, 255, 255);
 
+Color::operator String() const {
+	return vformat("(R: {}, G: {}, B: {}, A: {})", r, g, b, a);
+}
+
 Color Color::blend(const Color &over) const {
 	Color blended_color;
 	uint16_t inverted_alpha = 255 - over.a;
