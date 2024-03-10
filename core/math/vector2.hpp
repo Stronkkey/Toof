@@ -21,7 +21,7 @@ struct Vector2 {
 	constexpr Vector2(const T new_x, const T new_y): x(new_x), y(new_y) {
 	}
 	
-	constexpr Vector2(const Vector2<T> &vector2): x(vector2.x), y(vector2.y) {
+	constexpr Vector2(const Vector2 &vector2): x(vector2.x), y(vector2.y) {
 	}
 
 	template<class T2>
@@ -42,7 +42,7 @@ struct Vector2 {
 	T x;
 	T y;
 
-	constexpr void operator=(const Vector2<T> &right) {
+	constexpr void operator=(const Vector2 &right) {
 		x = right.x;
 		y = right.y;
 	}
@@ -53,7 +53,7 @@ struct Vector2 {
 		y = right.y;
 	}
 
-	constexpr bool operator==(const Vector2<T> &right) const {
+	constexpr bool operator==(const Vector2 &right) const {
 		return x == right.x && y == right.y;
 	}
 
@@ -62,7 +62,7 @@ struct Vector2 {
 		return x == right.x && y == right.y;
 	}
 
-	constexpr bool operator!=(const Vector2<T> &right) const {
+	constexpr bool operator!=(const Vector2 &right) const {
 		return x != right.x || y != right.y;
 	}
 
@@ -71,11 +71,11 @@ struct Vector2 {
 		return x != right.x || y != right.y;
 	}
 
-	constexpr bool operator<(const Vector2<T> &right) const {
+	constexpr bool operator<(const Vector2 &right) const {
 		return x < right.x && y < right.y;
 	}
 
-	constexpr bool operator<=(const Vector2<T> &right) const {
+	constexpr bool operator<=(const Vector2 &right) const {
 		return x <= right.x && y <= right.y;
 	}
 
@@ -84,7 +84,7 @@ struct Vector2 {
 		return x <= right.x && y <= right.y;
 	}
 
-	constexpr bool operator>(const Vector2<T> &right) const {
+	constexpr bool operator>(const Vector2 &right) const {
 		return x > right.x && y > right.y;
 	}
 
@@ -93,7 +93,7 @@ struct Vector2 {
 		return x > right.x && y > right.y;
 	}
 
-	constexpr bool operator>=(const Vector2<T> &right) const {
+	constexpr bool operator>=(const Vector2 &right) const {
 		return x >= right.x && y >= right.y;
 	}
 
@@ -102,61 +102,61 @@ struct Vector2 {
 		return x >= right.x && y >= right.y;
 	}
 
-	constexpr Vector2<T> operator+(const Vector2<T> &right) const {
-		return Vector2<T>(x + right.x, y + right.y);
+	constexpr Vector2 operator+(const Vector2 &right) const {
+		return Vector2(x + right.x, y + right.y);
 	}
 
 	template<class T2>
-	constexpr Vector2<T> operator+(const Vector2<T2> &right) const {
-		return Vector2<T>(x + right.x, y + right.y);
+	constexpr Vector2 operator+(const Vector2<T2> &right) const {
+		return Vector2(x + right.x, y + right.y);
 	}
 
-	constexpr Vector2<T> operator-(const Vector2<T> &right) const {
-		return Vector2<T>(x - right.x, y - right.y);
-	}
-
-	template<class T2>
-	constexpr Vector2<T> operator-(const Vector2<T2> &right) const {
-		return Vector2<T>(x - right.x, y - right.y);
-	}
-
-	constexpr Vector2<T> operator*(const Vector2<T> &right) const {
-		return Vector2<T>(x * right.x, y * right.y);
+	constexpr Vector2 operator-(const Vector2 &right) const {
+		return Vector2(x - right.x, y - right.y);
 	}
 
 	template<class T2>
-	constexpr Vector2<T> operator*(const Vector2<T2> &right) const {
-		return Vector2<T>(x * right.x, y * right.y);
+	constexpr Vector2 operator-(const Vector2<T2> &right) const {
+		return Vector2(x - right.x, y - right.y);
 	}
 
-	constexpr Vector2<T> operator*(const T right) const {
-		return Vector2<T>(x * right, y * right);
-	}
-
-	template<class T2>
-	constexpr Vector2<T> operator*(const T2 right) const {
-		return Vector2<T>(x * right, y * right);
-	}
-
-	constexpr Vector2<T> operator/(const Vector2<T> &right) const {
-		return Vector2<T>(x / right.x, y / right.y);
+	constexpr Vector2 operator*(const Vector2 &right) const {
+		return Vector2(x * right.x, y * right.y);
 	}
 
 	template<class T2>
-	constexpr Vector2<T> operator/(const Vector2<T2> &right) const {
-		return Vector2<T>(x / right.x, y / right.y);
+	constexpr Vector2 operator*(const Vector2<T2> &right) const {
+		return Vector2(x * right.x, y * right.y);
 	}
 
-	constexpr Vector2<T> operator/(const T right) const {
-		return Vector2<T>(x / right, y / right);
+	constexpr Vector2 operator*(const T right) const {
+		return Vector2(x * right, y * right);
 	}
 
 	template<class T2>
-	constexpr Vector2<T> operator/(const T2 right) const {
-		return Vector2<T>(x / right, y / right);
+	constexpr Vector2 operator*(const T2 right) const {
+		return Vector2(x * right, y * right);
 	}
 
-	constexpr void operator+=(const Vector2<T> &right) {
+	constexpr Vector2 operator/(const Vector2 &right) const {
+		return Vector2(x / right.x, y / right.y);
+	}
+
+	template<class T2>
+	constexpr Vector2 operator/(const Vector2<T2> &right) const {
+		return Vector2(x / right.x, y / right.y);
+	}
+
+	constexpr Vector2 operator/(const T right) const {
+		return Vector2(x / right, y / right);
+	}
+
+	template<class T2>
+	constexpr Vector2 operator/(const T2 right) const {
+		return Vector2(x / right, y / right);
+	}
+
+	constexpr void operator+=(const Vector2 &right) {
 		x += right.x;
 		y += right.y;
 	}
@@ -167,7 +167,7 @@ struct Vector2 {
 		y += right.y;
 	}
 
-	constexpr void operator-=(const Vector2<T> &right) {
+	constexpr void operator-=(const Vector2 &right) {
 		x -= right.x;
 		y -= right.y;
 	}
@@ -178,7 +178,7 @@ struct Vector2 {
 		y -= right.y;
 	}
 
-	constexpr void operator*=(const Vector2<T> &right) {
+	constexpr void operator*=(const Vector2 &right) {
 		x *= right.x;
 		y *= right.y;
 	}
@@ -194,7 +194,7 @@ struct Vector2 {
 		y *= right;
 	}
 
-	constexpr void operator/=(const Vector2<T> &right) {
+	constexpr void operator/=(const Vector2 &right) {
 		x /= right.x;
 		y /= right.y;
 	}
@@ -221,12 +221,12 @@ struct Vector2 {
 		}
 	}
 
-	constexpr Vector2<T> operator-() const {
-		return Vector2<T>(-x, -y);
+	constexpr Vector2 operator-() const {
+		return Vector2(-x, -y);
 	}
 
-	constexpr Vector2<T> operator+() const {
-		return Vector2<T>(+x, +y);
+	constexpr Vector2 operator+() const {
+		return Vector2(+x, +y);
 	}
 
 	[[nodiscard]] operator String() const {
@@ -265,12 +265,12 @@ struct Vector2 {
 		y = std::ceil(y);
 	}
 
-	constexpr void lerp_to(const Vector2<T> &to, const T weight) {
+	constexpr void lerp_to(const Vector2 &to, const T weight) {
 		x = Math::lerp(x, to.x, weight);
 		y = Math::lerp(y, to.y, weight);
 	}
 
-	constexpr void clamped(const Vector2<T> &lower, const Vector2<T> &higher) {
+	constexpr void clamped(const Vector2 &lower, const Vector2 &higher) {
 		x = std::clamp(x, lower.x, higher.x);
 		y = std::clamp(y, lower.y, higher.y);
 	}
@@ -283,44 +283,44 @@ struct Vector2 {
 		return x * x + y * y;
 	}
 
-	[[nodiscard]] constexpr Vector2<T> round() const {
-		return Vector2<T>(std::round(x), std::round(y));
+	[[nodiscard]] constexpr Vector2 round() const {
+		return Vector2(std::round(x), std::round(y));
 	}
 
-	[[nodiscard]] constexpr Vector2<T> floor() const {
-		return Vector2<T>(std::floor(x), std::floor(y));
+	[[nodiscard]] constexpr Vector2 floor() const {
+		return Vector2(std::floor(x), std::floor(y));
 	}
 	
-	[[nodiscard]] constexpr Vector2<T> ceil() const {
-		return Vector2<T>(std::ceil(x), std::ceil(y));
+	[[nodiscard]] constexpr Vector2 ceil() const {
+		return Vector2(std::ceil(x), std::ceil(y));
 	}
 
-	[[nodiscard]] constexpr Vector2<T> normalized() const {
-		Vector2<T> vector = *this;
+	[[nodiscard]] constexpr Vector2 normalized() const {
+		Vector2 vector = *this;
 		vector.normalize();
 		return vector;
 	}
-	[[nodiscard]] constexpr Vector2<T> move_toward(const Vector2<T> &to, const T delta) const {
-		Vector2<T> vector = *this;
-		Vector2<T> from_vector = to - vector;
+	[[nodiscard]] constexpr Vector2 move_toward(const Vector2 &to, const T delta) const {
+		Vector2 vector = *this;
+		Vector2 from_vector = to - vector;
 		T length = from_vector.length();
 		return length <= delta ? to : vector + from_vector / length * delta;
 	}
 
-	[[nodiscard]] constexpr real distance_to_squared(const Vector2<T> &to) const {
+	[[nodiscard]] constexpr real distance_to_squared(const Vector2 &to) const {
 		return (x - to.x) * (x - to.x) + (y - to.y) * (y - to.y);
 	}
 
-	[[nodiscard]] constexpr real distance_to(const Vector2<T> &to) const {
+	[[nodiscard]] constexpr real distance_to(const Vector2 &to) const {
 		return std::sqrt((x - to.x) * (x - to.x) + (y - to.y) * (y - to.y));
 	}
 
-	[[nodiscard]] constexpr Vector2<T> lerp(const Vector2<T> &to, const T weight) const {
-		return Vector2<T>(Math::lerp(x, to.x, weight), Math::lerp(y, to.y, weight));
+	[[nodiscard]] constexpr Vector2 lerp(const Vector2 &to, const T weight) const {
+		return Vector2(Math::lerp(x, to.x, weight), Math::lerp(y, to.y, weight));
 	}
 
-	[[nodiscard]] constexpr Vector2<T> clamp(const Vector2<T> &lower, const Vector2<T> &higher) const {
-		return Vector2<T>(std::clamp(x, lower.x, higher.x), std::clamp(y, lower.y, higher.y));
+	[[nodiscard]] constexpr Vector2 clamp(const Vector2 &lower, const Vector2 &higher) const {
+		return Vector2(std::clamp(x, lower.x, higher.x), std::clamp(y, lower.y, higher.y));
 	}
 
 	[[nodiscard]] inline SDL_FPoint to_sdl_fpoint() const {
@@ -334,7 +334,7 @@ struct Vector2 {
 		return Math::is_zero_approx(x) && Math::is_zero_approx(y);
 	}
 
-	[[nodiscard]] constexpr bool is_equal_approx(const Vector2<T> &right) const {
+	[[nodiscard]] constexpr bool is_equal_approx(const Vector2 &right) const {
 		return Math::is_equal_approx(x, right.x) && Math::is_equal_approx(y, right.y);
 	}
 
