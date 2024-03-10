@@ -165,7 +165,7 @@ uid RenderingServer::create_canvas_item() {
 	return new_uid;
 }
 
-void RenderingServer::canvas_item_add_texture(const uid canvas_item_uid, const uid texture_uid, const SDL_RendererFlip flip, const Color &modulate, const Transform2D &transform) {
+void RenderingServer::canvas_item_add_texture(const uid texture_uid, const uid canvas_item_uid, const SDL_RendererFlip flip, const Color &modulate, const Transform2D &transform) {
 	const std::shared_ptr<CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 	const std::shared_ptr<Texture> &texture = get_texture_from_uid(texture_uid);
 
@@ -182,7 +182,7 @@ void RenderingServer::canvas_item_add_texture(const uid canvas_item_uid, const u
 	canvas_item->drawing_items.push_back(std::move(texture_drawing_item));
 }
 
-void RenderingServer::canvas_item_add_texture_region(const uid canvas_item_uid, const uid texture_uid,const Rect2i &src_region, const SDL_RendererFlip flip, const Color &modulate, const Transform2D &transform) {
+void RenderingServer::canvas_item_add_texture_region(const uid texture_uid, const uid canvas_item_uid ,const Rect2i &src_region, const SDL_RendererFlip flip, const Color &modulate, const Transform2D &transform) {
 	const std::shared_ptr<Texture> &texture = get_texture_from_uid(texture_uid);
 	const std::shared_ptr<CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 

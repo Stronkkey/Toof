@@ -73,8 +73,8 @@ public:
 
 	std::optional<TextureInfo> get_texture_info_from_uid(const uid texture_uid) const;
 
-	void canvas_item_add_texture(const uid canvas_item_uid, const uid texture_uid, const SDL_RendererFlip flip = SDL_FLIP_NONE, const Color &modulate = Color::WHITE, const Transform2D &transform = Transform2D::IDENTITY);
-	void canvas_item_add_texture_region(const uid canvas_item_uid, const uid texture_uid, const Rect2i &src_region, const SDL_RendererFlip flip = SDL_FLIP_NONE, const Color &modulate = Color::WHITE, const Transform2D &transform = Transform2D::IDENTITY);
+	void canvas_item_add_texture(const uid texture_uid, const uid canvas_item_uid, const SDL_RendererFlip flip = SDL_FLIP_NONE, const Color &modulate = Color::WHITE, const Transform2D &transform = Transform2D::IDENTITY);
+	void canvas_item_add_texture_region(const uid texture_uid, const uid canvas_item_uid, const Rect2i &src_region, const SDL_RendererFlip flip = SDL_FLIP_NONE, const Color &modulate = Color::WHITE, const Transform2D &transform = Transform2D::IDENTITY);
 
 	void canvas_item_add_line(const uid canvas_item_uid, const Vector2f &start, const Vector2f &end, const Color &modulate = Color::WHITE);
 	void canvas_item_add_lines(const uid canvas_item_uid, const std::vector<SDL_FPoint> &points, const Color &modulate = Color::WHITE);
