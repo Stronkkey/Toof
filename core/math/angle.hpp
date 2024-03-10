@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/math/math_defs.hpp>
-#include <core/string_def.hpp>
+#include <core/string/string_def.hpp>
 
 namespace sdl {
 

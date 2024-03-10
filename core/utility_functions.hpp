@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/math/math_defs.hpp>
-#include <core/string_funcs.hpp>
+#include <core/string/string_funcs.hpp>
 
 #include <SDL_timer.h>
 

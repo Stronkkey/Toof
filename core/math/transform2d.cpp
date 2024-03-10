@@ -1,6 +1,6 @@
 #include <box2d/b2_math.h>
 #include <core/math/transform2d.hpp>
-#include <core/string_funcs.hpp>
+#include <core/string/string_funcs.hpp>
 
 using namespace sdl;
 

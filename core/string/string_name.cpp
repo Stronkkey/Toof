@@ -1,4 +1,4 @@
-#include <core/string_name.hpp>
+#include <core/string/string_name.hpp>
 
 using String = sdl::String;
 using StringName = sdl::StringName;

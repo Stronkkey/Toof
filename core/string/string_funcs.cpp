@@ -1,4 +1,4 @@
-#include <core/string_funcs.hpp>
+#include <core/string/string_funcs.hpp>
 
 using namespace sdl;
 
