@@ -13,6 +13,9 @@
 
 namespace sdl {
 
+/**
+* A Vector2 class using a generic T.
+*/
 template<class T>
 struct Vector2 {
 	constexpr Vector2(): x(0), y(0) {

@@ -7,7 +7,7 @@ namespace sdl {
 struct Transform2D;
 
 /**
-* A 2D axis-aligned bounding box.
+* A 2D axis-aligned bounding box using a generic T.
 */
 template<class T>
 struct Rect2 {
