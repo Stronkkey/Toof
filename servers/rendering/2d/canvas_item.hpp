@@ -10,9 +10,9 @@
 
 namespace sdl {
 
-struct DrawingItem;
+struct __DrawingItem__;
 
-struct CanvasItem {
+struct __CanvasItem__ {
 	Transform2D transform, global_transform = Transform2D::IDENTITY;
 	ColorV modulate, global_modulate = ColorV::WHITE();
 	bool visible, zindex_relative, global_visible = true;
@@ -21,8 +21,8 @@ struct CanvasItem {
 	SDL_BlendMode blend_mode = SDL_BLENDMODE_BLEND;
 	SDL_ScaleMode scale_mode = SDL_ScaleModeLinear;
 
-	std::weak_ptr<CanvasItem> parent;
-	std::vector<std::unique_ptr<DrawingItem>> drawing_items;
+	std::weak_ptr<__CanvasItem__> parent;
+	std::vector<std::unique_ptr<__DrawingItem__>> drawing_items;
 
 	void set_global_transform();
 	void set_global_modulate();

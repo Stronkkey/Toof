@@ -3,12 +3,12 @@
 
 using namespace sdl;
 
-void CanvasItem::set_global_transform() {
+void __CanvasItem__::set_global_transform() {
 	if (parent.expired())
 		return;
 
 	global_transform = transform;
-	std::shared_ptr<CanvasItem> parent_canvas_item = parent.lock();
+	std::shared_ptr<__CanvasItem__> parent_canvas_item = parent.lock();
 
 	while (parent_canvas_item) {
 		global_transform *= parent_canvas_item->transform;
@@ -16,12 +16,12 @@ void CanvasItem::set_global_transform() {
 	}
 }
 
-void CanvasItem::set_global_modulate() {
+void __CanvasItem__::set_global_modulate() {
 	if (parent.expired())
 		return;
 
 	global_modulate = modulate;
-	std::shared_ptr<CanvasItem> parent_canvas_item = parent.lock();
+	std::shared_ptr<__CanvasItem__> parent_canvas_item = parent.lock();
 
 	while (parent_canvas_item) {
 		global_modulate *= parent_canvas_item->modulate;
@@ -29,7 +29,7 @@ void CanvasItem::set_global_modulate() {
 	}
 }
 
-void CanvasItem::set_global_visible() {
+void __CanvasItem__::set_global_visible() {
 	if (parent.expired())
 		return;
 
@@ -39,7 +39,7 @@ void CanvasItem::set_global_visible() {
 	}
 
 	global_visible = true;
-	std::shared_ptr<CanvasItem> parent_canvas_item = parent.lock();
+	std::shared_ptr<__CanvasItem__> parent_canvas_item = parent.lock();
 
 	while (parent_canvas_item && global_visible) {
 		global_visible = parent_canvas_item->visible;
@@ -47,7 +47,7 @@ void CanvasItem::set_global_visible() {
 	}
 }
 
-void CanvasItem::set_global_zindex() {
+void __CanvasItem__::set_global_zindex() {
 	if (parent.expired())
 		return;
 
@@ -56,7 +56,7 @@ void CanvasItem::set_global_zindex() {
 		return;
 	}
 
-	std::shared_ptr<CanvasItem> parent_canvas_item = parent.lock();
+	std::shared_ptr<__CanvasItem__> parent_canvas_item = parent.lock();
 	global_zindex = zindex;
 
 	while (parent_canvas_item) {
@@ -65,22 +65,22 @@ void CanvasItem::set_global_zindex() {
 	}
 }
 
-const Transform2D &CanvasItem::get_global_transform() {
+const Transform2D &__CanvasItem__::get_global_transform() {
 	set_global_transform();
 	return global_transform;
 }
 
-const ColorV &CanvasItem::get_global_modulate() {
+const ColorV &__CanvasItem__::get_global_modulate() {
 	set_global_modulate();
 	return global_modulate;
 }
 
-bool CanvasItem::is_globally_visible() {
+bool __CanvasItem__::is_globally_visible() {
 	set_global_visible();
 	return global_visible;
 }
 
-int CanvasItem::get_global_zindex() {
+int __CanvasItem__::get_global_zindex() {
 	set_global_zindex();
 	return global_zindex;
 }

@@ -11,24 +11,25 @@
 
 namespace sdl {
 
-struct CanvasItem;
-struct Texture;
+struct __CanvasItem__;
 class Viewport;
 
 enum DrawingItemType {
 	DRAWING_ITEM_TYPE_NONE
 };
 
-struct DrawingItem {
-	void draw(const std::shared_ptr<CanvasItem> &canvas_item, const Viewport *viewport);
-	Rect2f get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const;
+struct __Texture_Ref__;
 
-	virtual void _draw(const std::shared_ptr<CanvasItem> &canvas_item, const Viewport *viewport);
-	virtual Rect2f _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const;
+struct __DrawingItem__ {
+	void draw(const std::shared_ptr<__CanvasItem__> &canvas_item, const Viewport *viewport);
+	Rect2f get_draw_rect(const std::shared_ptr<__CanvasItem__> &canvas_item) const;
+
+	virtual void _draw(const std::shared_ptr<__CanvasItem__> &canvas_item, const Viewport *viewport);
+	virtual Rect2f _get_draw_rect(const std::shared_ptr<__CanvasItem__> &canvas_item) const;
 };
 
-struct TextureDrawingItem: public DrawingItem {
-	std::weak_ptr<Texture> texture;
+struct __TextureDrawingItem__: public __DrawingItem__ {
+	std::weak_ptr<__Texture_Ref__> texture;
 
 	ColorV texture_modulate;
 	bool use_region;
@@ -36,45 +37,45 @@ struct TextureDrawingItem: public DrawingItem {
 	Rect2i src_region;
 	Transform2D transform;
 
-	void _draw(const std::shared_ptr<CanvasItem> &canvas_item, const Viewport *viewport) override;
-	Rect2f _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const override;
+	void _draw(const std::shared_ptr<__CanvasItem__> &canvas_item, const Viewport *viewport) override;
+	Rect2f _get_draw_rect(const std::shared_ptr<__CanvasItem__> &canvas_item) const override;
 };
 
-struct RectDrawingItem: public DrawingItem {
+struct __RectDrawingItem__: public __DrawingItem__ {
 	SDL_FRect rectangle;
 	ColorV modulate;
 
-	void _draw(const std::shared_ptr<CanvasItem> &canvas_item,const Viewport *viewport) override;
+	void _draw(const std::shared_ptr<__CanvasItem__> &canvas_item,const Viewport *viewport) override;
 
-	Rect2f _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const override;
+	Rect2f _get_draw_rect(const std::shared_ptr<__CanvasItem__> &canvas_item) const override;
 };
 
-struct RectsDrawingItem: public DrawingItem {
+struct __RectsDrawingItem__: public __DrawingItem__ {
 	std::vector<SDL_FRect> rectangles;
 	ColorV modulate;
 
-	void _draw(const std::shared_ptr<CanvasItem> &canvas_item,const Viewport *viewport) override;
+	void _draw(const std::shared_ptr<__CanvasItem__> &canvas_item,const Viewport *viewport) override;
 	
-	Rect2f _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const override;
+	Rect2f _get_draw_rect(const std::shared_ptr<__CanvasItem__> &canvas_item) const override;
 };
 
-struct LineDrawingItem: public DrawingItem {
+struct __LineDrawingItem__: public __DrawingItem__ {
 	SDL_FPoint start_point;
 	SDL_FPoint end_point;
 	ColorV modulate;
 
-	void _draw(const std::shared_ptr<CanvasItem> &canvas_item,const Viewport *viewport) override;
+	void _draw(const std::shared_ptr<__CanvasItem__> &canvas_item,const Viewport *viewport) override;
 
-	Rect2f _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const override;
+	Rect2f _get_draw_rect(const std::shared_ptr<__CanvasItem__> &canvas_item) const override;
 };
 
-struct LinesDrawingItem: public DrawingItem {
+struct __LinesDrawingItem__: public __DrawingItem__ {
 	std::vector<SDL_FPoint> points;
 	ColorV modulate;
 
-	void _draw(const std::shared_ptr<CanvasItem> &canvas_item,const Viewport *viewport) override;
+	void _draw(const std::shared_ptr<__CanvasItem__> &canvas_item,const Viewport *viewport) override;
 	
-	Rect2f _get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const override;
+	Rect2f _get_draw_rect(const std::shared_ptr<__CanvasItem__> &canvas_item) const override;
 };
 
 }
