@@ -70,7 +70,7 @@ const Transform2D &CanvasItem::get_global_transform() {
 	return global_transform;
 }
 
-const Color &CanvasItem::get_global_modulate() {
+const ColorV &CanvasItem::get_global_modulate() {
 	set_global_modulate();
 	return global_modulate;
 }

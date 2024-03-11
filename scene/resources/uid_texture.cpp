@@ -29,7 +29,7 @@ void sdl::UidTexture::draw(const std::unique_ptr<RenderingServer> &rendering_ser
 	const uid texture_uid,
 	const uid canvas_item_uid,
 	const SDL_RendererFlip flip,
-	const Color &modulate,
+	const ColorV &modulate,
 	const Transform2D &transform) const {
 	rendering_server->canvas_item_add_texture(texture_uid, canvas_item_uid, flip, modulate, transform);
 }
@@ -39,7 +39,7 @@ void sdl::UidTexture::draw_region(const std::unique_ptr<RenderingServer> &render
 	const uid canvas_item_uid,
 	const Rect2i &src_region,
 	const SDL_RendererFlip flip,
-	const Color &modulate,
+	const ColorV &modulate,
 	const Transform2D &transform ) const {
 	rendering_server->canvas_item_add_texture_region(texture_uid, canvas_item_uid, src_region, flip, modulate, transform);
 }

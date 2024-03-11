@@ -10,7 +10,7 @@ using namespace sdl;
 Node2D::Node2D():
     transform(Transform2D::IDENTITY),
     canvas_item(0),
-    modulate(Color::WHITE),
+    modulate(ColorV(255, 255, 255, 255)),
     blend_mode(SDL_BLENDMODE_BLEND),
     scale_mode(SDL_ScaleModeLinear),
     visible(true),
@@ -169,20 +169,20 @@ const Transform2D Node2D::get_global_transform() const {
 	return transform;
 }
 
-void Node2D::set_modulate(const Color &new_modulate) {
+void Node2D::set_modulate(const ColorV &new_modulate) {
 	modulate = new_modulate;
 	queue_redraw();
 }
 
-const Color &Node2D::get_modulate() const {
+const ColorV &Node2D::get_modulate() const {
 	return modulate;
 }
 
-const Color Node2D::get_absolute_modulate() const {
+const ColorV Node2D::get_absolute_modulate() const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 
 	if (rendering_server) {
-		const std::optional<const Color> absolute_modulate = rendering_server->canvas_item_get_global_modulate(canvas_item);
+		const std::optional<const ColorV> absolute_modulate = rendering_server->canvas_item_get_global_modulate(canvas_item);
 		return absolute_modulate.has_value() ? absolute_modulate.value() : modulate;
 	}
 
@@ -268,37 +268,37 @@ void Node2D::set_zindex_relative(const bool zindex_relative) {
 	queue_redraw();
 }
 
-void Node2D::draw_texture(const std::shared_ptr<Texture2D> &texture, const Transform2D &texture_transform, const Color &modulation) const {
+void Node2D::draw_texture(const std::shared_ptr<Texture2D> &texture, const Transform2D &texture_transform, const ColorV &modulation) const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_texture(texture->get_uid(), canvas_item, SDL_FLIP_NONE, modulation, texture_transform);
 }
 
-void Node2D::draw_texture_rect(const std::shared_ptr<Texture2D> &texture, const Rect2i &region, const Transform2D &texture_transform, const Color &modulation) const {
+void Node2D::draw_texture_rect(const std::shared_ptr<Texture2D> &texture, const Rect2i &region, const Transform2D &texture_transform, const ColorV &modulation) const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_texture_region(texture->get_uid(), canvas_item, region, SDL_FLIP_NONE, modulation, texture_transform);
 }
 
-void Node2D::draw_line(const Vector2f &start, const Vector2f &end, const Color &modulation) const {
+void Node2D::draw_line(const Vector2f &start, const Vector2f &end, const ColorV &modulation) const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_line(canvas_item, start, end,  modulation);
 }
 
-void Node2D::draw_lines(const std::vector<SDL_FPoint> &points, const Color &modulation) const {
+void Node2D::draw_lines(const std::vector<SDL_FPoint> &points, const ColorV &modulation) const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_lines(canvas_item, points, modulation);
 }
 
-void Node2D::draw_rect(const Rect2f &rect, const Color &modulation) const {
+void Node2D::draw_rect(const Rect2f &rect, const ColorV &modulation) const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_rect(canvas_item, rect, modulation);
 }
 
-void Node2D::draw_rects(const std::vector<SDL_FRect> &rects, const Color &modulation) const {
+void Node2D::draw_rects(const std::vector<SDL_FRect> &rects, const ColorV &modulation) const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 	if (rendering_server)
 		rendering_server->canvas_item_add_rects(canvas_item, rects, modulation);

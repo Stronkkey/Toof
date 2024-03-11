@@ -14,7 +14,7 @@ struct DrawingItem;
 
 struct CanvasItem {
 	Transform2D transform, global_transform = Transform2D::IDENTITY;
-	Color modulate, global_modulate = Color::WHITE;
+	ColorV modulate, global_modulate = ColorV::WHITE();
 	bool visible, zindex_relative, global_visible = true;
 	int zindex, global_zindex = 0;
 
@@ -30,7 +30,7 @@ struct CanvasItem {
 	void set_global_zindex();
 
 	const Transform2D &get_global_transform();
-	const Color &get_global_modulate();
+	const ColorV &get_global_modulate();
 	bool is_globally_visible();
 	int get_global_zindex();
 };

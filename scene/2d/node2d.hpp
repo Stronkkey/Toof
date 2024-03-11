@@ -22,7 +22,7 @@ public:
 private:
 	Transform2D transform;
 	uid canvas_item;
-	Color modulate;
+	ColorV modulate;
 	SDL_BlendMode blend_mode;
 	SDL_ScaleMode scale_mode;
 	bool visible;
@@ -172,17 +172,17 @@ public:
 	/**
 	* Sets the modulate (tint) for this node2d, relative to the parent.
 	*/
-	void set_modulate(const Color &new_modulate);
+	void set_modulate(const ColorV &new_modulate);
 
 	/**
 	* @returns the modulate (tint) of this node2d, relative to the parent.
 	*/
-	const Color &get_modulate() const;
+	const ColorV &get_modulate() const;
 
 	/**
 	* @returns the global modulation (tint) of this node2d.
 	*/
-	const Color get_absolute_modulate() const;
+	const ColorV get_absolute_modulate() const;
 
 	/**
 	* Sets the blending mode for this node2d to @param new_blend_mode that is used for future draw operations.
@@ -276,37 +276,37 @@ public:
 	* Draws the @param texture on this node2d using the RenderingServer.
 	* @see also RenderingServer::canvas_item_add_texture.
 	*/
-	void draw_texture(const std::shared_ptr<Texture2D> &texture, const Transform2D &texture_transform = Transform2D::IDENTITY, const Color &modulation = Color::WHITE) const;
+	void draw_texture(const std::shared_ptr<Texture2D> &texture, const Transform2D &texture_transform = Transform2D::IDENTITY, const ColorV &modulation = ColorV::WHITE()) const;
 
 	/**
 	* Draws the @param texture in the specified @param region using RenderingServer.
 	* @see also RenderingServer::canvas_item_add_texture_region.
 	*/
-	void draw_texture_rect(const std::shared_ptr<Texture2D> &texture, const Rect2i &region, const Transform2D &texture_transform = Transform2D::IDENTITY, const Color &modulation = Color::WHITE) const;
+	void draw_texture_rect(const std::shared_ptr<Texture2D> &texture, const Rect2i &region, const Transform2D &texture_transform = Transform2D::IDENTITY, const ColorV &modulation = ColorV::WHITE()) const;
 	
 	/**
 	* Draws a colored line beginning from @param start to @param end with the color @param modulation using the RenderingServer.
 	* @see also RenderingServer::canvas_item_add_line.
 	*/
-	void draw_line(const Vector2f &start, const Vector2f &end, const Color &modulation = Color::WHITE) const;
+	void draw_line(const Vector2f &start, const Vector2f &end, const ColorV &modulation = ColorV::WHITE()) const;
 
 	/**
 	* Draws multiple lines with the color @param modulation using the RenderingServer.
 	* @see also RenderingServer::canvas_item_add_lines.
 	*/
-	void draw_lines(const std::vector<SDL_FPoint> &points, const Color &modulation = Color::WHITE) const;
+	void draw_lines(const std::vector<SDL_FPoint> &points, const ColorV &modulation = ColorV::WHITE()) const;
 
 	/**
 	* Draws a colored rectangle that is inside @param rect with color @param modulation.
 	* @see also RenderingServer::canvas_item_add_rect.
 	*/
-	void draw_rect(const Rect2f &rect, const Color &modulation = Color::WHITE) const;
+	void draw_rect(const Rect2f &rect, const ColorV &modulation = ColorV::WHITE()) const;
 
 	/**
 	* Draws multipled rectangle with the color @param modulation using the RenderingServer.
 	* @see also RenderingServer::canvas_item_add_rects.
 	*/
-	void draw_rects(const std::vector<SDL_FRect> &rects, const Color &modulation = Color::WHITE) const;
+	void draw_rects(const std::vector<SDL_FRect> &rects, const ColorV &modulation = ColorV::WHITE()) const;
 };
 
 }

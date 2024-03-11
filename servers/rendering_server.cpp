@@ -13,7 +13,7 @@ using namespace sdl;
 RenderingServer::RenderingServer(Viewport *viewport): viewport(viewport),
     textures(),
     canvas_items(),
-    background_color(Color(77, 77, 77, 255)),
+    background_color(ColorV(77, 77, 77, 255)),
     uid_index(1) {
 }
 
@@ -165,7 +165,7 @@ uid RenderingServer::create_canvas_item() {
 	return new_uid;
 }
 
-void RenderingServer::canvas_item_add_texture(const uid texture_uid, const uid canvas_item_uid, const SDL_RendererFlip flip, const Color &modulate, const Transform2D &transform) {
+void RenderingServer::canvas_item_add_texture(const uid texture_uid, const uid canvas_item_uid, const SDL_RendererFlip flip, const ColorV &modulate, const Transform2D &transform) {
 	const std::shared_ptr<CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 	const std::shared_ptr<Texture> &texture = get_texture_from_uid(texture_uid);
 
@@ -182,7 +182,7 @@ void RenderingServer::canvas_item_add_texture(const uid texture_uid, const uid c
 	canvas_item->drawing_items.push_back(std::move(texture_drawing_item));
 }
 
-void RenderingServer::canvas_item_add_texture_region(const uid texture_uid, const uid canvas_item_uid ,const Rect2i &src_region, const SDL_RendererFlip flip, const Color &modulate, const Transform2D &transform) {
+void RenderingServer::canvas_item_add_texture_region(const uid texture_uid, const uid canvas_item_uid ,const Rect2i &src_region, const SDL_RendererFlip flip, const ColorV &modulate, const Transform2D &transform) {
 	const std::shared_ptr<Texture> &texture = get_texture_from_uid(texture_uid);
 	const std::shared_ptr<CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
@@ -200,7 +200,7 @@ void RenderingServer::canvas_item_add_texture_region(const uid texture_uid, cons
 	canvas_item->drawing_items.push_back(std::move(texture_rect_drawing_item));
 }
 
-void RenderingServer::canvas_item_add_line(const uid canvas_item_uid, const Vector2f &start, const Vector2f &end, const Color &modulate) {
+void RenderingServer::canvas_item_add_line(const uid canvas_item_uid, const Vector2f &start, const Vector2f &end, const ColorV &modulate) {
 	const std::shared_ptr<CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (!canvas_item)
@@ -215,7 +215,7 @@ void RenderingServer::canvas_item_add_line(const uid canvas_item_uid, const Vect
 	canvas_item->drawing_items.push_back(std::move(line_drawing_item));
 }
 
-void RenderingServer::canvas_item_add_lines(const uid canvas_item_uid, const std::vector<SDL_FPoint> &points, const Color &modulate) {
+void RenderingServer::canvas_item_add_lines(const uid canvas_item_uid, const std::vector<SDL_FPoint> &points, const ColorV &modulate) {
 	const std::shared_ptr<CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (!canvas_item || points.empty())
@@ -229,7 +229,7 @@ void RenderingServer::canvas_item_add_lines(const uid canvas_item_uid, const std
 	canvas_item->drawing_items.push_back(std::move(lines_drawing_item));
 }
 
-void RenderingServer::canvas_item_add_rect(const uid canvas_item_uid, const Rect2f &rect, const Color &modulate) {
+void RenderingServer::canvas_item_add_rect(const uid canvas_item_uid, const Rect2f &rect, const ColorV &modulate) {
 	const std::shared_ptr<CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (!canvas_item || !rect.has_area())
@@ -243,7 +243,7 @@ void RenderingServer::canvas_item_add_rect(const uid canvas_item_uid, const Rect
 	canvas_item->drawing_items.push_back(std::move(rect_drawing_item));
 }
 
-void RenderingServer::canvas_item_add_rects(const uid canvas_item_uid, const std::vector<SDL_FRect> &rectangles, const Color &modulate) {
+void RenderingServer::canvas_item_add_rects(const uid canvas_item_uid, const std::vector<SDL_FRect> &rectangles, const ColorV &modulate) {
 	const std::shared_ptr<CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (!canvas_item || rectangles.empty())
@@ -277,7 +277,7 @@ void RenderingServer::canvas_item_set_parent(const uid canvas_item_uid, const ui
 		canvas_item->parent = std::weak_ptr<CanvasItem>();
 }
 
-void RenderingServer::canvas_item_set_modulate(const uid canvas_item_uid, const Color &new_modulate) {
+void RenderingServer::canvas_item_set_modulate(const uid canvas_item_uid, const ColorV &new_modulate) {
 	const std::shared_ptr<CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
@@ -350,7 +350,7 @@ const std::optional<const Transform2D> RenderingServer::canvas_item_get_global_t
 	return std::nullopt;
 }
 
-const std::optional<const Color> RenderingServer::canvas_item_get_modulate(const uid canvas_item_uid) const {
+const std::optional<const ColorV> RenderingServer::canvas_item_get_modulate(const uid canvas_item_uid) const {
 	const std::shared_ptr<CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
@@ -358,7 +358,7 @@ const std::optional<const Color> RenderingServer::canvas_item_get_modulate(const
 	return std::nullopt;
 }
 
-const std::optional<const Color> RenderingServer::canvas_item_get_global_modulate(const uid canvas_item_uid) const {
+const std::optional<const ColorV> RenderingServer::canvas_item_get_global_modulate(const uid canvas_item_uid) const {
 	const std::shared_ptr<CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)

@@ -26,7 +26,7 @@ private:
 	Viewport *viewport;
 	std::unordered_map<uid, std::shared_ptr<Texture>> textures;
 	std::unordered_map<uid, std::shared_ptr<CanvasItem>> canvas_items;
-	Color background_color;
+	ColorV background_color;
 	uid uid_index;
 
 	void render_canvas_item(const std::shared_ptr<CanvasItem> &canvas_item);
@@ -61,11 +61,11 @@ public:
 	std::optional<uid> load_texture_from_path(const String &path);
 	uid create_canvas_item();
 
-	constexpr void set_default_background_color(const Color &new_background_color) {
+	constexpr void set_default_background_color(const ColorV &new_background_color) {
 		background_color = new_background_color;
 	}
 
-	constexpr const Color &get_default_background_color() const {
+	constexpr const ColorV &get_default_background_color() const {
 		return background_color;
 	}
 
@@ -73,17 +73,17 @@ public:
 
 	std::optional<TextureInfo> get_texture_info_from_uid(const uid texture_uid) const;
 
-	void canvas_item_add_texture(const uid texture_uid, const uid canvas_item_uid, const SDL_RendererFlip flip = SDL_FLIP_NONE, const Color &modulate = Color::WHITE, const Transform2D &transform = Transform2D::IDENTITY);
-	void canvas_item_add_texture_region(const uid texture_uid, const uid canvas_item_uid, const Rect2i &src_region, const SDL_RendererFlip flip = SDL_FLIP_NONE, const Color &modulate = Color::WHITE, const Transform2D &transform = Transform2D::IDENTITY);
+	void canvas_item_add_texture(const uid texture_uid, const uid canvas_item_uid, const SDL_RendererFlip flip = SDL_FLIP_NONE, const ColorV &modulate = ColorV::WHITE(), const Transform2D &transform = Transform2D::IDENTITY);
+	void canvas_item_add_texture_region(const uid texture_uid, const uid canvas_item_uid, const Rect2i &src_region, const SDL_RendererFlip flip = SDL_FLIP_NONE, const ColorV &modulate = ColorV::WHITE(), const Transform2D &transform = Transform2D::IDENTITY);
 
-	void canvas_item_add_line(const uid canvas_item_uid, const Vector2f &start, const Vector2f &end, const Color &modulate = Color::WHITE);
-	void canvas_item_add_lines(const uid canvas_item_uid, const std::vector<SDL_FPoint> &points, const Color &modulate = Color::WHITE);
-	void canvas_item_add_rect(const uid canvas_item_uid, const Rect2f &rect, const Color &modulate = Color::WHITE);
-	void canvas_item_add_rects(const uid canvas_item_uid, const std::vector<SDL_FRect> &rectangles, const Color &modulate = Color::WHITE);
+	void canvas_item_add_line(const uid canvas_item_uid, const Vector2f &start, const Vector2f &end, const ColorV &modulate = ColorV::WHITE());
+	void canvas_item_add_lines(const uid canvas_item_uid, const std::vector<SDL_FPoint> &points, const ColorV &modulate = ColorV::WHITE());
+	void canvas_item_add_rect(const uid canvas_item_uid, const Rect2f &rect, const ColorV &modulate = ColorV::WHITE());
+	void canvas_item_add_rects(const uid canvas_item_uid, const std::vector<SDL_FRect> &rectangles, const ColorV &modulate = ColorV::WHITE());
 
 	void canvas_item_set_transform(const uid canvas_item_uid, const Transform2D &new_transform);
 	void canvas_item_set_parent(const uid canvas_item_uid, const uid parent_item_uid);
-	void canvas_item_set_modulate(const uid canvas_item_uid, const Color &new_modulate);
+	void canvas_item_set_modulate(const uid canvas_item_uid, const ColorV &new_modulate);
 	void canvas_item_set_blend_mode(const uid canvas_item_uid, const SDL_BlendMode blend_mode);
 	void canvas_item_set_scale_mode(const uid canvas_item_uid, const SDL_ScaleMode scale_mode);
 	void canvas_item_clear(const uid canvas_item_uid);
@@ -97,8 +97,8 @@ public:
 	const std::optional<const Transform2D> canvas_item_get_transform(const uid canvas_item_uid) const;
 	const std::optional<const Transform2D> canvas_item_get_global_transform(const uid canvas_item_uid) const;
 
-	const std::optional<const Color> canvas_item_get_modulate(const uid canvas_item_uid) const;
-	const std::optional<const Color> canvas_item_get_global_modulate(const uid canvas_item_uid) const;
+	const std::optional<const ColorV> canvas_item_get_modulate(const uid canvas_item_uid) const;
+	const std::optional<const ColorV> canvas_item_get_global_modulate(const uid canvas_item_uid) const;
 
 	const std::optional<bool> canvas_item_is_visible(const uid canvas_item_uid) const;
 	const std::optional<bool> canvas_item_is_globally_visible(const uid canvas_item_uid) const;

@@ -34,7 +34,7 @@ void TextureDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, c
 
 	const std::shared_ptr<Texture> texture = this->texture.lock();
 
-	const Color &modulate = texture_modulate * canvas_item->get_global_modulate();
+	const ColorV &modulate = texture_modulate * canvas_item->get_global_modulate();
 
 	SDL_SetTextureAlphaMod(texture->texture_reference, modulate.a);
 	SDL_SetTextureColorMod(texture->texture_reference, modulate.r, modulate.g, modulate.b);

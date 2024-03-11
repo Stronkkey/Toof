@@ -23,7 +23,7 @@ public:
 	    const uid texture_uid,
 	    const uid canvas_item_uid,
 	    const SDL_RendererFlip flip = SDL_FLIP_NONE,
-	    const Color &modulate = Color::WHITE,
+	    const ColorV &modulate = ColorV::WHITE(),
 	    const Transform2D &transform = Transform2D::IDENTITY) const override;
 
 	void draw_region(const std::unique_ptr<RenderingServer> &rendering_server,
@@ -31,7 +31,7 @@ public:
 	    const uid canvas_item_uid,
 	    const Rect2i &src_region,
 	    const SDL_RendererFlip flip = SDL_FLIP_NONE,
-	    const Color &modulate = Color::WHITE,
+	    const ColorV &modulate = ColorV::WHITE(),
 	    const Transform2D &transform = Transform2D::IDENTITY) const override;
 
 	void load_from_path(const std::unique_ptr<RenderingServer> &rendering_server, const String &file_path);

@@ -21,8 +21,8 @@ SDL_Texture *sdl::Texture2D::get_texture(const std::unique_ptr<RenderingServer>&
 	return nullptr;
 }
 
-void sdl::Texture2D::draw(const std::unique_ptr<RenderingServer>&, const uid, const uid, const SDL_RendererFlip, const Color&, const Transform2D&) const {
+void sdl::Texture2D::draw(const std::unique_ptr<RenderingServer>&, const uid, const uid, const SDL_RendererFlip, const ColorV&, const Transform2D&) const {
 }
 
-void sdl::Texture2D::draw_region(const std::unique_ptr<RenderingServer>&, const uid, const uid, const Rect2i&, const SDL_RendererFlip, const Color&, const Transform2D&) const {
+void sdl::Texture2D::draw_region(const std::unique_ptr<RenderingServer>&, const uid, const uid, const Rect2i&, const SDL_RendererFlip, const ColorV&, const Transform2D&) const {
 }

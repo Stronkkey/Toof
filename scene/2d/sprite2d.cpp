@@ -22,11 +22,11 @@ Transform2D Sprite2D::_get_placement_texture_transform() const {
 }
 
 void Sprite2D::_draw_full_texture() const {
-	texture->draw(get_rendering_server(), texture->get_uid(), get_canvas_item(), flip, Color::WHITE, _get_placement_texture_transform());
+	texture->draw(get_rendering_server(), texture->get_uid(), get_canvas_item(), flip, ColorV::WHITE(), _get_placement_texture_transform());
 }
 
 void Sprite2D::_draw_rect_texture() const {
-	texture->draw_region(get_rendering_server(), texture->get_uid(), get_canvas_item(), texture_region, flip, Color::WHITE, _get_placement_texture_transform());
+	texture->draw_region(get_rendering_server(), texture->get_uid(), get_canvas_item(), texture_region, flip, ColorV::WHITE(), _get_placement_texture_transform());
 }
 
 void Sprite2D::_draw_texture() const {

@@ -30,7 +30,7 @@ struct DrawingItem {
 struct TextureDrawingItem: public DrawingItem {
 	std::weak_ptr<Texture> texture;
 
-	Color texture_modulate;
+	ColorV texture_modulate;
 	bool use_region;
 	SDL_RendererFlip flip;
 	Rect2i src_region;
@@ -42,7 +42,7 @@ struct TextureDrawingItem: public DrawingItem {
 
 struct RectDrawingItem: public DrawingItem {
 	SDL_FRect rectangle;
-	Color modulate;
+	ColorV modulate;
 
 	void _draw(const std::shared_ptr<CanvasItem> &canvas_item,const Viewport *viewport) override;
 
@@ -51,7 +51,7 @@ struct RectDrawingItem: public DrawingItem {
 
 struct RectsDrawingItem: public DrawingItem {
 	std::vector<SDL_FRect> rectangles;
-	Color modulate;
+	ColorV modulate;
 
 	void _draw(const std::shared_ptr<CanvasItem> &canvas_item,const Viewport *viewport) override;
 	
@@ -61,7 +61,7 @@ struct RectsDrawingItem: public DrawingItem {
 struct LineDrawingItem: public DrawingItem {
 	SDL_FPoint start_point;
 	SDL_FPoint end_point;
-	Color modulate;
+	ColorV modulate;
 
 	void _draw(const std::shared_ptr<CanvasItem> &canvas_item,const Viewport *viewport) override;
 
@@ -70,7 +70,7 @@ struct LineDrawingItem: public DrawingItem {
 
 struct LinesDrawingItem: public DrawingItem {
 	std::vector<SDL_FPoint> points;
-	Color modulate;
+	ColorV modulate;
 
 	void _draw(const std::shared_ptr<CanvasItem> &canvas_item,const Viewport *viewport) override;
 	
