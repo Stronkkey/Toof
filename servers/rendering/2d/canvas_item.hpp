@@ -13,10 +13,15 @@ namespace sdl {
 struct __DrawingItem__;
 
 struct __CanvasItem__ {
-	Transform2D transform, global_transform = Transform2D::IDENTITY;
-	ColorV modulate, global_modulate = ColorV::WHITE();
-	bool visible, zindex_relative, global_visible = true;
-	int zindex, global_zindex = 0;
+	Transform2D transform = Transform2D::IDENTITY;
+	Transform2D global_transform = Transform2D::IDENTITY;
+	ColorV modulate = ColorV::WHITE();
+	ColorV global_modulate = ColorV::WHITE();
+	bool visible = true;
+	bool zindex_relative = true;
+	bool global_visible = true;
+	int zindex = true;
+	int global_zindex = 0;
 
 	SDL_BlendMode blend_mode = SDL_BLENDMODE_BLEND;
 	SDL_ScaleMode scale_mode = SDL_ScaleModeLinear;
