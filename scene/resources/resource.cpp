@@ -10,6 +10,5 @@ uid Resource::_get_uid() const {
 }
 
 uid Resource::get_uid() const {
-	class_to_bytes(*this);
 	return _get_uid();
 }
