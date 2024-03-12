@@ -2,16 +2,16 @@
 
 #pragma once
 
-#ifndef PHYSICS_PX_METER_RATIO
-#define PHYSICS_PX_METER_RATIO 100
+#ifndef __PHYSICS_PX_METER_RATIO__
+#define __PHYSICS_PX_METER_RATIO__ 100
 #endif
 
-#ifndef DEFAULT_GRAVITY_X
-#define DEFAULT_GRAVITY_X 0
+#ifndef __DEFAULT_GRAVITY_X__
+#define __DEFAULT_GRAVITY_X__ 0
 #endif
 
-#ifndef DEFAULT_GRAVITY_Y
-#define DEFAULT_GRAVITY_Y 9.8
+#ifndef __DEFAULT_GRAVITY_Y__
+#define __DEFAULT_GRAVITY_Y__ 9.8
 #endif
 
 #include <ratio>
@@ -22,8 +22,8 @@ namespace sdl {
 
 namespace Physics {
 
-const Vector2f default_gravity = Vector2f(DEFAULT_GRAVITY_X, DEFAULT_GRAVITY_Y);
-const std::ratio px_to_meter_ratio = std::ratio<1, PHYSICS_PX_METER_RATIO>();
+const Vector2f default_gravity = Vector2f(__DEFAULT_GRAVITY_X__, __DEFAULT_GRAVITY_Y__);
+const std::ratio px_to_meter_ratio = std::ratio<1, __PHYSICS_PX_METER_RATIO__>();
 #ifdef B2_INCLUDED
 const bool physics_enabled = true;
 #else
