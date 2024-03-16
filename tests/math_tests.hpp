@@ -11,12 +11,12 @@ namespace Tests {
 #define SET_GET_PROPERTY(property_name, property_type) private: property_type property_name; GET_PROPERTY(property_name, property_type); SET_PROPERTY(property_name, property_type); 
 */
 
-OVERRIDE_TEST(ColorTest)
-OVERRIDE_TEST(Geometry2DTest);
-OVERRIDE_TEST(Rect2Test);
-OVERRIDE_TEST(Transform2DTest);
-OVERRIDE_TEST(Vector2Test);
-OVERRIDE_TEST(MathTest);
+__OVERRIDE_TEST__(ColorTest)
+__OVERRIDE_TEST__(Geometry2DTest);
+__OVERRIDE_TEST__(Rect2Test);
+__OVERRIDE_TEST__(Transform2DTest);
+__OVERRIDE_TEST__(Vector2Test);
+__OVERRIDE_TEST__(MathTest);
 
 }
 
