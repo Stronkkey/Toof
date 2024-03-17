@@ -94,6 +94,14 @@ public:
 	}
 
 	/**
+	* Disconnect all bound callables from this signal.
+	*/
+	void disconnect_all() {
+		iterate_callables.clear();
+		search_callables.clear();
+	}
+
+	/**
 	* @returns an Array of connections for this signal.
 	*/
 	std::vector<Callable> get_connections() const {
