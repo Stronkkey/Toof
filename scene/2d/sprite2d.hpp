@@ -24,7 +24,7 @@ public:
 	Sprite2D();
 	~Sprite2D() = default;
 
-	boost::signals2::signal<void()> texture_changed;
+	Signal<> texture_changed;
 
 	void set_texture(const std::shared_ptr<Texture2D> &new_texture);
 	constexpr const std::shared_ptr<Texture2D> &get_texture() const {

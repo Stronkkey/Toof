@@ -38,7 +38,6 @@ test_headers = [
 ]
 
 project_dependencies = [
-  dependency('boost'),
   dependency('sdl2'),
   dependency('sdl2_image'),
   dependency('box2d'),

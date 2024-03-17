@@ -1,13 +1,12 @@
 #pragma once
 
 #include <core/string/string_def.hpp>
+#include <core/memory/signal.hpp>
 
 #include <memory>
 #include <unordered_set>
 
 #include <SDL_events.h>
-
-#include <boost/signals2.hpp>
 
 namespace sdl {
 
@@ -117,24 +116,24 @@ public:
 	/**
 	* Emitted when the node is ready. Called after _ready callback and follows the same rules.
 	*/
-	boost::signals2::signal<void()> ready;
+	Signal<> ready;
 
 	/**
 	* Emitted when the node is renamed.
 	*/
-	boost::signals2::signal<void(const String &name)> renamed;
+	Signal<const String&> renamed;
 
 	/**
 	* Emitted when the node enters the tree.
 	* This signal is emitted before the related NOTIFICATION_ENTER_TREE notification.
 	*/
-	boost::signals2::signal<void()> tree_entering;
+	Signal<> tree_entering;
 
 	/**
 	* Emitted when the node is still active but about to exit the tree. This is the right place for de-initialization (or a "destructor", if you will).
 	* This signal is emitted before the related NOTIFICATION_EXIT_TREE notification
 	*/
-	boost::signals2::signal<void()> tree_exiting;
+	Signal<> tree_exiting;
 
 	/**
 	* @returns the global event from the tree.

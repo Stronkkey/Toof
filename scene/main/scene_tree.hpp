@@ -1,8 +1,10 @@
 #pragma once
 
+#include <core/memory/signal.hpp>
+
 #include <SDL_events.h>
 
-#include <boost/signals2.hpp>
+#include <memory>
 
 namespace sdl {
 
@@ -69,10 +71,10 @@ public:
 	SceneTree();
 	virtual ~SceneTree();
 
-	boost::signals2::signal<void()> process_frame;
-	boost::signals2::signal<void()> render_frame;
-	boost::signals2::signal<void()> deferred_signals;
-	boost::signals2::signal<void()> physics_frame;
+	Signal<> process_frame;
+	Signal<> render_frame;
+	Signal<> deferred_signals;
+	Signal<> physics_frame;
 
 	constexpr const std::unique_ptr<Window> &get_window() const {
 		return window;

@@ -1,2 +1,2 @@
 An SDL library.
-Dependencies boost, SDL2, Box2D, and SDL2 Image.
+Dependencies SDL2, Box2D (for physics), and SDL2 Image.

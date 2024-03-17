@@ -64,17 +64,17 @@ public:
 	/**
 	* Emitted when the renderingitem must redraw, after the related NOTIFICATION_DRAW notification, and before _draw is called.
 	*/
-	boost::signals2::signal<void()> draw;
+	Signal<> draw;
 
 	/**
 	* Emitted when becoming hidden.
 	*/
-	boost::signals2::signal<void()> hidden;
+	Signal<> hidden;
 
 	/**
 	* Emitted when the visibility (hidden/visible) changes.
 	*/
-	boost::signals2::signal<void()> visibility_changed;
+	Signal<> visibility_changed;
 
 	/**
 	* @returns the CanvasItem uid used by the RenderingServer for this item.

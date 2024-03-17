@@ -101,7 +101,7 @@ void SceneTree::step_process(const double delta) {
 	for (Node *item: deferred_item_removal)
 		delete item;
 
-	deferred_signals.disconnect_all_slots();
+	deferred_signals.disconnect_all();
 	deferred_item_removal.clear();
 }
 
