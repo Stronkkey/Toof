@@ -1,22 +1,16 @@
 #pragma once
 
-#include <algorithm>
-#include <optional>
-#include <set>
 #include <functional>
 #include <unordered_map>
 #include <list>
 
 namespace sdl {
 
-template<class, class...>
-struct __Function_Storer__;
-
-template<class R, class... Args>
+template<class... Args>
 struct __Function_Storer__ {
 	using __Container_Iterator__ = typename std::list<__Function_Storer__>::iterator;
-	using __Signature__ = R(Args...);
-	using __Function_Ptr__ = R(*)(Args...);
+	using __Signature__ = void(Args...);
+	using __Function_Ptr__ = void(*)(Args...);
 	using __Function__ = std::function<__Signature__>;
 	using __index__ = __Container_Iterator__;
 
@@ -36,24 +30,24 @@ struct __Function_Storer__ {
 	}
 };
 
-template<class>
-class Signal;
-
 /**
 * A type representing a signal using the observer pattern.
 */
-template<class R, class... Args>
-class Signal<R(Args...)> {
+template<class... Args>
+class Signal {
 private:
-	using __Stored_Function__ = __Function_Storer__<R, Args...>;
+	using __Stored_Function__ = __Function_Storer__<Args...>;
 	using __Container_Type__ = std::list<__Stored_Function__>;
 
 	__Container_Type__ iterate_callables = {};
 	std::unordered_map<__Stored_Function__, typename __Container_Type__::iterator> search_callables = {};
 public:
-	using Signature = R(Args...);
+	using Signature = void(Args...);
+
+	/**
+	* Satisfies Callable requirement and returns void.
+	*/
 	using Callable = std::function<Signature>;
-	using ReturnValue = R;
 
 	Signal() = default;
 	~Signal() = default;
@@ -67,7 +61,7 @@ public:
 
 	/**
 	* Connects this signal to the @param callable.
-	* @note a signal can only be connected once to the same Callable.
+	* @note A signal can only be connected once to the same Callable.
 	* @see also is_connected.
 	*/
 	void connect(const Callable &callable) {
@@ -116,10 +110,10 @@ public:
 
 }
 
-template<class R, class... Args>
-struct std::hash<sdl::__Function_Storer__<R, Args...>> {
-	using __T__ = sdl::__Function_Storer__<R, Args...>;
-	using __Function_Pointer__ = R(*)(Args...);
+template<class... Args>
+struct std::hash<sdl::__Function_Storer__<Args...>> {
+	using __T__ = sdl::__Function_Storer__<Args...>;
+	using __Function_Pointer__ = void(*)(Args...);
 
 	size_t operator()(const __T__ &storer) const noexcept {
 		const auto &ptr = storer.function.template target<__Function_Pointer__>();
