@@ -8,7 +8,7 @@
 using namespace sdl::Tests;
 
 using Transform2D = sdl::Transform2D;
-using Color = sdl::Color;
+using ColorV = sdl::ColorV;
 
 using sdl::Math::CMP_EPSILON;
 using sdl::Math::PI;
