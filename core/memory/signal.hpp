@@ -26,7 +26,12 @@ struct __Function_Storer__ {
 	__Function_Storer__(const __Function_Storer__ &right) = default;
 
 	bool operator==(const __Function_Storer__ &storer) const {
-		return (*function.template target<__Function_Ptr__>()) == (*storer.function.template target<__Function_Ptr__>());
+		const auto &ptr1 = function.template target<__Function_Ptr__>();
+		const auto &ptr2 = storer.function.template target<__Function_Ptr__>();
+		if (!ptr1 || !ptr2)
+			return false;
+
+		return (*ptr1) == (*ptr2);
 	}
 };
 
@@ -35,21 +40,39 @@ struct __Function_Storer__ {
 */
 template<class... Args>
 class Signal {
+public:
+	using Signature = void(Args...);
+	using Callable = std::function<Signature>;
 private:
 	using __Stored_Function__ = __Function_Storer__<Args...>;
 	using __Container_Type__ = std::list<__Stored_Function__>;
 
 	__Container_Type__ iterate_callables = {};
 	std::unordered_map<__Stored_Function__, typename __Container_Type__::iterator> search_callables = {};
+private:
+	void _add_callable(const Callable &callable) {
+		if (search_callables.count(callable))
+			return;
+
+		iterate_callables.push_back(callable);
+		search_callables.insert({callable, --iterate_callables.end()});
+	}
+
+	void _disconnect_callable(const Callable &callable) {
+		const auto &iterator = search_callables.find(callable);
+		if (iterator != search_callables.end()) {
+			iterate_callables.erase(iterator->second);
+			search_callables.erase(iterator->first);
+		}
+	}
 public:
-	using Signature = void(Args...);
-
-	/**
-	* Satisfies Callable requirement and returns void.
-	*/
-	using Callable = std::function<Signature>;
-
 	Signal() = default;
+
+	Signal(const std::initializer_list<Callable> &callables) {
+		for (const auto &callable: callables)
+			_add_callable(callable);
+	}
+
 	~Signal() = default;
 
 	/**
@@ -65,11 +88,7 @@ public:
 	* @see also is_connected.
 	*/
 	void connect(const Callable &callable) {
-		if (search_callables.count(callable))
-			return;
-
-		iterate_callables.push_back(callable);
-		search_callables.insert({callable, --iterate_callables.end()});
+		_add_callable(callable);
 	}
 
 	/**
@@ -77,11 +96,7 @@ public:
 	* @see also is_connected.
 	*/
 	void disconnect(const Callable &callable) {
-		const auto &iterator = search_callables.find(callable);
-		if (iterator != search_callables.end()) {
-			iterate_callables.erase(iterator->second);
-			search_callables.erase(iterator->first);
-		}
+		_disconnect_callable(callable);
 	}
 
 	/**
