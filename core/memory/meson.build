@@ -1,5 +1,10 @@
 core_memory_source_files = files()
 
 core_memory_headers = files(
-	'signal.hpp'
+	'angle_hash.hpp',
+	'color_hash.hpp',
+	'rect2_hash.hpp',
+	'signal.hpp',
+	'transform2d_hash.hpp',
+	'vector2_hash.hpp',
 )
