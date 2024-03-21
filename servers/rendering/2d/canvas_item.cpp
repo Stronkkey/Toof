@@ -3,9 +3,10 @@
 
 using namespace sdl;
 
+#define __EXPIRED_CHECK__ if (parent.expired()) {parent.reset(); return; }
+
 void __CanvasItem__::set_global_transform() {
-	if (parent.expired())
-		return;
+	__EXPIRED_CHECK__
 
 	global_transform = transform;
 	std::shared_ptr<__CanvasItem__> parent_canvas_item = parent.lock();
@@ -17,8 +18,7 @@ void __CanvasItem__::set_global_transform() {
 }
 
 void __CanvasItem__::set_global_modulate() {
-	if (parent.expired())
-		return;
+	__EXPIRED_CHECK__
 
 	global_modulate = modulate;
 	std::shared_ptr<__CanvasItem__> parent_canvas_item = parent.lock();
@@ -30,8 +30,7 @@ void __CanvasItem__::set_global_modulate() {
 }
 
 void __CanvasItem__::set_global_visible() {
-	if (parent.expired())
-		return;
+	__EXPIRED_CHECK__
 
 	if (!visible) {
 		global_visible = false;
@@ -48,8 +47,7 @@ void __CanvasItem__::set_global_visible() {
 }
 
 void __CanvasItem__::set_global_zindex() {
-	if (parent.expired())
-		return;
+	__EXPIRED_CHECK__
 
 	if (!zindex_relative) {
 		global_zindex = zindex;
