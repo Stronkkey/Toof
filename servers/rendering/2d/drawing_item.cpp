@@ -42,20 +42,18 @@ void __TextureDrawingItem__::_draw(const std::shared_ptr<__CanvasItem__> &canvas
 	SDL_SetTextureScaleMode(texture->texture_reference, canvas_item->scale_mode);
 
 	const Transform2D &global_transform = canvas_item->get_global_transform() * viewport->get_canvas_transform();
-	const Rect2i source_region = use_region ? src_region : Rect2i(Vector2i(), texture->size);
+	const Rect2i &source_region = use_region ? src_region : Rect2i(Vector2i(), texture->size);
 	const Angle rotation = global_transform.rotation + transform.rotation;
 	Rect2f final_draw_rect = rect2f_add_transform(_get_draw_rect(canvas_item), viewport->get_canvas_transform());
 	final_draw_rect.rounded();
 
 	SDL_Rect final_source_region = source_region.to_sdl_rect();
 	SDL_FRect final_destination = final_draw_rect.to_sdl_frect();
-	SDL_Renderer *renderer = viewport->get_renderer();
-	SDL_Texture *final_texture = texture->texture_reference;
 
 	if (rotation.is_zero_angle())
-		SDL_RenderCopyF(renderer, final_texture, &final_source_region, &final_destination);
+		SDL_RenderCopyF(viewport->get_renderer(), texture->texture_reference, &final_source_region, &final_destination);
 	else
-		SDL_RenderCopyExF(renderer, final_texture, &final_source_region, &final_destination, rotation.get_angle_degrees(), NULL, flip);
+		SDL_RenderCopyExF(viewport->get_renderer(), texture->texture_reference, &final_source_region, &final_destination, rotation.get_angle_degrees(), nullptr, flip);
 }
 
 void __RectDrawingItem__::_draw(const std::shared_ptr<__CanvasItem__> &canvas_item, const Viewport *viewport) {
