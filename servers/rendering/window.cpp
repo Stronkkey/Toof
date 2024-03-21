@@ -8,7 +8,7 @@ using namespace sdl;
 
 Window::InitilizationStatus Window::initialized = Window::NOT_INITIALIZED;
 
-Window::Window() : window_title("SDL Example"), window_rect(Rect2i(0, 0, 320, 240)) {
+Window::Window() : window_title("Window"), window_rect(Rect2i(0, 0, 320, 240)) {
 	try_initialize();
 	if (!intialized_successfully())
 		return;
