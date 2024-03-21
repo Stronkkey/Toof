@@ -17,12 +17,12 @@ Vector2i Viewport::get_viewport_size() const {
 	int x;
 	int y;
 	SDL_GetRendererOutputSize(renderer, &x, &y);
-	return Vector2i(x, y);
+	return Vector2i((integer)x, (integer)y);
 }
 
 void Viewport::set_vsync_enabled(const bool vsync_enabled) {
 	vsync = vsync_enabled;
-	SDL_RenderSetVSync(renderer, vsync_enabled ? 1 : 0);
+	SDL_RenderSetVSync(renderer, vsync_enabled);
 }
 
 void Viewport::set_canvas_transform(const Transform2D &new_canvas_transform) {
