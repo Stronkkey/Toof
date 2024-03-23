@@ -4,7 +4,7 @@
 using namespace sdl;
 
 Camera2D::Camera2D(): offset(),
-    zoom(Vector2f(1, 1)),
+    zoom(Vector2f::ONE()),
     position_smoothing_speed(10.0),
     rotation_smoothing_speed(10.0),
     drag_bottom_margin(0.2),
@@ -56,7 +56,7 @@ Angle Camera2D::_get_target_rotation() const {
 	Angle target_rotation;
 
 	if (ignore_rotation)
-		target_rotation = Angle();
+		target_rotation = Angle::ZERO_ROTATION();
 	else
 	 	target_rotation = get_global_rotation();
 
@@ -82,7 +82,7 @@ Transform2D Camera2D::_get_canvas_transform() const {
 Vector2f Camera2D::_get_camera_position() const {
 	const Viewport *viewport = get_rendering_server() ? get_rendering_server()->get_viewport() : nullptr;
 
-	Vector2f camera_position = viewport ? viewport->get_canvas_transform().origin : Vector2f();
+	Vector2f camera_position = viewport ? viewport->get_canvas_transform().origin : Vector2f::ZERO();
 	if (viewport && anchor_mode == CAMERA2D_ANCHOR_DRAG_CENTER)
 		camera_position -= (viewport->get_viewport_size() / (unsigned long)2.0);
 

@@ -99,6 +99,41 @@ public:
 	}
 
 	[[nodiscard]] operator String() const;
+
+	/**
+	* A constant expression equivalent to an Angle with a rotation of 0 degrees.
+	*/
+	static constexpr Angle ZERO_ROTATION() {
+		return Angle(0.0);
+	}
+
+	/**
+	* A constant expression equivalent to an Angle with a rotation of 90 degrees.
+	*/
+	static constexpr Angle QUARTER_PAST_ROTATION() {
+		return Angle(90.0);
+	}
+
+	/**
+	* A constant expression equivalent to an Angle with a rotation of 180 degrees.
+	*/
+	static constexpr Angle HALF_ROTATION() {
+		return Angle(180.0);
+	}
+
+	/**
+	* A constant expression equivalent to an Angle with a rotation of 270 degrees.
+	*/
+	static constexpr Angle QUARTER_TO_ROTATION() {
+		return Angle(270.0);
+	}
+
+	/**
+	* A constant expression equivalent to an Angle with a rotation of 360 degrees.
+	*/
+	static constexpr Angle FULL_ROTATION() {
+		return Angle(360.0);
+	}
 };
 
 }

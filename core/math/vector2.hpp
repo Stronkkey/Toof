@@ -353,6 +353,30 @@ struct Vector2 {
 		return b2Vec2((float)x, (float)y);
 	}
 	#endif
+
+	static constexpr Vector2 ZERO() {
+		return Vector2(0, 0);
+	}
+
+	static constexpr Vector2 ONE() {
+		return Vector2(1, 1);
+	}
+
+	static constexpr Vector2 LEFT() {
+		return Vector2(-1, 0);
+	}
+
+	static constexpr Vector2 RIGHT() {
+		return Vector2(1, 0);
+	}
+
+	static constexpr Vector2 DOWN() {
+		return Vector2(0, 1);
+	}
+
+	static constexpr Vector2 UP() {
+		return Vector2(0, -1);
+	}
 };
 
 typedef Vector2<real> Vector2f;

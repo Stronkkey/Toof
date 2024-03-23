@@ -17,7 +17,7 @@ namespace Geometry2D {
 * @param circle_radius describes the radius of the circle.
 * @param circle_position describes the position of the circle.
 */
-constexpr bool is_point_inside_circle(const real circle_radius, const Vector2f &point, const Vector2f &circle_position = Vector2f(1, 1)) {
+constexpr bool is_point_inside_circle(const real circle_radius, const Vector2f &point, const Vector2f &circle_position = Vector2f::ONE()) {
 	return point.distance_to_squared(circle_position) <= circle_radius * circle_radius;
 }
 

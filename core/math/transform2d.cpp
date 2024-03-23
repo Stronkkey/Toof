@@ -4,7 +4,7 @@
 
 using namespace sdl;
 
-const Transform2D Transform2D::IDENTITY = Transform2D(Angle(), 0, 0, 1, 1);
+const Transform2D Transform2D::IDENTITY = Transform2D(Angle::ZERO_ROTATION(), 0, 0, 1, 1);
 
 #ifdef B2_INCLUDED
 
