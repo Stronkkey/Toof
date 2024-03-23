@@ -40,8 +40,7 @@ private:
 
 protected:
 	/**
-	* @returns the RenderingServer from the tree.
-	* @note dereferencing pointer results in undefined behavior if the node is not inside a SceneTree.
+	* @returns the RenderingServer from the tree or an empty pointer.
 	*/
 	const std::unique_ptr<RenderingServer> &get_rendering_server() const;
 
@@ -276,13 +275,13 @@ public:
 	* Draws the @param texture on this node2d using the RenderingServer.
 	* @see also RenderingServer::canvas_item_add_texture.
 	*/
-	void draw_texture(const std::shared_ptr<Texture2D> &texture, const Transform2D &texture_transform = Transform2D::IDENTITY, const ColorV &modulation = ColorV::WHITE()) const;
+	void draw_texture(const uid texture_uid, const Transform2D &texture_transform = Transform2D::IDENTITY, const ColorV &modulation = ColorV::WHITE()) const;
 
 	/**
 	* Draws the @param texture in the specified @param region using RenderingServer.
 	* @see also RenderingServer::canvas_item_add_texture_region.
 	*/
-	void draw_texture_rect(const std::shared_ptr<Texture2D> &texture, const Rect2i &region, const Transform2D &texture_transform = Transform2D::IDENTITY, const ColorV &modulation = ColorV::WHITE()) const;
+	void draw_texture_rect(const uid texture_uid, const Rect2i &region, const Transform2D &texture_transform = Transform2D::IDENTITY, const ColorV &modulation = ColorV::WHITE()) const;
 	
 	/**
 	* Draws a colored line beginning from @param start to @param end with the color @param modulation using the RenderingServer.

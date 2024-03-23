@@ -254,16 +254,18 @@ void Node2D::set_zindex_relative(const bool zindex_relative) {
 	queue_redraw();
 }
 
-void Node2D::draw_texture(const std::shared_ptr<Texture2D> &texture, const Transform2D &texture_transform, const ColorV &modulation) const {
+void Node2D::draw_texture(const uid texture_uid, const Transform2D &texture_transform, const ColorV &modulation) const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
+
 	if (rendering_server)
-		rendering_server->canvas_item_add_texture(texture->get_uid(), canvas_item, SDL_FLIP_NONE, modulation, texture_transform);
+		rendering_server->canvas_item_add_texture(texture_uid, canvas_item, SDL_FLIP_NONE, modulation, texture_transform);
 }
 
-void Node2D::draw_texture_rect(const std::shared_ptr<Texture2D> &texture, const Rect2i &region, const Transform2D &texture_transform, const ColorV &modulation) const {
+void Node2D::draw_texture_rect(const uid texture_uid, const Rect2i &region, const Transform2D &texture_transform, const ColorV &modulation) const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
+
 	if (rendering_server)
-		rendering_server->canvas_item_add_texture_region(texture->get_uid(), canvas_item, region, SDL_FLIP_NONE, modulation, texture_transform);
+		rendering_server->canvas_item_add_texture_region(texture_uid, canvas_item, region, SDL_FLIP_NONE, modulation, texture_transform);
 }
 
 void Node2D::draw_line(const Vector2f &start, const Vector2f &end, const ColorV &modulation) const {
