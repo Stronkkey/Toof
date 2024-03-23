@@ -17,30 +17,26 @@ private:
 	T value;
 	bool valid;
 public:
-	Optional(): value(), valid(false) {
+	constexpr Optional(): value(), valid(false) {
 	}
 
-	Optional(const T &value): value(value), valid(true) {
+	constexpr Optional(const T &value): value(value), valid(true) {
 	}
 
-	Optional(T &&value): value(std::move(value)), valid(true) {
+	constexpr Optional(T &&value): value(std::move(value)), valid(true) {
 	}
 
-	Optional(const NullOptionT&): value(), valid(false) {
+	constexpr Optional(const NullOptionT&): value(), valid(false) {
 	}
 
-	Optional(const Optional &optional): value(optional.value), valid(optional.valid) {
+	constexpr Optional(const Optional &optional): value(optional.value), valid(optional.valid) {
 	}
 
-	Optional(Optional &&optional): value(optional.value), valid(optional.valid) {
+	constexpr Optional(Optional &&optional): value(optional.value), valid(optional.valid) {
 	}
 
-	constexpr operator T() const& {
-		return value;
-	}
-
-	constexpr operator T() const&& {
-		return std::move(value);
+	constexpr operator bool() const {
+		return valid;
 	}
 
 	constexpr void operator=(const NullOptionT&) noexcept {
@@ -79,12 +75,20 @@ public:
 		return valid;
 	}
 
-	T &get_value() {
+	constexpr T &get_value() & {
 		return value;
 	}
 
-	const T &get_value() const {
+	constexpr T &get_value() && {
+		return std::move(value);
+	}
+
+	constexpr const T &get_value() const & {
 		return value;
+	}
+
+	constexpr const T &get_value() const && {
+		return std::move(value);
 	}
 
 	constexpr T *operator->() noexcept {
@@ -128,30 +132,27 @@ private:
 	T &value;
 	bool valid;
 
-	T &__get_null_value__() {
+	constexpr T &__get_null_value__() {
 		T _t, *_b = &_t;
 		return *_b;
 	}
 public:
-	Optional(): value(__get_null_value__()), valid(false) {
+	constexpr Optional(): value(__get_null_value__()), valid(false) {
 	}
 
-	Optional(T &value): value(value), valid(true) {
+	constexpr Optional(T &value): value(value), valid(true) {
 	}
 
-	Optional(T &&value): value(value), valid(true) {
+	constexpr Optional(T &&value): value(value), valid(true) {
 	}
 
-	Optional(const NullOptionT&): value(__get_null_value__()), valid(false) {
+	constexpr Optional(const NullOptionT&): value(__get_null_value__()), valid(false) {
 	}
 
-	constexpr operator T() const& {
-		return value;
+	constexpr operator bool() const {
+		return valid;
 	}
 
-	constexpr operator T() const&& {
-		return std::move(value);
-	}
 	constexpr void operator=(const NullOptionT&) noexcept {
 		valid = false;
 	}
@@ -188,16 +189,20 @@ public:
 		return valid;
 	}
 
-	constexpr operator bool() const {
-		return valid;
-	}
-
-	T &get_value() {
+	constexpr T &get_value() & {
 		return value;
 	}
 
-	const T &get_value() const {
+	constexpr T &get_value() && {
+		return std::move(value);
+	}
+
+	constexpr const T &get_value() const & {
 		return value;
+	}
+
+	constexpr const T &get_value() const && {
+		return std::move(value);
 	}
 
 	constexpr T *operator->() noexcept {
@@ -243,26 +248,18 @@ private:
 	T &&value;
 	bool valid;
 
-	T &&__get_null_value__() {
+	constexpr T &&__get_null_value__() {
 		T _t, *_b = &_t;
 		return *_b;
 	}
 public:
-	Optional(): value(__get_null_value__()), valid(false) {
+	constexpr Optional(): value(__get_null_value__()), valid(false) {
 	}
 
-	Optional(T &&value): value(std::move(value)), valid(true) {
+	constexpr Optional(T &&value): value(std::move(value)), valid(true) {
 	}
 
-	Optional(const NullOptionT&): value(__get_null_value__()), valid(false) {
-	}
-
-	constexpr operator T() const& {
-		return value;
-	}
-
-	constexpr operator T() const&& {
-		return std::move(value);
+	constexpr Optional(const NullOptionT&): value(__get_null_value__()), valid(false) {
 	}
 
 	constexpr void operator=(const NullOptionT&) noexcept {
@@ -305,12 +302,20 @@ public:
 		return valid;
 	}
 
-	T &get_value() {
+	constexpr T &get_value() & {
 		return value;
 	}
 
-	const T &get_value() const {
+	constexpr T &get_value() && {
+		return std::move(value);
+	}
+
+	constexpr const T &get_value() const & {
 		return value;
+	}
+
+	constexpr const T &get_value() const && {
+		return std::move(value);
 	}
 
 	constexpr T *operator->() noexcept {
@@ -325,7 +330,7 @@ public:
 		return value;
 	}
 
-	constexpr const T& operator*() const& noexcept {
+	constexpr const T& operator*() const & noexcept {
 		return value;
 	}
 
@@ -333,18 +338,18 @@ public:
 		return value;
 	}
 
-	constexpr const T&& operator*() const&& noexcept {
+	constexpr const T&& operator*() const && noexcept {
 		return value;
 	}
 
 	template<class U>
-	constexpr T value_or(U &&default_value) const& {
+	constexpr T value_or(U &&default_value) const & {
 		return valid ? value : default_value;
 	}
 
 	template<class U>
 	constexpr T value_or(U&& default_value ) && {
-		return valid ? value : default_value;
+		return valid ? std::move(value) : default_value;
 	}
 };
 
