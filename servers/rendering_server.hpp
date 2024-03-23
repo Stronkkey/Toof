@@ -3,11 +3,11 @@
 #include <core/math/rect2.hpp>
 #include <core/math/transform2d.hpp>
 #include <core/math/color.hpp>
+#include <core/memory/optional.hpp>
 
 #include <SDL_render.h>
 
 #include <memory>
-#include <optional>
 #include <unordered_map>
 #include <vector>
 
@@ -57,7 +57,7 @@ public:
 		return viewport;
 	}
 
-	std::optional<uid> load_texture_from_path(const String &path);
+	Optional<uid> load_texture_from_path(const String &path);
 	uid create_canvas_item();
 
 	constexpr void set_default_background_color(const ColorV &new_background_color) {
@@ -70,7 +70,7 @@ public:
 
 	Vector2i get_screen_size() const;
 
-	std::optional<TextureInfo> get_texture_info_from_uid(const uid texture_uid) const;
+	Optional<TextureInfo> get_texture_info_from_uid(const uid texture_uid) const;
 
 	void canvas_item_add_texture(const uid texture_uid, const uid canvas_item_uid, const SDL_RendererFlip flip = SDL_FLIP_NONE, const ColorV &modulate = ColorV::WHITE(), const Transform2D &transform = Transform2D::IDENTITY);
 	void canvas_item_add_texture_region(const uid texture_uid, const uid canvas_item_uid, const Rect2i &src_region, const SDL_RendererFlip flip = SDL_FLIP_NONE, const ColorV &modulate = ColorV::WHITE(), const Transform2D &transform = Transform2D::IDENTITY);
@@ -93,22 +93,22 @@ public:
 	bool canvas_item_uid_exists(const uid canvas_item_uid) const;
 	bool texture_uid_exists(const uid canvas_item_uid) const;
 
-	const std::optional<const Transform2D> canvas_item_get_transform(const uid canvas_item_uid) const;
-	const std::optional<const Transform2D> canvas_item_get_global_transform(const uid canvas_item_uid) const;
+	Optional<const Transform2D> canvas_item_get_transform(const uid canvas_item_uid) const;
+	Optional<const Transform2D> canvas_item_get_global_transform(const uid canvas_item_uid) const;
 
-	const std::optional<const ColorV> canvas_item_get_modulate(const uid canvas_item_uid) const;
-	const std::optional<const ColorV> canvas_item_get_global_modulate(const uid canvas_item_uid) const;
+	Optional<const ColorV> canvas_item_get_modulate(const uid canvas_item_uid) const;
+	Optional<const ColorV> canvas_item_get_global_modulate(const uid canvas_item_uid) const;
 
-	const std::optional<bool> canvas_item_is_visible(const uid canvas_item_uid) const;
-	const std::optional<bool> canvas_item_is_globally_visible(const uid canvas_item_uid) const;
-	const std::optional<bool> canvas_item_is_visible_inside_viewport(const uid canvas_item_uid) const;
+	Optional<bool> canvas_item_is_visible(const uid canvas_item_uid) const;
+	Optional<bool> canvas_item_is_globally_visible(const uid canvas_item_uid) const;
+	Optional<bool> canvas_item_is_visible_inside_viewport(const uid canvas_item_uid) const;
 
-	const std::optional<SDL_BlendMode> canvas_item_get_blend_mode(const uid canvas_item_uid) const;
-	const std::optional<SDL_ScaleMode> canvas_item_get_scale_mode(const uid canvas_item_uid) const;
+	Optional<SDL_BlendMode> canvas_item_get_blend_mode(const uid canvas_item_uid) const;
+	Optional<SDL_ScaleMode> canvas_item_get_scale_mode(const uid canvas_item_uid) const;
 
-	const std::optional<int> canvas_item_get_zindex(const uid canvas_item_uid) const;
-	const std::optional<int> canvas_item_get_absolute_zindex(const uid canvas_item_uid) const;
-	const std::optional<bool> canvas_item_is_zindex_relative(const uid canvas_item_uid) const;
+	Optional<int> canvas_item_get_zindex(const uid canvas_item_uid) const;
+	Optional<int> canvas_item_get_absolute_zindex(const uid canvas_item_uid) const;
+	Optional<bool> canvas_item_is_zindex_relative(const uid canvas_item_uid) const;
 };
 
 }

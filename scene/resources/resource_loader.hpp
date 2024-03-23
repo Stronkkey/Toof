@@ -1,12 +1,12 @@
 #pragma once
 
 #include <core/string/string_def.hpp>
+#include <core/memory/optional.hpp>
 
 #include <array>
 #include <cstdint>
 #include <filesystem>
 #include <memory>
-#include <optional>
 #include <fstream>
 
 namespace sdl {
@@ -40,12 +40,11 @@ constexpr T __class_from_bytes__(const std::array<uint8_t, sizeof(T)> &bytes) {
 }
 
 template<class T>
-[[nodiscard]] inline std::optional<T> load_file_to_class(const std::filesystem::path &path) {
+[[nodiscard]] inline Optional<T> load_file_to_class(const std::filesystem::path &path) {
 	std::ifstream file = std::ifstream(path);
-	std::optional<T> opt;
 
 	if (file.rdstate() == std::ifstream::badbit || file.rdstate() == std::ifstream::failbit)
-		return std::nullopt;
+		return NullOption;
 
 	std::array<uint8_t, sizeof(T)> array;
 	file.read((char*)array.data(), sizeof(T));

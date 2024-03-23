@@ -124,13 +124,13 @@ void sdl::PhysicsServer2D::world_set_gravity(const uid world_uid, const Vector2f
 		iterator->second->get_world()->SetGravity(new_world_gravity.to_b2_vec2());
 }
 
-std::optional<sdl::Vector2f> sdl::PhysicsServer2D::world_get_gravity(const uid world_uid) const {
+sdl::Optional<sdl::Vector2f> sdl::PhysicsServer2D::world_get_gravity(const uid world_uid) const {
 	auto iterator = worlds.find(world_uid);
 
 	if (iterator != worlds.end())
-		return iterator->second->get_world()->GetGravity();
+		return Vector2f(iterator->second->get_world()->GetGravity());
 
-	return std::nullopt;
+	return NullOption;
 }
 
 void sdl::PhysicsServer2D::world_set_velocity_iterations(const uid world_uid, const int32_t velocity_iterations) {
@@ -140,13 +140,13 @@ void sdl::PhysicsServer2D::world_set_velocity_iterations(const uid world_uid, co
 		iterator->second->velocity_iterations = velocity_iterations;
 }
 
-std::optional<int32_t> sdl::PhysicsServer2D::world_get_velocity_iterations(const uid world_uid) const {
+sdl::Optional<int32_t> sdl::PhysicsServer2D::world_get_velocity_iterations(const uid world_uid) const {
 	auto iterator = worlds.find(world_uid);
 
 	if (iterator != worlds.end())
 		return iterator->second->velocity_iterations;
 
-	return std::nullopt;
+	return NullOption;
 }
 
 void sdl::PhysicsServer2D::world_set_position_iterations(const uid world_uid, const int32_t position_iterations) {
@@ -156,13 +156,13 @@ void sdl::PhysicsServer2D::world_set_position_iterations(const uid world_uid, co
 		iterator->second->position_iterations = position_iterations;
 }
 
-std::optional<int32_t> sdl::PhysicsServer2D::world_get_position_iterations(const uid world_uid) const {
+sdl::Optional<int32_t> sdl::PhysicsServer2D::world_get_position_iterations(const uid world_uid) const {
 	auto iterator = worlds.find(world_uid);
 
 	if (iterator != worlds.end())
 		return iterator->second->position_iterations;
 
-	return std::nullopt;
+	return NullOption;
 }
 
 void sdl::PhysicsServer2D::body_set_world(const uid body_uid, const uid world_uid) {
@@ -171,13 +171,13 @@ void sdl::PhysicsServer2D::body_set_world(const uid body_uid, const uid world_ui
 		transfer_body_to_world(iterator->second, world_uid);
 }
 
-std::optional<sdl::uid> sdl::PhysicsServer2D::body_get_world(const uid body_uid) const {
+sdl::Optional<sdl::uid> sdl::PhysicsServer2D::body_get_world(const uid body_uid) const {
 	auto iterator = bodies.find(body_uid);
 
 	if (iterator != bodies.end())
 		return iterator->second->world_uid;
 	
-	return std::nullopt;
+	return NullOption;
 }
 
 void body_set_state_transform(const std::unique_ptr<sdl::PhysicsBody> &body, const sdl::PhysicsServer2D::body_state_variant &state_value) {

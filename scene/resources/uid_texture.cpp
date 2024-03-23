@@ -9,7 +9,7 @@ sdl::UidTexture::UidTexture(const uid from_uid) {
 }
 
 sdl::Vector2i sdl::UidTexture::get_size(const std::unique_ptr<RenderingServer> &rendering_server) const {
-	std::optional<RenderingServer::TextureInfo> texture_info;
+	Optional<RenderingServer::TextureInfo> texture_info;
 	if (rendering_server)
 		texture_info = rendering_server->get_texture_info_from_uid(texture_uid);
 	
@@ -18,7 +18,7 @@ sdl::Vector2i sdl::UidTexture::get_size(const std::unique_ptr<RenderingServer> &
 
 SDL_Texture *sdl::UidTexture::get_texture(const std::unique_ptr<RenderingServer> &rendering_server) const {
 	if (rendering_server) {
-		std::optional<RenderingServer::TextureInfo> texture_info = rendering_server->get_texture_info_from_uid(texture_uid);
+		Optional<RenderingServer::TextureInfo> texture_info = rendering_server->get_texture_info_from_uid(texture_uid);
 		return texture_info ? texture_info->texture : nullptr;
 	}
 
@@ -45,6 +45,6 @@ void sdl::UidTexture::draw_region(const std::unique_ptr<RenderingServer> &render
 }
 
 void sdl::UidTexture::load_from_path(const std::unique_ptr<RenderingServer> &rendering_server, const String &file_path) {
-	const std::optional<uid> text_uid = rendering_server->load_texture_from_path(file_path);
-	texture_uid = text_uid.has_value() ? text_uid.value() : 0;
+	Optional<uid> text_uid = rendering_server->load_texture_from_path(file_path);
+	texture_uid = text_uid.value_or(0);
 }

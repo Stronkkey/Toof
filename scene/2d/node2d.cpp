@@ -161,11 +161,8 @@ void Node2D::set_global_transform(const Transform2D &new_global_transform) {
 const Transform2D Node2D::get_global_transform() const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 
-	if (rendering_server) {
-		const std::optional<const Transform2D> global_transform = rendering_server->canvas_item_get_global_transform(canvas_item);
-		return global_transform.has_value() ? global_transform.value() : transform;
-	}
-	
+	if (rendering_server)
+		return rendering_server->canvas_item_get_global_transform(canvas_item).value_or(transform);
 	return transform;
 }
 
@@ -181,11 +178,8 @@ const ColorV &Node2D::get_modulate() const {
 const ColorV Node2D::get_absolute_modulate() const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 
-	if (rendering_server) {
-		const std::optional<const ColorV> absolute_modulate = rendering_server->canvas_item_get_global_modulate(canvas_item);
-		return absolute_modulate.has_value() ? absolute_modulate.value() : modulate;
-	}
-
+	if (rendering_server)
+		return rendering_server->canvas_item_get_global_modulate(canvas_item).value_or(modulate);
 	return modulate;
 }
 
@@ -229,22 +223,16 @@ void Node2D::show() {
 bool Node2D::is_visible_in_tree() const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 
-	if (rendering_server) {
-		const std::optional<bool> is_visible = rendering_server->canvas_item_is_globally_visible(canvas_item);
-		return is_visible.has_value() ? is_visible.value() : visible;
-	}
-
+	if (rendering_server)
+		return rendering_server->canvas_item_is_globally_visible(canvas_item).value_or(visible);
 	return visible;
 }
 
 bool Node2D::is_visible_inside_viewport() const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 
-	if (rendering_server) {
-		const std::optional<bool> is_visible = rendering_server->canvas_item_is_visible_inside_viewport(canvas_item);
-		return is_visible.has_value() ? is_visible.value() : visible;
-	}
-
+	if (rendering_server)
+		return rendering_server->canvas_item_is_visible_inside_viewport(canvas_item).value_or(visible);
 	return visible;
 }
 
@@ -255,12 +243,10 @@ void Node2D::set_zindex(const int zindex) {
 
 int Node2D::get_absolute_zindex() const {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
-	if (rendering_server) {
-		const std::optional<int> global_zindex = rendering_server->canvas_item_get_absolute_zindex(canvas_item);
-		return global_zindex.has_value() ? global_zindex.value() : 0;
-	}
 
-	return 0;
+	if (rendering_server)
+		return rendering_server->canvas_item_get_absolute_zindex(canvas_item).value_or(zindex);
+	return zindex;
 }
 
 void Node2D::set_zindex_relative(const bool zindex_relative) {

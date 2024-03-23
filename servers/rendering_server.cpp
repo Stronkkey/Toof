@@ -124,7 +124,7 @@ void RenderingServer::render_canvas_items() {
 		render_canvas_item(canvas_item);
 }
 
-std::optional<RenderingServer::TextureInfo> RenderingServer::get_texture_info_from_uid(const uid texture_uid) const {
+Optional<RenderingServer::TextureInfo> RenderingServer::get_texture_info_from_uid(const uid texture_uid) const {
 	const std::shared_ptr<__Texture_Ref__> &texture = get_texture_from_uid(texture_uid);
 	TextureInfo texture_info;
 
@@ -137,10 +137,10 @@ std::optional<RenderingServer::TextureInfo> RenderingServer::get_texture_info_fr
 	return texture_info;
 }
 
-std::optional<uid> RenderingServer::load_texture_from_path(const String &path) {
+Optional<uid> RenderingServer::load_texture_from_path(const String &path) {
 	SDL_Texture *texture = IMG_LoadTexture(viewport->get_renderer(), path.c_str());
 	if (texture == NULL)
-		return std::nullopt;
+		return NullOption;
 
 	uid new_uid = uid_index++;
 	auto new_texture = std::make_shared<__Texture_Ref__>();
@@ -333,59 +333,59 @@ bool RenderingServer::texture_uid_exists(const uid texture_uid) const {
 	return textures.find(texture_uid) != textures.end();
 }
 
-const std::optional<const Transform2D> RenderingServer::canvas_item_get_transform(const uid canvas_item_uid) const {
+Optional<const Transform2D> RenderingServer::canvas_item_get_transform(const uid canvas_item_uid) const {
 	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->transform;
-	return std::nullopt;
+	return NullOption;
 }
 
-const std::optional<const Transform2D> RenderingServer::canvas_item_get_global_transform(const uid canvas_item_uid) const {
+Optional<const Transform2D> RenderingServer::canvas_item_get_global_transform(const uid canvas_item_uid) const {
 	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->get_global_transform();
-	return std::nullopt;
+	return NullOption;
 }
 
-const std::optional<const ColorV> RenderingServer::canvas_item_get_modulate(const uid canvas_item_uid) const {
+Optional<const ColorV> RenderingServer::canvas_item_get_modulate(const uid canvas_item_uid) const {
 	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->modulate;
-	return std::nullopt;
+	return NullOption;
 }
 
-const std::optional<const ColorV> RenderingServer::canvas_item_get_global_modulate(const uid canvas_item_uid) const {
+Optional<const ColorV> RenderingServer::canvas_item_get_global_modulate(const uid canvas_item_uid) const {
 	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->get_global_modulate();
-	return std::nullopt;
+	return NullOption;
 }
 
-const std::optional<bool> RenderingServer::canvas_item_is_visible(const uid canvas_item_uid) const {
+Optional<bool> RenderingServer::canvas_item_is_visible(const uid canvas_item_uid) const {
 	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->visible;
-	return std::nullopt;
+	return NullOption;
 }
 
-const std::optional<bool> RenderingServer::canvas_item_is_globally_visible(const uid canvas_item_uid) const {
+Optional<bool> RenderingServer::canvas_item_is_globally_visible(const uid canvas_item_uid) const {
 	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->is_globally_visible();
-	return std::nullopt;
+	return NullOption;
 }
 
-const std::optional<bool> RenderingServer::canvas_item_is_visible_inside_viewport(const uid canvas_item_uid) const {
+Optional<bool> RenderingServer::canvas_item_is_visible_inside_viewport(const uid canvas_item_uid) const {
 	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (!canvas_item)
-		return std::nullopt;
+		return NullOption;
 
 	if (!canvas_item->is_globally_visible() || canvas_item->drawing_items.empty())
 		return false;
@@ -406,42 +406,42 @@ const std::optional<bool> RenderingServer::canvas_item_is_visible_inside_viewpor
 	return is_visible;
 }
 
-const std::optional<SDL_BlendMode> RenderingServer::canvas_item_get_blend_mode(const uid canvas_item_uid) const {
+Optional<SDL_BlendMode> RenderingServer::canvas_item_get_blend_mode(const uid canvas_item_uid) const {
 	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->blend_mode;
-	return std::nullopt;
+	return NullOption;
 }
 
-const std::optional<SDL_ScaleMode> RenderingServer::canvas_item_get_scale_mode(const uid canvas_item_uid) const {
+Optional<SDL_ScaleMode> RenderingServer::canvas_item_get_scale_mode(const uid canvas_item_uid) const {
 	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->scale_mode;
-	return std::nullopt;
+	return NullOption;
 }
 
-const std::optional<int> RenderingServer::canvas_item_get_zindex(const uid canvas_item_uid) const {
+Optional<int> RenderingServer::canvas_item_get_zindex(const uid canvas_item_uid) const {
 	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->zindex;
-	return std::nullopt;
+	return NullOption;
 }
 
-const std::optional<int> RenderingServer::canvas_item_get_absolute_zindex(const uid canvas_item_uid) const {
+Optional<int> RenderingServer::canvas_item_get_absolute_zindex(const uid canvas_item_uid) const {
 	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->get_global_zindex();
-	return std::nullopt;
+	return NullOption;
 }
 
-const std::optional<bool> RenderingServer::canvas_item_is_zindex_relative(const uid canvas_item_uid) const {
+Optional<bool> RenderingServer::canvas_item_is_zindex_relative(const uid canvas_item_uid) const {
 	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->zindex_relative;
-	return std::nullopt;
+	return NullOption;
 }

@@ -2,8 +2,7 @@
 
 #include <core/math/math_defs.hpp>
 #include <core/math/vector2.hpp>
-
-#include <optional>
+#include <core/memory/optional.hpp>
 
 namespace sdl {
 
@@ -38,16 +37,16 @@ constexpr bool are_circles_intersecting(const real left_circle_radius, const Vec
 * @returns the point of intersection as a Vector2f if the lines intersect.
 * @note the lines are specified using direction vectors, not end points.
 */
-constexpr std::optional<Vector2f> line_intersects_line(const Vector2f &from_a, const Vector2f &dir_a, const Vector2f &from_b, const Vector2f &dir_b) {
+constexpr Optional<Vector2f> line_intersects_line(const Vector2f &from_a, const Vector2f &dir_a, const Vector2f &from_b, const Vector2f &dir_b) {
 	// See http://paulbourke.net/geometry/pointlineplane/
 
 	const real denom = dir_b.y * dir_a.x - dir_b.x * dir_a.y;
 	if (Math::is_zero_approx(denom))
-		return std::nullopt;
+		return NullOption;
 
 	const Vector2f v = from_a - from_b;
 	const real t = (dir_b.x * v.y - dir_b.y * v.x) / denom;
-	return std::optional<Vector2f>(from_a + (dir_a * t));
+	return from_a + (dir_a * t);
 }
 
 /**

@@ -1,10 +1,10 @@
 #ifdef B2_INCLUDED
 #pragma once
 
-#include <core/math/vector2.hpp>
+#include <core/math/transform2d.hpp>
+#include <core/memory/optional.hpp>
 
 #include <memory>
-#include <optional>
 #include <unordered_map>
 #include <variant>
 
@@ -55,14 +55,14 @@ public:
 	uid body_create();
 
 	void world_set_gravity(const uid world_uid, const Vector2f &new_world_gravity);
-	std::optional<Vector2f> world_get_gravity(const uid world_uid) const;
+	Optional<Vector2f> world_get_gravity(const uid world_uid) const;
 	void world_set_velocity_iterations(const uid world_uid, const int32_t velocity_iterations);
-	std::optional<int32_t> world_get_velocity_iterations(const uid world_uid) const;
+	Optional<int32_t> world_get_velocity_iterations(const uid world_uid) const;
 	void world_set_position_iterations(const uid world_uid, const int32_t position_iterations);
-	std::optional<int32_t> world_get_position_iterations(const uid world_uid) const;
+	Optional<int32_t> world_get_position_iterations(const uid world_uid) const;
 
 	void body_set_world(const uid body_uid, const uid world_uid);
-	std::optional<uid> body_get_world(const uid body_uid) const;
+	Optional<uid> body_get_world(const uid body_uid) const;
 	void body_set_state(const uid body_uid, const BodyState body_state, const body_state_variant &state_value);
 	body_state_variant body_get_state(const uid body_uid, const BodyState body_state) const;
 };

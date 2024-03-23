@@ -2,8 +2,6 @@
 
 #include <scene/2d/node2d.hpp>
 
-#include <optional>
-
 namespace sdl {
 
 class Camera2D : public Node2D {
