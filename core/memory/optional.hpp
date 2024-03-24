@@ -69,6 +69,14 @@ public:
 		valid = other.valid;
 	}
 
+	constexpr T &operator--(int) const & {
+		return value;
+	}
+
+	constexpr T &&operator--(int) const && {
+		return std::move(value);
+	}
+
 	constexpr bool has_value() const {
 		return valid;
 	}
@@ -183,6 +191,14 @@ public:
 		valid = other.valid;
 	}
 
+	constexpr T &operator--(int) const & {
+		return value;
+	}
+
+	constexpr T &&operator--(int) const && {
+		return std::move(value);
+	}
+
 	constexpr bool has_value() const {
 		return valid;
 	}
@@ -290,6 +306,14 @@ public:
 	constexpr void operator=(Optional<U> &&other) {
 		value = std::move(other.value);
 		valid = other.valid;
+	}
+
+	constexpr T &operator--(int) const & {
+		return value;
+	}
+
+	constexpr T &&operator--(int) const && {
+		return std::move(value);
 	}
 
 	constexpr bool has_value() const {
