@@ -22,7 +22,7 @@ Node2D::Node2D():
 Node2D::~Node2D() {
 	const std::unique_ptr<RenderingServer> &rendering_server = get_rendering_server();
 
-	if (rendering_server)
+	if (rendering_server && canvas_item != 0)
 		rendering_server->remove_uid(canvas_item);
 }
 
