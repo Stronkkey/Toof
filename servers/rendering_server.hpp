@@ -28,10 +28,15 @@ private:
 	ColorV background_color;
 	uid uid_index;
 
+	constexpr uid assign_uid() {
+		if (++uid_index == 0)
+			return ++uid_index;
+		return uid_index++;
+	}
+
 	void render_canvas_item(const std::shared_ptr<__CanvasItem__> &canvas_item);
 	void render_canvas_items();
 	void destroy_texture(std::shared_ptr<__Texture_Ref__> &texture);
-	void destroy_canvas_item(std::shared_ptr<__CanvasItem__> &canvas_item);
 	void destroy_texture_uid(const uid texture_uid);
 	void destroy_canvas_item_uid(const uid canvas_item_uid);
 	void destroy_uid(const uid target_uid);

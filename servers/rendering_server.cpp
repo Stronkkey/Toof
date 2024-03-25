@@ -20,8 +20,6 @@ RenderingServer::RenderingServer(Viewport *viewport): viewport(viewport),
 RenderingServer::~RenderingServer() {
 	for (auto &iterator: textures)
 		destroy_texture(iterator.second);
-	for (auto &iterator: canvas_items)
-		destroy_canvas_item(iterator.second);
 
 	textures.clear();
 	canvas_items.clear();
@@ -41,7 +39,7 @@ void RenderingServer::render() {
 }
 
 const std::shared_ptr<__Texture_Ref__> &RenderingServer::get_texture_from_uid(const uid texture_uid) const {
-	auto iterator = textures.find(texture_uid);
+	const auto &iterator = textures.find(texture_uid);
 	if (iterator != textures.end())
 		return iterator->second;
 
@@ -50,7 +48,7 @@ const std::shared_ptr<__Texture_Ref__> &RenderingServer::get_texture_from_uid(co
 }
 
 const std::shared_ptr<__CanvasItem__> &RenderingServer::get_canvas_item_from_uid(const uid canvas_item_uid) const {
-	auto iterator = canvas_items.find(canvas_item_uid);
+	const auto &iterator = canvas_items.find(canvas_item_uid);
 	if (iterator != canvas_items.end())
 		return iterator->second;
 
@@ -64,29 +62,19 @@ void RenderingServer::remove_uid(const uid destroying_uid) {
 
 void RenderingServer::destroy_texture(std::shared_ptr<__Texture_Ref__> &texture) {
 	SDL_DestroyTexture(texture->texture_reference);
-	texture.reset();
-}
-
-void RenderingServer::destroy_canvas_item(std::shared_ptr<__CanvasItem__> &canvas_item) {
-	canvas_item.reset();
 }
 
 void RenderingServer::destroy_texture_uid(const uid texture_uid) {
-	auto iterator = textures.find(texture_uid);
+	const auto &iterator = textures.find(texture_uid);
 
 	if (iterator != textures.end()) {
-		textures.erase(iterator);
 		destroy_texture(iterator->second);
+		textures.erase(iterator);
 	}
 }
 
 void RenderingServer::destroy_canvas_item_uid(const uid canvas_item_uid) {
-	auto iterator = canvas_items.find(canvas_item_uid);
-
-	if (iterator != canvas_items.end()) {
-		canvas_items.erase(iterator);
-		destroy_canvas_item(iterator->second);
-	}
+	canvas_items.erase(canvas_item_uid);
 }
 
 void RenderingServer::destroy_uid(const uid destroying_uid) {
@@ -142,7 +130,7 @@ Optional<uid> RenderingServer::load_texture_from_path(const String &path) {
 	if (texture == NULL)
 		return NullOption;
 
-	uid new_uid = uid_index++;
+	uid new_uid = assign_uid();
 	auto new_texture = std::make_shared<__Texture_Ref__>();
 	new_texture->texture_reference = texture;
 
@@ -157,7 +145,7 @@ Optional<uid> RenderingServer::load_texture_from_path(const String &path) {
 }
 
 uid RenderingServer::create_canvas_item() {
-	uid new_uid = uid_index++;
+	uid new_uid = assign_uid();
 	auto canvas_item = std::make_shared<__CanvasItem__>();
 
 	canvas_items.insert({new_uid, canvas_item});
