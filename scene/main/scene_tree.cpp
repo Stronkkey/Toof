@@ -80,6 +80,11 @@ void SceneTree::_initialize() {
 void SceneTree::_ended() {
 }
 
+void SceneTree::_add_child(Node *child) {
+	if (root)
+		root->add_child(child);
+}
+
 void SceneTree::step_render(const double delta) {
 	render_loop.delta_time = delta * render_loop.time_scale;
 	render_frame();

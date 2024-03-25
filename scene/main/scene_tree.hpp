@@ -66,7 +66,8 @@ private:
 
 	virtual void _initialize();
 	virtual void _ended();
-
+protected:
+	void _add_child(Node *child);
 public:
 	SceneTree();
 	virtual ~SceneTree();
