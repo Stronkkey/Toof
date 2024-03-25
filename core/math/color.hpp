@@ -313,23 +313,13 @@ typedef Color<uint8_t> Colour8;
 typedef Color<uint16_t> Colour16;
 
 /*
-* A color represented in RGBA format in the range of 0 to 255 using a unsigned 8 bit or 16 bit number.
+* A color represented in RGBA format in the range of 0 to 255 using a number defined by the build settings.
 */
 typedef Color<__COLOR_V_TYPE__> ColorV;
 
 /*
-* A colour represented in RGBA format in the range of 0 to 255 using a unsigned 8 bit or 16 bit number.
+* A colour represented in RGBA format in the range of 0 to 255 using a number defined by the build settings.
 */
 typedef Color<__COLOR_V_TYPE__> ColourV;
-
-/**
-* The color type used in ColorV.
-*/
-typedef __COLOR_V_TYPE__ ColorV_type;
-
-/*
-* The colour type used in Colour_v.
-*/
-typedef __COLOR_V_TYPE__ ColourV_type;
 
 }
