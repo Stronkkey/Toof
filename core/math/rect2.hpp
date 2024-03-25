@@ -11,6 +11,8 @@ struct Transform2D;
 */
 template<class T>
 struct Rect2 {
+	using value_type = T;
+
 	/**
 	* The x axis of the origin point. Usually the top-left corner of the rectangle.
 	*/

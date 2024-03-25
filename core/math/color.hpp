@@ -16,6 +16,8 @@ namespace sdl {
 */
 template<class T>
 struct Color {
+	using value_type = T;
+
 	// Constructs a default Color from opaque black.
 	constexpr Color(): r(0), g(0), b(0), a(255) {
 	}

@@ -18,6 +18,8 @@ namespace sdl {
 */
 template<class T>
 struct Vector2 {
+	using value_type = T;
+
 	constexpr Vector2(): x(0), y(0) {
 	}
 

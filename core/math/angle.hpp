@@ -12,6 +12,8 @@ private:
 	explicit constexpr Angle(const real angle_degrees): angle_degrees(angle_degrees) {
 	}
 public:
+	using value_type = real;
+
 	constexpr Angle(): angle_degrees(0.0) {
 	}
 
