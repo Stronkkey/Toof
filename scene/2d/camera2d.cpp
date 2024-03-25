@@ -68,32 +68,32 @@ Transform2D Camera2D::_get_target_transform() const {
 }
 
 Vector2i Camera2D::_get_viewport_size() const {
-	const Viewport *viewport = get_rendering_server() ? get_rendering_server()->get_viewport() : nullptr;
+	Optional<Viewport*> viewport = _get_viewport();
 
-	return viewport ? viewport->get_viewport_size() : Vector2i();
+	return viewport ? viewport.get_value()->get_viewport_size() : Vector2i();
 }
 
 Transform2D Camera2D::_get_canvas_transform() const {
-	const Viewport *viewport = get_rendering_server() ? get_rendering_server()->get_viewport() : nullptr;
+	Optional<Viewport*> viewport = _get_viewport();
 
-	return viewport ? viewport->get_canvas_transform() : Transform2D();
+	return viewport ? viewport.get_value()->get_canvas_transform() : Transform2D();
 }
 
 Vector2f Camera2D::_get_camera_position() const {
-	const Viewport *viewport = get_rendering_server() ? get_rendering_server()->get_viewport() : nullptr;
+	Optional<Viewport*> viewport = _get_viewport();
 
-	Vector2f camera_position = viewport ? viewport->get_canvas_transform().origin : Vector2f::ZERO();
+	Vector2f camera_position = viewport ? viewport.get_value()->get_canvas_transform().origin : Vector2f::ZERO();
 	if (viewport && anchor_mode == CAMERA2D_ANCHOR_DRAG_CENTER)
-		camera_position -= (viewport->get_viewport_size() / (unsigned long)2.0);
+		camera_position -= (viewport.get_value()->get_viewport_size() / (unsigned long)2.0);
 
 	return -camera_position;
 }
 
 void Camera2D::_step_camera() const {
-	Viewport *viewport = get_rendering_server() ? get_rendering_server()->get_viewport() : nullptr;
+	Optional<Viewport*> viewport = _get_viewport();
 
 	if (viewport) {
-		const Transform2D &canvas_transform = viewport->get_canvas_transform();
+		const Transform2D &canvas_transform = viewport.get_value()->get_canvas_transform();
 		Transform2D target_transform = _get_target_transform();
 
 		if (fix_x)
@@ -101,7 +101,7 @@ void Camera2D::_step_camera() const {
 		if (fix_y)
 			target_transform.origin.y = canvas_transform.origin.y;
 
-		viewport->set_canvas_transform(target_transform);
+		viewport.get_value()->set_canvas_transform(target_transform);
 	}
 }
 
@@ -119,19 +119,25 @@ void Camera2D::_notification(const int what) {
 		_step_camera();
 }
 
+Optional<Viewport*> Camera2D::_get_viewport() const {
+	if (get_rendering_server())
+		return get_rendering_server().get_value()->get_viewport();
+	return NullOption;
+}
+
 Transform2D Camera2D::get_target_transform() const {
-	if (get_rendering_server() && get_rendering_server()->get_viewport())
+	if (_get_viewport())
 		return _get_target_transform();
 	return get_transform();
 }
 
 void Camera2D::align() const {
-	Viewport *viewport = get_rendering_server() ? get_rendering_server()->get_viewport() : nullptr;
+	Optional<Viewport*> viewport = _get_viewport();
 	Transform2D transform = _get_target_transform();
 	transform.origin = get_global_position();
 
 	if (viewport)
-		viewport->set_canvas_transform(transform);
+		viewport.get_value()->set_canvas_transform(transform);
 }
 
 Vector2f Camera2D::get_screen_center_position() const {

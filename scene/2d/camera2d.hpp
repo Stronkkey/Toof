@@ -26,6 +26,7 @@ private:
 	void _step_camera() const;
 	void _limit_vector(Vector2f &vector) const;
 	void _notification(const int what) override;
+	Optional<Viewport*> _get_viewport() const;
 
 	Vector2f offset;
 	Vector2f zoom;

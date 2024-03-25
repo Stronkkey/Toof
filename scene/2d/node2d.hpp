@@ -39,10 +39,11 @@ private:
 	void ready();
 
 protected:
+	using RenderingServerType = const std::unique_ptr<RenderingServer>;
 	/**
 	* @returns the RenderingServer from the tree or an empty pointer.
 	*/
-	const std::unique_ptr<RenderingServer> &get_rendering_server() const;
+	Optional<RenderingServerType&> get_rendering_server() const;
 
 	void _notification(const int what) override;
 	/**
