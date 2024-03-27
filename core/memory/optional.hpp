@@ -169,7 +169,7 @@ public:
 	}
 
 	constexpr void operator=(Optional &&other) noexcept {
-		value = std::move(other.value);
+		value = other.value;
 		valid = other.valid;
 	}
 
