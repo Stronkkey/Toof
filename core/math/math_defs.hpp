@@ -18,6 +18,18 @@ typedef int32_t natural;
 typedef uint32_t untarual;
 #endif
 
+#ifdef REAL_T_IS_DOUBLE
+constexpr const bool REAL_IS_DOUBLE = true;
+#else
+constexpr const bool REAL_IS_DOUBLE = false;
+#endif
+
+#ifdef INT_IS_64BIT
+constexpr const bool INTEGER_IS_64BIT = true;
+#else
+constexpr const bool INTEGER_IS_64BIT = false;
+#endif
+
 typedef integer uid;
 
 namespace Math {
