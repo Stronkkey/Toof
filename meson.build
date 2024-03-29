@@ -41,6 +41,7 @@ project_dependencies = [
   dependency('sdl2'),
   dependency('sdl2_image'),
   dependency('box2d'),
+  dependency('cereal'),
 ]
 
 build_args = [
