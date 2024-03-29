@@ -40,6 +40,11 @@ struct Transform2D {
 	constexpr void operator*=(const Transform2D &right);
 
 	static const Transform2D IDENTITY;
+
+	template<class Archive>
+	void serialize(Archive &archive) {
+		archive(REAL_IS_DOUBLE ? uint8_t(0x1) : uint8_t(0x0), rotation.get_angle_degrees(), origin.x, origin.y, scale.x, scale.y);
+	}
 };
 
 constexpr Transform2D::Transform2D(): rotation(Angle::ZERO_ROTATION()), origin(), scale() {

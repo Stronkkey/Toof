@@ -5,6 +5,8 @@
 #include <memory>
 #include <unordered_set>
 
+#include <cereal/types/string.hpp>
+
 namespace sdl {
 
 class StringName {
@@ -404,6 +406,11 @@ public:
 
 	typedef std::basic_ostream<String::value_type, String::traits_type> __os_type__;
 	friend __os_type__ &operator<<(__os_type__ &left, const StringName &right);
+
+	template<class Archive>
+	void serialize(Archive &archive) {
+		archive(String(saved_string.stored_string->view));
+	}
 };
 
 namespace literals {

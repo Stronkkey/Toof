@@ -379,6 +379,11 @@ struct Vector2 {
 	static constexpr Vector2 UP() {
 		return Vector2(0, -1);
 	}
+
+	template<class Archive>
+	void serialize(Archive &archive) const {
+		archive(x, y);
+	}
 };
 
 typedef Vector2<real> Vector2f;
