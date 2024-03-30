@@ -9,7 +9,6 @@ namespace sdl {
 class Resource {
 protected:
 	virtual uid _get_uid() const;
-
 public:
 	Resource() = default;
 	~Resource() = default;
