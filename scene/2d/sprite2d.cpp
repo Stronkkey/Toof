@@ -14,7 +14,7 @@ Sprite2D::Sprite2D(): texture(nullptr),
 Transform2D Sprite2D::_get_placement_texture_transform() const {
 	Transform2D placement_texture_transform = texture_transform;
 	if (centered) {
-		const Vector2f texture_size = texture->get_size(get_rendering_server().get_value());
+		const Vector2f texture_size = texture->get_size();
 		placement_texture_transform.origin -= ((texture_size / 2.0) * texture_transform.scale);
 	}
 
@@ -22,11 +22,11 @@ Transform2D Sprite2D::_get_placement_texture_transform() const {
 }
 
 void Sprite2D::_draw_full_texture() const {
-	texture->draw(get_rendering_server().get_value(), texture->get_uid(), get_canvas_item(), flip, ColorV::WHITE(), _get_placement_texture_transform());
+	texture->draw(texture->get_uid(), get_canvas_item(), flip, ColorV::WHITE(), _get_placement_texture_transform());
 }
 
 void Sprite2D::_draw_rect_texture() const {
-	texture->draw_region(get_rendering_server().get_value(), texture->get_uid(), get_canvas_item(), texture_region, flip, ColorV::WHITE(), _get_placement_texture_transform());
+	texture->draw_region(texture->get_uid(), get_canvas_item(), texture_region, flip, ColorV::WHITE(), _get_placement_texture_transform());
 }
 
 void Sprite2D::_draw_texture() const {
@@ -50,6 +50,10 @@ void Sprite2D::_notification(const int what) {
 
 void Sprite2D::set_texture(const std::shared_ptr<Texture2D> &new_texture) {
 	texture = new_texture;
+
+	if (texture && is_inside_tree())
+		texture->set_rendering_server(get_rendering_server()->get());
+
 	texture_changed();
 	queue_redraw();
 }

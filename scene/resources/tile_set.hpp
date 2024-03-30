@@ -1,34 +1,50 @@
 #pragma once
 
+#include "core/math/vector2.hpp"
 #include <core/math/rect2.hpp>
 #include <core/memory/optional.hpp>
-#include <scene/resources/texture2d.hpp>
+#include <scene/resources/resource.hpp>
+#include <core/math/angle.hpp>
 
 #include <unordered_map>
+#include <memory>
 
 namespace sdl {
 
 class TileSet;
+class Texture2D;
 
 class TileSetAtlasSource : public Resource {
-public:
-	struct TileData {
+private:
+	struct __AtlasTileData__ {
 		Rect2i region;
 		Angle rotation;
 	};
-private:
-	Texture2D *texture;
-	bool use_texture_padding;
-	std::unordered_map<String, TileData> tiles;
 public:
-	TileSetAtlasSource() = default;
-	~TileSetAtlasSource() = default;
+	using TilesType = std::unordered_map<String, __AtlasTileData__>;
+private:
+	std::unique_ptr<Texture2D> texture;
+	bool use_texture_padding;
+	TilesType tiles;
 
-	constexpr void set_texture(Texture2D *texture) {
-		this->texture = texture;
+	uid _get_uid() const override;
+public:
+	TileSetAtlasSource();
+	~TileSetAtlasSource();
+
+	constexpr const TilesType &get_tiles() const & {
+		return tiles;
 	}
 
-	[[nodiscard]] constexpr Texture2D *get_texture() const {
+	constexpr const TilesType &&get_tiles() const && {
+		return std::move(tiles);
+	}
+
+	String atlas_coords_to_string(const Vector2i::value_type x, const Vector2i::value_type y) const;
+
+	void set_texture(std::unique_ptr<Texture2D> &&texture);
+
+	[[nodiscard]] constexpr const std::unique_ptr<Texture2D> &get_texture() const {
 		return texture;
 	}
 
@@ -43,15 +59,15 @@ public:
 	[[nodiscard]] size_t get_tiles_count() const;
 	[[nodiscard]] bool has_tile(const String &tile_name) const;
 
-	bool create_tile(const String &tile_name, const TileData &tile_data);
-	bool create_tile(String &&tile_name, TileData &&tile_data);
+	bool create_tile(const String &tile_name, const Rect2i &region, const Angle &rotation = Angle());
+	bool create_tile(String &&tile_name, Rect2i &&region, Angle &&rotation = Angle());
 
-	[[nodiscard]] Optional<TileData> get_tile_data(const String &tile_name) const;
+	[[nodiscard]] Optional<__AtlasTileData__> get_tile_data(const String &tile_name) const;
 	[[nodiscard]] Optional<Rect2i> get_tile_region(const String &tile_name) const;
 	[[nodiscard]] Optional<Angle> get_tile_rotation(const String &tile_name) const;
 
-	void set_tile_data(const String &tile_name, const TileData &tile_data);
-	void set_tile_data(const String &tile_name, TileData &&tile_data);
+	void set_tile_data(const String &tile_name, const __AtlasTileData__ &tile_data);
+	void set_tile_data(const String &tile_name, __AtlasTileData__ &&tile_data);
 
 	void set_tile_texture_region(const String &tile_name, const Rect2i &region);
 	void set_tile_texture_region(const String &tile_name, Rect2i &&region);
@@ -63,12 +79,15 @@ public:
 class TileSet : public Resource {
 public:
 	using size_type = size_t;
+	using SourceType = std::unique_ptr<TileSetAtlasSource>;
+	using ConstSourceType = const SourceType;
+	using ConstRefSourceType = ConstSourceType&;
 private:
 	struct __CustomDataLayer__ {
 		String name;
 	};
 	using __CustomDataLayerContainerType__ = std::unordered_map<size_type, __CustomDataLayer__>;
-	using __AtlasSourceContainerType__ = std::unordered_map<size_type, std::unique_ptr<TileSetAtlasSource>>;
+	using __AtlasSourceContainerType__ = std::unordered_map<size_type, SourceType>;
 
 	__CustomDataLayerContainerType__ custom_data_layers;
 	__AtlasSourceContainerType__ sources;
@@ -87,7 +106,7 @@ public:
 	size_type get_next_custom_layer_index() const;
 
 	size_type get_next_source_id() const;
-	const std::unique_ptr<TileSetAtlasSource> &get_source(const size_type source_id) const;
+	Optional<ConstRefSourceType> get_source(const size_type source_id) const;
 	size_type get_source_count() const;
 	bool has_source(const size_type source_id) const;
 

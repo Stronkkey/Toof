@@ -1,11 +1,13 @@
 scene_resources_source_files = files(
+	'file_texture.cpp',
 	'resource.cpp',
 	'texture2d.cpp',
-	'uid_texture.cpp',
+	'tile_set.cpp',
 )
 
 scene_resources_headers = files(
+	'file_texture.hpp',
 	'resource.hpp',
 	'texture2d.hpp',
-	'uid_texture.hpp',
+	'tile_set.hpp',
 )

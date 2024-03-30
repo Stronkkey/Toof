@@ -1,22 +1,50 @@
+#include "core/math/vector2.hpp"
 #include <scene/resources/tile_set.hpp>
+#include <scene/resources/texture2d.hpp>
 
 using namespace sdl;
+
+uid TileSetAtlasSource::_get_uid() const {
+	return texture ? texture->get_uid() : 0;
+}
+
+TileSetAtlasSource::TileSetAtlasSource(): texture(), use_texture_padding(false), tiles() {
+}
+
+TileSetAtlasSource::~TileSetAtlasSource() {
+}
+
+String TileSetAtlasSource::atlas_coords_to_string(const Vector2i::value_type x, const Vector2i::value_type y) const {
+	return std::to_string(x) + std::to_string(y);
+}
+
+void TileSetAtlasSource::set_texture(std::unique_ptr<Texture2D> &&texture2d) {
+	texture = std::move(texture2d);
+}
 
 size_t TileSetAtlasSource::get_tiles_count() const {
 	return tiles.size();
 }
 
-bool TileSetAtlasSource::create_tile(const String &tile_name, const TileData &tile_data) {
-	return tiles.insert({tile_name, tile_data}).second;
+bool TileSetAtlasSource::create_tile(const String &tile_name, const Rect2i &region, const Angle &rotation) {
+	__AtlasTileData__ tile_data;
+	tile_data.rotation = rotation;
+	tile_data.region = region;
+
+	return tiles.insert_or_assign(tile_name, std::move(tile_data)).second;
 }
 
-bool TileSetAtlasSource::create_tile(String &&tile_name, TileData &&tile_data) {
-	return tiles.insert({std::move(tile_name), std::move(tile_data)}).second;
+bool TileSetAtlasSource::create_tile(String &&tile_name, Rect2i &&region, Angle &&rotation) {
+	__AtlasTileData__ tile_data;
+	tile_data.rotation = std::move(rotation);
+	tile_data.region = std::move(region);
+
+	return tiles.insert_or_assign(std::move(tile_name), std::move(tile_data)).second;
 }
 
-Optional<TileSetAtlasSource::TileData> TileSetAtlasSource::get_tile_data(const String &tile_name) const {
+Optional<TileSetAtlasSource::__AtlasTileData__> TileSetAtlasSource::get_tile_data(const String &tile_name) const {
 	const auto &iterator = tiles.find(tile_name);
-	return iterator != tiles.end() ? iterator->second : Optional<TileData>();
+	return iterator != tiles.end() ? iterator->second : Optional<__AtlasTileData__>();
 }
 
 Optional<Rect2i> TileSetAtlasSource::get_tile_region(const String &tile_name) const {
@@ -29,13 +57,13 @@ Optional<Angle> TileSetAtlasSource::get_tile_rotation(const String &tile_name) c
 	return iterator != tiles.end() ? iterator->second.rotation : Optional<Angle>();
 }
 
-void TileSetAtlasSource::set_tile_data(const String &tile_name, const TileData &tile_data) {
+void TileSetAtlasSource::set_tile_data(const String &tile_name, const __AtlasTileData__ &tile_data) {
 	const auto &iterator = tiles.find(tile_name);
 	if (iterator != tiles.end())
 		iterator->second = tile_data;
 }
 
-void TileSetAtlasSource::set_tile_data(const String &tile_name, TileData &&tile_data) {
+void TileSetAtlasSource::set_tile_data(const String &tile_name, __AtlasTileData__ &&tile_data) {
 	const auto &iterator = tiles.find(tile_name);
 	if (iterator != tiles.end())
 		iterator->second = std::move(tile_data);
@@ -124,13 +152,12 @@ TileSet::size_type TileSet::get_next_source_id() const {
 	return position;
 }
 
-const std::unique_ptr<TileSetAtlasSource> &TileSet::get_source(const size_type source_id) const {
+Optional<TileSet::ConstRefSourceType> TileSet::get_source(const size_type source_id) const {
 	const auto &iterator = sources.find(source_id);
 	if (iterator != sources.end())
 		return iterator->second;
 
-	const std::unique_ptr<TileSetAtlasSource> _, *_a = &_;
-	return *_a;
+	return NullOption;
 }
 
 TileSet::size_type TileSet::get_source_count() const {
