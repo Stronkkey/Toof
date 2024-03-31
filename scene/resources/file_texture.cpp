@@ -60,6 +60,7 @@ void FileTexture::_draw_region(const uid texture_uid,
 }
 
 void FileTexture::load_from_path(const String &file_path) {
+	texture_path = file_path;
 	if (!get_rendering_server())
 		return;
 

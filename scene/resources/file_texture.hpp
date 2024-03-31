@@ -5,6 +5,8 @@
 
 #include <memory>
 
+#include <cereal/cereal.hpp>
+
 namespace sdl {
 
 class FileTexture : public Texture2D, public ILoadableFromFile {
@@ -27,7 +29,22 @@ public:
 	FileTexture(RenderingServer *rendering_server, const String &texture_path);
 	FileTexture(RenderingServer *rendering_server, String &&texture_path);
 
+	constexpr const String &get_texture_path() const & {
+		return texture_path;
+	}
+
+	inline String get_texture_path() const && {
+		return std::move(texture_path);
+	}
+
 	void load_from_path(const String &file_path) override;
 };
 
+}
+
+namespace cereal {
+template<class Archive>
+void serialize(Archive &archive, sdl::FileTexture &file_texture) {
+	archive(cereal::make_nvp("TexturePath", file_texture.get_texture_path()));
+}
 }
