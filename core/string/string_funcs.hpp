@@ -15,9 +15,8 @@ namespace sdl {
 * @note the type T must explicitly be convertable to String.
 */
 template<class T>
-[[nodiscard]] inline String to_string(const T &variant) {
-	static_assert(std::is_convertible<T, String>().value, "Cannot convert type to string.");
-	return String(variant);
+[[nodiscard]] inline String to_string(const T&) {
+	return String("");
 }
 
 /**
