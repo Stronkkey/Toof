@@ -10,13 +10,34 @@
 
 namespace sdl {
 
+class StringName;
+
+template<bool>
+struct __string_converter__;
+
+template<>
+struct __string_converter__<false> {
+	template<class T>
+	static String get_string(const T&) {
+		return "";
+	}
+};
+
+template<>
+struct __string_converter__<true> {
+	template<class T>
+	static String get_string(const T &t) {
+		return String(t);
+	}
+};
+
 /**
-* @brief generic to_string.
-* @note the type T must explicitly be convertable to String.
+* @returns the @param object converted to a string or an empty string if type T cannot be explictly converted to a string.
+* @see also, the to_string overloads.
 */
 template<class T>
-[[nodiscard]] inline String to_string(const T&) {
-	return String("");
+[[nodiscard]] inline String to_string(const T &object) {
+	return __string_converter__<std::is_convertible<T, String>::value>::get_string(object);
 }
 
 /**
@@ -80,9 +101,19 @@ template<class T>
 [[nodiscard]] String to_string(const bool boolean);
 
 /**
-* @returns a string with the character being the only character (except the NULL byte).
+* @returns a non null terminated string with the character being the only character.
 */
 [[nodiscard]] String to_string(const char character);
+
+/**
+* @returns a copy of the string.
+*/
+[[nodiscard]] String to_string(const String &string);
+
+/**
+* @returns a copy of the string.
+*/
+[[nodiscard]] String to_string(const char *string);
 
 template<class ContainerLike>
 [[nodiscard]] String to_string(const ContainerLike &container, const size_t size) {
@@ -110,7 +141,7 @@ template<class T>
 
 template<class T>
 [[nodiscard]] constexpr bool is_string_type() {
-	return std::is_convertible<T, String>().value;
+	return std::is_same<T, String>::value;
 }
 
 /**

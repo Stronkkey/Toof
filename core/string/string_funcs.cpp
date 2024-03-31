@@ -54,6 +54,14 @@ using namespace sdl;
 	return String(&character, 1);
 }
 
+[[nodiscard]] String sdl::to_string(const String &string) {
+	return string;
+}
+
+[[nodiscard]] String sdl::to_string(const char *string) {
+	return String(string);
+}
+
 std::vector<String> sdl::split_string(const StringView &string_view, const StringView &delimiter) {
 	const size_t string_length = string_view.length();
 	const size_t characters_length = delimiter.length();
