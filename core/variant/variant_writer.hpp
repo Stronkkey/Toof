@@ -242,20 +242,14 @@ public:
 private:
 	std::ifstream file;
 	Archive archive;
-	uint8_t uses_double;
 
 	std::ifstream get_stream(const char *path) const {
 		if (__is_archive_binary_type__<Archive>())
 			return std::ifstream(path, std::ios::binary);
 		return std::ifstream(path);
 	}
-
-	void _set_uses_double() {
-		archive(uses_double);
-	}
 public:
-	VariantFileReader(const char *path): file(path), archive(file), uses_double() {
-		_set_uses_double();
+	VariantFileReader(const char *path): file(path), archive(file) {
 	}
 
 	template<class T>
@@ -291,10 +285,6 @@ public:
 	void exit_out_of_node() {
 		__text_writer__<Archive, __is_archive_binary_type__<Archive>()> __wr;
 		__wr.finish_node(archive);
-	}
-
-	bool file_uses_double() const {
-		return uses_double;
 	}
 
 	std::ifstream &get_file() & {
