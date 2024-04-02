@@ -2,6 +2,8 @@
 
 #include <core/math/vector2.hpp>
 
+#include <cereal/cereal.hpp>
+
 namespace sdl {
 
 struct Transform2D;
@@ -513,6 +515,14 @@ struct Rect2 {
 
 	[[nodiscard]] constexpr bool is_equal_approx(const Rect2 &rect2) const {
 		return Math::is_equal_approx(x, rect2.x) && Math::is_equal_approx(y, rect2.y) && Math::is_equal_approx(w, rect2.w) && Math::is_equal_approx(h, rect2.h);
+	}
+
+	template<class Archive>
+	inline void serialize(Archive &archive) {
+		archive(cereal::make_nvp("X", x));
+		archive(cereal::make_nvp("Y", y));
+		archive(cereal::make_nvp("W", w));
+		archive(cereal::make_nvp("H", h));
 	}
 };
 

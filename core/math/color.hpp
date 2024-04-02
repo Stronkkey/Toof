@@ -3,6 +3,8 @@
 #include <core/string/string_funcs.hpp>
 #include <core/math/math_defs.hpp>
 
+#include <cereal/cereal.hpp>
+
 #include <SDL_pixels.h>
 
 #ifndef __COLOR_V_TYPE__
@@ -289,6 +291,15 @@ struct Color {
 
 	constexpr static Color BLUE() {
 		return Color(0, 0, 255, 255);
+	}
+
+	template<class Archive>
+	inline void serialize(Archive &archive) {
+		archive(cereal::make_nvp("Unused", static_cast<uint64_t>(sizeof(value_type))));
+		archive(cereal::make_nvp("Red", r));
+		archive(cereal::make_nvp("Green", g));
+		archive(cereal::make_nvp("Blue", b));
+		archive(cereal::make_nvp("Alpha", a));
 	}
 };
 

@@ -408,8 +408,13 @@ public:
 	friend __os_type__ &operator<<(__os_type__ &left, const StringName &right);
 
 	template<class Archive>
-	void serialize(Archive &archive) {
-		archive(String(saved_string.stored_string->view));
+	String save_minimal(Archive const&) const {
+		return String(saved_string.stored_string->view);
+	}
+
+	template<class Archive>
+	void load_minimal(Archive const&, String const& string) {
+		_set_string(string);
 	}
 };
 

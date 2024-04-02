@@ -3,6 +3,8 @@
 #include <core/math/vector2.hpp>
 #include <core/math/angle.hpp>
 
+#include <cereal/cereal.hpp>
+
 #ifdef B2_INCLUDED
 struct b2Transform;
 #endif
@@ -43,7 +45,11 @@ struct Transform2D {
 
 	template<class Archive>
 	void serialize(Archive &archive) {
-		archive(REAL_IS_DOUBLE ? uint8_t(0x1) : uint8_t(0x0), rotation.get_angle_degrees(), origin.x, origin.y, scale.x, scale.y);
+		archive(cereal::make_nvp("RotationDegrees", rotation.get_angle_degrees()));
+		archive(cereal::make_nvp("OriginX", origin.x));
+		archive(cereal::make_nvp("OriginY", origin.y));
+		archive(cereal::make_nvp("ScaleX", scale.x));
+		archive(cereal::make_nvp("ScaleY", scale.y));
 	}
 };
 

@@ -3,6 +3,8 @@
 #include <core/math/math_defs.hpp>
 #include <core/string/string_def.hpp>
 
+#include <cereal/cereal.hpp>
+
 namespace sdl {
 
 class Angle {
@@ -137,6 +139,16 @@ public:
 	*/
 	static constexpr Angle FULL_ROTATION() {
 		return Angle(360.0);
+	}
+
+	template<class Archive>
+	real save_minimal(Archive const&) const {
+		return angle_degrees;
+	}
+
+	template<class Archive>
+	void load_minimal(Archive const&, real const& rotation_degrees) {
+		angle_degrees = rotation_degrees;
 	}
 };
 
