@@ -95,7 +95,7 @@ inline void write_variant_text_data(const T &variant, Archive &archive) {
 
 template<class Archive>
 constexpr bool __is_archive_binary_type__() {
-	return std::is_same<Archive, cereal::BinaryOutputArchive>::value || std::is_same<Archive, cereal::PortableBinaryOutputArchive>::value;
+	return std::is_same<Archive, cereal::BinaryOutputArchive>::value || std::is_same<Archive, cereal::PortableBinaryOutputArchive>::value || std::is_same<Archive, cereal::BinaryInputArchive>::value || std::is_same<Archive, cereal::PortableBinaryInputArchive>::value;
 }
 
 template<class T>
