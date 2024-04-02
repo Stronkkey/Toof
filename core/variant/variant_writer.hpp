@@ -154,10 +154,6 @@ private:
 		return std::ofstream(path);
 	}
 
-	void _write_file_metadata() {
-		archive(cereal::make_nvp("Unused1", uint8_t(REAL_IS_DOUBLE)));
-	}
-
 	template<class T>
 	inline void _call_write_function(const T &variant) {
 		if (__is_archive_binary_type__<Archive>())
@@ -175,7 +171,6 @@ private:
 	}
 public:
 	VariantFileWriter(const char *path): file(path), archive(file) {
-		_write_file_metadata();
 	}
 
 	~VariantFileWriter() {
