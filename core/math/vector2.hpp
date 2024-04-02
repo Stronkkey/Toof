@@ -383,7 +383,7 @@ struct Vector2 {
 	}
 
 	template<class Archive>
-	void serialize(Archive &archive) const {
+	void serialize(Archive &archive) {
 		archive(cereal::make_nvp("X", x));
 		archive(cereal::make_nvp("Y", y));
 	}
