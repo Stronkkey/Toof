@@ -389,7 +389,12 @@ struct Vector2 {
 	}
 };
 
-typedef Vector2<real> Vector2f;
-typedef Vector2<integer> Vector2i;
+using Vector2f = Vector2<real>;
+using Vector2i = Vector2<integer>;
+
+using Vector2i32 = Vector2<int32_t>;
+using Vector2i64 = Vector2<int64_t>;
+using Vector2f32 = Vector2<float>;
+using Vector2f64 = Vector2<double>;
 
 }

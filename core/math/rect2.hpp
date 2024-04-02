@@ -526,8 +526,14 @@ struct Rect2 {
 	}
 };
 
-typedef Rect2<real> Rect2f;
-typedef Rect2<integer> Rect2i;
+using Rect2f = Rect2<real>;
+using Rect2i = Rect2<integer>;
+
+using Rect2f32 = Rect2<float>;
+using Rect2f64 = Rect2<double>;
+
+using Rect2i32 = Rect2<int32_t>;
+using Rect2i64 = Rect2<int64_t>;
 
 /**
 * @returns @param rect2f with its position added with the @param transfor2nd origin and size multiplied by @param transform2d scale.
