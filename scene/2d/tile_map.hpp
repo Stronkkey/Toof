@@ -69,7 +69,7 @@ struct std::hash<sdl::UniqueTile> {
 template<>
 struct std::hash<sdl::TileData> {
 	size_t operator()(const sdl::TileData &tile_data) const noexcept {
-		return std::hash<sdl::uid>()(tile_data.__get_index__());
+		return tile_data.__get_index__();
 	}
 };
 
