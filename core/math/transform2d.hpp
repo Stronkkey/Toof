@@ -44,12 +44,67 @@ struct Transform2D {
 	static const Transform2D IDENTITY;
 
 	template<class Archive>
-	void serialize(Archive &archive) {
-		archive(cereal::make_nvp("RotationDegrees", rotation.get_angle_degrees()));
+	inline void save(Archive &archive) const {
+		archive(cereal::make_nvp("IsDouble", REAL_IS_DOUBLE));
+		archive(cereal::make_nvp("RotationDegrees", rotation));
 		archive(cereal::make_nvp("OriginX", origin.x));
 		archive(cereal::make_nvp("OriginY", origin.y));
 		archive(cereal::make_nvp("ScaleX", scale.x));
 		archive(cereal::make_nvp("ScaleY", scale.y));
+	}
+
+	template<class Archive>
+	inline void load(Archive &archive) {
+		bool is_double;
+		archive(is_double);
+
+		if (REAL_IS_DOUBLE == is_double) {
+			Angle angle;
+			archive(angle);
+			rotation = angle;
+
+			archive(origin.x);
+			archive(origin.y);
+			archive(scale.x);
+			archive(scale.y);
+			return;
+		}
+
+		if (!is_double) {
+			float temp_value;
+			archive(temp_value);
+			rotation = Angle::from_degrees(temp_value);
+
+			archive(temp_value);
+			origin.x = temp_value;
+
+			archive(temp_value);
+			origin.y = temp_value;
+
+			archive(temp_value);
+			scale.x = temp_value;
+
+			archive(temp_value);
+			scale.y = temp_value;
+		}
+
+		if (is_double) {
+			double temp_value;
+			archive(temp_value);
+			rotation = Angle::from_degrees(temp_value);
+
+			archive(temp_value);
+			origin.x = temp_value;
+
+			archive(temp_value);
+			origin.y = temp_value;
+
+			archive(temp_value);
+			scale.x = temp_value;
+
+			archive(temp_value);
+			scale.y = temp_value;
+		}
 	}
 };
 
