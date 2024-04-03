@@ -15,6 +15,8 @@ template<class T>
 struct Rect2 {
 	using value_type = T;
 
+	static_assert(std::is_arithmetic<value_type>::value, "value_type of Rect2 must be an arithmetic type.");
+
 	/**
 	* The x axis of the origin point. Usually the top-left corner of the rectangle.
 	*/

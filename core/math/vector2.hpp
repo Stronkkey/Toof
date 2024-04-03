@@ -22,6 +22,8 @@ template<class T>
 struct Vector2 {
 	using value_type = T;
 
+	static_assert(std::is_arithmetic<value_type>::value, "value_type of Vector2 must be an arithmetic type.");
+
 	constexpr Vector2(): x(0), y(0) {
 	}
 

@@ -20,6 +20,8 @@ template<class T>
 struct Color {
 	using value_type = T;
 
+	static_assert(std::is_arithmetic<value_type>::value, "value_type of Color must be an arithmetic type.");
+
 	// Constructs a default Color from opaque black.
 	constexpr Color(): r(0), g(0), b(0), a(255) {
 	}
