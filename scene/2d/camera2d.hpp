@@ -23,6 +23,7 @@ private:
 	Vector2i _get_viewport_size() const;
 	Transform2D _get_canvas_transform() const;
 	Vector2f _get_camera_position() const;
+	void _set_camera_transform(const Transform2D &transform) const;
 	void _step_camera() const;
 	void _limit_vector(Vector2f &vector) const;
 	void _notification(const int what) override;
@@ -259,6 +260,8 @@ public:
 	}
 
 	Transform2D get_target_transform() const;
+	Optional<const Transform2D&> get_camera_transform() const;
+	void set_camera_transform(const Transform2D &transform) const;
 	void align() const;
 	Vector2f get_screen_center_position() const;
 };

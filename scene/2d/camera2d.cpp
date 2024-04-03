@@ -89,6 +89,13 @@ Vector2f Camera2D::_get_camera_position() const {
 	return -camera_position;
 }
 
+void Camera2D::_set_camera_transform(const Transform2D &transform) const {
+	Optional<Viewport*> viewport = _get_viewport();
+
+	if (viewport)
+		viewport.get_value()->set_canvas_transform(transform);
+}
+
 void Camera2D::_step_camera() const {
 	Optional<Viewport*> viewport = _get_viewport();
 
@@ -129,6 +136,19 @@ Transform2D Camera2D::get_target_transform() const {
 	if (_get_viewport())
 		return _get_target_transform();
 	return get_transform();
+}
+
+Optional<const Transform2D&> Camera2D::get_camera_transform() const {
+	Optional<Viewport*> viewport = _get_viewport();
+
+	if (viewport)
+		return viewport.get_value()->get_canvas_transform();
+
+	return NullOption;
+}
+
+void Camera2D::set_camera_transform(const Transform2D &transform) const {
+	_set_camera_transform(transform);
 }
 
 void Camera2D::align() const {
