@@ -5,17 +5,17 @@
 namespace sdl {
 
 #ifdef REAL_T_IS_DOUBLE
-typedef double real;
+using real = double;
 #else
-typedef float real;
+using real = float;
 #endif
 
 #ifdef INT_IS_64BIT
-typedef uint64_t natural;
-typedef int64_t integer;
+using natural = uint64_t;
+using integer = int64_t;
 #else
-typedef int32_t natural;
-typedef uint32_t untarual;
+using natural = uint32_t;
+using integer = int32_t;
 #endif
 
 #ifdef REAL_T_IS_DOUBLE
@@ -30,7 +30,7 @@ constexpr const bool INTEGER_IS_64BIT = true;
 constexpr const bool INTEGER_IS_64BIT = false;
 #endif
 
-typedef integer uid;
+using uid = natural;
 
 namespace Math {
 
