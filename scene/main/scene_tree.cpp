@@ -135,12 +135,12 @@ void SceneTree::step_physics(const double delta) {
 
 void SceneTree::_do_loop(Loop &loop) {
 	const long time_now = std::chrono::high_resolution_clock::now().time_since_epoch().count();
-	const long delta  = (time_now - loop.prev_step_time);
+	const long delta = (time_now - loop.prev_step_time);
 	const double step_time = loop.speed_scale / loop.frame_rate;
+	const double true_delta = static_cast<double>(delta) / std::nano::den;
 
-	if (delta < step_time)
+	if (true_delta < step_time)
 		return;
-	const double true_delta = (double)delta / std::nano::den;
 
 	switch (loop.loop_type) {
 		case Loop::LOOP_TYPE_RENDER:
