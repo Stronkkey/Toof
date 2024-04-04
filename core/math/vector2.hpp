@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/string/string_funcs.hpp>
-#include <core/math/math_defs.hpp>
+#include <core/math/math_funcs.hpp>
 
 #include <SDL_rect.h>
 
