@@ -81,16 +81,10 @@ inline void prints_err(const Args&... variants) {
 	std::cerr << to_strings(variants...) << '\n';
 }
 
-template<class T>
-constexpr uintptr_t uintptr_address(const T *t) {
-	return (uintptr_t)t;
-}
-
 #define PRINT_LINE(...) ::sdl::UtilityFunctions::print(__VA_ARGS__);
 #define PRINT_LINE_ERR(...) ::sdl::UtilityFunctions::print_err(__VA_ARGS__);
 #define PRINTS_LINE(...) ::sdl::UtilityFunctions::prints(__VA_ARGS__);
 #define PRINTS_LINE_ERR(...) ::sdl::UtilityFunctions::prints_err(__VA_ARGS__);
-#define UINTPTR_ADDRESS(name) ::sdl::UtilityFunctions::uintptr_address(name)
 
 }
 
