@@ -20,18 +20,30 @@ inline double get_passed_time() {
 	return time;
 }
 
+/**
+* Prints a new line character into the standard output.
+*/
 inline void print() {
 	std::cout << '\n';
 }
 
+/**
+* Prints a new line character into the standard error output.
+*/
 inline void print_err() {
 	std::cerr << '\n';
 }
 
+/**
+* Prints a new line character into the standard output.
+*/
 inline void prints() {
 	std::cout << '\n';
 }
 
+/**
+* Prints a new line character into the standard error output.
+*/
 inline void prints_err() {
 	std::cerr << '\n';
 }
