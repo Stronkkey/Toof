@@ -19,12 +19,7 @@ using namespace sdl;
 
 SceneTree::SceneTree() {
 	running = false;
-
 	paused = false;
-	render_paused = false;
-	process_paused = false;
-	physics_paused = false;
-	event_paused = false;
 
 	const long time = std::chrono::high_resolution_clock::now().time_since_epoch().count();
 
@@ -32,17 +27,9 @@ SceneTree::SceneTree() {
 	physics_loop = Loop();
 	render_loop = Loop();
 
-	process_loop.frame_rate = 60.0;
-	process_loop.delta_time = 0.0;
-	process_loop.speed_scale = 1.0;
-	process_loop.time_scale = 1.0;
 	process_loop.prev_step_time = time;
 	process_loop.loop_type = Loop::LOOP_TYPE_PROCESS;
 
-	render_loop.frame_rate = 60.0;
-	render_loop.delta_time = 0.0;
-	render_loop.speed_scale = 1.0;
-	render_loop.time_scale = 1.0;
 	render_loop.prev_step_time = time;
 	render_loop.loop_type = Loop::LOOP_TYPE_RENDER;
 
@@ -57,16 +44,10 @@ SceneTree::SceneTree() {
 	root->set_tree(this);
 
 	#ifdef B2_INCLUDED
-	physics_loop.frame_rate = 60.0;
-	physics_loop.delta_time = 0.0;
-	physics_loop.speed_scale = 1.0;
-	physics_loop.time_scale = 1.0;
 	physics_loop.prev_step_time = time;
 	physics_loop.loop_type = Loop::LOOP_TYPE_PHYSICS;
 
 	physics_server = std::make_unique<PhysicsServer2D>();
-	#else
-	physics_loop.prev_step_time = 1 << 30;
 	#endif
 }
 
@@ -173,14 +154,14 @@ void SceneTree::_main_loop() {
 			while (SDL_PollEvent(event.get()))
 				step_event();
 
-		if (!render_paused)
+		if (!render_loop.paused)
 			_do_loop(render_loop);
 
-		if (!process_paused)
+		if (!process_loop.paused)
 			_do_loop(process_loop);
 
 		#ifdef B2_INCLUDED
-		if (!physics_paused)
+		if (!physics_loop.paused)
 			_do_loop(physics_loop);
 		#endif
 

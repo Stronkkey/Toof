@@ -161,16 +161,16 @@ void Node::remove_child(Node* node) {
 }
 
 double Node::get_delta_time() const {
-	return tree ? tree->get_render_delta_time() : 0.0;
+	return tree ? tree->get_render_loop().get_delta_time() : 0.0;
 }
 
 double Node::get_process_delta_time() const {
-	return tree ? tree->get_process_delta_time() : 0.0;
+	return tree ? tree->get_process_loop().get_delta_time() : 0.0;
 }
 
 double Node::get_physics_delta_time() const {
 	#ifdef B2_INCLUDED
-	return tree ? tree->get_physics_delta_time() : 0.0;
+	return tree ? tree->get_physics_loop().get_delta_time() : 0.0;
 	#else
 	return 0.0;
 	#endif
