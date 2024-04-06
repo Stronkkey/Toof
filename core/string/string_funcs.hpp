@@ -3,8 +3,6 @@
 #include <core/string/string_def.hpp>
 
 #include <cstdint>
-#include <iomanip>
-#include <typeinfo>
 #include <array>
 #include <vector>
 
@@ -109,6 +107,11 @@ template<class T>
 * @returns a copy of the string.
 */
 [[nodiscard]] String to_string(const String &string);
+
+/**
+* @returns a copy of the string.
+*/
+[[nodiscard]] String to_string(const StringView &string_view);
 
 /**
 * @returns a copy of the string.

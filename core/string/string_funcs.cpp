@@ -58,6 +58,10 @@ using namespace sdl;
 	return string;
 }
 
+[[nodiscard]] String sdl::to_string(const StringView &string) {
+	return String(string);
+}
+
 [[nodiscard]] String sdl::to_string(const char *string) {
 	return String(string);
 }
