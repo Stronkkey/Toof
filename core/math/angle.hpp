@@ -3,6 +3,8 @@
 #include <core/math/math_funcs.hpp>
 #include <core/string/string_def.hpp>
 
+#include <cereal/cereal.hpp>
+
 namespace sdl {
 
 class Angle {
