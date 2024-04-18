@@ -1,0 +1,3 @@
+[submodule "subprojects/stringify"]
+	path = subprojects/stringify
+	url = git@github.com:Stronkkey/Stringify.git

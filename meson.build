@@ -40,11 +40,14 @@ test_headers = [
   tests_headers,
 ]
 
+stringify_dependency = dependency('stringify', fallback: ['stringify', 'project_dependency'])
+
 project_dependencies = [
   dependency('sdl2'),
   dependency('sdl2_image'),
   dependency('box2d'),
   dependency('cereal'),
+  stringify_dependency
 ]
 
 build_args = [
