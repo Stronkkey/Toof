@@ -2,7 +2,6 @@
 
 #include <core/string/string_def.hpp>
 
-#include <memory>
 #include <unordered_set>
 
 #include <cereal/types/string.hpp>
