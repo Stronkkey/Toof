@@ -1,7 +1,9 @@
 #pragma once
 
 #include <core/math/math_defs.hpp>
-#include <core/string/string_funcs.hpp>
+#include <core/string/string_def.hpp>
+
+#include <stringify/to_string.hpp>
 
 #include <SDL_timer.h>
 
@@ -52,16 +54,16 @@ inline void prints_err() {
 * Converts one or more arguments of any type into a string in the best way possible and prints it to the standard output.
 */
 template<class... Args>
-inline void print(const Args&... variants) {
-	std::cout << to_string(variants...) << '\n';
+inline void print(Args&&... variants) {
+	std::cout << S_TO_STRING(variants...) << '\n';
 }
 
 /**
 * Converts one or more arguments of any type into a string in the best way possible and prints it to the error output.
 */
 template<class... Args>
-inline void print_err(const Args&... variants) {
-	std::cerr << to_string(variants...) << '\n';
+inline void print_err(Args&&... variants) {
+	std::cerr << S_TO_STRING(variants...) << '\n';
 }
 
 
@@ -69,8 +71,8 @@ inline void print_err(const Args&... variants) {
 * Prints one or more arguments to the console with a space between each argument to the standard output.
 */
 template<class... Args>
-inline void prints(const Args&... variants) {
-	std::cout << to_strings(variants...) << '\n';
+inline void prints(Args&&... variants) {
+	std::cout << S_TO_STRINGS(variants...) << '\n';
 }
 
 /**
@@ -78,7 +80,7 @@ inline void prints(const Args&... variants) {
 */
 template<class... Args>
 inline void prints_err(const Args&... variants) {
-	std::cerr << to_strings(variants...) << '\n';
+	std::cerr << S_TO_STRINGS(variants...) << '\n';
 }
 
 enum TextModifier {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/math/math_defs.hpp>
-#include <core/string/string_funcs.hpp>
+#include <core/string/string_def.hpp>
 
 #include <fstream>
 #include <sstream>
@@ -10,6 +10,7 @@
 #include <cereal/archives/portable_binary.hpp>
 #include <cereal/archives/json.hpp>
 #include <cereal/archives/xml.hpp>
+#include <stringify/to_string.hpp>
 
 namespace sdl {
 

@@ -1,11 +1,12 @@
 #pragma once
 
-#include <core/string/string_funcs.hpp>
+#include <core/string/string_def.hpp>
 #include <core/math/math_funcs.hpp>
 
 #include <SDL_rect.h>
 
 #include <cereal/cereal.hpp>
+#include <stringify/format.hpp>
 
 #include <algorithm>
 
@@ -239,7 +240,7 @@ struct Vector2 {
 	}
 
 	[[nodiscard]] operator String() const {
-		return vformat("({}, {})", x, y);
+		return S_FORMAT("({}, {})", x, y);
 	}
 
 	[[nodiscard]] constexpr operator bool() const {

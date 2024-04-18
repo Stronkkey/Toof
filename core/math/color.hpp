@@ -1,9 +1,10 @@
 #pragma once
 
-#include <core/string/string_funcs.hpp>
+#include <core/string/string_def.hpp>
 #include <core/math/math_defs.hpp>
 
 #include <cereal/cereal.hpp>
+#include <stringify/format.hpp>
 
 #include <SDL_pixels.h>
 
@@ -220,7 +221,7 @@ struct Color {
 	* @return a String reprenstation of the color "(r, g, b , a)"
 	*/
 	[[nodiscard]] inline operator String() const {
-		return vformat("(R: {}, G: {}, B: {}, A: {})", r, g, b, a);
+		return S_FORMAT("(R: {}, G: {}, B: {}, A: {})", r, g, b, a);
 	}
 
 	/**

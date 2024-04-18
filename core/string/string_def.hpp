@@ -1,18 +1,26 @@
 #pragma once
 
-#ifndef STRING_TYPE
+#ifndef SDL_LIBS_STRING_TYPE
 #include <string>
-#define STRING_TYPE std::string
+#define SDL_LIBS_STRING_TYPE std::string
 #endif
 
-#ifndef CUSTOM_STRING_VIEW_TYPE
+#ifndef SDL_LIBS_STRING_VIEW_TYPE
 #include <string_view>
-#define STRING_VIEW_TYPE std::string_view
+#define SDL_LIBS_STRING_VIEW_TYPE std::string_view
+#endif
+
+#ifndef STRINGIFY_STRING_TYPE
+#define STRINGIFY_STRING_TYPE SDL_LIBS_STRING_TYPE
+#endif
+
+#ifndef STRINGIFY_STRING_VIEW_TYPE
+#define STRINGIFY_STRING_VIEW_TYPE SDL_LIBS_STRING_VIEW_TYPE
 #endif
 
 namespace sdl {
 
-typedef STRING_TYPE String;
-typedef STRING_VIEW_TYPE StringView;
+using String = SDL_LIBS_STRING_TYPE;
+using StringView = SDL_LIBS_STRING_VIEW_TYPE;
 
 }
