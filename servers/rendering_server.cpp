@@ -165,6 +165,7 @@ void RenderingServer::canvas_item_add_texture(const uid texture_uid, const uid c
 	texture_drawing_item->flip = flip;
 	texture_drawing_item->transform = transform;
 	texture_drawing_item->texture_modulate = modulate;
+	texture_drawing_item->use_region = false;
 
 	canvas_item->drawing_items.push_back(std::move(texture_drawing_item));
 }
@@ -183,6 +184,7 @@ void RenderingServer::canvas_item_add_texture_region(const uid texture_uid, cons
 	texture_rect_drawing_item->transform = transform;
 	texture_rect_drawing_item->flip = flip;
 	texture_rect_drawing_item->texture_modulate = modulate;
+	texture_rect_drawing_item->use_region = true;
 
 	canvas_item->drawing_items.push_back(std::move(texture_rect_drawing_item));
 }
