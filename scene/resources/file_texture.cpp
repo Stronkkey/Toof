@@ -12,12 +12,12 @@ FileTexture::FileTexture(RenderingServer *rendering_server) {
 
 FileTexture::FileTexture(RenderingServer *rendering_server, const String &texture_path): texture_uid(0), texture_path(texture_path) {
 	set_rendering_server(rendering_server);
-	load_from_path(texture_path);
+	load_from_path(this->texture_path);
 }
 
 FileTexture::FileTexture(RenderingServer *rendering_server, String &&texture_path): texture_uid(), texture_path(std::move(texture_path)) {
 	set_rendering_server(rendering_server);
-	load_from_path(texture_path);
+	load_from_path(this->texture_path);
 }
 
 Vector2i FileTexture::_get_size() const {
