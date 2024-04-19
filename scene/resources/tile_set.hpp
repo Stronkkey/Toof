@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/math/vector2.hpp"
+#include <core/math/color.hpp>
 #include <core/math/rect2.hpp>
 #include <core/memory/optional.hpp>
 #include <scene/resources/resource.hpp>
@@ -13,6 +13,8 @@ namespace sdl {
 
 class TileSet;
 class Texture2D;
+
+String atlas_coords_to_string(const Vector2i::value_type x, const Vector2i::value_type y);
 
 class TileSetAtlasSource : public Resource {
 private:
@@ -40,8 +42,6 @@ public:
 		return std::move(tiles);
 	}
 
-	String atlas_coords_to_string(const Vector2i::value_type x, const Vector2i::value_type y) const;
-
 	void set_texture(std::unique_ptr<Texture2D> &&texture);
 
 	[[nodiscard]] constexpr const std::unique_ptr<Texture2D> &get_texture() const {
@@ -62,7 +62,6 @@ public:
 	bool create_tile(const String &tile_name, const Rect2i &region, const Angle &rotation = Angle());
 	bool create_tile(String &&tile_name, Rect2i &&region, Angle &&rotation = Angle());
 
-	[[nodiscard]] Optional<__AtlasTileData__> get_tile_data(const String &tile_name) const;
 	[[nodiscard]] Optional<Rect2i> get_tile_region(const String &tile_name) const;
 	[[nodiscard]] Optional<Angle> get_tile_rotation(const String &tile_name) const;
 

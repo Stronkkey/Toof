@@ -1,8 +1,12 @@
-#include "core/math/vector2.hpp"
 #include <scene/resources/tile_set.hpp>
 #include <scene/resources/texture2d.hpp>
+#include <stringify/to_string.hpp>
 
 using namespace sdl;
+
+String sdl::atlas_coords_to_string(const Vector2i::value_type x, const Vector2i::value_type y) {
+	return S_TO_STRING(x, y);
+}
 
 uid TileSetAtlasSource::_get_uid() const {
 	return texture ? texture->get_uid() : 0;
@@ -12,10 +16,6 @@ TileSetAtlasSource::TileSetAtlasSource(): texture(), use_texture_padding(false),
 }
 
 TileSetAtlasSource::~TileSetAtlasSource() {
-}
-
-String TileSetAtlasSource::atlas_coords_to_string(const Vector2i::value_type x, const Vector2i::value_type y) const {
-	return std::to_string(x) + std::to_string(y);
 }
 
 void TileSetAtlasSource::set_texture(std::unique_ptr<Texture2D> &&texture2d) {
@@ -40,11 +40,6 @@ bool TileSetAtlasSource::create_tile(String &&tile_name, Rect2i &&region, Angle 
 	tile_data.region = std::move(region);
 
 	return tiles.insert_or_assign(std::move(tile_name), std::move(tile_data)).second;
-}
-
-Optional<TileSetAtlasSource::__AtlasTileData__> TileSetAtlasSource::get_tile_data(const String &tile_name) const {
-	const auto &iterator = tiles.find(tile_name);
-	return iterator != tiles.end() ? iterator->second : Optional<__AtlasTileData__>();
 }
 
 Optional<Rect2i> TileSetAtlasSource::get_tile_region(const String &tile_name) const {
