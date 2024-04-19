@@ -139,8 +139,10 @@ private:
 	bool valid;
 
 	constexpr T &__get_null_value__() {
-		T _t, *_b = &_t;
-		return *_b;
+		T *_t = nullptr;
+		T **_b = &_t;
+		T &_g = *(*_b);
+		return _g;
 	}
 public:
 	constexpr Optional(): value(__get_null_value__()), valid(false) {
@@ -263,8 +265,10 @@ private:
 	bool valid;
 
 	constexpr T &&__get_null_value__() {
-		T _t, *_b = &_t;
-		return *_b;
+		T *_t = nullptr;
+		T **_b = &_t;
+		T &&_g = std::move(*(*_b));
+		return _g;
 	}
 public:
 	constexpr Optional(): value(__get_null_value__()), valid(false) {
