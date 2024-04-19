@@ -29,8 +29,11 @@ bool TileMap::create_grid(const Vector2i &tile_size, const TileSet::size_type so
 	Vector2i texture_size = texture->get_size();
 
 	for (v2int x = 0; x < texture_size.x; x += tile_size.x)
-		for (v2int y = 0; y < texture_size.y; y += tile_size.y)
-			source_value->create_tile(source_value->atlas_coords_to_string(x, y), Rect2i(x, y, tile_size.x, tile_size.y));
+		for (v2int y = 0; y < texture_size.y; y += tile_size.y) {
+			String atlas_coords_string = atlas_coords_to_string(x, y);
+			Rect2i rect = Rect2i(x, y, tile_size.x, tile_size.y);
+			source_value->create_tile(std::move(atlas_coords_string), std::move(rect));
+		}
 
 	return true;
 }
@@ -42,6 +45,7 @@ uid TileMap::_add_cell(const Transform2D &transform, const UniqueTile &unique_ti
 	tile_data.unique_tile = unique_tile;
 	tile_data.transform = transform;
 	tile_data.index = id;
+	tile_data.modulation = ColorV::WHITE();
 	tiles.insert_or_assign(std::move(id), std::move(tile_data));
 
 	_draw_tile(tile_data);
@@ -137,6 +141,14 @@ void TileMap::set_tile_set(std::unique_ptr<TileSet> &&new_tile_set) {
 
 std::unique_ptr<TileSet> TileMap::get_tile_set() && {
 	return std::move(tile_set);
+}
+
+Optional<TileData&> TileMap::get_tile_data(uid tile_uid) {
+	auto iterator = tiles.find(tile_uid);
+
+	if (iterator != tiles.end())
+		return iterator->second;
+	return NullOption;
 }
 
 void TileMap::clear() {

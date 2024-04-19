@@ -15,10 +15,10 @@ struct UniqueTile {
 	UniqueTile(): tile_name(), source_id(-1) {
 	}
 	
-	UniqueTile(const Vector2i &tile_name, const TileSet::size_type source_id): tile_name(tile_name), source_id(source_id) {
+	UniqueTile(const String &tile_name, const TileSet::size_type source_id): tile_name(tile_name), source_id(source_id) {
 	}
 
-	UniqueTile(Vector2i &&tile_name, const TileSet::size_type source_id): tile_name(std::move(tile_name)), source_id(source_id) {
+	UniqueTile(String &&tile_name, const TileSet::size_type source_id): tile_name(std::move(tile_name)), source_id(source_id) {
 	}
 
 	bool operator==(const UniqueTile &unique_tile) {
@@ -110,6 +110,8 @@ public:
 	}
 	
 	std::unique_ptr<TileSet> get_tile_set() &&;
+	Optional<TileData&> get_tile_data(uid tile_uid);
+	Optional<const TileData&> get_tile_data(uid tile_uid) const;
 
 	constexpr const std::unique_ptr<TileSet> &get_tile_set() const & {
 		return tile_set;
