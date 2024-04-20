@@ -2,8 +2,6 @@
 
 #include <core/math/math_defs.hpp>
 
-#include <array>
-
 namespace sdl {
 
 class Resource {
