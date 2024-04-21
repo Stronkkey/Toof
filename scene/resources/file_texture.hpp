@@ -3,8 +3,6 @@
 #include <interfaces/loadable_from_file.hpp>
 #include <scene/resources/texture2d.hpp>
 
-#include <memory>
-
 #include <cereal/cereal.hpp>
 
 namespace sdl {

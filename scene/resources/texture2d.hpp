@@ -7,8 +7,6 @@
 
 #include <SDL_render.h>
 
-#include <memory>
-
 namespace sdl {
 
 template<class>
