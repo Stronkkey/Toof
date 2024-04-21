@@ -3,6 +3,7 @@
 #include <core/math/math_defs.hpp>
 #include <core/string/string_def.hpp>
 
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 
@@ -171,7 +172,7 @@ private:
 			write_variant_text_data_with_name<T, Archive>(variant, archive, variant_name);
 	}
 public:
-	VariantFileWriter(const char *path): file(path), archive(file) {
+	VariantFileWriter(const std::filesystem::path &path): file(path), archive(file) {
 	}
 
 	~VariantFileWriter() {
@@ -250,7 +251,7 @@ private:
 		return std::ifstream(path);
 	}
 public:
-	VariantFileReader(const char *path): file(path), archive(file) {
+	VariantFileReader(const std::filesystem::path &path): file(path), archive(file) {
 	}
 
 	template<class T>
