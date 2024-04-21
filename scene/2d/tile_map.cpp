@@ -60,6 +60,7 @@ uid TileMap::_add_cell(Transform2D &&transform, UniqueTile &&unique_tile) {
 	tile_data.unique_tile = std::move(unique_tile);
 	tile_data.transform = std::move(transform);
 	tile_data.index = id;
+	tile_data.modulation = ColorV::WHITE();
 	tiles.insert_or_assign(std::move(id), std::move(tile_data));
 
 	return id;
