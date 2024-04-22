@@ -1,13 +1,12 @@
 #pragma once
 
-#include <interfaces/loadable_from_file.hpp>
 #include <scene/resources/texture2d.hpp>
 
 #include <cereal/cereal.hpp>
 
 namespace sdl {
 
-class FileTexture : public Texture2D, public ILoadableFromFile {
+class FileTexture : public Texture2D {
 private:
 	uid texture_uid;
 	String texture_path;
@@ -35,14 +34,12 @@ public:
 		return std::move(texture_path);
 	}
 
-	void load_from_path(const String &file_path) override;
+	void load_from_path(const String &file_path);
+
+	template<class Archive>
+	void serialize(Archive &archive) {
+		archive(cereal::make_nvp("FilePath", texture_path));
+	}
 };
 
-}
-
-namespace cereal {
-template<class Archive>
-void serialize(Archive &archive, sdl::FileTexture &file_texture) {
-	archive(cereal::make_nvp("TexturePath", file_texture.get_texture_path()));
-}
 }
