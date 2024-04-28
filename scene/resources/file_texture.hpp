@@ -4,6 +4,8 @@
 
 #include <cereal/cereal.hpp>
 
+#include <cereal/types/string.hpp>
+
 namespace sdl {
 
 class FileTexture : public Texture2D {
@@ -35,11 +37,23 @@ public:
 	}
 
 	void load_from_path(const String &file_path);
-
-	template<class Archive>
-	void serialize(Archive &archive) {
-		archive(cereal::make_nvp("FilePath", texture_path));
-	}
+	void load_from_path(String &&file_path);
 };
+
+}
+
+namespace cereal {
+
+template<class Archive>
+void load(Archive &archive, sdl::FileTexture &file_texture) {
+	sdl::String file_path;
+	archive(file_path);
+	file_texture.load_from_path(std::move(file_path));
+}
+
+template<class Archive>
+void save(Archive &archive, const sdl::FileTexture &file_texture) {
+	archive(file_texture.get_texture_path());
+}
 
 }

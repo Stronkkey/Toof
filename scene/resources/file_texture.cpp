@@ -67,3 +67,12 @@ void FileTexture::load_from_path(const String &file_path) {
 	Optional<uid> text_uid = get_rendering_server()->load_texture_from_path(file_path);
 	texture_uid = text_uid.value_or(0);
 }
+
+void FileTexture::load_from_path(String &&file_path) {
+	texture_path = std::move(file_path);
+	if (!get_rendering_server())
+		return;
+
+	Optional<uid> text_uid = get_rendering_server()->load_texture_from_path(texture_path);
+	texture_uid = text_uid.value_or(0);
+}
