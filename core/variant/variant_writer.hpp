@@ -11,6 +11,7 @@
 #include <cereal/archives/portable_binary.hpp>
 #include <cereal/archives/json.hpp>
 #include <cereal/archives/xml.hpp>
+
 #include <stringify/to_string.hpp>
 
 namespace sdl {
@@ -90,7 +91,7 @@ inline void write_variant_text_data(const T &variant, Archive &archive) {
 	constexpr const bool is_string_array = __is_string_array__<T>();
 
 	if (is_string_array)
-		archive(to_string(variant));
+		archive(S_TO_STRING_N(variant));
 	else
 		archive(variant);
 }
@@ -278,7 +279,7 @@ public:
 		__text_writer__<Archive, __is_archive_binary_type__<Archive>()> __wr;
 		__wr.load_value(archive, t);
 	}
-	
+
 	void go_into_node() {
 		__text_writer__<Archive, __is_archive_binary_type__<Archive>()> __wr;
 		__wr.go_into_node(archive);
