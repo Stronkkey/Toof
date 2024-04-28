@@ -4,6 +4,4 @@
 
 #include <scene/resources/world2d.hpp>
 
-// Bruh
-
 #endif
