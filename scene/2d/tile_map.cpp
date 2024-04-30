@@ -46,9 +46,9 @@ uid TileMap::_add_cell(const Transform2D &transform, const UniqueTile &unique_ti
 	tile_data.transform = transform;
 	tile_data.index = id;
 	tile_data.modulation = ColorV::WHITE();
-	tiles.insert_or_assign(std::move(id), std::move(tile_data));
-
-	_draw_tile(tile_data);
+	
+	const auto &iterator = tiles.insert_or_assign(std::move(id), std::move(tile_data));
+	_draw_tile(iterator.first->second);
 
 	return id;
 }
@@ -61,7 +61,9 @@ uid TileMap::_add_cell(Transform2D &&transform, UniqueTile &&unique_tile) {
 	tile_data.transform = std::move(transform);
 	tile_data.index = id;
 	tile_data.modulation = ColorV::WHITE();
-	tiles.insert_or_assign(std::move(id), std::move(tile_data));
+
+	const auto &iterator = tiles.insert_or_assign(std::move(id), std::move(tile_data));
+	_draw_tile(iterator.first->second);
 
 	return id;
 }
