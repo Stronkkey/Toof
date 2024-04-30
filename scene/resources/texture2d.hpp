@@ -43,13 +43,17 @@ private:
 
 	virtual void _draw_region(const uid, const uid, const Rect2i&, const SDL_RendererFlip, const ColorV&, const Transform2D&) {
 	}
+
+	virtual void _on_rendering_server_set() {
+	}
 protected:
 	Texture2D();
 public:
 	~Texture2D() = default;
 
-	constexpr void set_rendering_server(RenderingServer *rendering_server) {
+	inline void set_rendering_server(RenderingServer *rendering_server) {
 		this->rendering_server = rendering_server;
+		_on_rendering_server_set();
 	}
 
 	constexpr RenderingServer *get_rendering_server() {

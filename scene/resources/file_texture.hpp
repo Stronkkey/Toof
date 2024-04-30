@@ -22,6 +22,8 @@ private:
 	SDL_Texture *_get_texture() const override;
 	void _draw(const uid, const uid, const SDL_RendererFlip, const ColorV&, const Transform2D&) override;
 	void _draw_region(const uid, const uid, const Rect2i&, const SDL_RendererFlip, const ColorV&, const Transform2D&) override;
+protected:
+	void _on_rendering_server_set() override;
 public:
 	FileTexture();
 	FileTexture(RenderingServer *rendering_server);

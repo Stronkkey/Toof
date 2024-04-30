@@ -59,6 +59,14 @@ void FileTexture::_draw_region(const uid texture_uid,
 		get_rendering_server()->canvas_item_add_texture_region(texture_uid, canvas_item_uid, src_region, flip, modulate, transform);
 }
 
+void FileTexture::_on_rendering_server_set() {
+	if (!get_rendering_server())
+		return;
+
+	Optional<uid> text_uid = get_rendering_server()->load_texture_from_path(texture_path);
+	texture_uid = text_uid.value_or(0);
+}
+
 void FileTexture::load_from_path(const String &file_path) {
 	texture_path = file_path;
 	if (!get_rendering_server())
