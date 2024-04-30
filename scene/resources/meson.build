@@ -10,4 +10,6 @@ scene_resources_headers = files(
 	'resource.hpp',
 	'texture2d.hpp',
 	'tile_set.hpp',
+	'resource_format_loader.hpp',
+	'texture_format_loader.hpp',
 )
