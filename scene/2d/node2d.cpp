@@ -3,8 +3,6 @@
 #include <scene/main/scene_tree.hpp>
 #include <scene/resources/texture2d.hpp>
 
-#include <typeinfo>
-
 using namespace sdl;
 
 Node2D::Node2D():
