@@ -96,11 +96,6 @@ inline void write_variant_text_data(const T &variant, Archive &archive) {
 		archive(variant);
 }
 
-template<class Archive>
-constexpr bool __is_archive_binary_type__() {
-	return std::is_same<Archive, cereal::BinaryOutputArchive>::value || std::is_same<Archive, cereal::PortableBinaryOutputArchive>::value || std::is_same<Archive, cereal::BinaryInputArchive>::value || std::is_same<Archive, cereal::PortableBinaryInputArchive>::value;
-}
-
 template<class T>
 inline std::stringstream get_variant_data(const T &variant) {
 	std::stringstream string_stream = std::stringstream();
@@ -108,58 +103,73 @@ inline std::stringstream get_variant_data(const T &variant) {
 	return string_stream;
 }
 
-template<class, bool>
-struct __text_writer__;
+namespace detail {
 
 template<class Archive>
-struct __text_writer__<Archive, true> {
-	void start_node(Archive&, const char*) {}
-	void finish_node(Archive&) {}
-	void go_into_node(Archive&) {}
+constexpr bool __is_archive_binary_type__() {
+	return std::is_same<Archive, cereal::BinaryOutputArchive>::value || std::is_same<Archive, cereal::PortableBinaryOutputArchive>::value || std::is_same<Archive, cereal::BinaryInputArchive>::value || std::is_same<Archive, cereal::PortableBinaryInputArchive>::value;
+}
 
-	template<class T>
-	void load_value(Archive&, T&) {}
-};
+template<class StreamType, class Archive, typename std::enable_if<__is_archive_binary_type__<Archive>(), bool>::type = true>
+StreamType __get_stream__(const std::filesystem::path &path) {
+	return StreamType(path, std::ios::binary);
+}
+
+template<class StreamType, class Archive, typename std::enable_if<!__is_archive_binary_type__<Archive>(), bool>::type = true>
+StreamType __get_stream__(const std::filesystem::path &path) {
+	return StreamType(path);
+}
+
+template<class Archive, typename std::enable_if<!__is_archive_binary_type__<Archive>(), bool>::type = true>
+void __start_node__(Archive &archive, const char *name) {
+	archive.setNextName(name);
+	archive.startNode();
+}
+
+template<class Archive, typename std::enable_if<__is_archive_binary_type__<Archive>(), bool>::type = true>
+void __start_node__(Archive&, const char*) {
+}
+
+template<class Archive, typename std::enable_if<!__is_archive_binary_type__<Archive>(), bool>::type = true>
+void __go_into_node__(Archive &archive) {
+	archive.startNode();
+}
+
+template<class Archive, typename std::enable_if<__is_archive_binary_type__<Archive>(), bool>::type = true>
+void __go_into_node__(Archive&) {
+}
+
+template<class Archive, typename std::enable_if<!__is_archive_binary_type__<Archive>(), bool>::type = true>
+void __finish_node__(Archive &archive) {
+	archive.finishNode();
+}
+
+template<class Archive, typename std::enable_if<__is_archive_binary_type__<Archive>(), bool>::type = true>
+void __finish_node__(Archive&) {
+}
+
+template<class Archive, class T, typename std::enable_if<!__is_archive_binary_type__<Archive>(), bool>::type = true>
+void __load_value__(Archive &archive, const T &object) {
+	archive.loadValue(object);
+}
+
+template<class Archive, class T, typename std::enable_if<__is_archive_binary_type__<Archive>(), bool>::type = true>
+void __load_value__(Archive&, const T&) {
+}
+
+}
 
 template<class Archive>
-struct __text_writer__<Archive, false> {
-	void start_node(Archive &archive, const char *name) {
-		archive.setNextName(name);
-		archive.startNode();
-	}
-
-	void finish_node(Archive &archive) {
-		archive.finishNode();
-	}
-
-	void go_into_node(Archive &archive) {
-		archive.startNode();
-	}
-
-	template<class T>
-	void load_value(Archive &archive, T &t) {
-		archive.loadValue(t);
-	}
-};
-
-
-template<class Archive>
-class VariantFileWriter {
+class VariantWriter {
 public:
 	using ArchiveType = Archive;
 private:
-	std::ofstream file;
+	std::ostream &stream;
 	Archive archive;
-
-	std::ofstream get_stream(const char *path) const {
-		if (__is_archive_binary_type__<Archive>())
-			return std::ofstream(path, std::ios::binary);
-		return std::ofstream(path);
-	}
 
 	template<class T>
 	inline void _call_write_function(const T &variant) {
-		if (__is_archive_binary_type__<Archive>())
+		if (detail::__is_archive_binary_type__<Archive>())
 			write_variant_binary_data<T, Archive>(variant, archive);
 		else
 			write_variant_text_data<T, Archive>(variant, archive);
@@ -167,58 +177,37 @@ private:
 
 	template<class T>
 	inline void _call_write_function_with_name(const T &variant, const String &variant_name) {
-		if (__is_archive_binary_type__<Archive>())
+		if (detail::__is_archive_binary_type__<Archive>())
 			write_variant_binary_data<T, Archive>(variant, archive);
 		else
 			write_variant_text_data_with_name<T, Archive>(variant, archive, variant_name);
 	}
 public:
-	VariantFileWriter(const std::filesystem::path &path): file(path), archive(file) {
+	VariantWriter(std::ostream &stream): stream(stream), archive(stream) {
 	}
 
-	~VariantFileWriter() {
-	}
+	~VariantWriter() = default;
 
 	void start_node(const char *name = nullptr) {
-		__text_writer__<Archive, __is_archive_binary_type__<Archive>()> __wr;
-		__wr.start_node(archive, name);
+		if (name == nullptr)
+			detail::__go_into_node__(archive);
+		else
+			detail::__start_node__(archive, name);
 	}
 
 	void finish_node() {
-		__text_writer__<Archive, __is_archive_binary_type__<Archive>()> __wr;
-		__wr.finish_node(archive);
+		detail::__finish_node__(archive);
 	}
 
 	template<class T>
-	inline void write(const T &variant) {
-		_call_write_function(variant);
+	inline void write_with_name(const String &name, const T &variant) {
+		_call_write_function_with_name(variant, name);
 	}
 
 	template<class T>
-	inline void write_with_name(const String &variant_name, const T &variant) {
-		_call_write_function_with_name(variant, variant_name);
-	}
-
-	template<class T>
-	std::ofstream &operator<<(const T &variant) {
-		_call_write_function(variant);
-		return file;
-	}
-
-	std::ofstream &get_file() & {
-		return file;
-	}
-
-	std::ofstream &&get_file() && {
-		return std::move(file);
-	}
-
-	const std::ofstream &get_file() const & {
-		return file;
-	}
-
-	const std::ofstream &&get_file() const && {
-		return std::move(file);
+	VariantWriter &operator<<(const T &object) {
+		__call_write_function(object);
+		return *this;
 	}
 
 	Archive &get_archive() & {
@@ -239,21 +228,17 @@ public:
 };
 
 template<class Archive>
-class VariantFileReader {
+class VariantReader {
 public:
 	using ArchiveType = Archive;
 private:
-	std::ifstream file;
+	std::istream &stream;
 	Archive archive;
-
-	std::ifstream get_stream(const char *path) const {
-		if (__is_archive_binary_type__<Archive>())
-			return std::ifstream(path, std::ios::binary);
-		return std::ifstream(path);
-	}
 public:
-	VariantFileReader(const std::filesystem::path &path): file(path), archive(file) {
+	VariantReader(std::istream &stream): stream(stream), archive(stream) {
 	}
+
+	~VariantReader() = default;
 
 	template<class T>
 	T read_value() {
@@ -276,34 +261,31 @@ public:
 
 	template<class T>
 	void load_value(T &t) {
-		__text_writer__<Archive, __is_archive_binary_type__<Archive>()> __wr;
-		__wr.load_value(archive, t);
+		detail::__load_value__(archive, t);
 	}
 
 	void go_into_node() {
-		__text_writer__<Archive, __is_archive_binary_type__<Archive>()> __wr;
-		__wr.go_into_node(archive);
+		detail::__go_into_node__(archive);
 	}
 
 	void exit_out_of_node() {
-		__text_writer__<Archive, __is_archive_binary_type__<Archive>()> __wr;
-		__wr.finish_node(archive);
+		detail::__finish_node__(archive);
 	}
 
-	std::ifstream &get_file() & {
-		return file;
+	std::istream &get_stream() & {
+		return stream;
 	}
 
-	std::ifstream &&get_file() && {
-		return std::move(file);
+	std::istream &&get_stream() && {
+		return std::move(stream);
 	}
 
-	const std::ifstream &get_file() const & {
-		return file;
+	const std::istream &get_stream() const & {
+		return stream;
 	}
 
-	const std::ifstream &&get_file() const && {
-		return std::move(file);
+	const std::istream &&get_stream() const && {
+		return std::move(stream);
 	}
 
 	Archive &get_archive() & {
@@ -322,5 +304,137 @@ public:
 		return std::move(archive);
 	}
 };
+
+template<class Archive>
+class VariantFileWriter {
+public:
+	using ArchiveType = Archive;
+private:
+	std::ofstream file;
+	VariantWriter<ArchiveType> variant_writer;
+public:
+	VariantFileWriter(const std::filesystem::path &path): file(detail::__get_stream__<std::ofstream, ArchiveType>(path)), variant_writer(file) {
+	}
+
+	~VariantFileWriter() = default;
+
+	void start_node(const char *name = nullptr) {
+		variant_writer.start_node(name);
+	}
+
+	void finish_node() {
+		variant_writer.finish_node();
+	}
+
+	template<class T>
+	inline void write_with_name(const String &name, const T &variant) {
+		variant_writer.write_with_name(name, variant);
+	}
+
+	template<class T>
+	VariantFileWriter &operator<<(const T &object) {
+		variant_writer << object;
+		return *this;
+	}
+
+	ArchiveType &get_archive() & {
+		return variant_writer.get_archive();
+	}
+
+	ArchiveType &&get_archive() && {
+		return std::move(variant_writer.get_archive());
+	}
+
+	const ArchiveType &get_archive() const & {
+		return variant_writer.get_archive();
+	}
+
+	const ArchiveType &&get_archive() const && {
+		return std::move(variant_writer.get_archive());
+	}
+};
+
+template<class Archive>
+class VariantFileReader {
+public:
+	using ArchiveType = Archive;
+private:
+	std::ifstream file;
+	VariantReader<ArchiveType> variant_reader;
+public:
+	VariantFileReader(const std::filesystem::path &path): file(detail::__get_stream__<std::ifstream, ArchiveType>(path)), variant_reader(file) {
+	}
+
+	~VariantFileReader() = default;
+
+	template<class T>
+	T read_value() {
+		return variant_reader.template read_value<T>();
+	}
+
+	template<class T, class... Args>
+	std::tuple<T, Args...> read_values() {
+		return variant_reader.template read_values<T, Args...>();
+	}
+
+	template<class... Args>
+	void read_to(Args&&... args) {
+		variant_reader.read_to(args...);
+	}
+
+	template<class T>
+	void load_value(T &object) {
+		variant_reader.load_value(object);
+	}
+
+	void go_into_node() {
+		variant_reader.go_into_node();
+	}
+
+	void exit_out_of_node() {
+		variant_reader.exit_out_of_node();
+	}
+
+	std::ifstream &get_file() & {
+		return file;
+	}
+
+	std::ifstream &&get_file() && {
+		return std::move(file);
+	}
+
+	const std::ifstream &get_file() const & {
+		return file;
+	}
+
+	const std::ifstream &&get_file() const && {
+		return std::move(file);
+	}
+
+	ArchiveType &get_archive() & {
+		return variant_reader.get_archive();
+	}
+
+	ArchiveType &&get_archive() && {
+		return std::move(variant_reader.get_archive());
+	}
+
+	const ArchiveType &get_archive() const & {
+		return variant_reader.get_archive();
+	}
+
+	const Archive &&get_archive() const && {
+		return std::move(variant_reader.get_archive());
+	}
+};
+
+using PBVariantFileWriter = VariantFileWriter<cereal::PortableBinaryOutputArchive>;
+using PBVariantFileReader = VariantFileWriter<cereal::PortableBinaryInputArchive>;
+using BVariantFileWriter = VariantFileWriter<cereal::BinaryOutputArchive>;
+using BVariantFileReader = VariantFileWriter<cereal::BinaryInputArchive>;
+using JSONVariantFileWriter = VariantFileWriter<cereal::JSONOutputArchive>;
+using JSONVariantFileReader = VariantFileWriter<cereal::JSONInputArchive>;
+using XMLVariantFileWriter = VariantFileWriter<cereal::XMLOutputArchive>;
+using XMLVariantFileReader = VariantFileWriter<cereal::XMLInputArchive>;
 
 }
