@@ -85,7 +85,7 @@ public:
 		return value;
 	}
 
-	constexpr T &get_value() && {
+	constexpr T &&get_value() && {
 		return std::move(value);
 	}
 
@@ -93,7 +93,7 @@ public:
 		return value;
 	}
 
-	constexpr const T &get_value() const && {
+	constexpr const T &&get_value() const && {
 		return std::move(value);
 	}
 
@@ -332,7 +332,7 @@ public:
 		return value;
 	}
 
-	constexpr T &get_value() && {
+	constexpr T &&get_value() && {
 		return std::move(value);
 	}
 
@@ -340,7 +340,7 @@ public:
 		return value;
 	}
 
-	constexpr const T &get_value() const && {
+	constexpr const T &&get_value() const && {
 		return std::move(value);
 	}
 
