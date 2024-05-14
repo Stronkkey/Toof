@@ -30,7 +30,7 @@ void Sprite2D::_draw_rect_texture() const {
 }
 
 void Sprite2D::_draw_texture() const {
-	Optional<RenderingServerType&> rendering_server = get_rendering_server();
+	Optional<RenderingServer*> rendering_server = get_rendering_server();
 	if (!rendering_server || !texture)
 		return;
 
@@ -52,7 +52,7 @@ void Sprite2D::set_texture(const std::shared_ptr<Texture2D> &new_texture) {
 	texture = new_texture;
 
 	if (texture && is_inside_tree())
-		texture->set_rendering_server(get_rendering_server()->get());
+		texture->set_rendering_server(get_rendering_server().get_value());
 
 	texture_changed();
 	queue_redraw();
