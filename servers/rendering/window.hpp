@@ -5,7 +5,7 @@
 #include <SDL_video.h>
 #include <SDL_log.h>
 
-namespace sdl {
+namespace Toof {
 
 class Window {
 

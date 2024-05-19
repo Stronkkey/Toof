@@ -12,7 +12,7 @@
 #define __COLOR_V_TYPE__ uint8_t
 #endif
 
-namespace sdl {
+namespace Toof {
 
 /*
 * A color represented in RGBA format in the range of 0 to 255 using a generic T.
@@ -218,7 +218,16 @@ struct Color {
 	}
 
 	/**
-	* @return a String reprenstation of the color "(r, g, b , a)"
+	* @brief Inserts the color into the stream.
+	*/
+	template<class CharT, class Traits>
+	friend std::basic_ostream<CharT, Traits> &operator<<(std::basic_ostream<CharT, Traits> &stream, const Color &color) {
+		S_STREAM_FORMAT(stream, "(R: {}, G: {}, B: {}, A: {})", color);
+		return stream;
+	}
+
+	/**
+	* @brief Creates a string representation of this color.
 	*/
 	[[nodiscard]] inline operator String() const {
 		return S_FORMAT("(R: {}, G: {}, B: {}, A: {})", r, g, b, a);

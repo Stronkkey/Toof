@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <memory>
 
-namespace sdl {
+namespace Toof {
 
 class TileSet;
 class Texture2D;

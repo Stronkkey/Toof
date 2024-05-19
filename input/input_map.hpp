@@ -11,7 +11,7 @@
 #include <memory>
 #include <vector>
 
-namespace sdl {
+namespace Toof {
 
 class InputMap {
 

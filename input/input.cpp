@@ -3,8 +3,8 @@
 
 #include <algorithm>
 
-using Input = sdl::Input;
-using InputEvent = sdl::InputEvent;
+using Input = Toof::Input;
+using InputEvent = Toof::InputEvent;
 
 Input::Input(const uint64_t *process_frame_count, const uint64_t *render_frame_count):
             keys_pressed(),
@@ -19,7 +19,7 @@ Input::Input(const uint64_t *process_frame_count, const uint64_t *render_frame_c
 Input::~Input() {
 }
 
-const std::unique_ptr<sdl::InputMap> &Input::get_input_map() const {
+const std::unique_ptr<Toof::InputMap> &Input::get_input_map() const {
 	return input_map;
 }
 
@@ -85,7 +85,7 @@ std::shared_ptr<InputEvent> Input::process_event(const SDL_Event *event) {
 	return input_event;
 }
 
-const std::unordered_map<sdl::String, Input::ActionState> &Input::get_action_states() const {
+const std::unordered_map<Toof::String, Input::ActionState> &Input::get_action_states() const {
 	return action_states;
 }
 
@@ -173,7 +173,7 @@ float Input::get_axis(const String &negative_action_name, const String &positive
 	return get_action_strength(negative_action_name) - get_action_strength(positive_action_name);
 }
 
-sdl::Vector2f Input::get_vector(const String &negative_x_action_name, const String &positive_x_action_name, const String &negative_y_action_name, const String &positive_y_action_name) const {
+Toof::Vector2f Input::get_vector(const String &negative_x_action_name, const String &positive_x_action_name, const String &negative_y_action_name, const String &positive_y_action_name) const {
 	Vector2f vector = Vector2f(
 	        get_action_strength(positive_x_action_name) - get_action_strength(negative_x_action_name),
 	        get_action_strength(positive_y_action_name) - get_action_strength(negative_y_action_name));

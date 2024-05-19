@@ -6,7 +6,7 @@
 #define CONDITION_THING(condition) String("Assert \"") + #condition + "\", in " + GET_LINE_PRETTY() + " failed."
 #define TEST_CASE(condition) if (!(condition)) { _test_fail((CONDITION_THING(condition))); return false; }
 
-namespace sdl {
+namespace Toof {
 
 namespace Tests {
 

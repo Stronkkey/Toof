@@ -9,12 +9,12 @@
 
 #include <box2d/b2_world.h>
 
-sdl::uid sdl::PhysicsServer2D::assign_uid() {
+Toof::uid Toof::PhysicsServer2D::assign_uid() {
 	uid_index++;
 	return uid_index - 1;
 }
 
-void sdl::PhysicsServer2D::destroy_uid(const uid destroy_uid) {
+void Toof::PhysicsServer2D::destroy_uid(const uid destroy_uid) {
 	auto body_iterator = bodies.find(destroy_uid);
 
 	if (body_iterator != bodies.end()) {
@@ -29,11 +29,11 @@ void sdl::PhysicsServer2D::destroy_uid(const uid destroy_uid) {
 		shape_iterator->second->shape = nullptr;
 }
 
-void sdl::PhysicsServer2D::tick_world(const std::unique_ptr<PhysicsWorld2D> &world, const double delta) {
+void Toof::PhysicsServer2D::tick_world(const std::unique_ptr<PhysicsWorld2D> &world, const double delta) {
 	world->step(delta);
 }
 
-std::unique_ptr<b2BodyDef> sdl::PhysicsServer2D::get_body_def_from_body(const b2Body *body) const {
+std::unique_ptr<b2BodyDef> Toof::PhysicsServer2D::get_body_def_from_body(const b2Body *body) const {
 	auto body_def = std::make_unique<b2BodyDef>();
 
 	body_def->angle = body->GetAngle();
@@ -50,7 +50,7 @@ std::unique_ptr<b2BodyDef> sdl::PhysicsServer2D::get_body_def_from_body(const b2
 	return body_def;
 }
 
-void sdl::PhysicsServer2D::create_physics_body_from_def(const std::unique_ptr<PhysicsBody> &physics_body, const uid world_uid, const b2BodyDef *body_def) {
+void Toof::PhysicsServer2D::create_physics_body_from_def(const std::unique_ptr<PhysicsBody> &physics_body, const uid world_uid, const b2BodyDef *body_def) {
 	auto iterator = worlds.find(world_uid);
 	if (iterator == worlds.end())
 		return;
@@ -60,7 +60,7 @@ void sdl::PhysicsServer2D::create_physics_body_from_def(const std::unique_ptr<Ph
 	physics_body->world_uid = world_uid;
 }
 
-void sdl::PhysicsServer2D::transfer_body_to_world(const std::unique_ptr<PhysicsBody> &physics_body, const uid world_uid) {
+void Toof::PhysicsServer2D::transfer_body_to_world(const std::unique_ptr<PhysicsBody> &physics_body, const uid world_uid) {
 	auto iterator = worlds.find(physics_body->world_uid);
 	b2Body *old_body = physics_body->body;
 	bool clean_body = false;
@@ -74,10 +74,10 @@ void sdl::PhysicsServer2D::transfer_body_to_world(const std::unique_ptr<PhysicsB
 }
 
 
-sdl::PhysicsServer2D::PhysicsServer2D(): gravity(Physics::default_gravity), uid_index(1), default_body_definition() {
+Toof::PhysicsServer2D::PhysicsServer2D(): gravity(Physics::default_gravity), uid_index(1), default_body_definition() {
 }
 
-sdl::PhysicsServer2D::~PhysicsServer2D() {
+Toof::PhysicsServer2D::~PhysicsServer2D() {
 	for (const auto &iterator: bodies)
 		destroy_uid(iterator.first);
 
@@ -86,45 +86,45 @@ sdl::PhysicsServer2D::~PhysicsServer2D() {
 	worlds.clear();
 }
 
-void sdl::PhysicsServer2D::tick(const double delta) {
+void Toof::PhysicsServer2D::tick(const double delta) {
 	for (const auto &iterator: worlds)
 		tick_world(iterator.second, delta);
 }
 
-void sdl::PhysicsServer2D::remove_uid(const uid remove_uid) {
+void Toof::PhysicsServer2D::remove_uid(const uid remove_uid) {
 	destroy_uid(remove_uid);
 }
 
-void sdl::PhysicsServer2D::set_gravity(const Vector2f &new_gravity) {
+void Toof::PhysicsServer2D::set_gravity(const Vector2f &new_gravity) {
 	gravity = new_gravity;
 
 	for (const auto &iterator: worlds)
 		iterator.second->get_world()->SetGravity(new_gravity.to_b2_vec2());
 }
 
-const sdl::Vector2f &sdl::PhysicsServer2D::get_gravity() const {
+const Toof::Vector2f &Toof::PhysicsServer2D::get_gravity() const {
 	return gravity;
 }
 
-sdl::uid sdl::PhysicsServer2D::create_world() {
+Toof::uid Toof::PhysicsServer2D::create_world() {
 	uid assigned_uid = assign_uid();
 	worlds.insert({assigned_uid, std::make_unique<PhysicsWorld2D>(gravity)});
 	return assigned_uid;
 }
 
-sdl::uid sdl::PhysicsServer2D::body_create() {
+Toof::uid Toof::PhysicsServer2D::body_create() {
 	uid assigned_uid = assign_uid();
 	bodies.insert({assigned_uid, std::make_unique<PhysicsBody>()});
 	return assigned_uid;
 }
 
-void sdl::PhysicsServer2D::world_set_gravity(const uid world_uid, const Vector2f &new_world_gravity) {
+void Toof::PhysicsServer2D::world_set_gravity(const uid world_uid, const Vector2f &new_world_gravity) {
 	auto iterator = worlds.find(world_uid);
 	if (iterator != worlds.end())
 		iterator->second->get_world()->SetGravity(new_world_gravity.to_b2_vec2());
 }
 
-sdl::Optional<sdl::Vector2f> sdl::PhysicsServer2D::world_get_gravity(const uid world_uid) const {
+Toof::Optional<Toof::Vector2f> Toof::PhysicsServer2D::world_get_gravity(const uid world_uid) const {
 	auto iterator = worlds.find(world_uid);
 
 	if (iterator != worlds.end())
@@ -133,14 +133,14 @@ sdl::Optional<sdl::Vector2f> sdl::PhysicsServer2D::world_get_gravity(const uid w
 	return NullOption;
 }
 
-void sdl::PhysicsServer2D::world_set_velocity_iterations(const uid world_uid, const int32_t velocity_iterations) {
+void Toof::PhysicsServer2D::world_set_velocity_iterations(const uid world_uid, const int32_t velocity_iterations) {
 	auto iterator = worlds.find(world_uid);
 
 	if (iterator != worlds.end())
 		iterator->second->velocity_iterations = velocity_iterations;
 }
 
-sdl::Optional<int32_t> sdl::PhysicsServer2D::world_get_velocity_iterations(const uid world_uid) const {
+Toof::Optional<int32_t> Toof::PhysicsServer2D::world_get_velocity_iterations(const uid world_uid) const {
 	auto iterator = worlds.find(world_uid);
 
 	if (iterator != worlds.end())
@@ -149,14 +149,14 @@ sdl::Optional<int32_t> sdl::PhysicsServer2D::world_get_velocity_iterations(const
 	return NullOption;
 }
 
-void sdl::PhysicsServer2D::world_set_position_iterations(const uid world_uid, const int32_t position_iterations) {
+void Toof::PhysicsServer2D::world_set_position_iterations(const uid world_uid, const int32_t position_iterations) {
 	auto iterator = worlds.find(world_uid);
 
 	if (iterator != worlds.end())
 		iterator->second->position_iterations = position_iterations;
 }
 
-sdl::Optional<int32_t> sdl::PhysicsServer2D::world_get_position_iterations(const uid world_uid) const {
+Toof::Optional<int32_t> Toof::PhysicsServer2D::world_get_position_iterations(const uid world_uid) const {
 	auto iterator = worlds.find(world_uid);
 
 	if (iterator != worlds.end())
@@ -165,13 +165,13 @@ sdl::Optional<int32_t> sdl::PhysicsServer2D::world_get_position_iterations(const
 	return NullOption;
 }
 
-void sdl::PhysicsServer2D::body_set_world(const uid body_uid, const uid world_uid) {
+void Toof::PhysicsServer2D::body_set_world(const uid body_uid, const uid world_uid) {
 	auto iterator = bodies.find(body_uid);
 	if (iterator != bodies.end())
 		transfer_body_to_world(iterator->second, world_uid);
 }
 
-sdl::Optional<sdl::uid> sdl::PhysicsServer2D::body_get_world(const uid body_uid) const {
+Toof::Optional<Toof::uid> Toof::PhysicsServer2D::body_get_world(const uid body_uid) const {
 	auto iterator = bodies.find(body_uid);
 
 	if (iterator != bodies.end())
@@ -180,15 +180,15 @@ sdl::Optional<sdl::uid> sdl::PhysicsServer2D::body_get_world(const uid body_uid)
 	return NullOption;
 }
 
-void body_set_state_transform(const std::unique_ptr<sdl::PhysicsBody> &body, const sdl::PhysicsServer2D::body_state_variant &state_value) {
+void body_set_state_transform(const std::unique_ptr<Toof::PhysicsBody> &body, const Toof::PhysicsServer2D::body_state_variant &state_value) {
 	try {
-		const sdl::Transform2D transform = std::get<sdl::Transform2D>(state_value);
+		const Toof::Transform2D transform = std::get<Toof::Transform2D>(state_value);
 		body->body->SetTransform(transform.origin.to_b2_vec2(), transform.rotation.get_angle_radians());
 	} catch(const std::bad_variant_access &ex) {
 	}
 }
 
-void sdl::PhysicsServer2D::body_set_state(const uid body_uid, const BodyState body_state, const body_state_variant &state_value) {
+void Toof::PhysicsServer2D::body_set_state(const uid body_uid, const BodyState body_state, const body_state_variant &state_value) {
 	auto iterator = bodies.find(body_uid);
 	if (iterator == bodies.end() || body_state == BODY_STATE_NONE)
 		return;

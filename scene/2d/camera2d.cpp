@@ -1,7 +1,7 @@
 #include <scene/2d/camera2d.hpp>
 #include <servers/rendering/viewport.hpp>
 
-using namespace sdl;
+using namespace Toof;
 
 Camera2D::Camera2D(): offset(),
     zoom(Vector2f::ONE()),

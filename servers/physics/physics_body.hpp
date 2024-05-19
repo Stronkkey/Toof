@@ -10,7 +10,7 @@
 class b2Body;
 class b2Shape;
 
-namespace sdl {
+namespace Toof {
 
 struct PhysicsShape;
 struct PhysicsWorld2D;

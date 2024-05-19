@@ -4,7 +4,7 @@
 
 #include <cereal/cereal.hpp>
 
-namespace sdl {
+namespace Toof {
 
 struct Transform2D;
 
@@ -271,10 +271,19 @@ struct Rect2 {
 	}
 
 	/**
+	* @brief Inserts the rectangle into the stream.
+	*/
+	template<class CharT, class Traits>
+	friend std::basic_ostream<CharT, Traits> &operator<<(std::basic_ostream<CharT, Traits> &stream, const Rect2 &rect) {
+		S_STREAM_FORMAT(stream, "[P: ({}, {}), S: ({}, {})]", rect.x, rect.y, rect.w, rect.h);
+		return stream;
+	}
+
+	/**
 	* @returns a string representation as '[P: (x, y), S: (w, h)].
 	*/
 	[[nodiscard]] operator String() const {
-		return vformat("[P: ({}, {}), S: ({}, {})]", x, y, w, h);
+		return S_FORMAT("[P: ({}, {}), S: ({}, {})]", x, y, w, h);
 	}
 
 	/**

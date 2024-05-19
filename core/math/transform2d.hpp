@@ -9,7 +9,7 @@
 struct b2Transform;
 #endif
 
-namespace sdl {
+namespace Toof {
 
 struct Transform2D {
 	constexpr Transform2D();
@@ -32,6 +32,11 @@ struct Transform2D {
 	#ifdef B2_INCLUDED
 	[[nodiscard]] b2Transform to_b2_transform() const;
 	#endif
+
+	/**
+	* @brief Inserts the transform into the stream.
+	*/
+	friend std::ostream &operator<<(std::ostream &stream, const Transform2D &transform);
 
 	[[nodiscard]] operator String() const;
 	[[nodiscard]] constexpr operator bool() const {

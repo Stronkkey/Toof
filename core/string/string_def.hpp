@@ -1,26 +1,26 @@
 #pragma once
 
-#ifndef SDL_LIBS_STRING_TYPE
+#ifndef TOOF_STRING_TYPE
 #include <string>
-#define SDL_LIBS_STRING_TYPE std::string
+#define TOOF_STRING_TYPE std::string
 #endif
 
-#ifndef SDL_LIBS_STRING_VIEW_TYPE
+#ifndef TOOF_STRING_VIEW_TYPE
 #include <string_view>
-#define SDL_LIBS_STRING_VIEW_TYPE std::string_view
+#define TOOF_STRING_VIEW_TYPE std::string_view
 #endif
 
 #ifndef STRINGIFY_STRING_TYPE
-#define STRINGIFY_STRING_TYPE SDL_LIBS_STRING_TYPE
+#define STRINGIFY_STRING_TYPE TOOF_STRING_TYPE
 #endif
 
 #ifndef STRINGIFY_STRING_VIEW_TYPE
-#define STRINGIFY_STRING_VIEW_TYPE SDL_LIBS_STRING_VIEW_TYPE
+#define STRINGIFY_STRING_VIEW_TYPE TOOF_STRING_VIEW_TYPE
 #endif
 
-namespace sdl {
+namespace Toof {
 
-using String = SDL_LIBS_STRING_TYPE;
-using StringView = SDL_LIBS_STRING_VIEW_TYPE;
+using String = TOOF_STRING_TYPE;
+using StringView = TOOF_STRING_VIEW_TYPE;
 
 }

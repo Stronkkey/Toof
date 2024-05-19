@@ -2,7 +2,7 @@
 
 #include <core/math/math_defs.hpp>
 
-namespace sdl {
+namespace Toof {
 
 class Resource {
 protected:

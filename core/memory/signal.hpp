@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <list>
 
-namespace sdl {
+namespace Toof {
 
 template<class... Args>
 struct __Function_Storer__ {
@@ -134,8 +134,8 @@ public:
 }
 
 template<class... Args>
-struct std::hash<sdl::__Function_Storer__<Args...>> {
-	using __T__ = sdl::__Function_Storer__<Args...>;
+struct std::hash<Toof::__Function_Storer__<Args...>> {
+	using __T__ = Toof::__Function_Storer__<Args...>;
 	using __Function_Pointer__ = void(*)(Args...);
 
 	size_t operator()(const __T__ &storer) const noexcept {

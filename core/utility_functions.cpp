@@ -1,6 +1,6 @@
 #include <core/utility_functions.hpp>
 
-using namespace sdl;
+using namespace Toof;
 
 void UtilityFunctions::start_text_modifier(String &string, TextModifier text_modifier) {
 	char _string[5];

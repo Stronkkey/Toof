@@ -5,17 +5,17 @@
 #include <core/math/rect2.hpp>
 #include <core/math/color.hpp>
 
-using namespace sdl::Tests;
+using namespace Toof::Tests;
 
-using Transform2D = sdl::Transform2D;
-using ColorV = sdl::ColorV;
+using Transform2D = Toof::Transform2D;
+using ColorV = Toof::ColorV;
 
-using sdl::Math::CMP_EPSILON;
-using sdl::Math::PI;
-using sdl::Math::radians_to_degrees;
-using sdl::Math::degrees_to_radians;
-using sdl::Math::is_zero_approx;
-using sdl::Math::is_equal_approx;
+using Toof::Math::CMP_EPSILON;
+using Toof::Math::PI;
+using Toof::Math::radians_to_degrees;
+using Toof::Math::degrees_to_radians;
+using Toof::Math::is_zero_approx;
+using Toof::Math::is_equal_approx;
 
 constexpr Transform2D add_transform(const Transform2D &left, const Transform2D &right) {
 	Transform2D transform;

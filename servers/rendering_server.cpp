@@ -8,7 +8,7 @@
 
 #include <algorithm>
 
-using namespace sdl;
+using namespace Toof;
 
 RenderingServer::RenderingServer(Viewport *viewport): viewport(viewport),
     textures(),

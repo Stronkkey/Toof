@@ -5,8 +5,8 @@
 #include <functional>
 
 template<class T>
-struct std::hash<sdl::Rect2<T>> {
-	size_t operator()(const sdl::Rect2<T> &rect2) const noexcept {
+struct std::hash<Toof::Rect2<T>> {
+	size_t operator()(const Toof::Rect2<T> &rect2) const noexcept {
 		const size_t x_hash = std::hash<T>()(rect2.x);
 		const size_t y_hash = std::hash<T>()(rect2.y);
 		const size_t w_hash = std::hash<T>()(rect2.w);

@@ -2,7 +2,7 @@
 #include <scene/2d/tile_map.hpp>
 #include <scene/resources/texture2d.hpp>
 
-using namespace sdl;
+using namespace Toof;
 
 TileMap::TileMap(): index(1), tiles(), tile_set(nullptr) {
 }

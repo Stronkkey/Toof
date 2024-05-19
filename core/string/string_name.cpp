@@ -1,7 +1,7 @@
 #include <core/string/string_name.hpp>
 
-using String = sdl::String;
-using StringName = sdl::StringName;
+using String = Toof::String;
+using StringName = Toof::StringName;
 
 std::unordered_set<StringName::__String_Storer__> StringName::stored_strings = {};
 

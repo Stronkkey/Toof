@@ -11,7 +11,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace sdl {
+namespace Toof {
 
 struct __Texture_Ref__;
 struct __CanvasItem__;

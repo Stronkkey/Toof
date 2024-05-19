@@ -6,7 +6,7 @@
 
 #include <memory>
 
-namespace sdl {
+namespace Toof {
 
 template<class>
 struct Rect2;

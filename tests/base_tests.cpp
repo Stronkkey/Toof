@@ -3,8 +3,8 @@
 
 #include <memory>
 
-using namespace sdl::Tests;
-using sdl::UtilityFunctions::print;
+using namespace Toof::Tests;
+using Toof::UtilityFunctions::print;
 
 bool SuccessTest::_test() {
 	TEST_CASE(true); // Should not fail

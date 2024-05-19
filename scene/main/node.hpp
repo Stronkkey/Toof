@@ -8,7 +8,7 @@
 
 #include <SDL_events.h>
 
-namespace sdl {
+namespace Toof {
 
 class SceneTree;
 class InputEvent;

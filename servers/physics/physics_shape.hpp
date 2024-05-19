@@ -7,7 +7,7 @@
 
 class b2Shape;
 
-namespace sdl {
+namespace Toof {
 
 struct PhysicsBody;
 

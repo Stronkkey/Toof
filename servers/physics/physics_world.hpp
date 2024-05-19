@@ -7,7 +7,7 @@
 
 class b2World;
 
-namespace sdl {
+namespace Toof {
 
 class PhysicsWorld2D {
 private:

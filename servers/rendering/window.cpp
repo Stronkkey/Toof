@@ -4,7 +4,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-using namespace sdl;
+using namespace Toof;
 
 Window::InitilizationStatus Window::initialized = Window::NOT_INITIALIZED;
 

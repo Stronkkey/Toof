@@ -6,7 +6,7 @@
 
 #include <cereal/types/string.hpp>
 
-namespace sdl {
+namespace Toof {
 
 class FileTexture : public Texture2D {
 private:
@@ -47,14 +47,14 @@ public:
 namespace cereal {
 
 template<class Archive>
-void load(Archive &archive, sdl::FileTexture &file_texture) {
-	sdl::String file_path;
+void load(Archive &archive, Toof::FileTexture &file_texture) {
+	Toof::String file_path;
 	archive(file_path);
 	file_texture.load_from_path(std::move(file_path));
 }
 
 template<class Archive>
-void save(Archive &archive, const sdl::FileTexture &file_texture) {
+void save(Archive &archive, const Toof::FileTexture &file_texture) {
 	archive(file_texture.get_texture_path());
 }
 

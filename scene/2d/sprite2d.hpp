@@ -2,7 +2,7 @@
 
 #include <scene/2d/node2d.hpp>
 
-namespace sdl {
+namespace Toof {
 
 class Texture2D;
 

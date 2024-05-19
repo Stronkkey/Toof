@@ -5,8 +5,8 @@
 #include <functional>
 
 template<class T>
-struct std::hash<sdl::Color<T>> {
-	size_t operator()(const sdl::Color<T> &color) const noexcept {
+struct std::hash<Toof::Color<T>> {
+	size_t operator()(const Toof::Color<T> &color) const noexcept {
 		const size_t r_hash = std::hash<T>()(color.r);
 		const size_t g_hash = std::hash<T>()(color.g);
 		const size_t b_hash = std::hash<T>()(color.b);

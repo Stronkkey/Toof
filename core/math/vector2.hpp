@@ -14,7 +14,7 @@
 #include <box2d/b2_math.h>
 #endif
 
-namespace sdl {
+namespace Toof {
 
 /**
 * A Vector2 class using a generic T.

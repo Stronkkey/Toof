@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-namespace sdl {
+namespace Toof {
 
 struct NullOptionT {
 };

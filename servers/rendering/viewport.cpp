@@ -2,7 +2,7 @@
 #include <servers/rendering/window.hpp>
 #include <servers/rendering_server.hpp>
 
-using namespace sdl;
+using namespace Toof;
 
 Viewport::Viewport(): vsync(true), window(nullptr), canvas_transform(Transform2D::IDENTITY) {
 }

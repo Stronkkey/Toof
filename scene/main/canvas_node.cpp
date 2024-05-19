@@ -2,7 +2,7 @@
 #include <scene/main/scene_tree.hpp>
 #include <servers/rendering_server.hpp>
 
-using namespace sdl;
+using namespace Toof;
 
 void CanvasNode::_update() {
 	Optional<RenderingServer*> rendering_server = get_rendering_server();

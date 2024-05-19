@@ -8,7 +8,7 @@
 
 #include <SDL_render.h>
 
-namespace sdl {
+namespace Toof {
 
 class RenderingServer;
 

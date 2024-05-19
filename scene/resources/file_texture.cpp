@@ -1,7 +1,7 @@
 #include <scene/resources/file_texture.hpp>
 #include <servers/rendering_server.hpp>
 
-using namespace sdl;
+using namespace Toof;
 
 FileTexture::FileTexture() {
 }

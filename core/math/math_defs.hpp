@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace sdl {
+namespace Toof {
 
 #ifdef REAL_T_IS_DOUBLE
 using real = double;
