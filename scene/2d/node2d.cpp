@@ -3,7 +3,7 @@
 #include <scene/main/scene_tree.hpp>
 #include <scene/resources/texture2d.hpp>
 
-using namespace sdl;
+using namespace Toof;
 
 void Node2D::set_scale(const Vector2f &new_scale) {
 	transform.scale = new_scale;

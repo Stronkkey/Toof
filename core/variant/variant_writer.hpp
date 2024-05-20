@@ -14,7 +14,7 @@
 
 #include <stringify/to_string.hpp>
 
-namespace sdl {
+namespace Toof {
 
 template<class T>
 struct __var_size__ : public std::integral_constant<std::size_t, sizeof(T)> {

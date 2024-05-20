@@ -2,9 +2,9 @@
 #include <scene/resources/texture2d.hpp>
 #include <stringify/to_string.hpp>
 
-using namespace sdl;
+using namespace Toof;
 
-String sdl::atlas_coords_to_string(const Vector2i::value_type x, const Vector2i::value_type y) {
+String Toof::atlas_coords_to_string(const Vector2i::value_type x, const Vector2i::value_type y) {
 	return S_TO_STRING(x, y);
 }
 

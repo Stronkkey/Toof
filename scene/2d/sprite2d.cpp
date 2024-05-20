@@ -2,7 +2,7 @@
 #include <scene/2d/sprite2d.hpp>
 #include <scene/resources/texture2d.hpp>
 
-using namespace sdl;
+using namespace Toof;
 
 Sprite2D::Sprite2D(): texture(nullptr),
     texture_region(),

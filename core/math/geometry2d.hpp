@@ -4,7 +4,7 @@
 #include <core/math/vector2.hpp>
 #include <core/memory/optional.hpp>
 
-namespace sdl {
+namespace Toof {
 
 template<class>
 struct Rect2;

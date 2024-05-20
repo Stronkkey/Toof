@@ -9,7 +9,7 @@
 
 #include <iostream>
 
-namespace sdl {
+namespace Toof {
 
 namespace UtilityFunctions {
 
@@ -176,10 +176,10 @@ void apply_text_modifiers_on_string(String &string, Args... text_modifiers) {
 	string[after_string_size + 3] = 'm';
 }
 
-#define PRINT_LINE(...) ::sdl::UtilityFunctions::print(__VA_ARGS__);
-#define PRINT_LINE_ERR(...) ::sdl::UtilityFunctions::print_err(__VA_ARGS__);
-#define PRINTS_LINE(...) ::sdl::UtilityFunctions::prints(__VA_ARGS__);
-#define PRINTS_LINE_ERR(...) ::sdl::UtilityFunctions::prints_err(__VA_ARGS__);
+#define PRINT_LINE(...) ::Toof::UtilityFunctions::print(__VA_ARGS__);
+#define PRINT_LINE_ERR(...) ::Toof::UtilityFunctions::print_err(__VA_ARGS__);
+#define PRINTS_LINE(...) ::Toof::UtilityFunctions::prints(__VA_ARGS__);
+#define PRINTS_LINE_ERR(...) ::Toof::UtilityFunctions::prints_err(__VA_ARGS__);
 
 }
 

@@ -15,7 +15,7 @@
 #include <thread>
 #include <chrono>
 
-using namespace sdl;
+using namespace Toof;
 
 SceneTree::SceneTree() {
 	running = false;

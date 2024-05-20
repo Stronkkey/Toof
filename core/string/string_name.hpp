@@ -6,8 +6,7 @@
 
 #include <cereal/types/string.hpp>
 
-namespace sdl {
-
+namespace Toof {
 class StringName {
 public:
 	using value_type = StringView;
@@ -19,7 +18,6 @@ public:
 	using CharT = value_type::value_type;
 	using size_type = std::size_t;
 	using difference_type = std::ptrdiff_t;
-
 public:
 	struct __String_Storer__ {
 		const CharT *string;
@@ -205,6 +203,15 @@ public:
 
 	constexpr const CharT &at(const size_type index) const {
 		return saved_string->at(index);
+	}
+
+	/**
+	* @brief Inserts every character of the string into the stream.
+	*/
+	template<class CharT, class Traits>
+	friend std::basic_ostream<CharT, Traits> &operator<<(std::basic_ostream<CharT, Traits> &stream, const StringName &string_name) {
+		stream << string_name.get_string();
+		return stream;
 	}
 
 	operator String() const;
@@ -427,22 +434,22 @@ inline StringName operator""_sn(const char *string, const size_t length) {
 }
 
 template<>
-struct std::hash<sdl::StringName::__String_Storer__> {
-	size_t operator()(const sdl::StringName::__String_Storer__ &string_storer) const noexcept {
-		return hash<sdl::StringView>()(string_storer.view);
+struct std::hash<Toof::StringName::__String_Storer__> {
+	size_t operator()(const Toof::StringName::__String_Storer__ &string_storer) const noexcept {
+		return hash<Toof::StringView>()(string_storer.view);
 	}
 };
 
 template<>
-struct std::hash<sdl::StringName::__String_Saver__> {
-	size_t operator()(const sdl::StringName::__String_Saver__ &string_saver) const noexcept {
-		return hash<sdl::StringView>()(*string_saver);
+struct std::hash<Toof::StringName::__String_Saver__> {
+	size_t operator()(const Toof::StringName::__String_Saver__ &string_saver) const noexcept {
+		return hash<Toof::StringView>()(*string_saver);
 	}
 };
 
 template<>
-struct std::hash<sdl::StringName> {
-	size_t operator()(const sdl::StringName &string_name) const noexcept {
-		return hash<sdl::StringView>()(string_name.get_string());
+struct std::hash<Toof::StringName> {
+	size_t operator()(const Toof::StringName &string_name) const noexcept {
+		return hash<Toof::StringView>()(string_name.get_string());
 	}
 };

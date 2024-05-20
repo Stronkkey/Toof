@@ -5,23 +5,23 @@
 
 #include <cereal/cereal.hpp>
 
-#define SDL_LIBS_RESOURCE_ID(type, id) \
+#define TOOF_DETAIL_RESOURCE_ID(type, id) \
 template<> \
-struct sdl::detail::__Defined_Ids__<id> : public std::true_type {}; \
+struct Toof::detail::__Defined_Ids__<id> : public std::true_type {}; \
 template<> \
-struct sdl::detail::__Resource_Id__<type> : public std::integral_constant<int32_t, id> {};
+struct Toof::detail::__Resource_Id__<type> : public std::integral_constant<int32_t, id> {};
 
-#define SDL_LIBS_GET_RESOURCE_ID(type) (sdl::detail::__Resource_Id__<type>::value)
+#define TOOF_RESOURCE_ID(type) (Toof::detail::__Resource_Id__<type>::value)
 
-#define SDL_LIBS_LOAD_TYPE(type, id, archive) \
-if (id == SDL_LIBS_GET_RESOURCE_ID(type)) { \
+#define TOOF_DETAIL_LOAD_TYPE(type, id, archive) \
+if (id == TOOF_RESOURCE_ID(type)) { \
 	auto type_text = std::make_unique<type>(); \
 	archive(*type_text); \
 	return type_text; }
 
-#define SDL_LIBS_LOAD_TYPE_DEFAULT_ARGS(type) SDL_LIBS_LOAD_TYPE(type, id, archive)
+#define TOOF_DETAIL_LOAD_TYPE_DEFAULT_ARGS(type) TOOF_DETAIL_LOAD_TYPE(type, id, archive)
 
-namespace sdl {
+namespace Toof {
 
 namespace detail {
 
@@ -37,7 +37,7 @@ struct __Resource_Id__ : std::integral_constant<int32_t, 0> {
 
 class Resource;
 
-SDL_LIBS_RESOURCE_ID(Resource, 0)
+TOOF_DETAIL_RESOURCE_ID(Resource, 0)
 
 template<class ArchiveType>
 struct ResourceFormatLoader {
@@ -57,7 +57,7 @@ struct ResourceFormatLoader {
 
 	template<class ResourceType>
 	void save_resource(const ResourceType &resource, ArchiveType &archive) {
-		constexpr const int32_t id = SDL_LIBS_GET_RESOURCE_ID(ResourceType);
+		constexpr const int32_t id = TOOF_RESOURCE_ID(ResourceType);
 
 		archive(cereal::make_nvp("TextUnused", id));
 		archive(resource);

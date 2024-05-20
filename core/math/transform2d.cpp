@@ -7,7 +7,7 @@
 #include <core/string/string_def.hpp>
 #include <stringify/format.hpp>
 
-using namespace sdl;
+using namespace Toof;
 
 const Transform2D Transform2D::IDENTITY = Transform2D(Angle::ZERO_ROTATION(), 0, 0, 1, 1);
 
@@ -21,6 +21,16 @@ b2Transform Transform2D::to_b2_transform() const {
 }
 
 #endif
+
+std::ostream &Toof::operator<<(std::ostream &stream, const Transform2D &transform) {
+	S_STREAM_FORMAT(stream, "[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]",
+	    transform.scale.x,
+	    transform.scale.y,
+	    transform.origin.x,
+	    transform.origin.y,
+	    transform.rotation);
+	return stream;
+}
 
 Transform2D::operator String() const {
 	return S_FORMAT("[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]", scale.x, scale.y, origin.x, origin.y, rotation);

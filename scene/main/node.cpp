@@ -4,7 +4,7 @@
 
 #include <SDL_events.h>
 
-using namespace sdl;
+using namespace Toof;
 
 Node::Node(): children(),
     tree(nullptr),

@@ -18,7 +18,7 @@
 
 #include <core/math/vector2.hpp>
 
-namespace sdl {
+namespace Toof {
 
 namespace Physics {
 

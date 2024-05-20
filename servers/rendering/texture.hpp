@@ -4,7 +4,7 @@
 
 #include <SDL_render.h>
 
-namespace sdl {
+namespace Toof {
 
 struct __Texture_Ref__ {
 	SDL_Texture *texture_reference;

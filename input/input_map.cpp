@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-using namespace sdl;
+using namespace Toof;
 
 InputMap::InputMap(): actions() {
 }

@@ -1,7 +1,7 @@
 #include <servers/rendering/2d/canvas_item.hpp>
 #include <servers/rendering/2d/drawing_item.hpp>
 
-using namespace sdl;
+using namespace Toof;
 
 #define __EXPIRED_CHECK__ if (parent.expired()) {parent.reset(); return; }
 

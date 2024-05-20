@@ -2,7 +2,7 @@
 
 #include <input/input_event.hpp>
 
-namespace sdl {
+namespace Toof {
 
 struct InputProxy {
 	std::shared_ptr<InputEvent> input_event;

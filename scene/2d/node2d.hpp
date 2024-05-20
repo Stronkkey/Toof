@@ -6,7 +6,7 @@
 #include <core/math/color.hpp>
 #include <servers/rendering_server.hpp>
 
-namespace sdl {
+namespace Toof {
 
 class Texture2D;
 /** A 2D GameObject. Has a position, scale, and rotation.*/

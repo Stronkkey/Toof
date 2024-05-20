@@ -2,8 +2,8 @@
 
 #include <array>
 
-using uid = sdl::uid;
-using Resource = sdl::Resource;
+using uid = Toof::uid;
+using Resource = Toof::Resource;
 
 uid Resource::_get_uid() const {
 	return 0;

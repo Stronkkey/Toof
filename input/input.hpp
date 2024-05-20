@@ -11,7 +11,7 @@
 #include <SDL_keyboard.h>
 #include <SDL_events.h>
 
-namespace sdl {
+namespace Toof {
 
 struct InputProxy;
 class InputMap;

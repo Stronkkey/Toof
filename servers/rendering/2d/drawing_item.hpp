@@ -9,7 +9,7 @@
 #include <memory>
 #include <vector>
 
-namespace sdl {
+namespace Toof {
 
 struct __CanvasItem__;
 class Viewport;

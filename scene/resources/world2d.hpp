@@ -4,7 +4,7 @@
 
 #include <scene/resources/resource.hpp>
 
-namespace sdl {
+namespace Toof {
 
 class World2D : public Resource {
 private:

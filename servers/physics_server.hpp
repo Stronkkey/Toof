@@ -10,7 +10,7 @@
 
 #include <box2d/b2_body.h>
 
-namespace sdl {
+namespace Toof {
 
 struct PhysicsWorld2D;
 struct PhysicsBody;

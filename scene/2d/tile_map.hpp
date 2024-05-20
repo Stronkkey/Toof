@@ -6,7 +6,7 @@
 
 #include <core/memory/vector2_hash.hpp>
 
-namespace sdl {
+namespace Toof {
 
 struct UniqueTile {
 	String tile_name;
@@ -60,20 +60,20 @@ public:
 }
 
 template<>
-struct std::hash<sdl::UniqueTile> {
-	size_t operator()(const sdl::UniqueTile &unique_tile) const noexcept {
-		return std::hash<sdl::String>()(unique_tile.tile_name) ^ (std::hash<sdl::TileSet::size_type>()(unique_tile.source_id) << 1);
+struct std::hash<Toof::UniqueTile> {
+	size_t operator()(const Toof::UniqueTile &unique_tile) const noexcept {
+		return std::hash<Toof::String>()(unique_tile.tile_name) ^ (std::hash<Toof::TileSet::size_type>()(unique_tile.source_id) << 1);
 	}
 };
 
 template<>
-struct std::hash<sdl::TileData> {
-	size_t operator()(const sdl::TileData &tile_data) const noexcept {
+struct std::hash<Toof::TileData> {
+	size_t operator()(const Toof::TileData &tile_data) const noexcept {
 		return tile_data.__get_index__();
 	}
 };
 
-namespace sdl {
+namespace Toof {
 
 class TileMap : public Node2D {
 public:

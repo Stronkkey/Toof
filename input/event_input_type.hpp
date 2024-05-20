@@ -2,7 +2,7 @@
 
 #include <SDL_events.h>
 
-namespace sdl {
+namespace Toof {
 
 enum EventInputType {
 	EVENT_INPUT_TYPE_NONE = 0,

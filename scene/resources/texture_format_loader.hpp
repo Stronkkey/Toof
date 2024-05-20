@@ -4,10 +4,10 @@
 
 #include <scene/resources/file_texture.hpp>
 
-namespace sdl {
+namespace Toof {
 
-SDL_LIBS_RESOURCE_ID(Texture2D, 1000)
-SDL_LIBS_RESOURCE_ID(FileTexture, 1001)
+TOOF_DETAIL_RESOURCE_ID(Texture2D, 1000)
+TOOF_DETAIL_RESOURCE_ID(FileTexture, 1001)
 
 template<class ArchiveType>
 struct TextureFormatLoader : public ResourceFormatLoader<ArchiveType> {
@@ -19,7 +19,7 @@ struct TextureFormatLoader : public ResourceFormatLoader<ArchiveType> {
 
 template<class ArchiveType>
 std::unique_ptr<Texture2D> TextureFormatLoader<ArchiveType>::load_texture(int32_t id, ArchiveType &archive) const {
-	SDL_LIBS_LOAD_TYPE_DEFAULT_ARGS(FileTexture)
+	TOOF_DETAIL_LOAD_TYPE_DEFAULT_ARGS(FileTexture)
 
 	return {};
 }

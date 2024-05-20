@@ -5,8 +5,8 @@
 #include <functional>
 
 template<>
-struct std::hash<sdl::Angle> {
-	size_t operator()(const sdl::Angle &angle) const noexcept {
-		return std::hash<sdl::real>()(angle.get_angle_degrees());
+struct std::hash<Toof::Angle> {
+	size_t operator()(const Toof::Angle &angle) const noexcept {
+		return std::hash<Toof::real>()(angle.get_angle_degrees());
 	}
 };

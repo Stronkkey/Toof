@@ -6,7 +6,7 @@
 #include <SDL_render.h>
 #include <SDL_events.h>
 
-namespace sdl {
+namespace Toof {
 
 class RenderingServer;
 class Window;

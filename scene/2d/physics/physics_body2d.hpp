@@ -5,7 +5,7 @@
 #include <scene/resources/world2d.hpp>
 #include <scene/2d/node2d.hpp>
 
-namespace sdl {
+namespace Toof {
 
 class PhysicsServer2D;
 

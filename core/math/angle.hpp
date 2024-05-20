@@ -5,7 +5,7 @@
 
 #include <cereal/cereal.hpp>
 
-namespace sdl {
+namespace Toof {
 
 class Angle {
 public:
@@ -104,6 +104,11 @@ public:
 		return Angle(Math::radians_to_degrees(angle_radians));
 	}
 
+	/**
+	* @brief Inserts the angle into the stream.
+	*/
+	friend std::ostream &operator<<(std::ostream &stream, const Angle &angle);
+
 	[[nodiscard]] operator String() const;
 
 	/**
@@ -151,5 +156,6 @@ public:
 		angle_degrees = rotation_degrees;
 	}
 };
+
 
 }

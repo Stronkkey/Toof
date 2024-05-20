@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <type_traits>
 
-namespace sdl {
+namespace Toof {
 
 namespace Math {
 

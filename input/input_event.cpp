@@ -2,9 +2,9 @@
 #include <input/input.hpp>
 #include <input/input_map.hpp>
 
-using InputEvent = sdl::InputEvent;
-using InputEventKeyboard = sdl::InputEventKeyboard;
-using InputEventAction = sdl::InputEventAction;
+using InputEvent = Toof::InputEvent;
+using InputEventKeyboard = Toof::InputEventKeyboard;
+using InputEventAction = Toof::InputEventAction;
 
 bool InputEvent::is_action(const String &action_name) const {
 	return input ? input->get_input_map()->event_is_action(this, action_name) : false;

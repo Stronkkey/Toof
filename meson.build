@@ -1,11 +1,11 @@
 project(
-  'sdl_libs',
+  'Toof',
   'cpp',
   version: '1.0.0',
   default_options : ['warning_level=3']
 )
 
-project_description = 'Simple wrapper for sdl2'
+project_description = 'Toof Engine - somewhat simple 2D game engine.'
 
 subdir('core')
 subdir('input')
