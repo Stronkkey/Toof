@@ -33,11 +33,6 @@ struct Transform2D {
 	[[nodiscard]] b2Transform to_b2_transform() const;
 	#endif
 
-	/**
-	* @brief Inserts the transform into the stream.
-	*/
-	friend std::ostream &operator<<(std::ostream &stream, const Transform2D &transform);
-
 	[[nodiscard]] operator String() const;
 	[[nodiscard]] constexpr operator bool() const {
 		return true;
@@ -112,6 +107,11 @@ struct Transform2D {
 		}
 	}
 };
+
+/**
+* @brief Inserts the transform into the stream.
+*/
+std::ostream &operator<<(std::ostream &stream, const Transform2D &transform);
 
 constexpr Transform2D::Transform2D(): rotation(Angle::ZERO_ROTATION()), origin(), scale() {
 }

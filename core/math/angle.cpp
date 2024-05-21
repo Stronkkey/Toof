@@ -5,7 +5,7 @@
 using namespace Toof;
 
 std::ostream &Toof::operator<<(std::ostream &stream, const Toof::Angle &angle) {
-	S_STREAM_FORMAT(stream, "{}* angle ({} radians)", angle.angle_degrees, Math::degrees_to_radians(angle.angle_degrees));
+	S_STREAM_FORMAT(stream, "{}* angle ({} radians)", angle.get_angle_degrees(), angle.get_angle_radians());
 	return stream;
 }
 
