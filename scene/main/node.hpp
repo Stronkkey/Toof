@@ -59,6 +59,8 @@ private:
 	void _reset_tree();
 	void _reset_parent(const bool erase_as_child = true);
 	void _add_child_nocheck(Node *node);
+	void _set_tree(SceneTree *tree);
+	void _set_tree_recursive(SceneTree *tree);
 
 protected:
 	/**

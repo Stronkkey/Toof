@@ -48,6 +48,28 @@ void Node::_add_child_nocheck(Node *new_child) {
 	new_child->notification(NOTIFICATION_PARENTED);
 }
 
+void Node::_set_tree(SceneTree *tree) {
+	SceneTree *old_tree = tree;
+	this->tree = tree;
+
+	if (!old_tree && tree) {
+		notification(NOTIFICATION_ENTER_TREE);
+
+		if (!is_ready) {
+			notification(NOTIFICATION_READY);
+			is_ready = true;
+		}
+	} else if (old_tree && !tree)
+		notification(NOTIFICATION_EXIT_TREE);
+}
+
+void Node::_set_tree_recursive(SceneTree *tree) {
+	_set_tree(tree);
+
+	for (Node *child: children)
+		child->_set_tree_recursive(tree);
+}
+
 void Node::_ready() {
 }
 
@@ -125,19 +147,7 @@ bool Node::is_inside_tree() const {
 }
 
 void Node::set_tree(SceneTree *new_tree) {
-	SceneTree *old_tree = tree;
-	tree = new_tree;
-
-	if (!old_tree && tree) {
-		propagate_notification(NOTIFICATION_ENTER_TREE);
-
-		if (!is_ready) {
-			notification(NOTIFICATION_READY);
-			is_ready = true;
-		}
-
-	} else if (old_tree && !tree)
-		propagate_notification(NOTIFICATION_EXIT_TREE);
+	_set_tree_recursive(new_tree);
 }
 
 void Node::add_child(Node *child) {
