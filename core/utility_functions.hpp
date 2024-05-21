@@ -55,7 +55,7 @@ inline void prints_err() {
 */
 template<class... Args>
 inline void print(Args&&... variants) {
-	std::cout << S_TO_STRING(variants...) << '\n';
+	S_WRITE_INTO_STREAM(std::cout, variants..., '\n');
 }
 
 /**
@@ -63,7 +63,7 @@ inline void print(Args&&... variants) {
 */
 template<class... Args>
 inline void print_err(Args&&... variants) {
-	std::cerr << S_TO_STRING(variants...) << '\n';
+	S_WRITE_INTO_STREAM(std::cerr, variants..., '\n');
 }
 
 
@@ -72,7 +72,7 @@ inline void print_err(Args&&... variants) {
 */
 template<class... Args>
 inline void prints(Args&&... variants) {
-	std::cout << S_TO_STRINGS(variants...) << '\n';
+	S_WRITE_INTO_STREAMS(std::cout, variants..., '\n');
 }
 
 /**
@@ -80,7 +80,7 @@ inline void prints(Args&&... variants) {
 */
 template<class... Args>
 inline void prints_err(const Args&... variants) {
-	std::cerr << S_TO_STRINGS(variants...) << '\n';
+	S_WRITE_INTO_STREAMS(std::cerr, variants..., '\n');
 }
 
 enum TextModifier {
