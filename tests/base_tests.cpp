@@ -4,7 +4,6 @@
 #include <memory>
 
 using namespace Toof::Tests;
-using Toof::UtilityFunctions::print;
 
 bool SuccessTest::_test() {
 	TEST_CASE(true); // Should not fail
@@ -19,7 +18,7 @@ bool FailTest::_test() {
 void Test::_test_fail(const String &message) {
 	if (message == "")
 		return;
-	print(message);
+	PRINT_LINE(message);
 }
 
 bool Test::run_test() {

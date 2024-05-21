@@ -7,7 +7,6 @@
 #include <cstring>
 
 using namespace Toof::Tests;
-using Toof::UtilityFunctions::print;
 
 std::unordered_map<Toof::String, std::unique_ptr<Test>> tests;
 
@@ -53,9 +52,9 @@ int main(const int argc, const char **argv) {
 	TestRun run = try_test_run(argv[1]);
 	if (run == TEST_RUN_UNKNOWN)
 		PRINT_RETURN("No test ran.", EXIT_FAILURE)
-	else if (run == TEST_RUN_SUCCESS)
-		print("Test ran succesfully.");
-	else
+	else if (run == TEST_RUN_SUCCESS) {
+		PRINT_LINE("Test ran succesfully.");
+	} else
 		PRINT_RETURN("Test failed.", EXIT_FAILURE);
 
 	return EXIT_SUCCESS;
