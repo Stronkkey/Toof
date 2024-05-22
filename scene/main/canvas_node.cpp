@@ -53,6 +53,7 @@ Optional<RenderingServer*> CanvasNode::get_rendering_server() const {
 void CanvasNode::_notification(int what) {
 	switch (what) {
 		case NOTIFICATION_ENTER_TREE:
+			queue_redraw();
 			_on_tree_enter();
 			break;
 		case NOTIFICATION_EXIT_TREE:
