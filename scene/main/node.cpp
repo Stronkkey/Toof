@@ -49,7 +49,7 @@ void Node::_add_child_nocheck(Node *new_child) {
 }
 
 void Node::_set_tree(SceneTree *tree) {
-	SceneTree *old_tree = tree;
+	SceneTree *old_tree = this->tree;
 	this->tree = tree;
 
 	if (!old_tree && tree) {
