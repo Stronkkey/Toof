@@ -46,6 +46,12 @@ void Sprite2D::_notification(const int what) {
 
 	if (what == NOTIFICATION_DRAW)
 		_draw_texture();
+
+	if (what == NOTIFICATION_ENTER_TREE && texture)
+		texture->set_rendering_server(get_rendering_server().get_value());
+
+	if (what == NOTIFICATION_EXIT_TREE && texture)
+		texture->set_rendering_server(nullptr);
 }
 
 void Sprite2D::set_texture(const std::shared_ptr<Texture2D> &new_texture) {
