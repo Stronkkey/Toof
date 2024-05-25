@@ -1,5 +1,5 @@
-/** @file node.hpp
-    @brief Definition of the Node class. */
+/*  This file is part of the Toof Engine. */
+/** @file node.hpp */
 /*
   BSD 3-Clause License
 
