@@ -72,7 +72,7 @@ struct Function_Storer {
 }
 
 /**
-* A type representing a signal using the observer pattern.
+* @brief A type representing a signal using the observer pattern.
 */
 template<class... Args>
 class Signal {
@@ -112,14 +112,14 @@ public:
 	~Signal() = default;
 
 	/**
-	* @returns true if the @param callable is connected.
+	* @brief Returns true if the @b callable is connected.
 	*/
 	bool is_connected(const Callable &callable) const {
 		return search_callables.count(callable);
 	}
 
 	/**
-	* Connects this signal to the @param callable.
+	* @brief Connects this signal to the @b callable.
 	* @note A signal can only be connected once to the same Callable.
 	* @see also is_connected.
 	*/
@@ -128,7 +128,7 @@ public:
 	}
 
 	/**
-	* Disconnects this signal from the specified Callable. Does nothing if the connection does not exist.
+	* @brief Disconnects this signal from the specified Callable. Does nothing if the connection does not exist.
 	* @see also is_connected.
 	*/
 	void disconnect(const Callable &callable) {
@@ -136,8 +136,7 @@ public:
 	}
 
 	/**
-	* Emits this signal. 
-	* All Callables connected to this signal will be triggered with the paremters of @param args (if any parameters are required).
+	* @brief Emits the signal. 
 	*/
 	void operator()(const Args&... args) {
 		for (const auto &callable: iterate_callables)
@@ -145,7 +144,7 @@ public:
 	}
 
 	/**
-	* Disconnect all bound callables from this signal.
+	* @brief Disconnect all bound callables from this signal.
 	*/
 	void disconnect_all() {
 		iterate_callables.clear();
@@ -153,7 +152,7 @@ public:
 	}
 
 	/**
-	* @returns an Array of connections for this signal.
+	* @brief Returns an Array of connections for this signal.
 	*/
 	std::vector<Callable> get_connections() const {
 		const size_t callable_size = iterate_callables.size();

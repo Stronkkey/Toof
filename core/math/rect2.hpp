@@ -41,7 +41,7 @@ namespace Toof {
 struct Transform2D;
 
 /**
-* A 2D axis-aligned bounding box using a generic T.
+* @brief A 2D axis-aligned bounding box using a generic T.
 */
 template<class T>
 struct Rect2 {
@@ -50,70 +50,70 @@ struct Rect2 {
 	static_assert(std::is_arithmetic<value_type>::value, "value_type of Rect2 must be an arithmetic type.");
 
 	/**
-	* The x axis of the origin point. Usually the top-left corner of the rectangle.
+	* @brief The x axis of the origin point. Usually the top-left corner of the rectangle.
 	*/
 	T x;
 
 	/**
-	* The y axis of the origin point. Usually the top-left corner of the rectangle.
+	* @brief The y axis of the origin point. Usually the top-left corner of the rectangle.
 	*/
 	T y;
 
 	/**
-	* The rectangle's width, starting from the origin. Setting this value also affects the end point.
+	* @brief The rectangle's width, starting from the origin. Setting this value also affects the end point.
 	*/
 	T w;
 
 	/**
-	* The rectangle's height, starting from the origin. Setting this value also affects the end point.
+	* @brief The rectangle's height, starting from the origin. Setting this value also affects the end point.
 	*/
 	T h;
 
 	/**
-	* Constructs a Rect2 with its x, y, w, and h properties set to 0.
+	* @brief Constructs a Rect2 with its x, y, w, and h properties set to 0.
 	*/
 	constexpr Rect2(): x(0), y(0), w(0), h(0) {
 	}
 
 	/** 
-	* Constructs a Rect2 by @param position and @param size.
+	* @brief Constructs a Rect2 with the given position and size.
 	*/
 	constexpr Rect2(const Vector2<T> &position, const Vector2<T> &size): x(position.x), y(position.y), w(size.x), h(size.y) {
 	}
 
 	/**
-	* Constructs a Rect2 by setting its x and y values to @param position_x and @param position_y and w and h values to @param size_x and @param size_y.
+	* @brief Constructs a Rect2 by setting its position to @b position_x, @b position_y, and its size to @b size_x, @b size_y.
 	*/
 	constexpr Rect2(const T position_x, const T position_y, const T size_x, const T size_y): x(position_x), y(position_y), w(size_x), h(size_y) {
 	}
 
 	/**
-	* Constructs a Rect2 as a copy of the given Rect2.
+	* @brief Constructs a Rect2 as a copy of the given Rect2.
 	*/
 	constexpr Rect2(const Rect2 &rect): x(rect.x), y(rect.y), w(rect.w), h(rect.h) {
 	}
 
 	/**
-	* Constructs a Rect2 as a copy of the given Rect2.
+	* @brief Constructs a Rect2 as a copy of the given Rect2.
 	*/
 	template<class T2>
 	constexpr Rect2(const Rect2<T2> &rect): x(rect.x), y(rect.y), w(rect.w), h(rect.h) {
 	}
 
 	/**
-	* Constructs a Rect2 from a SDL_Rect.
+	* @brief Constructs a Rect2 from a SDL_Rect.
 	*/
 	constexpr Rect2(const SDL_Rect &rect): x(rect.x), y(rect.y), w(rect.w), h(rect.h) {
 	}
 
 	/**
-	* Constructs a Rect2 from a SDL_FRect.
+	* @brief Constructs a Rect2 from a SDL_FRect.
 	*/
 	constexpr Rect2(const SDL_FRect &frect): x(frect.x), y(frect.y), w(frect.w), h(frect.h) {
 	}
 
 	/**
-	* Sets the x, y, w, and h properties to that of @param right.
+	* @brief Sets the x, y, w, and h properties to that of the given Rect2.
 	*/
 	constexpr void operator=(const Rect2 &right) {
 		x = right.x;
@@ -123,7 +123,7 @@ struct Rect2 {
 	}
 
 	/** 
-	* @returns true if both x, y, w, and h of the rectangles are exactly equal, respectively.
+	* @brief Returns @b true if both x, y, w, and h of the rectangles are exactly equal, respectively.
 	* @note due to floating-point precision errors, consider using Math::is_equal_approx instead, which is more reliable.
 	*/
 	constexpr bool operator==(const Rect2 &right) const {
@@ -131,7 +131,7 @@ struct Rect2 {
 	}
 	
 	/** 
-	* @returns true if both x, y, w, and h of the rectangles are exactly equal, respectively.
+	* @brief Returns true if both x, y, w, and h of the rectangles are exactly equal, respectively.
 	* @note due to floating-point precision errors, consider using Math::is_equal_approx instead, which is more reliable.
 	*/
 	constexpr bool operator!=(const Rect2 &right) const {
@@ -139,77 +139,77 @@ struct Rect2 {
 	}
 
 	/**
-	* @returns true if all of the components of this rect are smaller than those of @param right.
+	* @brief Returns true if all of the components of this rect are smaller than those of the given Rect2.
 	*/
 	constexpr bool operator<(const Rect2 &right) const {
 		return x < right.x && y < right.y && w < right.w && h < right.h;
 	}
 
 	/**
-	* @returns true if all of the components of this rect are smaller or equal to those of @param right.
+	* @brief Returns true if all of the components of this rect are smaller or equal to those of the given Rect2.
 	*/
 	constexpr bool operator<=(const Rect2 &right) const {
 		return x <= right.x && y <= right.y && w <= right.w && h != right.h;
 	}
 
 	/**
-	* @returns true if all of the components of this rect are bigger than those of @param right.
+	* @brief Returns true if all of the components of this rect are bigger than those of the given Rect2.
 	*/
 	constexpr bool operator>(const Rect2 &right) const {
 		return x > right.x && y > right.y && w > right.w && h > right.h;
 	}
 
 	/**
-	* @returns true if all of the components of this rect are bigger or equal to those of @param right.
+	* @brief Returns true if all of the components of this rect are bigger or equal to those of the given Rect2.
 	*/
 	constexpr bool operator>=(const Rect2 &right) const {
 		return x >= right.x && y >= right.y && w >= right.w && h >= right.h;
 	}
 
 	/**
-	* @returns this rect with its components added with with the components of @param right.
+	* @brief Returns this rect with its components added with with the components of the given Rect2.
 	*/
 	constexpr Rect2 operator+(const Rect2 &right) const {
 		return Rect2(x + right.x, y + right.y, w + right.w, h + right.h);
 	}
 	
 	/**
-	* @returns this rect with its components subtracted with with the components of @param right.
+	* @brief Returns this rect with its components subtracted with with the components of the given Rect2.
 	*/
 	constexpr Rect2 operator-(const Rect2 &right) const {
 		return Rect2(x - right.x, y - right.y, w - right.w, h - right.h);
 	}
 
 	/**
-	* @returns this rect with its components multiplied with the components of @param right.
+	* @brief Returns this rect with its components multiplied with the components of the given Rect2.
 	*/
 	constexpr Rect2 operator*(const Rect2 &right) const {
 		return Rect2(x * right.x, y * right.y, w * right.w, h * right.h);
 	}
 
 	/**
-	* @returns this rect with its components multiplied with @param right.
+	* @brief Returns this rect with its components multiplied with the given amount.
 	*/
 	constexpr Rect2 operator*(const T right) const {
 		return Rect2(x * right, y * right, w * right, h * right);
 	}
 
 	/**
-	* @returns this rect with its components divided with the components of @param right.
+	* @brief Returns this rect with its components divided with the components of the given Rect2.
 	*/
 	constexpr Rect2 operator/(const Rect2 &right) const {
 		return Rect2(x / right.x, y / right.y, w / right.w, h / right.h);
 	}
 
 	/**
-	* @returns this rect with its components multiplied by @param right.
+	* @brief Returns this rect with its components multiplied by the given amount.
 	*/
 	constexpr Rect2 operator/(const T right) const {
 		return Rect2(x / right, y / right, w / right, h / right);
 	}
 
 	/**
-	* Adds each component of this rect by the components of @param right.
+	* @brief Adds each component of this rect by the components of the given Rect2.
 	*/
 	constexpr void operator+=(const Rect2 &right) {
 		x += right.x;
@@ -219,7 +219,7 @@ struct Rect2 {
 	}
 
 	/**
-	* Subtracts each component of this rect by the components of @param right.
+	* @brief Subtracts each component of this rect by the components of the given Rect2.
 	*/
 	constexpr void operator-=(const Rect2 &right) {
 		x -= right.x;
@@ -229,7 +229,7 @@ struct Rect2 {
 	}
 
 	/**
-	* Multiplies each component of this rect by the components of @param right.
+	* @brief Multiplies each component of this rect by the components of the given Rect2.
 	*/
 	constexpr void operator*=(const Rect2 &right) {
 		x *= right.x;
@@ -239,7 +239,7 @@ struct Rect2 {
 	}
 
 	/**
-	* Multiplies each component of this rect by @param right.
+	* @brief Multiplies each component of this rect by the given amount.
 	*/
 	constexpr void operator*=(const T right) {
 		x *= right;
@@ -249,7 +249,7 @@ struct Rect2 {
 	}
 
 	/**
-	* Divides each component of this rect by the components of @param right.
+	* @brief Divides each component of this rect by the components of the given Rect2.
 	*/
 	constexpr void operator/=(const Rect2 &right) {
 		x /= right.x;
@@ -259,7 +259,7 @@ struct Rect2 {
 	}
 	
 	/**
-	* Divides each component of this rect by @param right.
+	* @brief Divides each component of this rect by the given amount.
 	*/
 	constexpr void operator/=(const T right) {
 		x /= right;
@@ -270,7 +270,7 @@ struct Rect2 {
 
 	/**
 	* @return the rect components using their index.
-	* [0] is equivalent to x, [1] is equivalent to y, [2] is equivalent to w, and [3] is equivalent to h.
+	* @details [0] is equivalent to x, [1] is equivalent to y, [2] is equivalent to w, and [3] is equivalent to h.
 	*/
 	constexpr T operator[](const int index) const {
 		switch (index) {
@@ -288,14 +288,14 @@ struct Rect2 {
 	}
 
 	/**
-	* @return the inverted value of this rect.
+	* @brief Returns the inverted value of this rect.
 	*/
 	constexpr Rect2 operator-() const {
 		return Rect2(-x, -y, -w, -h);
 	}
 
 	/**
-	* @return the same value as if the + was not there.
+	* @brief Returns the same value as if the + was not there.
 	* Unary + does nothing, but sometimes it can make your code more readable.
 	*/
 	constexpr Rect2 operator+() const {
@@ -312,14 +312,14 @@ struct Rect2 {
 	}
 
 	/**
-	* @returns a string representation as '[P: (x, y), S: (w, h)].
+	* @brief Returns a string representation as '[P: (x, y), S: (w, h)].
 	*/
 	[[nodiscard]] operator String() const {
 		return S_FORMAT("[P: ({}, {}), S: ({}, {})]", x, y, w, h);
 	}
 
 	/**
-	* Rounds each component of this rect.
+	* @brief Rounds each component of this rect.
 	*/
 	constexpr void rounded() {
 		x = std::round(x);
@@ -329,7 +329,7 @@ struct Rect2 {
 	}
 
 	/**
-	* Floors each component of this rect.
+	* @brief Floors each component of this rect.
 	*/
 	constexpr void floored() {
 		x = std::floor(x);
@@ -339,7 +339,7 @@ struct Rect2 {
 	}
 
 	/**
-	* Ceils each component of this rect.
+	* @brief Ceils each component of this rect.
 	*/
 	constexpr void ceiled() {
 		x = std::ceil(x);
@@ -349,28 +349,28 @@ struct Rect2 {
 	}
 
 	/**
-	* @returns this rect with its components rounded.
+	* @brief Returns this rect with its components rounded.
 	*/
 	[[nodiscard]] constexpr Rect2 round() const {
 		return Rect2(std::round(x), std::round(y), std::round(w), std::round(h));
 	}
 
 	/**
-	* @returns this rect with its components floored.
+	* @brief Returns this rect with its components floored.
 	*/
 	[[nodiscard]] constexpr Rect2 floor() const {
 		return Rect2(std::floor(x), std::floor(y), std::floor(w), std::floor(h));
 	}
 
 	/**
-	* @returns this rect with its components ceiled.
+	* @brief Returns this rect with its components ceiled.
 	*/
 	[[nodiscard]] constexpr Rect2 ceil() const {
 		return Rect2(std::ceil(x), std::ceil(y), std::ceil(w), std::ceil(h));
 	}
 
 	/**
-	* @returns a Rect2 that encloses both this rectangle and @param right around the edges.
+	* @brief Returns a Rect2 that encloses both this rectangle and the given Rect2 around the edges.
 	*/
 	[[nodiscard]] constexpr Rect2 merge(const Rect2 &right) const {
 		Rect2 new_rect;
@@ -388,14 +388,14 @@ struct Rect2 {
 	}
 
 	/**
-	* @returns this rect with its components set to absolute values of themselfs.
+	* @brief Returns this rect with its components set to absolute values of themselfs.
 	*/
 	[[nodiscard]] Rect2 abs() const {
 		return Rect2(std::abs(x), std::abs(y), std::abs(w), std::abs(h));
 	}
 
 	/**
-	* @returns this rect with negative sizes removed.
+	* @brief Returns this rect with negative sizes removed.
 	*/
 	[[nodiscard]] constexpr Rect2 remove_negative_size() const {
 		Rect2 rect = *this;
@@ -413,7 +413,7 @@ struct Rect2 {
 	}
 
 	/**
-	* @returns a copy of this rectangle expanded to align the edges with the given @param to point, if necessary.
+	* @brief Returns a copy of this rectangle expanded to align the edges with the given point, if necessary.
 	*/
 	[[nodiscard]] constexpr Rect2 expand(const Vector2f &to) const {
 		Rect2 rect = *this;
@@ -422,21 +422,21 @@ struct Rect2 {
 	}
 
 	/**
-	* @returns a vector2 with the x and y properties set to this rectangles x and y properties.
+	* @brief Returns a vector2 with the x and y properties set to this rectangles x and y properties.
 	*/
 	constexpr Vector2<T> get_position() const {
 		return Vector2<T>(x, y);
 	}
 
 	/**
-	* @returns a vector2 with the x and y properties set to this rectangles w and h properties.
+	* @brief Returns a vector2 with the x and y properties set to this rectangles w and h properties.
 	*/
 	constexpr Vector2<T> get_size() const {
 		return Vector2<T>(w, h);
 	}
 
 	/**
-	* @returns true if @param point is inside this rect.
+	* @brief Returns true if the @b point is inside this rect.
 	*/
 	constexpr bool has_point(const Vector2<T> &point) const {
 		if (point.x < x)
@@ -452,14 +452,14 @@ struct Rect2 {
 	}
 
 	/**
-	* @returns true if the width and height of this rect is higher or equal to 0.
+	* @brief Returns true if the width and height of this rect is higher or equal to 0.
 	*/
 	constexpr bool has_area() const {
 		return w > 0 && h > 0;
 	}
 
 	/**
-	* @returns true if this rectangle overlaps with the @param rect2. The edges of both rectangles are excluded, unless @param include_borders is true.
+	* @brief Returns true if this rectangle overlaps with the given Rect2. The edges of both rectangles are excluded, unless @b include_borders is true.
 	*/
 	constexpr bool intersects(const Rect2 &rect2, const bool include_borders = false) const {
 		if (include_borders) {
@@ -492,7 +492,7 @@ struct Rect2 {
 	}
 
 	/**
-	* Aligns the edges of this rect with the edges with the given @param to point, if necessary.
+	* @brief Aligns the edges of this rect with the edges with the given @b to point, if necessary.
 	*/
 	constexpr void expand_to(const Vector2<T> &to) {
 		T begin_x = x;
@@ -519,7 +519,7 @@ struct Rect2 {
 	}
 
 	/**
-	* Sets the x and y properties to that of @param position x and y values.
+	* @brief Sets the x and y properties to that of the Vector2 x and y values.
 	*/
 	constexpr void set_position(const Vector2<T> &position) {
 		x = position.x;
@@ -527,7 +527,7 @@ struct Rect2 {
 	}
 
 	/**
-	* Sets the w and h properties to that of @param size x and y values.
+	* @brief Sets the w and h properties to that of Vector2 x and y values.
 	*/
 	constexpr void set_size(const Vector2<T> &size) {
 		x = size.x;
@@ -579,7 +579,7 @@ using Rect2i32 = Rect2<int32_t>;
 using Rect2i64 = Rect2<int64_t>;
 
 /**
-* @returns @param rect2f with its position added with the @param transfor2nd origin and size multiplied by @param transform2d scale.
+* @brief Returns the Rect2 with its position added with the transform origin and size multiplied by the transform scale.
 */
 Rect2f rect2f_add_transform(const Rect2f &rect2f, const Transform2D &transform2d);
 

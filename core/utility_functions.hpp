@@ -46,7 +46,7 @@ namespace Toof {
 namespace UtilityFunctions {
 
 /**
-* @returns the amount of time passed in seconds since the program started.
+* @brief Returns the amount of time passed in seconds since the program started.
 */
 inline double get_passed_time() {
 	double time = SDL_GetTicks64();
@@ -55,35 +55,35 @@ inline double get_passed_time() {
 }
 
 /**
-* Prints a new line character into the standard output.
+* @brief Prints a new line character into the standard output.
 */
 inline void print() {
 	std::cout << '\n';
 }
 
 /**
-* Prints a new line character into the standard error output.
+* @brief Prints a new line character into the standard error output.
 */
 inline void print_err() {
 	std::cerr << '\n';
 }
 
 /**
-* Prints a new line character into the standard output.
+* @brief Prints a new line character into the standard output.
 */
 inline void prints() {
 	std::cout << '\n';
 }
 
 /**
-* Prints a new line character into the standard error output.
+* @brief Prints a new line character into the standard error output.
 */
 inline void prints_err() {
 	std::cerr << '\n';
 }
 
 /**
-* Converts one or more arguments of any type into a string in the best way possible and prints it to the standard output.
+* @brief Converts one or more arguments of any type into a string in the best way possible and prints it to the standard output.
 */
 template<class... Args>
 inline void print(Args&&... variants) {
@@ -91,7 +91,7 @@ inline void print(Args&&... variants) {
 }
 
 /**
-* Converts one or more arguments of any type into a string in the best way possible and prints it to the error output.
+* @brief Converts one or more arguments of any type into a string in the best way possible and prints it to the error output.
 */
 template<class... Args>
 inline void print_err(Args&&... variants) {
@@ -100,7 +100,7 @@ inline void print_err(Args&&... variants) {
 
 
 /**
-* Prints one or more arguments to the console with a space between each argument to the standard output.
+* @brief Prints one or more arguments to the console with a space between each argument to the standard output.
 */
 template<class... Args>
 inline void prints(Args&&... variants) {
@@ -108,7 +108,7 @@ inline void prints(Args&&... variants) {
 }
 
 /**
-* Prints one or more arguments to the console with a space between each argument to the error output.
+* @brief Prints one or more arguments to the console with a space between each argument to the error output.
 */
 template<class... Args>
 inline void prints_err(const Args&... variants) {
