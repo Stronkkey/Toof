@@ -69,21 +69,21 @@ void RenderingServer::render() {
 	SDL_RenderPresent(renderer);
 }
 
-const std::shared_ptr<__Texture_Ref__> &RenderingServer::get_texture_from_uid(const uid texture_uid) const {
+const std::shared_ptr<Toof::detail::Texture_Ref> &RenderingServer::get_texture_from_uid(const uid texture_uid) const {
 	const auto &iterator = textures.find(texture_uid);
 	if (iterator != textures.end())
 		return iterator->second;
 
-	const std::shared_ptr<__Texture_Ref__> _t, *t = &_t;
+	const std::shared_ptr<detail::Texture_Ref> _t, *t = &_t;
 	return *t;
 }
 
-const std::shared_ptr<__CanvasItem__> &RenderingServer::get_canvas_item_from_uid(const uid canvas_item_uid) const {
+const std::shared_ptr<Toof::detail::CanvasItem> &RenderingServer::get_canvas_item_from_uid(const uid canvas_item_uid) const {
 	const auto &iterator = canvas_items.find(canvas_item_uid);
 	if (iterator != canvas_items.end())
 		return iterator->second;
 
-	const std::shared_ptr<__CanvasItem__> _t, *t = &_t;
+	const std::shared_ptr<detail::CanvasItem> _t, *t = &_t;
 	return *t;
 }
 
@@ -91,7 +91,7 @@ void RenderingServer::remove_uid(const uid destroying_uid) {
 	destroy_uid(destroying_uid);
 }
 
-void RenderingServer::destroy_texture(std::shared_ptr<__Texture_Ref__> &texture) {
+void RenderingServer::destroy_texture(std::shared_ptr<detail::Texture_Ref> &texture) {
 	SDL_DestroyTexture(texture->texture_reference);
 }
 
@@ -113,7 +113,7 @@ void RenderingServer::destroy_uid(const uid destroying_uid) {
 	destroy_texture_uid(destroying_uid);
 }
 
-void RenderingServer::render_canvas_item(const std::shared_ptr<__CanvasItem__> &canvas_item) {
+void RenderingServer::render_canvas_item(const std::shared_ptr<detail::CanvasItem> &canvas_item) {
 	if (!canvas_item->is_globally_visible() || canvas_item->drawing_items.empty())
 		return;
 
@@ -128,12 +128,12 @@ void RenderingServer::render_canvas_item(const std::shared_ptr<__CanvasItem__> &
 	}
 }
 
-bool comparison_function(const std::shared_ptr<__CanvasItem__> &left, const std::shared_ptr<__CanvasItem__> &right) {
+bool comparison_function(const std::shared_ptr<Toof::detail::CanvasItem> &left, const std::shared_ptr<detail::CanvasItem> &right) {
 	return left->get_global_zindex() < right->get_global_zindex();
 }
 
 void RenderingServer::render_canvas_items() {
-	std::vector<std::shared_ptr<__CanvasItem__>> sorted_canvas_items;
+	std::vector<std::shared_ptr<detail::CanvasItem>> sorted_canvas_items;
 
 	for (const auto &iterator: canvas_items)
 		sorted_canvas_items.push_back(iterator.second);
@@ -144,7 +144,7 @@ void RenderingServer::render_canvas_items() {
 }
 
 Optional<RenderingServer::TextureInfo> RenderingServer::get_texture_info_from_uid(const uid texture_uid) const {
-	const std::shared_ptr<__Texture_Ref__> &texture = get_texture_from_uid(texture_uid);
+	const std::shared_ptr<detail::Texture_Ref> &texture = get_texture_from_uid(texture_uid);
 	TextureInfo texture_info;
 
 	if (!texture)
@@ -162,7 +162,7 @@ Optional<uid> RenderingServer::load_texture_from_path(const String &path) {
 		return NullOption;
 
 	uid new_uid = assign_uid();
-	auto new_texture = std::make_shared<__Texture_Ref__>();
+	auto new_texture = std::make_shared<detail::Texture_Ref>();
 	new_texture->texture_reference = texture;
 
 	int width;
@@ -177,20 +177,20 @@ Optional<uid> RenderingServer::load_texture_from_path(const String &path) {
 
 uid RenderingServer::create_canvas_item() {
 	uid new_uid = assign_uid();
-	auto canvas_item = std::make_shared<__CanvasItem__>();
+	auto canvas_item = std::make_shared<detail::CanvasItem>();
 
 	canvas_items.insert({new_uid, canvas_item});
 	return new_uid;
 }
 
 void RenderingServer::canvas_item_add_texture(const uid texture_uid, const uid canvas_item_uid, const SDL_RendererFlip flip, const ColorV &modulate, const Transform2D &transform) {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-	const std::shared_ptr<__Texture_Ref__> &texture = get_texture_from_uid(texture_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::Texture_Ref> &texture = get_texture_from_uid(texture_uid);
 
 	if (!canvas_item || !texture)
 		return;
 	
-	auto texture_drawing_item = std::make_unique<__TextureDrawingItem__>();
+	auto texture_drawing_item = std::make_unique<detail::TextureDrawingItem>();
 
 	texture_drawing_item->texture = texture;
 	texture_drawing_item->flip = flip;
@@ -202,13 +202,13 @@ void RenderingServer::canvas_item_add_texture(const uid texture_uid, const uid c
 }
 
 void RenderingServer::canvas_item_add_texture_region(const uid texture_uid, const uid canvas_item_uid ,const Rect2i &src_region, const SDL_RendererFlip flip, const ColorV &modulate, const Transform2D &transform) {
-	const std::shared_ptr<__Texture_Ref__> &texture = get_texture_from_uid(texture_uid);
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::Texture_Ref> &texture = get_texture_from_uid(texture_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (!canvas_item || !texture || !src_region.has_area())
 		return;
 
-	auto texture_rect_drawing_item = std::make_unique<__TextureDrawingItem__>();
+	auto texture_rect_drawing_item = std::make_unique<detail::TextureDrawingItem>();
 
 	texture_rect_drawing_item->texture = texture;
 	texture_rect_drawing_item->src_region = src_region;
@@ -221,12 +221,12 @@ void RenderingServer::canvas_item_add_texture_region(const uid texture_uid, cons
 }
 
 void RenderingServer::canvas_item_add_line(const uid canvas_item_uid, const Vector2f &start, const Vector2f &end, const ColorV &modulate) {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (!canvas_item)
 		return;
 
-	auto line_drawing_item = std::make_unique<__LineDrawingItem__>();
+	auto line_drawing_item = std::make_unique<detail::LineDrawingItem>();
 
 	line_drawing_item->start_point = start.to_sdl_fpoint();
 	line_drawing_item->end_point = end.to_sdl_fpoint();
@@ -236,12 +236,12 @@ void RenderingServer::canvas_item_add_line(const uid canvas_item_uid, const Vect
 }
 
 void RenderingServer::canvas_item_add_lines(const uid canvas_item_uid, const std::vector<SDL_FPoint> &points, const ColorV &modulate) {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (!canvas_item || points.empty())
 		return;
 
-	auto lines_drawing_item = std::make_unique<__LinesDrawingItem__>();
+	auto lines_drawing_item = std::make_unique<detail::LinesDrawingItem>();
 
 	lines_drawing_item->points = points;
 	lines_drawing_item->modulate = modulate;
@@ -250,12 +250,12 @@ void RenderingServer::canvas_item_add_lines(const uid canvas_item_uid, const std
 }
 
 void RenderingServer::canvas_item_add_rect(const uid canvas_item_uid, const Rect2f &rect, const ColorV &modulate) {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (!canvas_item || !rect.has_area())
 		return;
 
-	auto rect_drawing_item = std::make_unique<__RectDrawingItem__>();
+	auto rect_drawing_item = std::make_unique<detail::RectDrawingItem>();
 
 	rect_drawing_item->rectangle = rect.to_sdl_frect();
 	rect_drawing_item->modulate = modulate;
@@ -264,12 +264,12 @@ void RenderingServer::canvas_item_add_rect(const uid canvas_item_uid, const Rect
 }
 
 void RenderingServer::canvas_item_add_rects(const uid canvas_item_uid, const std::vector<SDL_FRect> &rectangles, const ColorV &modulate) {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (!canvas_item || rectangles.empty())
 		return;
 
-	auto rects_drawing_item = std::make_unique<__RectsDrawingItem__>();
+	auto rects_drawing_item = std::make_unique<detail::RectsDrawingItem>();
 
 	rects_drawing_item->rectangles = rectangles;
 	rects_drawing_item->modulate = modulate;
@@ -278,15 +278,15 @@ void RenderingServer::canvas_item_add_rects(const uid canvas_item_uid, const std
 }
 
 void RenderingServer::canvas_item_set_transform(const uid canvas_item_uid, const Transform2D &new_transform) {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		canvas_item->transform = new_transform;
 }
 
 void RenderingServer::canvas_item_set_parent(const uid canvas_item_uid, const uid parent_item_uid) {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
-	const std::shared_ptr<__CanvasItem__> &parent_canvas_item = get_canvas_item_from_uid(parent_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &parent_canvas_item = get_canvas_item_from_uid(parent_item_uid);
 
 	if (!canvas_item)
 		return;
@@ -294,53 +294,53 @@ void RenderingServer::canvas_item_set_parent(const uid canvas_item_uid, const ui
 	if (parent_canvas_item)
 		canvas_item->parent = parent_canvas_item;
 	else
-		canvas_item->parent = std::weak_ptr<__CanvasItem__>();
+		canvas_item->parent = std::weak_ptr<detail::CanvasItem>();
 }
 
 void RenderingServer::canvas_item_set_modulate(const uid canvas_item_uid, const ColorV &new_modulate) {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		canvas_item->modulate = new_modulate;
 }
 
 void RenderingServer::canvas_item_set_blend_mode(const uid canvas_item_uid, const SDL_BlendMode blend_mode) {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		canvas_item->blend_mode = blend_mode;
 }
 
 void RenderingServer::canvas_item_set_scale_mode(const uid canvas_item_uid, const SDL_ScaleMode scale_mode) {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		canvas_item->scale_mode = scale_mode;
 }
 
 void RenderingServer::canvas_item_clear(const uid canvas_item_uid) {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		canvas_item->drawing_items.clear();
 }
 
 void RenderingServer::canvas_item_set_visible(const uid canvas_item_uid, const bool visible) {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		canvas_item->visible = visible;
 }
 
 void RenderingServer::canvas_item_set_zindex(const uid canvas_item_uid, const int zindex) {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		canvas_item->zindex = zindex;
 }
 
 void RenderingServer::canvas_item_set_zindex_relative(const uid canvas_item_uid, const bool zindex_relative) {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		canvas_item->zindex_relative = zindex_relative;
@@ -355,7 +355,7 @@ bool RenderingServer::texture_uid_exists(const uid texture_uid) const {
 }
 
 Optional<const Transform2D> RenderingServer::canvas_item_get_transform(const uid canvas_item_uid) const {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->transform;
@@ -363,7 +363,7 @@ Optional<const Transform2D> RenderingServer::canvas_item_get_transform(const uid
 }
 
 Optional<const Transform2D> RenderingServer::canvas_item_get_global_transform(const uid canvas_item_uid) const {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->get_global_transform();
@@ -371,7 +371,7 @@ Optional<const Transform2D> RenderingServer::canvas_item_get_global_transform(co
 }
 
 Optional<const ColorV> RenderingServer::canvas_item_get_modulate(const uid canvas_item_uid) const {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->modulate;
@@ -379,7 +379,7 @@ Optional<const ColorV> RenderingServer::canvas_item_get_modulate(const uid canva
 }
 
 Optional<const ColorV> RenderingServer::canvas_item_get_global_modulate(const uid canvas_item_uid) const {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->get_global_modulate();
@@ -387,7 +387,7 @@ Optional<const ColorV> RenderingServer::canvas_item_get_global_modulate(const ui
 }
 
 Optional<bool> RenderingServer::canvas_item_is_visible(const uid canvas_item_uid) const {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->visible;
@@ -395,7 +395,7 @@ Optional<bool> RenderingServer::canvas_item_is_visible(const uid canvas_item_uid
 }
 
 Optional<bool> RenderingServer::canvas_item_is_globally_visible(const uid canvas_item_uid) const {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->is_globally_visible();
@@ -403,7 +403,7 @@ Optional<bool> RenderingServer::canvas_item_is_globally_visible(const uid canvas
 }
 
 Optional<bool> RenderingServer::canvas_item_is_visible_inside_viewport(const uid canvas_item_uid) const {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (!canvas_item)
 		return NullOption;
@@ -428,7 +428,7 @@ Optional<bool> RenderingServer::canvas_item_is_visible_inside_viewport(const uid
 }
 
 Optional<SDL_BlendMode> RenderingServer::canvas_item_get_blend_mode(const uid canvas_item_uid) const {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->blend_mode;
@@ -436,7 +436,7 @@ Optional<SDL_BlendMode> RenderingServer::canvas_item_get_blend_mode(const uid ca
 }
 
 Optional<SDL_ScaleMode> RenderingServer::canvas_item_get_scale_mode(const uid canvas_item_uid) const {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->scale_mode;
@@ -444,7 +444,7 @@ Optional<SDL_ScaleMode> RenderingServer::canvas_item_get_scale_mode(const uid ca
 }
 
 Optional<int> RenderingServer::canvas_item_get_zindex(const uid canvas_item_uid) const {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->zindex;
@@ -452,7 +452,7 @@ Optional<int> RenderingServer::canvas_item_get_zindex(const uid canvas_item_uid)
 }
 
 Optional<int> RenderingServer::canvas_item_get_absolute_zindex(const uid canvas_item_uid) const {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->get_global_zindex();
@@ -460,7 +460,7 @@ Optional<int> RenderingServer::canvas_item_get_absolute_zindex(const uid canvas_
 }
 
 Optional<bool> RenderingServer::canvas_item_is_zindex_relative(const uid canvas_item_uid) const {
-	const std::shared_ptr<__CanvasItem__> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
+	const std::shared_ptr<detail::CanvasItem> &canvas_item = get_canvas_item_from_uid(canvas_item_uid);
 
 	if (canvas_item)
 		return canvas_item->zindex_relative;

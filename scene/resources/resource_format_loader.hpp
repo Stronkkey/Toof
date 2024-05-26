@@ -39,11 +39,11 @@
 
 #define TOOF_DETAIL_RESOURCE_ID(type, id) \
 template<> \
-struct Toof::detail::__Defined_Ids__<id> : public std::true_type {}; \
+struct Toof::detail::Defined_Ids<id> : public std::true_type {}; \
 template<> \
-struct Toof::detail::__Resource_Id__<type> : public std::integral_constant<int32_t, id> {};
+struct Toof::detail::Resource_Id<type> : public std::integral_constant<int32_t, id> {};
 
-#define TOOF_RESOURCE_ID(type) (Toof::detail::__Resource_Id__<type>::value)
+#define TOOF_RESOURCE_ID(type) (Toof::detail::Resource_Id<type>::value)
 
 #define TOOF_DETAIL_LOAD_TYPE(type, id, archive) \
 if (id == TOOF_RESOURCE_ID(type)) { \
@@ -58,11 +58,11 @@ namespace Toof {
 namespace detail {
 
 template<int32_t __i>
-struct __Defined_Ids__ : public std::false_type {
+struct Defined_Ids : public std::false_type {
 };
 
 template<class ResourceType>
-struct __Resource_Id__ : std::integral_constant<int32_t, 0> {
+struct Resource_Id : std::integral_constant<int32_t, 0> {
 };
 
 }

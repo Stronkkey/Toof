@@ -36,22 +36,22 @@
 
 using namespace Toof;
 
-void __DrawingItem__::draw(const std::shared_ptr<__CanvasItem__> &canvas_item, const Viewport *viewport) {
+void detail::DrawingItem::draw(const std::shared_ptr<CanvasItem> &canvas_item, const Viewport *viewport) {
 	_draw(canvas_item, viewport);
 }
 
-Toof::Rect2f __DrawingItem__::get_draw_rect(const std::shared_ptr<__CanvasItem__> &canvas_item) const {
+Toof::Rect2f detail::DrawingItem::get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
 	return _get_draw_rect(canvas_item);
 }
 
-void __DrawingItem__::_draw(const std::shared_ptr<__CanvasItem__>&, const Viewport*) {
+void detail::DrawingItem::_draw(const std::shared_ptr<CanvasItem>&, const Viewport*) {
 }
 
-Toof::Rect2f __DrawingItem__::_get_draw_rect(const std::shared_ptr<__CanvasItem__>&) const {
+Toof::Rect2f detail::DrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem>&) const {
 	return Rect2f();
 }
 
-Toof::Rect2f __TextureDrawingItem__::_get_draw_rect(const std::shared_ptr<__CanvasItem__> &canvas_item) const {
+Toof::Rect2f detail::TextureDrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
 	const Transform2D &global_transform = canvas_item->get_global_transform();
 	const Vector2 position = global_transform.origin + transform.origin;
 	const Vector2 size = global_transform.scale * transform.scale * (use_region ? src_region.get_size() : texture.lock()->size);
@@ -59,11 +59,11 @@ Toof::Rect2f __TextureDrawingItem__::_get_draw_rect(const std::shared_ptr<__Canv
 	return Rect2(position, size);
 }
 
-void __TextureDrawingItem__::_draw(const std::shared_ptr<__CanvasItem__> &canvas_item, const Viewport *viewport) {
+void detail::TextureDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, const Viewport *viewport) {
 	if (texture.expired())
 		return;
 
-	const std::shared_ptr<__Texture_Ref__> texture = this->texture.lock();
+	const std::shared_ptr<Texture_Ref> texture = this->texture.lock();
 
 	const ColorV &modulate = texture_modulate * canvas_item->get_global_modulate();
 
@@ -87,7 +87,7 @@ void __TextureDrawingItem__::_draw(const std::shared_ptr<__CanvasItem__> &canvas
 		SDL_RenderCopyExF(viewport->get_renderer(), texture->texture_reference, &final_source_region, &final_destination, rotation.get_angle_degrees(), nullptr, flip);
 }
 
-void __RectDrawingItem__::_draw(const std::shared_ptr<__CanvasItem__> &canvas_item, const Viewport *viewport) {
+void detail::RectDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, const Viewport *viewport) {
 	const Transform2D &global_transform = canvas_item->get_global_transform() * viewport->get_canvas_transform();
 
 	SDL_Renderer *renderer = viewport->get_renderer();
@@ -103,11 +103,11 @@ void __RectDrawingItem__::_draw(const std::shared_ptr<__CanvasItem__> &canvas_it
 	SDL_RenderFillRectF(renderer, &rect);
 }
 
-Toof::Rect2f __RectDrawingItem__::_get_draw_rect(const std::shared_ptr<__CanvasItem__> &canvas_item) const {
+Toof::Rect2f detail::RectDrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
 	return rect2f_add_transform(rectangle, canvas_item->get_global_transform());
 }
 
-void __RectsDrawingItem__::_draw(const std::shared_ptr<__CanvasItem__> &canvas_item, const Viewport *viewport) {
+void detail::RectsDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, const Viewport *viewport) {
 	if (rectangles.empty())
 		return;
 
@@ -129,7 +129,7 @@ void __RectsDrawingItem__::_draw(const std::shared_ptr<__CanvasItem__> &canvas_i
 	}
 }
 
-Toof::Rect2f __RectsDrawingItem__::_get_draw_rect(const std::shared_ptr<__CanvasItem__> &canvas_item) const {
+Toof::Rect2f detail::RectsDrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
 	const Transform2D &global_transform = canvas_item->get_global_transform();
 	Rect2f final_rect = Rect2f();
 
@@ -144,7 +144,7 @@ Toof::Rect2f __RectsDrawingItem__::_get_draw_rect(const std::shared_ptr<__Canvas
 	return final_rect;
 }
 
-void __LineDrawingItem__::_draw(const std::shared_ptr<__CanvasItem__> &canvas_item, const Viewport *viewport) {
+void detail::LineDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, const Viewport *viewport) {
 	const Transform2D &global_transform = canvas_item->get_global_transform() * viewport->get_canvas_transform();
 	SDL_Renderer *renderer = viewport->get_renderer();
 
@@ -158,12 +158,12 @@ void __LineDrawingItem__::_draw(const std::shared_ptr<__CanvasItem__> &canvas_it
 	SDL_RenderDrawLineF(renderer, x_1, y_1, x_2, y_2);
 }
 
-Toof::Rect2f __LineDrawingItem__::_get_draw_rect(const std::shared_ptr<__CanvasItem__> &canvas_item) const {
+Toof::Rect2f detail::LineDrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
 	const Transform2D &global_transform = canvas_item->get_global_transform();
 	return Rect2f(Vector2f(start_point) + global_transform.origin, end_point).remove_negative_size().round();
 }
 
-void __LinesDrawingItem__::_draw(const std::shared_ptr<__CanvasItem__> &canvas_item, const Viewport *viewport) {
+void detail::LinesDrawingItem::_draw(const std::shared_ptr<CanvasItem> &canvas_item, const Viewport *viewport) {
 	if (points.size() < 2)
 		return;
 
@@ -184,7 +184,7 @@ void __LinesDrawingItem__::_draw(const std::shared_ptr<__CanvasItem__> &canvas_i
 	}
 }
 
-Toof::Rect2f __LinesDrawingItem__::_get_draw_rect(const std::shared_ptr<__CanvasItem__> &canvas_item) const {
+Toof::Rect2f detail::LinesDrawingItem::_get_draw_rect(const std::shared_ptr<CanvasItem> &canvas_item) const {
 	Rect2f rect = Rect2f();
 
 	const Transform2D &global_transform = canvas_item->get_global_transform();
