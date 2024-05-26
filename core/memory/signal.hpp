@@ -38,9 +38,11 @@
 
 namespace Toof {
 
+namespace detail {
+
 template<class... Args>
-struct __Function_Storer__ {
-	using __Container_Iterator__ = typename std::list<__Function_Storer__>::iterator;
+struct Function_Storer {
+	using __Container_Iterator__ = typename std::list<Function_Storer>::iterator;
 	using __Signature__ = void(Args...);
 	using __Function_Ptr__ = void(*)(Args...);
 	using __Function__ = std::function<__Signature__>;
@@ -48,16 +50,16 @@ struct __Function_Storer__ {
 
 	__Function__ function;
 
-	__Function_Storer__(): function(nullptr) {
+	Function_Storer(): function(nullptr) {
 	}
 
-	__Function_Storer__(const __Function__ &function): function(function) {
+	Function_Storer(const __Function__ &function): function(function) {
 	}
 
-	__Function_Storer__(__Function_Storer__&&) = default;
-	__Function_Storer__(const __Function_Storer__ &right) = default;
+	Function_Storer(Function_Storer&&) = default;
+	Function_Storer(const Function_Storer &right) = default;
 
-	bool operator==(const __Function_Storer__ &storer) const {
+	bool operator==(const Function_Storer &storer) const {
 		const auto &ptr1 = function.template target<__Function_Ptr__>();
 		const auto &ptr2 = storer.function.template target<__Function_Ptr__>();
 		if (!ptr1 || !ptr2)
@@ -66,6 +68,8 @@ struct __Function_Storer__ {
 		return (*ptr1) == (*ptr2);
 	}
 };
+
+}
 
 /**
 * A type representing a signal using the observer pattern.
@@ -76,7 +80,7 @@ public:
 	using Signature = void(Args...);
 	using Callable = std::function<Signature>;
 private:
-	using __Stored_Function__ = __Function_Storer__<Args...>;
+	using __Stored_Function__ = detail::Function_Storer<Args...>;
 	using __Container_Type__ = std::list<__Stored_Function__>;
 
 	__Container_Type__ iterate_callables = {};
@@ -166,8 +170,8 @@ public:
 }
 
 template<class... Args>
-struct std::hash<Toof::__Function_Storer__<Args...>> {
-	using __T__ = Toof::__Function_Storer__<Args...>;
+struct std::hash<Toof::detail::Function_Storer<Args...>> {
+	using __T__ = Toof::detail::Function_Storer<Args...>;
 	using __Function_Pointer__ = void(*)(Args...);
 
 	size_t operator()(const __T__ &storer) const noexcept {

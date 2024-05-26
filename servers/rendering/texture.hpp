@@ -38,10 +38,14 @@
 
 namespace Toof {
 
-struct __Texture_Ref__ {
+namespace detail {
+
+struct Texture_Ref {
 	SDL_Texture *texture_reference;
 	Vector2i size;
 	uint32_t format;
 };
+
+}
 
 }

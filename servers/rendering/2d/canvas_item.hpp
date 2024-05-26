@@ -42,9 +42,11 @@
 
 namespace Toof {
 
-struct __DrawingItem__;
+namespace detail {
 
-struct __CanvasItem__ {
+struct DrawingItem;
+
+struct CanvasItem {
 	Transform2D transform = Transform2D::IDENTITY;
 	Transform2D global_transform = Transform2D::IDENTITY;
 	ColorV modulate = ColorV::WHITE();
@@ -58,8 +60,8 @@ struct __CanvasItem__ {
 	SDL_BlendMode blend_mode = SDL_BLENDMODE_BLEND;
 	SDL_ScaleMode scale_mode = SDL_ScaleModeLinear;
 
-	std::weak_ptr<__CanvasItem__> parent;
-	std::vector<std::unique_ptr<__DrawingItem__>> drawing_items;
+	std::weak_ptr<CanvasItem> parent;
+	std::vector<std::unique_ptr<DrawingItem>> drawing_items;
 
 	void set_global_transform();
 	void set_global_modulate();
@@ -71,5 +73,7 @@ struct __CanvasItem__ {
 	bool is_globally_visible();
 	int get_global_zindex();
 };
+
+}
 
 }

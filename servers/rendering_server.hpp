@@ -45,8 +45,13 @@
 
 namespace Toof {
 
-struct __Texture_Ref__;
-struct __CanvasItem__;
+namespace detail {
+
+struct Texture_Ref;
+struct CanvasItem;
+
+}
+
 template<class>
 struct Rect2;
 typedef Rect2<real> Rect2f;
@@ -55,8 +60,8 @@ class Viewport;
 class RenderingServer {
 private:
 	Viewport *viewport;
-	std::unordered_map<uid, std::shared_ptr<__Texture_Ref__>> textures;
-	std::unordered_map<uid, std::shared_ptr<__CanvasItem__>> canvas_items;
+	std::unordered_map<uid, std::shared_ptr<detail::Texture_Ref>> textures;
+	std::unordered_map<uid, std::shared_ptr<detail::CanvasItem>> canvas_items;
 	ColorV background_color;
 	uid uid_index;
 
@@ -66,15 +71,15 @@ private:
 		return uid_index++;
 	}
 
-	void render_canvas_item(const std::shared_ptr<__CanvasItem__> &canvas_item);
+	void render_canvas_item(const std::shared_ptr<detail::CanvasItem> &canvas_item);
 	void render_canvas_items();
-	void destroy_texture(std::shared_ptr<__Texture_Ref__> &texture);
+	void destroy_texture(std::shared_ptr<detail::Texture_Ref> &texture);
 	void destroy_texture_uid(const uid texture_uid);
 	void destroy_canvas_item_uid(const uid canvas_item_uid);
 	void destroy_uid(const uid target_uid);
 
-	const std::shared_ptr<__CanvasItem__> &get_canvas_item_from_uid(const uid canvas_item_uid) const;
-	const std::shared_ptr<__Texture_Ref__> &get_texture_from_uid(const uid texture_uid) const;
+	const std::shared_ptr<detail::CanvasItem> &get_canvas_item_from_uid(const uid canvas_item_uid) const;
+	const std::shared_ptr<detail::Texture_Ref> &get_texture_from_uid(const uid texture_uid) const;
 
 public:
 	struct TextureInfo {

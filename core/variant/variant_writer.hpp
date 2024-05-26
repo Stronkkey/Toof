@@ -48,58 +48,62 @@
 
 namespace Toof {
 
+namespace detail {
+
 template<class T>
-struct __var_size__ : public std::integral_constant<std::size_t, sizeof(T)> {
+struct var_size : public std::integral_constant<std::size_t, sizeof(T)> {
 };
 
 template<class T>
-struct __var_size__<T[]> : public std::integral_constant<std::size_t, sizeof(T)> {
+struct var_size<T[]> : public std::integral_constant<std::size_t, sizeof(T)> {
 };
 
 template<class T, std::size_t N>
-struct __var_size__<T[N]> : public std::integral_constant<std::size_t, sizeof(T)> {
+struct var_size<T[N]> : public std::integral_constant<std::size_t, sizeof(T)> {
 };
 
 template<class T>
-struct __sub_array__ : public std::integral_constant<T, false> {
+struct sub_array : public std::integral_constant<T, false> {
 };
 
 template<class T>
-struct __sub_array__<T[]> : public std::integral_constant<T, false> {
+struct sub_array<T[]> : public std::integral_constant<T, false> {
 };
 
 template<class T, std::size_t N>
-struct __sub_array__<T[N]> : public std::integral_constant<T, false> {
+struct sub_array<T[N]> : public std::integral_constant<T, false> {
 };
 
 template<class T, std::size_t N, std::size_t N2>
-struct __sub_array__<T[N][N2]> : public std::integral_constant<T, true> {
+struct sub_array<T[N][N2]> : public std::integral_constant<T, true> {
 };
 
 template<class T>
-struct __underlying_type__ {
+struct underlying_type {
 	using value_type = T;
 };
 
 template<class T>
-struct __underlying_type__<T[]> {
+struct underlying_type<T[]> {
 	using value_type = T;
 };
 
 template<class T, size_t N>
-struct __underlying_type__<T[N]> {
+struct underlying_type<T[N]> {
 	using value_type = T;
 };
 
 template<class T, size_t N, size_t N2>
-struct __underlying_type__<T[N][N2]> {
-	using value_type = typename __underlying_type__<T>::value_type;
+struct underlying_type<T[N][N2]> {
+	using value_type = typename underlying_type<T>::value_type;
 };
+
+}
 
 template<class T, class Archive = cereal::PortableBinaryOutputArchive>
 inline void write_variant_binary_data(const T &variant, Archive &archive) {
 	constexpr const bool is_array = std::is_array<T>();
-	constexpr const uint64_t array_size = sizeof(T) / __var_size__<T>::value;
+	constexpr const uint64_t array_size = sizeof(T) / detail::var_size<T>::value;
 
 	if (is_array)
 		archive(array_size, variant);
@@ -114,7 +118,7 @@ inline void write_variant_text_data_with_name(const T &variant, Archive &archive
 
 template<class T>
 constexpr bool __is_string_array__() {
-	using underlying_type = typename __underlying_type__<T>::value_type;
+	using underlying_type = typename detail::underlying_type<T>::value_type;
 	return std::is_same<underlying_type, const char>::value || std::is_same<underlying_type, char>::value || std::is_same<underlying_type, const char*>::value || std::is_same<underlying_type, char*>::value;
 }
 
