@@ -57,12 +57,12 @@ class CanvasNode : public Node {
 public:
 	enum {
 		/**
-		* Notification received when redraw is called. This is called once during _ready
+		* @brief Notification received when redraw is called. This is called once during _ready
 		*/
 		NOTIFICATION_DRAW = 900,
 
 		/**
-		* Notification received when the visibility of this CanvasNode changes.
+		* @brief Notification received when the visibility of this CanvasNode changes.
 		*/
 		NOTIFICATION_VISIBILITY_CHANGED,
 	};
@@ -115,203 +115,203 @@ public:
 	~CanvasNode() = default;
 
 	/**
-	* Queues this CanvasNode to update on the next render frame.
-	* This can be safely called multiple times in one frame.
+	* @brief Queues this CanvasNode to update on the next render frame.
+	* @details This can be safely called multiple times in one frame.
 	*/
 	void queue_redraw();
 
 	/**
-	* Emitted when the renderingitem must redraw, after the related NOTIFICATION_DRAW notification, and before _draw is called.
+	* @brief Emitted when the renderingitem must redraw, after the related NOTIFICATION_DRAW notification, and before _draw is called.
 	*/
 	Signal<> draw;
 
 	/**
-	* Emitted when becoming hidden.
+	* @brief Emitted when becoming hidden.
 	*/
 	Signal<> hidden;
 
 	/**
-	* Emitted when the visibility (hidden/visible) changes.
+	* @brief Emitted when the visibility (hidden/visible) changes.
 	*/
 	Signal<> visibility_changed;
 
 	/**
-	* @returns the uid used by the RenderingServer for this CanvasNode.
+	* @brief Returns the uid used by the RenderingServer for this CanvasNode.
 	*/
 	constexpr uid get_canvas_item() const {
 		return canvas_item;
 	}
 
 	/**
-	* @returns the transform of this Node, relative to its parent.
+	* @brief Returns the transform of this CanvasNode, relative to its parent.
 	*/
 	virtual Transform2D get_transform() const;
 
 	/**
-	* @returns the transform of this Node, relative to global space.
+	* @brief Returns the transform of this Node, relative to global space.
 	*/
 	virtual Transform2D get_global_transform() const;
 
 	/**
-	* Hides this Node and its children.
+	* @brief Hides this Node and its children.
 	*/
 	void hide();
 
 	/**
-	* Shows this Node and its children.
+	* @brief Shows this Node and its children.
 	*/
 	void show();
 
 	/**
-	* @returns the visiblity of this Node.
-	* @see also is_visible_in_tree.
+	* @brief Returns @b true if this CanvasNode is visible.
+	* @see @b is_visible_in_tree.
 	*/
 	constexpr bool is_visible() const {
 		return visible;
 	}
 
 	/**
-	* Sets the modulation (tint) for this node2d, in relativity to the parent.
+	* @brief Sets the modulation (tint) for this CanvasNode.
 	*/
 	void set_modulation(const ColorV &modulation);
 
 	/**
-	* @returns the modulate (tint) of this node2d, in relativity to the parent.
+	* @brief Returns the modulate (tint) of this CanvasNode.
 	*/
 	const ColorV &get_modulation() const;
 
 	/**
-	* @returns the modulation of this node2d, in relativity to global .
+	* @brief Returns the global modulation of this CanvasNode.
 	*/
 	ColorV get_absolute_modulation() const;
 
 	/**
-	* @deprecated use set_modulation instead.
+	* @deprecated Use set_modulation instead.
 	*/
 	inline void set_modulate(const ColorV &new_modulate) {
 		set_modulation(new_modulate);
 	}
 
 	/**
-	* @deprecated use get_modulation instead.
+	* @deprecated Use get_modulation instead.
 	*/
 	inline const ColorV &get_modulate() const {
 		return get_modulation();
 	}
 
 	/**
-	* @deprecated use get_absolute_modulation.
+	* @deprecated Use get_absolute_modulation.
 	*/
 	inline const ColorV get_absolute_modulate() const {
 		return get_absolute_modulation();
 	}
 
 	/**
-	* Sets the blending mode for this node2d to @param new_blend_mode that is used for future draw operations.
-	* @see also SDL_BlendMode.
+	* @brief Sets the blending mode for this CanvasNode.
+	* @see @b SDL_BlendMode.
 	*/
 	void set_blend_mode(SDL_BlendMode new_blend_mode);
 
 	/**
-	* @returns the blending mode of this node2d.
-	* @see also SDL_BlendMode.
+	* @brief Returns the blending mode of this CanvasNode.
+	* @see @b SDL_BlendMode.
 	*/
 	constexpr SDL_BlendMode get_blend_mode() const {
 		return blend_mode;
 	}
 
 	/**
-	* Sets the scaling mode for this node2d to @param scaling_mode, used for future draw operations.
-	* @see also SDL_ScaleMode.
+	* @brief Sets the scaling mode for this CanvasNode.
+	* @see @b SDL_ScaleMode.
 	*/
 	void set_scale_mode(SDL_ScaleMode scaling_mode);
 
 	/**
-	* @returns the scaling mode of this node2d.
-	* @see also SDL_ScaleMode.
+	* @brief Returns the scaling mode of this CanvasNode.
+	* @see @b SDL_ScaleMode.
 	*/
 	constexpr SDL_ScaleMode get_scale_mode() const {
 		return scale_mode;
 	}
 
 	/**
-	* @returns the zindex of this Node.
-	* @see also RenderingServer::canvas_item_get_zindex.
+	* @brief Returns the Z index of this CanvasNode.
+	* @see @b RenderingServer::canvas_item_get_zindex.
 	*/
 	constexpr int get_zindex() const {
 		return zindex;
 	}
 
 	/**
-	* Sets the zindex of this node2d to @param zindex.
-	* @see also RenderingServer::canvas_item_set_zindex.
+	* @brief Sets the Z index of this CanvasNode.
+	* @see @b RenderingServer::canvas_item_set_zindex.
 	*/
 	void set_zindex(int zindex);
 
 	/**
-	* @returns the zindex of this item including its parents if zindex relative is on.
-	* @see also RenderingServer::canvas_item_get_absolute_zindex.
+	* @brief Returns the absolute Z index of this CanvasNode.
+	* @see @b RenderingServer::canvas_item_get_absolute_zindex.
 	*/
 	int get_absolute_zindex() const;
 
 	/**
-	* Sets the zindex relative to @param zindex_relative.
-	* @see also RenderingServer::canvas_item_set_zindex.
+	* @brief Sets the zindex relative.
+	* @see @b RenderingServer::canvas_item_set_zindex.
 	*/
 	void set_zindex_relative(const bool zindex_relative);
 
 	/**
-	* @returns true if zindex is relative.
-	* @see also RenderingServer::canvas_item_is_zindex_relative.
+	* @brief Returns @b true if zindex is relative.
+	* @see @b RenderingServer::canvas_item_is_zindex_relative.
 	*/
 	constexpr bool get_zindex_relative() const {
 		return zindex_relative;
 	}
 
 	/**
-	* @returns true if the node2d and its parent are visible, otherwise false.
-	* @see also is_visible.
+	* @brief Returns @b true if the CanvasNode and its parent are visible.
+	* @see @b is_visible.
 	*/
 	bool is_visible_in_tree() const;
 
 	/**
-	* @returns true if the CanvasNode is visible inside the viewport and the Node is inside the SceneTree.
+	* @brief Returns @b true if the CanvasNode is visible inside the viewport and is inside the SceneTree.
 	*/
 	bool is_visible_inside_viewport() const;
 
 	/**
-	* Draws the @param texture on this node2d using the RenderingServer.
-	* @see also RenderingServer::canvas_item_add_texture.
+	* @brief Draws the texture using the RenderingServer.
+	* @see @b RenderingServer::canvas_item_add_texture.
 	*/
 	void draw_texture(uid texture_uid, const Transform2D &texture_transform = Transform2D::IDENTITY, const ColorV &modulation = ColorV::WHITE()) const;
 
 	/**
-	* Draws the @param texture in the specified @param region using RenderingServer.
-	* @see also RenderingServer::canvas_item_add_texture_region.
+	* @brief Draws the texture in the specified @b region using RenderingServer.
+	* @see @b RenderingServer::canvas_item_add_texture_region.
 	*/
 	void draw_texture_rect(uid texture_uid, const Rect2i &region, const Transform2D &texture_transform = Transform2D::IDENTITY, const ColorV &modulation = ColorV::WHITE()) const;
 	
 	/**
-	* Draws a colored line beginning from @param start to @param end with the color @param modulation using the RenderingServer.
-	* @see also RenderingServer::canvas_item_add_line.
+	* @brief Draws a colored line beginning from @b start to @b end with the color of @b modulation using the RenderingServer.
+	* @see @b RenderingServer::canvas_item_add_line.
 	*/
 	void draw_line(const Vector2f &start, const Vector2f &end, const ColorV &modulation = ColorV::WHITE()) const;
 
 	/**
-	* Draws multiple lines with the color @param modulation using the RenderingServer.
-	* @see also RenderingServer::canvas_item_add_lines.
+	* @brief Draws multiple lines with the modulation of @b modulation using the RenderingServer.
+	* @see @b RenderingServer::canvas_item_add_lines.
 	*/
 	void draw_lines(const std::vector<SDL_FPoint> &points, const ColorV &modulation = ColorV::WHITE()) const;
 
 	/**
-	* Draws a colored rectangle that is inside @param rect with color @param modulation.
-	* @see also RenderingServer::canvas_item_add_rect.
+	* @brief Draws the Rect2 with the color @b modulation using the RenderingServer.
+	* @see @b RenderingServer::canvas_item_add_rect.
 	*/
 	void draw_rect(const Rect2f &rect, const ColorV &modulation = ColorV::WHITE()) const;
 
 	/**
-	* Draws multipled rectangle with the color @param modulation using the RenderingServer.
-	* @see also RenderingServer::canvas_item_add_rects.
+	* @brief Draws multiple rectangle with the color @b modulation using the RenderingServer.
+	* @see @b RenderingServer::canvas_item_add_rects.
 	*/
 	void draw_rects(const std::vector<SDL_FRect> &rects, const ColorV &modulation = ColorV::WHITE()) const;
 };

@@ -56,83 +56,83 @@ public:
 	~Node2D() = default;
 
 	/**
-	* Sets the relative scale for this node2d to @param new_scale.
+	* @brief Sets the scale of this Node2D to @b new_scale.
 	*/
 	void set_scale(const Vector2f &new_scale);
 
 	/**
-	* @returns the scale of this node2d, relative to the parent.
+	* @brief Returns the scale of this Node2D, relative to the parent.
 	*/
 	constexpr const Vector2f &get_scale() const {
 		return transform.scale;
 	}
 
 	/**
-	* Sets the relative rotation for this node2d to @param new_rotation.
+	* @brief Sets the rotation of this Node2D to @b new_rotation.
 	*/
 	void set_rotation(const Angle new_rotation);
 
 	/**
-	* @returns the relative rotation of this node2d, relative to the parent.
+	* @brief Returns the rotation of this Node2D, relative to the parent.
 	*/
 	constexpr Angle get_rotation() const {
 		return transform.rotation;
 	}
 
 	/**
-	* @brief sets the position and redraws.
+	* @brief Sets the position of this Node2D to @b position.
 	*/
 	void set_position(const Vector2f &position);
 
 	/**
-	* @returns the position of this Node2D, in relativity to the parent.
+	* @brief Returns the position of this Node2D, relative to the parent.
 	*/
 	constexpr const Vector2f &get_position() const {
 		return transform.origin;
 	}
 
 	/**
-	* Sets the global position for this node2d to @param new_global_position.
+	* @brief Sets the global position for this Node2D to @b new_global_position.
 	*/
 	void set_global_position(const Vector2f &new_global_position);
 
 	/**
-	* @returns the global position of this node2d.
+	* @brief Returns the global position of this Node2D.
 	*/
 	const Vector2f get_global_position() const;
 
 	/**
-	* Sets the global scale for this node2d to @param new_global_scale.
+	* @brief Sets the global scale of this Node2D to @b new_global_scale.
 	*/
 	void set_global_scale(const Vector2f &new_global_scale);
 
 	/**
-	* @returns the global scale of this node2d.
+	* @brief Returns the global scale of this Node2D.
 	*/
 	const Vector2f get_global_scale() const;
 
 	/**
-	* Sets the global rotation for this node2d to @param new_global_rotation.
+	* @brief Sets the global rotation of this Node2D to @b new_global_rotation.
 	*/
 	void set_global_rotation(const Angle new_global_rotation);
 
 	/**
-	* @returns the global rotation of this node2d.
+	* @brief Returns the global rotation of this Node2D.
 	*/
 	Angle get_global_rotation() const;
 
 	/**
-	* Sets the relative transform (position, scale, and rotation) for this node2d to @param new_transform.
+	* @brief Sets the relative transform of this Node2D to @b new_transform.
 	*/
 	void set_transform(const Transform2D &new_transform);
 
 	/**
-	* @returns the relative transform (position, scale, and rotation) of this node2d.
+	* @brief Returns the relative transform of this Node2D.
 	*/
 	Transform2D get_transform() const override;
 
 	/**
-	* Sets the global transform (position, scale, and rotation) for this node2d to @param new_global_transform.
+	* @brief Sets the global transform of this Node2D to @b new_global_transform.
 	*/
 	void set_global_transform(const Transform2D &new_global_transform);
 };

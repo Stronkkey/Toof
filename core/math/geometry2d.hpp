@@ -45,29 +45,23 @@ typedef Rect2<real> Rect2f;
 namespace Geometry2D {
 
 /**
-* @returns true if the @param point is inside the circle.
-* @param circle_radius describes the radius of the circle.
-* @param circle_position describes the position of the circle.
+* @brief Returns @b true if the @b point is inside the circle.
 */
 constexpr bool is_point_inside_circle(const real circle_radius, const Vector2f &point, const Vector2f &circle_position = Vector2f::ONE()) {
 	return point.distance_to_squared(circle_position) <= circle_radius * circle_radius;
 }
 
 /**
-* @returns true if the left circle intersects the right circle.
-* @param left_circle_radius describes the radius of the left circle.
-* @param left_circle_position describes the position of the left circle.
-* @param right_circle_radius describes the radius of the right circle.
-* @param right_circle_position describes the position of the right circle.
+* @brief Returns @b true if the left circle intersects the right circle.
 */
 constexpr bool are_circles_intersecting(const real left_circle_radius, const Vector2f &left_circle_position, const real right_circle_radius, const Vector2f &right_circle_position) {
 	return left_circle_position.distance_to_squared(right_circle_position) <= (left_circle_radius * left_circle_radius) + (right_circle_radius * right_circle_radius);
 }
 
 /**
-* Checks if the two lines @param from_a, @param dir_a and @param from_b, @param dir_b intersect.
-* @returns the point of intersection as a Vector2f if the lines intersect.
-* @note the lines are specified using direction vectors, not end points.
+* @brief Checks if the two lines @b from_a, @b dir_a and @b from_b, @b dir_b intersect.
+* @returns The point of intersection as a Vector2f if the lines intersect.
+* @note The lines are specified using direction vectors, not end points.
 */
 constexpr Optional<Vector2f> line_intersects_line(const Vector2f &from_a, const Vector2f &dir_a, const Vector2f &from_b, const Vector2f &dir_b) {
 	// See http://paulbourke.net/geometry/pointlineplane/
@@ -82,7 +76,7 @@ constexpr Optional<Vector2f> line_intersects_line(const Vector2f &from_a, const 
 }
 
 /**
-* @returns true if the directions @param dir_a and @param dir_b intersect.
+* @brief Returns @b true if the directions @b dir_a and @b dir_b intersect.
 */
 constexpr bool is_direction_intersecting_direction(const Vector2f &dir_a, const Vector2f &dir_b) {
 	const real denom = dir_b.y * dir_a.x - dir_b.x * dir_a.y;
@@ -90,16 +84,15 @@ constexpr bool is_direction_intersecting_direction(const Vector2f &dir_a, const 
 }
 
 /**
-* @returns true if the @param rect intersects with the circle.
-* @param circle_radius describes the radius of the circle.
-* @param circle_position describes the position of the circle.
+* @brief Returns @b true if the @b rect intersects with the circle.
 */
 bool rect_intersects_circle(const Rect2f &rect, const real circle_radius, const Vector2f &circle_position);
 
 /**
-* @returns a Vector (in global position) that represents the @param point rotated by @param rotation_degrees.
-* If you want to get a point's rotation relative to a another point then
-* simply subtract the point's position by the other point. Note: The value returned is in global coordinates.
+* @brief Returns a Vector (in global position) that represents the @b point rotated by @b rotation_degrees.
+* @details If you want to get a point's rotation relative to a another point then
+* simply subtract the point's position by the other point.
+* @note The value returned is in global coordinates.
 */
 Vector2f rotate_point_around(const double rotation_degrees, const Vector2f &point);
 
