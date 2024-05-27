@@ -48,7 +48,7 @@ class RenderingServer;
 class Viewport;
 class Input;
 
-#ifdef B2_INCLUDED
+#ifdef TOOF_PHYSICS_ENABLED
 class PhysicsServer2D;
 #endif
 
@@ -146,7 +146,7 @@ private:
 	std::unique_ptr<SDL_Event> event;
 	std::unique_ptr<Node> root;
 
-	#ifdef B2_INCLUDED
+	#ifdef TOOF_PHYSICS_ENABLED
 	std::unique_ptr<PhysicsServer2D> physics_server;
 	#endif
 
@@ -187,7 +187,7 @@ public:
 		return input;
 	}
 
-	#ifdef B2_INCLUDED
+	#ifdef TOOF_PHYSICS_ENABLED
 	constexpr const std::unique_ptr<PhysicsServer2D> &get_physics_server() const {
 		return physics_server;
 	}
@@ -239,7 +239,7 @@ public:
 		return event_paused;
 	}
 
-	#ifdef B2_INCLUDED
+	#ifdef TOOF_PHYSICS_ENABLED
 
 	constexpr Loop &get_physics_loop() & {
 		return physics_loop;

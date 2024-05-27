@@ -30,7 +30,7 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "core/math/math_defs.hpp"
-#ifdef B2_INCLUDED
+#ifdef TOOF_PHYSICS_ENABLED
 
 #include <servers/physics/physics_world.hpp>
 #include <servers/physics/physics_body.hpp>
@@ -232,4 +232,4 @@ void Toof::PhysicsServer2D::body_set_state(const uid body_uid, const BodyState b
 	}
 }
 
-#endif // !B2_INCLUDED
+#endif // !TOOF_PHYSICS_ENABLED

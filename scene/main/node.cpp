@@ -210,7 +210,7 @@ double Node::get_process_delta_time() const {
 }
 
 double Node::get_physics_delta_time() const {
-	#ifdef B2_INCLUDED
+	#ifdef TOOF_PHYSICS_ENABLED
 	return tree ? tree->get_physics_loop().get_delta_time() : 0.0;
 	#else
 	return 0.0;

@@ -29,10 +29,10 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifdef B2_INCLUDED
+#ifdef TOOF_PHYSICS_ENABLED
 
 #include <core/math/geometry2d.hpp>
 #include <servers/physics/physics_body.hpp>
 #include <servers/physics/physics_shape.hpp>
 
-#endif // !B2_INCLUDED
+#endif // !TOOF_PHYSICS_ENABLED
