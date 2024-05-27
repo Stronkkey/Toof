@@ -29,7 +29,6 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include "core/math/math_defs.hpp"
 #ifdef TOOF_PHYSICS_ENABLED
 
 #include <servers/physics/physics_world.hpp>

@@ -32,7 +32,6 @@
 #include <scene/2d/camera2d.hpp>
 #include <servers/rendering/viewport.hpp>
 
-
 using namespace Toof;
 
 Camera2D::Camera2D(): offset(),

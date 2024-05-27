@@ -36,9 +36,6 @@
 
 #include <core/math/math_defs.hpp>
 
-#include <memory>
-#include <vector>
-
 class b2Body;
 class b2Shape;
 

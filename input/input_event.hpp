@@ -36,8 +36,6 @@
 #include <input/event_input_type.hpp>
 #include <scene/resources/resource.hpp>
 
-#include <memory>
-
 namespace Toof {
 
 class Input;

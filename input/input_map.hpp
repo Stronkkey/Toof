@@ -37,7 +37,6 @@
 
 #include <SDL_keycode.h>
 
-#include <string>
 #include <unordered_map>
 #include <set>
 #include <memory>

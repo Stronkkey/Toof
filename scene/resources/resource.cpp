@@ -31,8 +31,6 @@
 */
 #include <scene/resources/resource.hpp>
 
-#include <array>
-
 using uid = Toof::uid;
 using Resource = Toof::Resource;
 

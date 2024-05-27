@@ -29,7 +29,6 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include "core/math/vector2.hpp"
 #include <scene/2d/tile_map.hpp>
 #include <scene/resources/texture2d.hpp>
 
