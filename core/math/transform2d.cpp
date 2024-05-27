@@ -31,7 +31,7 @@
 */
 #include <core/math/transform2d.hpp>
 
-#ifdef B2_INCLUDED
+#ifdef TOOF_PHYSICS_ENABLED
 #include <box2d/b2_math.h>
 #endif
 
@@ -42,7 +42,7 @@ using namespace Toof;
 
 const Transform2D Transform2D::IDENTITY = Transform2D(Angle::ZERO_ROTATION(), 0, 0, 1, 1);
 
-#ifdef B2_INCLUDED
+#ifdef TOOF_PHYSICS_ENABLED
 
 Transform2D::Transform2D(const b2Transform &b2_transform): rotation(Angle::from_radians(b2_transform.q.GetAngle())), origin(b2_transform.p), scale(Vector2(1, 1)) {
 }

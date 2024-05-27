@@ -42,7 +42,7 @@
 
 #include <algorithm>
 
-#ifdef B2_INCLUDED
+#ifdef TOOF_PHYSICS_ENABLED
 #include <box2d/b2_math.h>
 #endif
 
@@ -76,7 +76,7 @@ struct Vector2 {
 	constexpr Vector2(const SDL_Point &point): x(point.x), y(point.y) {
 	}
 	
-	#ifdef B2_INCLUDED
+	#ifdef TOOF_PHYSICS_ENABLED
 	inline Vector2(const b2Vec2 &b2_vec2): x(b2_vec2.x), y(b2_vec2.y) {
 	}
 	#endif
@@ -387,7 +387,7 @@ struct Vector2 {
 		return point;
 	}
 
-	#ifdef B2_INCLUDED
+	#ifdef TOOF_PHYSICS_ENABLED
 	[[nodiscard]] inline b2Vec2 to_b2_vec2() const {
 		return b2Vec2((float)x, (float)y);
 	}

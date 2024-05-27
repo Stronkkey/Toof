@@ -37,7 +37,7 @@
 #include <input/input.hpp>
 #include <input/input_event.hpp>
 
-#ifdef B2_INCLUDED
+#ifdef TOOF_PHYSICS_ENABLED
 #include <servers/physics_server.hpp>
 #endif
 
@@ -74,7 +74,7 @@ SceneTree::SceneTree() {
 	root->set_name("Root");
 	root->set_tree(this);
 
-	#ifdef B2_INCLUDED
+	#ifdef TOOF_PHYSICS_ENABLED
 	physics_loop.prev_step_time = time;
 	physics_loop.loop_type = Loop::LOOP_TYPE_PHYSICS;
 
@@ -132,7 +132,7 @@ void SceneTree::step_event() {
 }
 
 void SceneTree::step_physics(const double delta) {
-	#ifndef B2_INCLUDED
+	#ifndef TOOF_PHYSICS_ENABLED
 	return;
 	#endif
 
@@ -191,7 +191,7 @@ void SceneTree::_main_loop() {
 		if (!process_loop.paused)
 			_do_loop(process_loop);
 
-		#ifdef B2_INCLUDED
+		#ifdef TOOF_PHYSICS_ENABLED
 		if (!physics_loop.paused)
 			_do_loop(physics_loop);
 		#endif

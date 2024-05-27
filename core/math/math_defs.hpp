@@ -36,13 +36,13 @@
 
 namespace Toof {
 
-#ifdef REAL_T_IS_DOUBLE
+#ifdef TOOF_REAL_T_IS_DOUBLE
 using real = double;
 #else
 using real = float;
 #endif
 
-#ifdef INT_IS_64BIT
+#ifdef TOOF_INT_IS_64BIT
 using natural = uint64_t;
 using integer = int64_t;
 #else
@@ -50,13 +50,13 @@ using natural = uint32_t;
 using integer = int32_t;
 #endif
 
-#ifdef REAL_T_IS_DOUBLE
+#ifdef TOOF_REAL_T_IS_DOUBLE
 constexpr const bool REAL_IS_DOUBLE = true;
 #else
 constexpr const bool REAL_IS_DOUBLE = false;
 #endif
 
-#ifdef INT_IS_64BIT
+#ifdef TOOF_INT_IS_64BIT
 constexpr const bool INTEGER_IS_64BIT = true;
 #else
 constexpr const bool INTEGER_IS_64BIT = false;

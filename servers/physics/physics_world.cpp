@@ -29,7 +29,7 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifdef B2_INCLUDED
+#ifdef TOOF_PHYSICS_ENABLED
 
 #include <servers/physics/physics_world.hpp>
 
@@ -45,4 +45,4 @@ void Toof::PhysicsWorld2D::step(const double delta) const {
 	b2_world->Step(delta, velocity_iterations, position_iterations);
 }
 
-#endif // !B2_INCLUDED
+#endif // !TOOF_PHYSICS_ENABLED

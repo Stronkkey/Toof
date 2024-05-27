@@ -37,7 +37,7 @@
 
 #include <cereal/cereal.hpp>
 
-#ifdef B2_INCLUDED
+#ifdef TOOF_PHYSICS_ENABLED
 struct b2Transform;
 #endif
 
@@ -48,7 +48,7 @@ struct Transform2D {
 	constexpr Transform2D(const Angle rotation, const Vector2f &new_origin, const Vector2f &new_scale);
 	constexpr Transform2D(const Angle rotation, const real origin_x, const real origin_y, const real scale_x, const real scale_y);
 	constexpr Transform2D(const Transform2D &transform2d);
-	#ifdef B2_INCLUDED
+	#ifdef TOOF_PHYSICS_ENABLED
 	Transform2D(const b2Transform &b2_transform);
 	#endif
 
@@ -61,7 +61,7 @@ struct Transform2D {
 
 	constexpr Transform2D operator*(const Transform2D &right) const;
 
-	#ifdef B2_INCLUDED
+	#ifdef TOOF_PHYSICS_ENABLED
 	[[nodiscard]] b2Transform to_b2_transform() const;
 	#endif
 

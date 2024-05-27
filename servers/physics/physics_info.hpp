@@ -30,7 +30,7 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifdef B2_INCLUDED
+#ifdef TOOF_PHYSICS_ENABLED
 
 #pragma once
 
@@ -56,7 +56,7 @@ namespace Physics {
 
 const Vector2f default_gravity = Vector2f(__DEFAULT_GRAVITY_X__, __DEFAULT_GRAVITY_Y__);
 const std::ratio px_to_meter_ratio = std::ratio<1, __PHYSICS_PX_METER_RATIO__>();
-#ifdef B2_INCLUDED
+#ifdef TOOF_PHYSICS_ENABLED
 const bool physics_enabled = true;
 #else
 const bool physics_enabled = false;
@@ -66,4 +66,4 @@ const bool physics_enabled = false;
 
 }
 
-#endif // !B2_INCLUDED
+#endif // !TOOF_PHYSICS_ENABLED
