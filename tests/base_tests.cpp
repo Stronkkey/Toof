@@ -33,8 +33,6 @@
 
 #include <core/utility_functions.hpp>
 
-#include <memory>
-
 using namespace Toof::Tests;
 
 bool SuccessTest::_test() {

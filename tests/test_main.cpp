@@ -33,9 +33,7 @@
 #include <core/utility_functions.hpp>
 
 #include <unordered_map>
-#include <vector>
 #include <memory>
-#include <cstring>
 
 using namespace Toof::Tests;
 

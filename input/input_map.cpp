@@ -32,8 +32,6 @@
 #include <core/math/vector2.hpp>
 #include <input/input_map.hpp>
 
-#include <algorithm>
-
 using namespace Toof;
 
 InputMap::InputMap(): actions() {

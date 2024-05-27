@@ -34,6 +34,8 @@
 
 #include <input/input_event.hpp>
 
+#include <memory>
+
 namespace Toof {
 
 struct InputProxy {
