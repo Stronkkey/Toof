@@ -177,28 +177,28 @@ public:
 	/**
 	* @deprecated This function doesn't have many real use cases. It will be removed in a future version.
 	*/
-	constexpr Angle operator*(const Angle &right) const {
+	[[deprecated]] constexpr Angle operator*(const Angle &right) const {
 		return Angle(angle_degrees * right.angle_degrees);
 	}
 
 	/**
 	* @deprecated This function doesn't have many real use cases. It will be removed in a future version.
 	*/
-	constexpr void operator*=(const Angle &right) {
+	[[deprecated]] constexpr void operator*=(const Angle &right) {
 		angle_degrees *= right.angle_degrees;
 	}
 
 	/**
 	* @deprecated This function doesn't have many real use cases. It will be removed in a future version.
 	*/
-	constexpr Angle operator/(const Angle &right) const {
+	[[deprecated]] constexpr Angle operator/(const Angle &right) const {
 		return Angle(angle_degrees / right.angle_degrees);
 	}
 
 	/**
 	* @deprecated This function doesn't have many real use cases. It will be removed in a future version.
 	*/
-	constexpr void operator/=(const Angle &right) {
+	[[deprecated]] constexpr void operator/=(const Angle &right) {
 		angle_degrees /= right.angle_degrees;
 	}
 	
