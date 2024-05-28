@@ -29,44 +29,37 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include <core/math/transform2d.hpp>
-
-#include <core/string/string_def.hpp>
-#include <stringify/format.hpp>
+#include <scene/resources/physics/shape_2d.hpp>
+#include <servers/physics_server_2d.hpp>
 
 #if TOOF_PHYSICS_ENABLED
-#include <box2d/b2_math.h>
-#endif
 
 using namespace Toof;
 
-const Transform2D Transform2D::IDENTITY = Transform2D(Angle::ZERO_ROTATION(), 0, 0, 1, 1);
-
-#if TOOF_PHYSICS_ENABLED
-
-Transform2D::Transform2D(const b2Transform &b2_transform): rotation(Angle::from_radians(b2_transform.q.GetAngle())), origin(b2_transform.p), scale(Vector2(1, 1)) {
+uid Shape2D::_get_uid() const {
+	return shape_uid;
 }
 
-Transform2D::operator b2Transform() const {
-	return b2Transform(origin, rotation);
+void Shape2D::_draw(RenderingServer*, uid, const ColorV&) const {
 }
 
-b2Transform Transform2D::to_b2_transform() const {
-	return b2Transform(origin, rotation);
+Shape2D::Shape2D() : shape_uid(0),
+    physics_server_2d(nullptr) {
+}
+
+void Shape2D::draw(RenderingServer *rendering_server, uid canvas_item, const ColorV &modulation) const {
+	_draw(rendering_server, canvas_item, modulation);
+}
+
+void Shape2D::set_physics_server_2d(PhysicsServer2D *physics_server_2d) {
+	if (this->physics_server_2d)
+		this->physics_server_2d->free_uid(shape_uid);
+	this->physics_server_2d = physics_server_2d;
+
+	if (physics_server_2d)
+		shape_uid = _create_shape();
+	else
+		shape_uid = 0;
 }
 
 #endif
-
-std::ostream &Toof::operator<<(std::ostream &stream, const Transform2D &transform) {
-	S_STREAM_FORMAT(stream, "[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]",
-	    transform.scale.x,
-	    transform.scale.y,
-	    transform.origin.x,
-	    transform.origin.y,
-	    transform.rotation);
-	return stream;
-}
-
-Transform2D::operator String() const {
-	return S_FORMAT("[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]", scale.x, scale.y, origin.x, origin.y, rotation);
-}

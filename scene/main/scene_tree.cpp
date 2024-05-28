@@ -31,14 +31,15 @@
 */
 #include <scene/main/scene_tree.hpp>
 #include <scene/main/node.hpp>
+#include <scene/resources/world2d.hpp>
 #include <servers/rendering/viewport.hpp>
 #include <servers/rendering/window.hpp>
 #include <servers/rendering_server.hpp>
 #include <input/input.hpp>
 #include <input/input_event.hpp>
 
-#ifdef TOOF_PHYSICS_ENABLED
-#include <servers/physics_server.hpp>
+#if TOOF_PHYSICS_ENABLED
+#include <servers/physics_server_2d.hpp>
 #endif
 
 #include <SDL_timer.h>
@@ -74,11 +75,12 @@ SceneTree::SceneTree() {
 	root->set_name("Root");
 	root->set_tree(this);
 
-	#ifdef TOOF_PHYSICS_ENABLED
+	#if TOOF_PHYSICS_ENABLED
 	physics_loop.prev_step_time = time;
 	physics_loop.loop_type = Loop::LOOP_TYPE_PHYSICS;
 
-	physics_server = std::make_unique<PhysicsServer2D>();
+	physics_server = nullptr;
+	world_2d = std::make_unique<World2D>();
 	#endif
 }
 
@@ -91,6 +93,13 @@ void SceneTree::_initialize() {
 
 void SceneTree::_ended() {
 }
+
+#if TOOF_PHYSICS_ENABLED
+void SceneTree::_initialize_physics_server() {
+	physics_server = _create_physics_server();
+	world_2d->set_space(physics_server->create_world());
+}
+#endif
 
 void SceneTree::_add_child(Node *child) {
 	if (root)
@@ -132,17 +141,17 @@ void SceneTree::step_event() {
 }
 
 void SceneTree::step_physics(const double delta) {
-	#ifndef TOOF_PHYSICS_ENABLED
+	#if !TOOF_PHYSICS_ENABLED
 	return;
-	#endif
-
+	#else
 	physics_loop.delta_time = delta * physics_loop.time_scale;
 	physics_frame();
 
 	if (root)
-		root->propagate_notification(Node::NOTIFICATION_PREDELETE);
+		root->propagate_notification(Node::NOTIFICATION_PHYSICS_PROCESS);
 
 	physics_server->tick(physics_loop.delta_time);
+	#endif
 }
 
 void SceneTree::_do_loop(Loop &loop) {
@@ -191,7 +200,7 @@ void SceneTree::_main_loop() {
 		if (!process_loop.paused)
 			_do_loop(process_loop);
 
-		#ifdef TOOF_PHYSICS_ENABLED
+		#if TOOF_PHYSICS_ENABLED
 		if (!physics_loop.paused)
 			_do_loop(physics_loop);
 		#endif
@@ -203,6 +212,11 @@ void SceneTree::_main_loop() {
 void SceneTree::start() {
 	if (!window->intialized_successfully() || running)
 		return;
+
+	#if TOOF_PHYSICS_ENABLED
+	if (!physics_server)
+		_initialize_physics_server();
+	#endif
 
 	running = true;
 	event = std::make_unique<SDL_Event>();

@@ -29,44 +29,34 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include <core/math/transform2d.hpp>
-
-#include <core/string/string_def.hpp>
-#include <stringify/format.hpp>
+#include <scene/resources/physics/rectangle_shape_2d.hpp>
+#include <servers/physics_server_2d.hpp>
+#include <servers/rendering_server.hpp>
 
 #if TOOF_PHYSICS_ENABLED
-#include <box2d/b2_math.h>
-#endif
 
 using namespace Toof;
 
-const Transform2D Transform2D::IDENTITY = Transform2D(Angle::ZERO_ROTATION(), 0, 0, 1, 1);
-
-#if TOOF_PHYSICS_ENABLED
-
-Transform2D::Transform2D(const b2Transform &b2_transform): rotation(Angle::from_radians(b2_transform.q.GetAngle())), origin(b2_transform.p), scale(Vector2(1, 1)) {
+void RectangleShape2D::_update() {
+	PhysicsServer2D *physics_server_2d = get_physics_server_2d();
+	if (physics_server_2d) {
+	}
 }
 
-Transform2D::operator b2Transform() const {
-	return b2Transform(origin, rotation);
+void RectangleShape2D::_draw(RenderingServer *rendering_server, uid canvas_item, const ColorV &modulation) const {
+	rendering_server->canvas_item_add_rect(canvas_item, Rect2f({}, size), modulation);
 }
 
-b2Transform Transform2D::to_b2_transform() const {
-	return b2Transform(origin, rotation);
+uid RectangleShape2D::_create_shape() const {
+	return get_physics_server_2d()->rect_shape_create(size);
+}
+
+RectangleShape2D::RectangleShape2D() : size(Vector2f(20, 20)) {
+}
+
+void RectangleShape2D::set_size(const Vector2f &size) {
+	this->size = size;
+	_update();
 }
 
 #endif
-
-std::ostream &Toof::operator<<(std::ostream &stream, const Transform2D &transform) {
-	S_STREAM_FORMAT(stream, "[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]",
-	    transform.scale.x,
-	    transform.scale.y,
-	    transform.origin.x,
-	    transform.origin.y,
-	    transform.rotation);
-	return stream;
-}
-
-Transform2D::operator String() const {
-	return S_FORMAT("[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]", scale.x, scale.y, origin.x, origin.y, rotation);
-}

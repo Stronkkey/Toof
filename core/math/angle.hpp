@@ -34,8 +34,13 @@
 
 #include <core/math/math_funcs.hpp>
 #include <core/string/string_def.hpp>
+#include <physics/physics_features.hpp>
 
 #include <cereal/cereal.hpp>
+
+#if TOOF_PHYSICS_ENABLED
+#include <box2d/b2_math.h>
+#endif
 
 namespace Toof {
 
@@ -194,6 +199,15 @@ public:
 	[[deprecated]] constexpr Angle operator/(const Angle &right) const {
 		return Angle(angle_degrees / right.angle_degrees);
 	}
+
+	#if TOOF_PHYSICS_ENABLED
+	/**
+	* @brief Converts the Angle into a b2Rot object.
+	*/
+	inline operator b2Rot() const {
+		return b2Rot(Math::degrees_to_radians(angle_degrees));
+	}
+	#endif
 
 	/**
 	* @deprecated This function doesn't have many real use cases. It will be removed in a future version.

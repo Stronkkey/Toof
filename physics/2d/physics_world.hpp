@@ -1,4 +1,5 @@
 /*  This file is part of the Toof Engine. */
+/** @file physics_world.hpp */
 /*
   BSD 3-Clause License
 
@@ -29,44 +30,42 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include <core/math/transform2d.hpp>
+#pragma once
 
-#include <core/string/string_def.hpp>
-#include <stringify/format.hpp>
-
-#if TOOF_PHYSICS_ENABLED
-#include <box2d/b2_math.h>
-#endif
-
-using namespace Toof;
-
-const Transform2D Transform2D::IDENTITY = Transform2D(Angle::ZERO_ROTATION(), 0, 0, 1, 1);
+#include <core/math/vector2.hpp>
 
 #if TOOF_PHYSICS_ENABLED
 
-Transform2D::Transform2D(const b2Transform &b2_transform): rotation(Angle::from_radians(b2_transform.q.GetAngle())), origin(b2_transform.p), scale(Vector2(1, 1)) {
-}
+class b2World;
 
-Transform2D::operator b2Transform() const {
-	return b2Transform(origin, rotation);
-}
+namespace Toof {
 
-b2Transform Transform2D::to_b2_transform() const {
-	return b2Transform(origin, rotation);
+class Physics2DBody;
+
+class PhysicsWorld2D {
+public:
+	PhysicsWorld2D() = default;
+	~PhysicsWorld2D() = default;
+
+	virtual int get_type() const;
+
+	virtual void set_velocity_iterations(int32_t velocity_iterations);
+	virtual int32_t get_velocity_iterations() const;
+
+	virtual void set_position_iterations(int32_t position_iterations);
+	virtual int32_t get_position_iterations() const;
+
+	virtual void set_gravity(const Vector2f &gravity);
+	virtual Vector2f get_gravity() const;
+
+	virtual void step(double delta);
+
+	virtual void destroy_body(Physics2DBody *body);
+	virtual void add_body(Physics2DBody *body);
+
+	virtual size_t get_body_count() const;
+};
+
 }
 
 #endif
-
-std::ostream &Toof::operator<<(std::ostream &stream, const Transform2D &transform) {
-	S_STREAM_FORMAT(stream, "[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]",
-	    transform.scale.x,
-	    transform.scale.y,
-	    transform.origin.x,
-	    transform.origin.y,
-	    transform.rotation);
-	return stream;
-}
-
-Transform2D::operator String() const {
-	return S_FORMAT("[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]", scale.x, scale.y, origin.x, origin.y, rotation);
-}

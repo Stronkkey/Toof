@@ -1,4 +1,5 @@
 /*  This file is part of the Toof Engine. */
+/** @file rigid_body_2d.hpp */
 /*
   BSD 3-Clause License
 
@@ -29,44 +30,23 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include <core/math/transform2d.hpp>
+#pragma once
 
-#include <core/string/string_def.hpp>
-#include <stringify/format.hpp>
-
-#if TOOF_PHYSICS_ENABLED
-#include <box2d/b2_math.h>
-#endif
-
-using namespace Toof;
-
-const Transform2D Transform2D::IDENTITY = Transform2D(Angle::ZERO_ROTATION(), 0, 0, 1, 1);
+#include <scene/2d/physics/physics_body_2d.hpp>
 
 #if TOOF_PHYSICS_ENABLED
 
-Transform2D::Transform2D(const b2Transform &b2_transform): rotation(Angle::from_radians(b2_transform.q.GetAngle())), origin(b2_transform.p), scale(Vector2(1, 1)) {
-}
+namespace Toof {
 
-Transform2D::operator b2Transform() const {
-	return b2Transform(origin, rotation);
-}
+class RigidBody2D : public PhysicsBody2D {
+private:
+	uid _create_body(PhysicsServer2D *physics_server_2d, uid world_uid) const override;
+	PhysicsBodyType _get_body_type() const override;
+public:
+	RigidBody2D() = default;
+	~RigidBody2D() = default;
+};
 
-b2Transform Transform2D::to_b2_transform() const {
-	return b2Transform(origin, rotation);
 }
 
 #endif
-
-std::ostream &Toof::operator<<(std::ostream &stream, const Transform2D &transform) {
-	S_STREAM_FORMAT(stream, "[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]",
-	    transform.scale.x,
-	    transform.scale.y,
-	    transform.origin.x,
-	    transform.origin.y,
-	    transform.rotation);
-	return stream;
-}
-
-Transform2D::operator String() const {
-	return S_FORMAT("[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]", scale.x, scale.y, origin.x, origin.y, rotation);
-}

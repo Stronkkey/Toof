@@ -29,6 +29,38 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifdef TOOF_PHYSICS_ENABLED
-#include <servers/physics/physics_body.hpp>
-#endif // !TOOF_PHYSICS_ENABLED
+#include <scene/resources/physics/world_boundary_shape_2d.hpp>
+#include <servers/physics_server_2d.hpp>
+#include <servers/rendering_server.hpp>
+
+#if TOOF_PHYSICS_ENABLED
+
+using namespace Toof;
+
+void WorldBoundaryShape2D::_update() {
+	PhysicsServer2D *physics_server_2d = get_physics_server_2d();
+	if (physics_server_2d) {
+	}
+}
+
+void WorldBoundaryShape2D::_draw(RenderingServer*, uid, const ColorV&) const {
+}
+
+uid WorldBoundaryShape2D::_create_shape() const {
+	return get_physics_server_2d()->world_boundary_shape_create(distance, normal);
+}
+
+WorldBoundaryShape2D::WorldBoundaryShape2D() : distance(0), normal(Vector2f::UP()) {
+}
+
+void WorldBoundaryShape2D::set_distance(real distance) {
+	this->distance = distance;
+	_update();
+}
+
+void WorldBoundaryShape2D::set_normal(const Vector2f &normal) {
+	this->normal = normal;
+	_update();
+}
+
+#endif

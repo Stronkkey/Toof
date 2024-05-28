@@ -1,4 +1,5 @@
 /*  This file is part of the Toof Engine. */
+/** @file collision_shape_2d.hpp */
 /*
   BSD 3-Clause License
 
@@ -29,44 +30,40 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include <core/math/transform2d.hpp>
+#pragma once
 
-#include <core/string/string_def.hpp>
-#include <stringify/format.hpp>
-
-#if TOOF_PHYSICS_ENABLED
-#include <box2d/b2_math.h>
-#endif
-
-using namespace Toof;
-
-const Transform2D Transform2D::IDENTITY = Transform2D(Angle::ZERO_ROTATION(), 0, 0, 1, 1);
+#include <scene/2d/node2d.hpp>
+#include <scene/resources/physics/shape_2d.hpp>
 
 #if TOOF_PHYSICS_ENABLED
 
-Transform2D::Transform2D(const b2Transform &b2_transform): rotation(Angle::from_radians(b2_transform.q.GetAngle())), origin(b2_transform.p), scale(Vector2(1, 1)) {
-}
+namespace Toof {
 
-Transform2D::operator b2Transform() const {
-	return b2Transform(origin, rotation);
-}
+class CollisionShape2D : public Node2D {
+private:
+	ColorV draw_color;
+	bool disabled;
+	Shape2D *shape;
+public:
+	CollisionShape2D();
+	~CollisionShape2D() = default;
 
-b2Transform Transform2D::to_b2_transform() const {
-	return b2Transform(origin, rotation);
+	void set_draw_color(const ColorV &draw_color);
+	constexpr const ColorV &get_draw_color() const { return draw_color; }
+
+	void set_disabled(bool disabled);
+	constexpr bool is_disabled() const { return disabled; }
+
+	void set_shape(Shape2D *shape);
+	Shape2D *get_shape() const { return shape; }
+
+	constexpr uid get_shape_uid() const {
+		if (shape)
+			return shape->get_uid();
+		return 0;
+	}
+};
+
 }
 
 #endif
-
-std::ostream &Toof::operator<<(std::ostream &stream, const Transform2D &transform) {
-	S_STREAM_FORMAT(stream, "[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]",
-	    transform.scale.x,
-	    transform.scale.y,
-	    transform.origin.x,
-	    transform.origin.y,
-	    transform.rotation);
-	return stream;
-}
-
-Transform2D::operator String() const {
-	return S_FORMAT("[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]", scale.x, scale.y, origin.x, origin.y, rotation);
-}

@@ -29,36 +29,38 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifdef TOOF_PHYSICS_ENABLED
+#include <scene/resources/physics/convex_polygon_shape_2d.hpp>
+#include <servers/physics_server_2d.hpp>
+#include <servers/rendering_server.hpp>
 
-#include <scene/2d/physics/physics_body2d.hpp>
-#include <scene/main/scene_tree.hpp>
-#include <servers/physics_server.hpp>
+#if TOOF_PHYSICS_ENABLED
 
-void Toof::PhysicsBody2D::ready() {
-	physics_body_rid = get_physics_server()->body_create();
+using namespace Toof;
+
+void ConvexPolygonShape2D::_update() {
+	PhysicsServer2D *physics_server_2d = get_physics_server_2d();
+	if (physics_server_2d) {
+	}
 }
 
-void Toof::PhysicsBody2D::_notification(const int what) {
-	Node2D::_notification(what);
-
-	if (what == NOTIFICATION_READY)
-		ready();
+void ConvexPolygonShape2D::_draw(RenderingServer*, uid, const ColorV&) const {
 }
 
-const std::unique_ptr<Toof::PhysicsServer2D> &Toof::PhysicsBody2D::get_physics_server() const {
-	if (is_inside_tree())
-		return get_tree()->get_physics_server();
-
-	std::unique_ptr<PhysicsServer2D> _p;
-	std::unique_ptr<PhysicsServer2D> *p = &_p;
-	return *p;
+uid ConvexPolygonShape2D::_create_shape() const {
+	return get_physics_server_2d()->convex_polygon_shape_create(points);
 }
 
-void Toof::PhysicsBody2D::add_collision_exception_with(const PhysicsBody2D*) {
+ConvexPolygonShape2D::ConvexPolygonShape2D() : points() {
 }
 
-void Toof::PhysicsBody2D::remove_collision_exception_with(const PhysicsBody2D*) {
+void ConvexPolygonShape2D::set_points(const std::vector<Vector2f> &points) {
+	this->points = points;
+	_update();
+}
+
+void ConvexPolygonShape2D::set_points(std::vector<Vector2f> &&points) {
+	this->points = std::move(points);
+	_update();
 }
 
 #endif

@@ -1,3 +1,43 @@
-option('double_precision', type: 'feature', value: 'enabled', description: 'Use double-precision floating point numbers instead of single-precision.')
-option('int_64bit', type: 'feature', value: 'enabled', description: 'Use 64 bits for storing integers instead of 32.')
-option('box2d', type: 'feature', value: 'enabled', description: 'Enable Physics and conversion to box2d units.')
+option('double_precision',
+  type : 'feature',
+  value : 'auto',
+  description : 'Use double-precision floating point numbers instead of single-precision.')
+
+option('int_64bit',
+  type : 'feature',
+  value : 'auto',
+  description : 'Use 64 bits for storing integers instead of 32.')
+
+option('physics',
+  type : 'feature',
+  value : 'auto',
+  description : 'Enables the PhysicsServer2D. Needs a physics implementation to function. This feature is enabled')
+
+option('box2d',
+  type : 'feature',
+  value : 'auto',
+  description : 'Physics implementation for PhysicsServer2D using Box2D. When this feature is enabled, physics will be enabled as well.')
+
+option('default_gravity_x',
+  type : 'integer',
+  value : 0,
+  description : 'Default gravity strength on the x axis.')
+
+option('default_gravity_y',
+  type : 'integer',
+  value : -980, description: 'Default gravity strength on the y axis.')
+
+option('physics_length_units_per_meter',
+  type : 'integer',
+  value : 100,
+  description : 'Length scale used by the Physics engine. e.g. a value of 100 means that 100 units equals to 1 meter.')
+
+option('physics_max_polygon_vertices',
+  type : 'integer',
+  value : 64,
+  description : 'Maximum amount of vertices allowed on a physics Polygon shape. Not required by some physics imeplementation.')
+
+option('override_b2_user_settings',
+  type : 'feature',
+  value : 'enabled',
+  description : 'Sets whetever Toof can override Box2D settings with its own "b2_user_settings.h" file. You must provide a "toof_b2_user_settings.hpp" file if this option is disabled.')

@@ -1,4 +1,5 @@
 /*  This file is part of the Toof Engine. */
+/** @file physics_server.hpp */
 /*
   BSD 3-Clause License
 
@@ -29,44 +30,29 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include <core/math/transform2d.hpp>
+#pragma once
 
-#include <core/string/string_def.hpp>
-#include <stringify/format.hpp>
+#include <servers/physics_server_2d.hpp>
 
-#if TOOF_PHYSICS_ENABLED
-#include <box2d/b2_math.h>
+#if TOOF_B2_ENABLED
+
+namespace Toof {
+
+class B2PhysicsServer : public PhysicsServer2D {
+private:
+	std::unique_ptr<WorldType> _create_world() override;
+	std::unique_ptr<BodyType> _create_static_body(std::unique_ptr<WorldType> &world_type) override;
+	std::unique_ptr<BodyType> _create_kinematic_body(std::unique_ptr<WorldType> &world_type) override;
+	std::unique_ptr<BodyType> _create_dynamic_body(std::unique_ptr<WorldType> &world_type) override;
+	std::unique_ptr<CapsuleShapeType> _create_capsule_shape(real height, real radius) override;
+	std::unique_ptr<CircleShapeType> _create_circle_shape(real radius) override;
+	std::unique_ptr<ConcavePolygonShapeType> _create_concave_polygon_shape(const std::vector<Vector2f> &segments) override;
+	std::unique_ptr<ConvexPolygonShapeType> _create_convex_polygon_shape(const std::vector<Vector2f> &vertices) override;
+	std::unique_ptr<RectShapeType> _create_rect_shape(const Vector2f &size) override;
+	std::unique_ptr<SegmentShapeType> _create_segment_shape(const Vector2f &point_a, const Vector2f &point_b) override;
+	std::unique_ptr<WorldBoundaryShapeType> _create_world_boundary_shape(real distance, const Vector2f &normal) override;
+};
+
+}
+
 #endif
-
-using namespace Toof;
-
-const Transform2D Transform2D::IDENTITY = Transform2D(Angle::ZERO_ROTATION(), 0, 0, 1, 1);
-
-#if TOOF_PHYSICS_ENABLED
-
-Transform2D::Transform2D(const b2Transform &b2_transform): rotation(Angle::from_radians(b2_transform.q.GetAngle())), origin(b2_transform.p), scale(Vector2(1, 1)) {
-}
-
-Transform2D::operator b2Transform() const {
-	return b2Transform(origin, rotation);
-}
-
-b2Transform Transform2D::to_b2_transform() const {
-	return b2Transform(origin, rotation);
-}
-
-#endif
-
-std::ostream &Toof::operator<<(std::ostream &stream, const Transform2D &transform) {
-	S_STREAM_FORMAT(stream, "[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]",
-	    transform.scale.x,
-	    transform.scale.y,
-	    transform.origin.x,
-	    transform.origin.y,
-	    transform.rotation);
-	return stream;
-}
-
-Transform2D::operator String() const {
-	return S_FORMAT("[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]", scale.x, scale.y, origin.x, origin.y, rotation);
-}

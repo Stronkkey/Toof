@@ -29,10 +29,24 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifdef TOOF_PHYSICS_ENABLED
-
-#pragma once
-
+#include <scene/2d/physics/physics_body_2d.hpp>
 #include <scene/resources/world2d.hpp>
+
+#if TOOF_PHYSICS_ENABLED
+
+using namespace Toof;
+
+void World2D::add_body(PhysicsBody2D *body) {
+	bodies.insert_or_assign(body->get_uid(), body);
+}
+
+void World2D::remove_body(PhysicsBody2D *body) {
+	bodies.erase(body->get_uid());
+}
+
+PhysicsBody2D *World2D::get_body_from_uid(uid body_uid) const {
+	auto iterator = bodies.find(body_uid);
+	return iterator != bodies.end() ? iterator->second : nullptr;
+}
 
 #endif

@@ -34,6 +34,7 @@
 
 #include <core/string/string_def.hpp>
 #include <core/memory/signal.hpp>
+#include <physics/physics_features.hpp>
 
 #include <memory>
 #include <unordered_set>
@@ -42,9 +43,18 @@
 
 namespace Toof {
 
-class SceneTree;
-class InputEvent;
 class Input;
+class InputEvent;
+
+template<class>
+class Optional;
+
+#if TOOF_PHYSICS_ENABLED
+class PhysicsServer2D;
+class World2D;
+#endif
+
+class SceneTree;
 
 /**
 * @brief Base class for all scene objects.
@@ -158,12 +168,23 @@ public:
 		* @brief Notification received from the SceneTree's crash handler when the program is about to crash. Implemented on desktop platforms.
 		*/
 		NOTIFICATION_CRASH,
+
+		/**
+		* @brief Notification when a child Node has been added.
+		*/
+		NOTIFICATION_CHILD_ADDED,
+
+		/**
+		* @brief Notification received when a child Node is about to be removed.
+		*/
+		NOTIFICATION_CHILD_REMOVING,
 	};
 
 private:
 	children_t children;
 	SceneTree *tree;
 	Node *parent;
+	Node *last_child_modified;
 	String name;
 	bool is_ready, is_deletion_queued;
 
@@ -216,6 +237,24 @@ protected:
 	*/
 	virtual void _ready();
 
+	/**
+	* @brief Called when a child Node has been added.
+	*/
+	virtual void _child_added(Node *child_added);
+
+	/**
+	* @brief Called when a child Node is being removed.
+	*/
+	virtual void _child_removing(Node *child_removing);
+
+	/**
+	* @returns The child node, which has been added or is being removed most recently.
+	* @note This value is @b nullptr if no Nodes have been parented to this Node.
+	* @see _child_added and _child_removing.
+	*/
+	Node *get_last_child_modified() const {
+		return last_child_modified;
+	}
 public:
 	Node();
 
@@ -245,6 +284,9 @@ public:
 	* @details This signal is emitted before the related @b NOTIFICATION_EXIT_TREE notification
 	*/
 	Signal<> tree_exiting;
+
+	Signal<Node*> child_added;
+	Signal<Node*> child_removing;
 
 	/**
 	* @brief Returns the SDL_Event structure from the tree.
@@ -371,6 +413,24 @@ public:
 	* @brief Removes all children from this Node.
 	*/
 	void remove_children();
+
+	#if TOOF_PHYSICS_ENABLED
+
+	/**
+	* @returns The World2D from the SceneTree.
+	* The @b value is only valid if the Node is in the SceneTree.
+	* @note This function is only defined if physics is enabled.
+	*/
+	Optional<World2D*> get_world_2d() const;
+	
+	/**
+	* @returns The PhysicsServer2D from the SceneTree.
+	* The @b value is only valid if the Node is in the SceneTree.
+	* @note This function is only defined if physics is enabled.
+	*/
+	Optional<PhysicsServer2D*> get_physics_server_2d() const;
+
+	#endif
 };
 
 }

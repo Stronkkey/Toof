@@ -10,6 +10,7 @@ core_math_headers = files(
 	'color.hpp',
 	'geometry2d.hpp',
 	'math_defs.hpp',
+	'math_features.hpp',
 	'rect2.hpp',
 	'transform2d.hpp',
 	'vector2.hpp',

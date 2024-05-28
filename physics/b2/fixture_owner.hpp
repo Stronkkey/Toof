@@ -1,5 +1,5 @@
 /*  This file is part of the Toof Engine. */
-/** @file physics_info.hpp */
+/** @file fixture_owner.hpp */
 /*
   BSD 3-Clause License
 
@@ -30,40 +30,37 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifdef TOOF_PHYSICS_ENABLED
+#include <physics/physics_features.hpp>
 
-#pragma once
+#include <unordered_set>
 
-#ifndef __PHYSICS_PX_METER_RATIO__
-#define __PHYSICS_PX_METER_RATIO__ 100
-#endif
+#if TOOF_B2_ENABLED
 
-#ifndef __DEFAULT_GRAVITY_X__
-#define __DEFAULT_GRAVITY_X__ 0
-#endif
-
-#ifndef __DEFAULT_GRAVITY_Y__
-#define __DEFAULT_GRAVITY_Y__ 9.8
-#endif
-
-#include <ratio>
-
-#include <core/math/vector2.hpp>
+class b2Body;
+class b2Fixture;
 
 namespace Toof {
 
-namespace Physics {
+class FixtureOwner {
+private:
+	std::unordered_set<b2Fixture*> fixtures;
+public:
+	FixtureOwner() = default;
+	~FixtureOwner() = default;
 
-const Vector2f default_gravity = Vector2f(__DEFAULT_GRAVITY_X__, __DEFAULT_GRAVITY_Y__);
-const std::ratio px_to_meter_ratio = std::ratio<1, __PHYSICS_PX_METER_RATIO__>();
-#ifdef TOOF_PHYSICS_ENABLED
-const bool physics_enabled = true;
-#else
-const bool physics_enabled = false;
+	void add_fixture(b2Fixture *fixture);
+	void remove_fixture(b2Fixture *fixture);
+	void remove_fixtures_from(b2Body *body);
+
+	constexpr decltype(fixtures) &get_fixtures() {
+		return fixtures;
+	}
+
+	constexpr const decltype(fixtures) &get_fixtures() const {
+		return fixtures;
+	}
+};
+
+}
+
 #endif
-
-}
-
-}
-
-#endif // !TOOF_PHYSICS_ENABLED

@@ -1,5 +1,5 @@
 /*  This file is part of the Toof Engine. */
-/** @file physics_shape.hpp */
+/** @file b2_physics_world.hpp */
 /*
   BSD 3-Clause License
 
@@ -32,17 +32,60 @@
 */
 #pragma once
 
-#include <core/math/rect2.hpp>
-#include <core/math/transform2d.hpp>
+#include <physics/2d/physics_world.hpp>
 
-class b2Shape;
+#include <box2d/b2_world.h>
+
+#if TOOF_B2_ENABLED
 
 namespace Toof {
 
-struct PhysicsBody;
+class B2PhysicsBody;
 
-struct PhysicsShape {
-	b2Shape *shape;
+namespace detail {
+
+class ContactListener : public b2ContactListener {
+	void BeginContact(b2Contact *contact) override;
+	void EndContact(b2Contact *contact) override;
 };
 
 }
+
+class B2PhysicsWorld : public PhysicsWorld2D {
+private:
+	b2World world;
+	int32_t velocity_iterations;
+	int32_t position_iterations;
+	detail::ContactListener contact_listener;
+public:
+	B2PhysicsWorld();
+	~B2PhysicsWorld() = default;
+
+	constexpr b2World &get_world() {
+		return world;
+	}
+
+	constexpr const b2World &get_world() const {
+		return world;
+	}
+
+	void set_velocity_iterations(int32_t velocity_iterations) override;
+	int32_t get_velocity_iterations() const override;
+
+	void set_position_iterations(int32_t position_iterations) override;
+	int32_t get_position_iterations() const override;
+
+	void set_gravity(const Vector2f &gravity) override;
+	Vector2f get_gravity() const override;
+
+	void step(double delta) override;
+
+	void destroy_body(Physics2DBody *body) override;
+	void add_body(Physics2DBody *body) override;
+
+	size_t get_body_count() const override;
+};
+
+}
+
+#endif

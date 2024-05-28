@@ -33,6 +33,7 @@
 #pragma once
 
 #include <core/memory/signal.hpp>
+#include <physics/physics_features.hpp>
 
 #include <SDL_events.h>
 
@@ -40,6 +41,7 @@
 
 namespace Toof {
 
+class World2D;
 template<class>
 struct Rect2;
 class Node;
@@ -48,7 +50,7 @@ class RenderingServer;
 class Viewport;
 class Input;
 
-#ifdef TOOF_PHYSICS_ENABLED
+#if TOOF_PHYSICS_ENABLED
 class PhysicsServer2D;
 #endif
 
@@ -146,12 +148,18 @@ private:
 	std::unique_ptr<SDL_Event> event;
 	std::unique_ptr<Node> root;
 
-	#ifdef TOOF_PHYSICS_ENABLED
+	#if TOOF_PHYSICS_ENABLED
 	std::unique_ptr<PhysicsServer2D> physics_server;
+	std::unique_ptr<World2D> world_2d;
 	#endif
 
 	virtual void _initialize();
 	virtual void _ended();
+
+	#if TOOF_PHYSICS_ENABLED
+	virtual std::unique_ptr<PhysicsServer2D> _create_physics_server() const =0;
+	void _initialize_physics_server();
+	#endif
 protected:
 	void _add_child(Node *child);
 public:
@@ -187,9 +195,13 @@ public:
 		return input;
 	}
 
-	#ifdef TOOF_PHYSICS_ENABLED
+	#if TOOF_PHYSICS_ENABLED
 	constexpr const std::unique_ptr<PhysicsServer2D> &get_physics_server() const {
 		return physics_server;
+	}
+
+	constexpr const std::unique_ptr<World2D> &get_world_2d() const {
+		return world_2d;
 	}
 	#endif
 
@@ -239,7 +251,7 @@ public:
 		return event_paused;
 	}
 
-	#ifdef TOOF_PHYSICS_ENABLED
+	#if TOOF_PHYSICS_ENABLED
 
 	constexpr Loop &get_physics_loop() & {
 		return physics_loop;

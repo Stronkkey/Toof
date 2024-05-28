@@ -1,5 +1,4 @@
 /*  This file is part of the Toof Engine. */
-/** @file physics_body2d.hpp */
 /*
   BSD 3-Clause License
 
@@ -30,33 +29,15 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifdef TOOF_PHYSICS_ENABLED
+#include <physics/2d/physics_contact_listener.hpp>
+#include <servers/physics_server_2d.hpp>
 
-#pragma once
+#if TOOF_PHYSICS_ENABLED
 
-#include <scene/resources/world2d.hpp>
-#include <scene/2d/node2d.hpp>
+using namespace Toof;
 
-namespace Toof {
-
-class PhysicsServer2D;
-
-class PhysicsBody2D : public Node2D {
-private:
-	uid physics_body_rid;
-	World2D world_2d;
-
-	void ready();
-	void _notification(const int what) override;
-
-protected:
-	const std::unique_ptr<PhysicsServer2D> &get_physics_server() const;
-
-public:
-	void add_collision_exception_with(const PhysicsBody2D *physics_body2d);
-	void remove_collision_exception_with(const PhysicsBody2D *physics_body2d);
-};
-
+void Physics2DContactListener::register_contact(const Physics2DContact &contact) const {
+	physics_server_2d->_body_register_contact(body_uid, contact);
 }
 
 #endif

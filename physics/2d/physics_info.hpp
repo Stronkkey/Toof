@@ -1,4 +1,5 @@
 /*  This file is part of the Toof Engine. */
+/** @file physics_info.hpp */
 /*
   BSD 3-Clause License
 
@@ -29,44 +30,46 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include <core/math/transform2d.hpp>
+#pragma once
 
-#include <core/string/string_def.hpp>
-#include <stringify/format.hpp>
-
-#if TOOF_PHYSICS_ENABLED
-#include <box2d/b2_math.h>
-#endif
-
-using namespace Toof;
-
-const Transform2D Transform2D::IDENTITY = Transform2D(Angle::ZERO_ROTATION(), 0, 0, 1, 1);
+#include <core/math/math_defs.hpp>
+#include <physics/physics_features.hpp>
 
 #if TOOF_PHYSICS_ENABLED
 
-Transform2D::Transform2D(const b2Transform &b2_transform): rotation(Angle::from_radians(b2_transform.q.GetAngle())), origin(b2_transform.p), scale(Vector2(1, 1)) {
-}
+#define TOOF_DEFAULT_GRAVITY (Vector2f(TOOF_DEFAULT_GRAVITY_X, TOOF_DEFAULT_GRAVITY_Y))
 
-Transform2D::operator b2Transform() const {
-	return b2Transform(origin, rotation);
-}
+namespace Toof {
 
-b2Transform Transform2D::to_b2_transform() const {
-	return b2Transform(origin, rotation);
+#if TOOF_PHYSICS_ENABLED
+#define TOOF_DETAIL_PHYSICS_ENABLED true
+#else
+#define TOOF_DETAIL_PHYSICS_ENABLED false
+#endif
+
+struct PhysicsInfo {
+public:
+	PhysicsInfo() = delete;
+	~PhysicsInfo() = delete;
+
+	/**
+	* @details @b true if physics are enabled or @b false if physics are disabled.
+	*/
+	static constexpr const bool is_physics_enabled = TOOF_DETAIL_PHYSICS_ENABLED;
+
+	/**
+	* @brief Default gravity strength (x axis) used by the PhysicsServer.
+	* @details This value may be changed by defining the @b TOOF_DEFAULT_GRAVITY_X macro.
+	*/
+	static constexpr real default_gravity_x = TOOF_DEFAULT_GRAVITY_X;
+
+	/**
+	* @brief Default gravity strength (y axis) used by the PhysicsServer. Equal to @b TOOF_DEFAULT_GRAVITY_Y macro.
+	* @details This value may be changed by defining the @b TOOF_DEFAULT_GRAVITY_Y macro.
+	*/
+	static constexpr real default_gravity_y = TOOF_DEFAULT_GRAVITY_Y;
+};
+
 }
 
 #endif
-
-std::ostream &Toof::operator<<(std::ostream &stream, const Transform2D &transform) {
-	S_STREAM_FORMAT(stream, "[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]",
-	    transform.scale.x,
-	    transform.scale.y,
-	    transform.origin.x,
-	    transform.origin.y,
-	    transform.rotation);
-	return stream;
-}
-
-Transform2D::operator String() const {
-	return S_FORMAT("[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]", scale.x, scale.y, origin.x, origin.y, rotation);
-}

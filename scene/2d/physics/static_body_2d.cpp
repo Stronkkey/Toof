@@ -29,10 +29,20 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifdef TOOF_PHYSICS_ENABLED
+#include <scene/2d/physics/static_body_2d.hpp>
+#include <scene/resources/world2d.hpp>
+#include <servers/physics_server_2d.hpp>
 
-#include <core/math/geometry2d.hpp>
-#include <servers/physics/physics_body.hpp>
-#include <servers/physics/physics_shape.hpp>
+using namespace Toof;
 
-#endif // !TOOF_PHYSICS_ENABLED
+#if TOOF_PHYSICS_ENABLED
+
+uid StaticBody2D::_create_body(PhysicsServer2D *physics_server_2d, uid world_uid) const {
+	return physics_server_2d->static_body_create(world_uid);
+}
+
+PhysicsBodyType StaticBody2D::_get_body_type() const {
+	return PhysicsBodyType::STATIC;
+}
+
+#endif

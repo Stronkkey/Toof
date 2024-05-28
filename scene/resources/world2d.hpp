@@ -30,18 +30,23 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifdef TOOF_PHYSICS_ENABLED
-
 #pragma once
 
+#include <physics/physics_features.hpp>
 #include <scene/resources/resource.hpp>
 
+#include <unordered_map>
+
+#if TOOF_PHYSICS_ENABLED
+
 namespace Toof {
+
+class PhysicsBody2D;
 
 class World2D : public Resource {
 private:
 	uid space;
-
+	std::unordered_map<uid, PhysicsBody2D*> bodies;
 public:
 	constexpr void set_space(const uid new_space) {
 		space = new_space;
@@ -49,6 +54,10 @@ public:
 	constexpr uid get_space() const {
 		return space;
 	}
+
+	void add_body(PhysicsBody2D *body);
+	void remove_body(PhysicsBody2D *body);
+	PhysicsBody2D *get_body_from_uid(uid body_uid) const;
 };
 
 }

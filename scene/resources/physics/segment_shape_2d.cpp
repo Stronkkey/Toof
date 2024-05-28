@@ -29,44 +29,39 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#include <core/math/transform2d.hpp>
-
-#include <core/string/string_def.hpp>
-#include <stringify/format.hpp>
+#include <scene/resources/physics/segment_shape_2d.hpp>
+#include <servers/physics_server_2d.hpp>
+#include <servers/rendering_server.hpp>
 
 #if TOOF_PHYSICS_ENABLED
-#include <box2d/b2_math.h>
-#endif
 
 using namespace Toof;
 
-const Transform2D Transform2D::IDENTITY = Transform2D(Angle::ZERO_ROTATION(), 0, 0, 1, 1);
-
-#if TOOF_PHYSICS_ENABLED
-
-Transform2D::Transform2D(const b2Transform &b2_transform): rotation(Angle::from_radians(b2_transform.q.GetAngle())), origin(b2_transform.p), scale(Vector2(1, 1)) {
+void SegmentShape2D::_update() {
+	PhysicsServer2D *physics_server_2d = get_physics_server_2d();
+	if (physics_server_2d) {
+	}
 }
 
-Transform2D::operator b2Transform() const {
-	return b2Transform(origin, rotation);
+void SegmentShape2D::_draw(RenderingServer *rendering_server, uid canvas_item, const ColorV &modulation) const {
+	rendering_server->canvas_item_add_line(canvas_item, point_a, point_b, modulation);
 }
 
-b2Transform Transform2D::to_b2_transform() const {
-	return b2Transform(origin, rotation);
+uid SegmentShape2D::_create_shape() const {
+	return get_physics_server_2d()->segment_shape_create(point_a, point_b);
+}
+
+SegmentShape2D::SegmentShape2D() : point_a(), point_b() {
+}
+
+void SegmentShape2D::set_point_a(const Vector2f &point_a) {
+	this->point_a = point_a;
+	_update();
+}
+
+void SegmentShape2D::set_point_b(const Vector2f &point_b) {
+	this->point_b = point_b;
+	_update();
 }
 
 #endif
-
-std::ostream &Toof::operator<<(std::ostream &stream, const Transform2D &transform) {
-	S_STREAM_FORMAT(stream, "[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]",
-	    transform.scale.x,
-	    transform.scale.y,
-	    transform.origin.x,
-	    transform.origin.y,
-	    transform.rotation);
-	return stream;
-}
-
-Transform2D::operator String() const {
-	return S_FORMAT("[Scale: ({}, {}), Origin: ({}, {}), Rotation: {}]", scale.x, scale.y, origin.x, origin.y, rotation);
-}

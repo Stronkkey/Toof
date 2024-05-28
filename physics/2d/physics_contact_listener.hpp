@@ -1,5 +1,5 @@
 /*  This file is part of the Toof Engine. */
-/** @file physics_world.hpp */
+/** @file physics_body.hpp */
 /*
   BSD 3-Clause License
 
@@ -30,33 +30,36 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifdef TOOF_PHYSICS_ENABLED
 #pragma once
 
-#include <core/math/vector2.hpp>
+#include <core/math/math_defs.hpp>
+#include <physics/physics_features.hpp>
 
-#include <memory>
-
-class b2World;
+#if TOOF_PHYSICS_ENABLED
 
 namespace Toof {
 
-class PhysicsWorld2D {
+class Physics2DContact;
+class PhysicsServer2D;
+
+class Physics2DContactListener {
 private:
-	std::unique_ptr<b2World> b2_world;
+	uid body_uid;
+	PhysicsServer2D *physics_server_2d;
 
+	friend PhysicsServer2D;
 public:
-	int32_t velocity_iterations = 6;
-	int32_t position_iterations = 2;
+	Physics2DContactListener() = default;
+	~Physics2DContactListener() = default;
 
-	PhysicsWorld2D(const Vector2f &gravity = Vector2f::ZERO(), const int32_t velocity_iterations = 6, const int32_t position_iterations = 2);
-	constexpr const std::unique_ptr<b2World> &get_world() {
-		return b2_world;
+	constexpr uid get_body_uid() const {
+		return body_uid;
 	}
 
-	void step(const double delta) const;
+	void register_contact(const Physics2DContact &contact) const;
 };
+
 
 }
 
-#endif // !TOOF_PHYSICS_ENABLED
+#endif

@@ -1,0 +1,15 @@
+physics_b2_headers = files(
+	'fixture_owner.hpp',
+	'physics_body.hpp',
+	'physics_server.hpp',
+	'physics_shape.hpp',
+	'physics_world.hpp',
+)
+
+physics_b2_source_files = files(
+	'fixture_owner.cpp',
+	'physics_body.cpp',
+	'physics_server.cpp',
+	'physics_shape.cpp',
+	'physics_world.cpp',
+)

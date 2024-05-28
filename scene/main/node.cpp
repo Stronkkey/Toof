@@ -29,9 +29,10 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#include <core/memory/optional.hpp>
+#include <input/input.hpp>
 #include <scene/main/node.hpp>
 #include <scene/main/scene_tree.hpp>
-#include <input/input.hpp>
 
 #include <SDL_events.h>
 
@@ -104,6 +105,12 @@ void Node::_set_tree_recursive(SceneTree *tree) {
 void Node::_ready() {
 }
 
+void Node::_child_added(Node*) {
+}
+
+void Node::_child_removing(Node*) {
+}
+
 void Node::_process(double) {
 }
 
@@ -152,6 +159,14 @@ void Node::notification(const int what) {
 		case NOTIFICATION_ENTER_TREE:
 			tree_entering();
 			break;
+		case NOTIFICATION_CHILD_ADDED:
+			child_added(last_child_modified);
+			_child_added(last_child_modified);
+			break;
+		case NOTIFICATION_CHILD_REMOVING:
+			child_removing(last_child_modified);
+			_child_removing(last_child_modified);
+			break;
 		default:
 			break;
 	}
@@ -186,6 +201,8 @@ void Node::add_child(Node *child) {
 		return;
 
 	_add_child_nocheck(child);
+	last_child_modified = child;
+	notification(NOTIFICATION_CHILD_ADDED);
 }
 
 void Node::set_name(const String &new_name) {
@@ -197,6 +214,8 @@ void Node::remove_child(Node* node) {
 	if (node->parent != this)
 		return;
 
+	last_child_modified = node;
+	notification(NOTIFICATION_CHILD_REMOVING);
 	node->_reset_parent();
 	node->_reset_tree();
 }
@@ -210,7 +229,7 @@ double Node::get_process_delta_time() const {
 }
 
 double Node::get_physics_delta_time() const {
-	#ifdef TOOF_PHYSICS_ENABLED
+	#if TOOF_PHYSICS_ENABLED
 	return tree ? tree->get_physics_loop().get_delta_time() : 0.0;
 	#else
 	return 0.0;
@@ -240,3 +259,19 @@ void Node::remove_children() {
 	}
 	children.clear();
 }
+
+#if TOOF_PHYSICS_ENABLED
+
+Optional<World2D*> Node::get_world_2d() const {
+	if (!tree)
+		return NullOption;
+	return tree->get_world_2d().get();
+}
+
+Optional<PhysicsServer2D*> Node::get_physics_server_2d() const {
+	if (!tree)
+		return NullOption;
+	return tree->get_physics_server().get();
+}
+
+#endif

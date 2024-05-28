@@ -1,4 +1,5 @@
 /*  This file is part of the Toof Engine. */
+/** @file shape_2d.hpp */
 /*
   BSD 3-Clause License
 
@@ -29,20 +30,37 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifdef TOOF_PHYSICS_ENABLED
+#pragma once
 
-#include <servers/physics/physics_world.hpp>
+#include <core/math/color.hpp>
+#include <physics/physics_features.hpp>
+#include <scene/resources/resource.hpp>
 
-#include <box2d/b2_world.h>
+#if TOOF_PHYSICS_ENABLED
 
-Toof::PhysicsWorld2D::PhysicsWorld2D(const Vector2f &gravity, const int32_t velocity_iterations, const int32_t position_iterations) {
-	b2_world = std::make_unique<b2World>(gravity.to_b2_vec2());
-	this->velocity_iterations = velocity_iterations;
-	this->position_iterations = position_iterations;
+namespace Toof {
+
+class PhysicsServer2D;
+class RenderingServer;
+
+class Shape2D : public Resource {
+private:
+	uid shape_uid;
+	PhysicsServer2D *physics_server_2d;
+
+	uid _get_uid() const override;
+	virtual void _draw(RenderingServer *rendering_server, uid canvas_item, const ColorV &modulation) const;
+	virtual uid _create_shape() const =0;
+public:
+	Shape2D();
+	~Shape2D() = default;
+
+	void draw(RenderingServer *rendering_server, uid canvas_item, const ColorV &modulation = ColorV::WHITE()) const;
+
+	void set_physics_server_2d(PhysicsServer2D *physics_server_2d);
+	constexpr PhysicsServer2D *get_physics_server_2d() const { return physics_server_2d; }
+};
+
 }
 
-void Toof::PhysicsWorld2D::step(const double delta) const {
-	b2_world->Step(delta, velocity_iterations, position_iterations);
-}
-
-#endif // !TOOF_PHYSICS_ENABLED
+#endif
