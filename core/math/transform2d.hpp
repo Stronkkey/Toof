@@ -62,6 +62,7 @@ struct Transform2D {
 	constexpr Transform2D operator*(const Transform2D &right) const;
 
 	#ifdef TOOF_PHYSICS_ENABLED
+	operator b2Transform() const;
 	[[nodiscard]] b2Transform to_b2_transform() const;
 	#endif
 

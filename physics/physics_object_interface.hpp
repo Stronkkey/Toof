@@ -1,4 +1,5 @@
 /*  This file is part of the Toof Engine. */
+/** @file physics_object_interface.hpp */
 /*
   BSD 3-Clause License
 
@@ -29,10 +30,13 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifdef TOOF_PHYSICS_ENABLED
+#pragma once
 
-#include <core/math/geometry2d.hpp>
-#include <servers/physics/physics_body.hpp>
-#include <servers/physics/physics_shape.hpp>
+namespace Toof {
 
-#endif // !TOOF_PHYSICS_ENABLED
+enum PhysicsObjectInterface {
+	PHYSICS_OBJECT_INTERFACE_NONE = 0,
+	PHYSICS_OBJECT_INTERFACE_B2 = 1,
+};
+
+}

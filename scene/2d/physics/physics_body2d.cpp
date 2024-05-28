@@ -33,32 +33,47 @@
 
 #include <scene/2d/physics/physics_body2d.hpp>
 #include <scene/main/scene_tree.hpp>
-#include <servers/physics_server.hpp>
+#include <servers/physics_server_2d.hpp>
 
-void Toof::PhysicsBody2D::ready() {
-	physics_body_rid = get_physics_server()->body_create();
+using namespace Toof;
+
+void PhysicsBody2D::enter_tree() {
+	Optional<PhysicsServer2D*> physics_server = get_physics_server();
+	if (physics_server)
+		body_uid = physics_server.get_value()->static_body_create(world_2d.get_space());
 }
 
-void Toof::PhysicsBody2D::_notification(const int what) {
+void PhysicsBody2D::exit_tree() {
+	Optional<PhysicsServer2D*> physics_server = get_physics_server();
+	if (physics_server)
+		physics_server.get_value()->remove_uid(body_uid);
+}
+
+void PhysicsBody2D::_notification(const int what) {
 	Node2D::_notification(what);
 
-	if (what == NOTIFICATION_READY)
-		ready();
+	if (what == NOTIFICATION_ENTER_TREE)
+		enter_tree();
+
+	if (what == NOTIFICATION_EXIT_TREE)
+		exit_tree();
 }
 
-const std::unique_ptr<Toof::PhysicsServer2D> &Toof::PhysicsBody2D::get_physics_server() const {
+Optional<PhysicsServer2D*> PhysicsBody2D::get_physics_server() const {
 	if (is_inside_tree())
-		return get_tree()->get_physics_server();
+		return get_tree()->get_physics_server().get();
 
-	std::unique_ptr<PhysicsServer2D> _p;
-	std::unique_ptr<PhysicsServer2D> *p = &_p;
-	return *p;
+	return NullOption;
+}
+/*
+void PhysicsBody2D::add_collision_exception_with(const PhysicsBody2D *) {
+	Optional<PhysicsServer2D*> physics_server = get_physics_server();
+
+	if (!physics_server)
+		return;
 }
 
-void Toof::PhysicsBody2D::add_collision_exception_with(const PhysicsBody2D*) {
-}
-
-void Toof::PhysicsBody2D::remove_collision_exception_with(const PhysicsBody2D*) {
-}
+void PhysicsBody2D::remove_collision_exception_with(const PhysicsBody2D*) {
+}*/
 
 #endif

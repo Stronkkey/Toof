@@ -38,7 +38,7 @@
 #include <input/input_event.hpp>
 
 #ifdef TOOF_PHYSICS_ENABLED
-#include <servers/physics_server.hpp>
+#include <servers/physics_server_2d.hpp>
 #endif
 
 #include <SDL_timer.h>
@@ -78,7 +78,7 @@ SceneTree::SceneTree() {
 	physics_loop.prev_step_time = time;
 	physics_loop.loop_type = Loop::LOOP_TYPE_PHYSICS;
 
-	physics_server = std::make_unique<PhysicsServer2D>();
+	physics_server = nullptr;
 	#endif
 }
 
@@ -142,7 +142,9 @@ void SceneTree::step_physics(const double delta) {
 	if (root)
 		root->propagate_notification(Node::NOTIFICATION_PREDELETE);
 
+	#ifdef TOOF_PHYSICS_ENABLED
 	physics_server->tick(physics_loop.delta_time);
+	#endif
 }
 
 void SceneTree::_do_loop(Loop &loop) {
@@ -203,6 +205,11 @@ void SceneTree::_main_loop() {
 void SceneTree::start() {
 	if (!window->intialized_successfully() || running)
 		return;
+
+	#ifdef TOOF_PHYSICS_ENABLED
+	if (!physics_server)
+		physics_server = _create_physics_server();
+	#endif
 
 	running = true;
 	event = std::make_unique<SDL_Event>();

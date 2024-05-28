@@ -388,8 +388,13 @@ struct Vector2 {
 	}
 
 	#ifdef TOOF_PHYSICS_ENABLED
+
+	inline operator b2Vec2() const {
+		return b2Vec2(static_cast<float>(x), static_cast<float>(y));
+	}
+
 	[[nodiscard]] inline b2Vec2 to_b2_vec2() const {
-		return b2Vec2((float)x, (float)y);
+		return b2Vec2(static_cast<float>(x), static_cast<float>(y));
 	}
 	#endif
 

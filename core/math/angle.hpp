@@ -32,6 +32,10 @@
 */
 #pragma once
 
+#ifdef TOOF_PHYSICS_ENABLED
+#include <box2d/b2_math.h>
+#endif
+
 #include <core/math/math_funcs.hpp>
 #include <core/string/string_def.hpp>
 
@@ -194,6 +198,15 @@ public:
 	[[deprecated]] constexpr Angle operator/(const Angle &right) const {
 		return Angle(angle_degrees / right.angle_degrees);
 	}
+
+	#ifdef TOOF_PHYSICS_ENABLED
+	/**
+	* @brief Converts the Angle into a b2Rot object.
+	*/
+	inline operator b2Rot() const {
+		return b2Rot(Math::degrees_to_radians(angle_degrees));
+	}
+	#endif
 
 	/**
 	* @deprecated This function doesn't have many real use cases. It will be removed in a future version.

@@ -152,6 +152,10 @@ private:
 
 	virtual void _initialize();
 	virtual void _ended();
+
+	#ifdef TOOF_PHYSICS_ENABLED
+	virtual std::unique_ptr<PhysicsServer2D> _create_physics_server() const =0;
+	#endif
 protected:
 	void _add_child(Node *child);
 public:

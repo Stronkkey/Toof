@@ -1,5 +1,5 @@
 /*  This file is part of the Toof Engine. */
-/** @file physics_info.hpp */
+/** @file physics_server.hpp */
 /*
   BSD 3-Clause License
 
@@ -30,40 +30,29 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifdef TOOF_PHYSICS_ENABLED
+#ifdef TOOF_B2_ENABLED
 
 #pragma once
 
-#ifndef __PHYSICS_PX_METER_RATIO__
-#define __PHYSICS_PX_METER_RATIO__ 100
-#endif
-
-#ifndef __DEFAULT_GRAVITY_X__
-#define __DEFAULT_GRAVITY_X__ 0
-#endif
-
-#ifndef __DEFAULT_GRAVITY_Y__
-#define __DEFAULT_GRAVITY_Y__ 9.8
-#endif
-
-#include <ratio>
-
-#include <core/math/vector2.hpp>
+#include <servers/physics_server_2d.hpp>
 
 namespace Toof {
 
-namespace Physics {
+class B2PhysicsServer : public PhysicsServer2D {
+private:
+	std::unique_ptr<WorldType> _create_world() override;
+	std::unique_ptr<BodyType> _create_static_body(std::unique_ptr<WorldType> &world_type) override;
+	std::unique_ptr<BodyType> _create_kinematic_body(std::unique_ptr<WorldType> &world_type) override;
+	std::unique_ptr<BodyType> _create_dynamic_body(std::unique_ptr<WorldType> &world_type) override;
+	std::unique_ptr<CapsuleShapeType> _create_capsule_shape(double height, double radius) override;
+	std::unique_ptr<CircleShapeType> _create_circle_shape(double radius) override;
+	std::unique_ptr<ConcavePolygonShapeType> _create_concave_polygon_shape(std::vector<Vector2f> &&segments) override;
+	std::unique_ptr<ConvexPolygonShapeType> _create_convex_polygon_shape(std::vector<Vector2f> &&vertices) override;
+	std::unique_ptr<RectShapeType> _create_rect_shape(const Vector2f &size) override;
+	std::unique_ptr<SegmentShapeType> _create_segment_shape(const Vector2f &point_a, const Vector2f &point_b) override;
+	std::unique_ptr<WorldBoundaryShapeType> _create_world_boundary_shape(double distance, const Vector2f &normal) override;
+};
 
-const Vector2f default_gravity = Vector2f(__DEFAULT_GRAVITY_X__, __DEFAULT_GRAVITY_Y__);
-const std::ratio px_to_meter_ratio = std::ratio<1, __PHYSICS_PX_METER_RATIO__>();
-#ifdef TOOF_PHYSICS_ENABLED
-const bool physics_enabled = true;
-#else
-const bool physics_enabled = false;
+}
+
 #endif
-
-}
-
-}
-
-#endif // !TOOF_PHYSICS_ENABLED

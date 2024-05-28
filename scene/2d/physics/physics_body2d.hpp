@@ -43,18 +43,21 @@ class PhysicsServer2D;
 
 class PhysicsBody2D : public Node2D {
 private:
-	uid physics_body_rid;
+	uid body_uid;
 	World2D world_2d;
 
-	void ready();
-	void _notification(const int what) override;
-
+	void enter_tree();
+	void exit_tree();
 protected:
-	const std::unique_ptr<PhysicsServer2D> &get_physics_server() const;
-
+	void _notification(const int what) override;
+	Optional<PhysicsServer2D*> get_physics_server() const;
 public:
-	void add_collision_exception_with(const PhysicsBody2D *physics_body2d);
-	void remove_collision_exception_with(const PhysicsBody2D *physics_body2d);
+	PhysicsBody2D() = default;
+	~PhysicsBody2D() = default;
+
+	void queue_set_transform(const Transform2D &transform);
+	//void add_collision_exception_with(const PhysicsBody2D *physics_body2d);
+	//void remove_collision_exception_with(const PhysicsBody2D *physics_body2d);
 };
 
 }

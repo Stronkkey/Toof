@@ -31,18 +31,43 @@
 */
 #ifdef TOOF_PHYSICS_ENABLED
 
-#include <servers/physics/physics_world.hpp>
+#include <physics/2d/physics_world.hpp>
+#include <physics/physics_object_interface.hpp>
 
-#include <box2d/b2_world.h>
+using namespace Toof;
 
-Toof::PhysicsWorld2D::PhysicsWorld2D(const Vector2f &gravity, const int32_t velocity_iterations, const int32_t position_iterations) {
-	b2_world = std::make_unique<b2World>(gravity.to_b2_vec2());
-	this->velocity_iterations = velocity_iterations;
-	this->position_iterations = position_iterations;
+int PhysicsWorld2D::get_type() const {
+	return PHYSICS_OBJECT_INTERFACE_NONE;
 }
 
-void Toof::PhysicsWorld2D::step(const double delta) const {
-	b2_world->Step(delta, velocity_iterations, position_iterations);
+void PhysicsWorld2D::set_velocity_iterations(int32_t) {
 }
 
-#endif // !TOOF_PHYSICS_ENABLED
+int32_t PhysicsWorld2D::get_velocity_iterations() const {
+	return 0;
+}
+
+void PhysicsWorld2D::set_position_iterations(int32_t) {
+}
+
+int32_t PhysicsWorld2D::get_position_iterations() const {
+	return 0;
+}
+
+void PhysicsWorld2D::set_gravity(const Vector2f&) {
+}
+
+Vector2f PhysicsWorld2D::get_gravity() const {
+	return Vector2f::ZERO();
+}
+
+void PhysicsWorld2D::step(double) {
+}
+
+void PhysicsWorld2D::destroy_body(PhysicsBody2D*) {
+}
+
+void PhysicsWorld2D::add_body(PhysicsBody2D*) {
+}
+
+#endif

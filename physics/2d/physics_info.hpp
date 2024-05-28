@@ -1,5 +1,5 @@
 /*  This file is part of the Toof Engine. */
-/** @file physics_world.hpp */
+/** @file physics_info.hpp */
 /*
   BSD 3-Clause License
 
@@ -30,33 +30,57 @@
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#include <ratio>
 #ifdef TOOF_PHYSICS_ENABLED
+
 #pragma once
+
+#ifndef TOOF_PHYSICS_PX_METER_RATIO
+#define TOOF_PHYSICS_PX_METER_RATIO 100
+#endif
+
+#ifndef TOOF_DEFAULT_GRAVITY_X
+#define TOOF_DEFAULT_GRAVITY_X 0
+#endif
+
+#ifndef TOOF_DEFAULT_GRAVITY_Y
+#define TOOF_DEFAULT_GRAVITY_Y 9.8
+#endif
 
 #include <core/math/vector2.hpp>
 
-#include <memory>
-
-class b2World;
-
 namespace Toof {
 
-class PhysicsWorld2D {
-private:
-	std::unique_ptr<b2World> b2_world;
+#ifdef TOOF_PHYSICS_ENABLED
+#define TOOF_DETAIL_PHYSICS_ENABLED true
+#else
+#define TOOF_DETOOF_DETAIL_PHYSICS_ENABLED false
+#endif
 
+
+struct PhysicsInfo {
 public:
-	int32_t velocity_iterations = 6;
-	int32_t position_iterations = 2;
+	PhysicsInfo() = delete;
+	~PhysicsInfo() = delete;
 
-	PhysicsWorld2D(const Vector2f &gravity = Vector2f::ZERO(), const int32_t velocity_iterations = 6, const int32_t position_iterations = 2);
-	constexpr const std::unique_ptr<b2World> &get_world() {
-		return b2_world;
-	}
+	/**
+	* @details @b true if physics are enabled or @b false if physics are disabled.
+	*/
+	static constexpr const bool is_physics_enabled = TOOF_DETAIL_PHYSICS_ENABLED;
 
-	void step(const double delta) const;
+	/**
+	* @brief Gravity used by the PhysicsServer.
+	* @details The x value equals to @b TOOF_DEFAULT_GRAVITY_X while the y value equals to @b TOOF_DEFAULT_GRAVITY_Y.
+	*/
+	static constexpr const Vector2f default_gravity = Vector2f(TOOF_DEFAULT_GRAVITY_X, TOOF_DEFAULT_GRAVITY_Y);
+
+	/**
+	* @brief The ratio of pixels to meters.
+	* @details The numerator is usually 1 while the denominator is equals to @b TOOF_PHYSICS_PX_METER_RATIO.
+	*/
+	using px_to_meter_ratio = std::ratio<1, TOOF_PHYSICS_PX_METER_RATIO>;
 };
 
 }
 
-#endif // !TOOF_PHYSICS_ENABLED
+#endif
